@@ -1,0 +1,109 @@
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+        <div class="container menu">
+            <img src="assets/img/picme.png" class="logo" />
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse conteudo-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="texto-opcoes-menu nav-link" aria-current="page" href="#quem-somos">Quem Somos</a>
+                    <a class="nav-link texto-opcoes-menu" href="#produto">Produto</a>
+                    <a class="nav-link texto-opcoes-menu" href="#explorar">Explorar</a>
+                </div>
+                <div class="navbar-botoes">
+                    <button type="button" class="btn btn-menu btn-login">Login</button>
+                    <button type="button" class="btn btn-menu btn-cadastro">Cadastre-se</button>
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+    <div id="carouselUser" class="carousel slide carousel-fade">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselUser" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselUser" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="assets/img/banner-cliente.jpg" class="d-block w-100 img-carousel" alt="..." />
+                <div class="div-texto-carousel">
+                    <p class="texto-carousel">
+                        <span class="destaque-laranja">Eternize</span> os momentos importantes da sua <span class="destaque-laranja">vida</span>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/img/banner-fotografo.jpg" class="d-block w-100 img-carousel" alt="..." />
+                <div class="div-texto-carousel">
+                    <p class="texto-carousel">
+                        Transforme sua <span class="destaque-azul">paixão</span> em <span class="destaque-azul">sucesso</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselUser" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselUser" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button> -->
+    </div>
+    <div class="container-fluid quem-somos pt-5 pb-5" id="quem-somos">
+        <div class="container">
+            <div class="row">
+                <div class="col-7">
+                    <h1 class="mb-5">Criamos conexões</h1>
+                    <p>Nossa empresa nasceu com a ideia de conectar as pessoas com aquilo que elas procuravam, e após identificarmos uma necessidade de exisitir uma simplificação no processo de encontrar fotógrafos nós decidimos criar a Picme, um produto que busca colocar o trabalho do fotógrafo em evidência para o mundo, de forma que possíveis clientes possam encontrar seu trabalho em nossa plataforma e entrar em contato de forma imediata em busca de seu trabalho.</p>
+                </div>
+                <div class="col-5">
+                    <img class="img-promocional" src="assets/img/usuario-smartphone.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid produto pt-5 pb-5" id="produto">
+        <div class="container">
+            <div class="row">
+                <div class="col-5">
+                    <img class="img-promocional" src="assets/img/fotografo.jpg">
+                </div>
+                <div class="col-7">
+                    <h1 class="mb-5">Apoiando os 2 lados</h1>
+                    <p>Nosso produto serve como a plataforma definitiva para um fotógrafo encontrar novos clientes e publicar seu trabalho, e também para pessoas interessadas encontrem fotógrafos para suas necessidades, com um sistema de busca por tags, o cliente consegue encontrar o fotógrafo ideal para seu enveto.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid quem-somos pt-5 pb-5" id="explorar">
+        <div class="container">
+            <div class="row">
+                <div class="col-7">
+                    <h1 class="mb-5">Não Perca Tempo</h1>
+                    <p>Venha conhecer nossa plataforma e conhecer o trabalho de profissionais incriveis que estão totalmente ao seu alcance</p>
+                    <button class="btn btn-explorar">Explorar</button>
+                </div>
+                <div class="col-5">
+                    <img class="img-promocional" src="assets/img/aniversario.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/bootstrap.min.js"></script>
+</body>
+
+</html>

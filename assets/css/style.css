@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@100;200;300;400;500;600;700&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
+/* Css Home | Inicio */
+
+/* NavBar */
+
+.logo{
+    height: 30px;
+    width: auto;
+}
+
+.menu{
+    justify-content: space-between;
+}
+
+.conteudo-collapse{
+    justify-content: space-between;
+    width: 65%;
+    flex-grow: 0 !important;
+}
+
+.navbar-botoes{
+    display: flex;
+    flex-direction: row;
+}
+
+.texto-opcoes-menu{
+    font-family: 'IBM Plex Sans Thai Looped' !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    color: #000000 !important;
+}
+
+.btn-menu{
+    font-family: 'IBM Plex Sans Thai Looped' !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.btn-login{
+    border: 2px solid #000000 !important;
+    margin-right: 20px !important;
+}
+
+.btn-cadastro{
+    border: 2px solid #000000 !important;
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* NavBar */
+
+/* Carousel */
+
+.img-carousel{
+    width: 100%;
+    height: 600px !important;
+    object-fit: cover;
+}
+
+.div-texto-carousel {
+    width: 50%;
+    position: absolute;
+    bottom: 10%;
+    left: 8%;
+    z-index: 20;
+    color: white;
+    text-shadow: 3px 2px 3px rgba(0,0,0,.6);
+}
+
+.texto-carousel{
+    font-family: 'IBM Plex Sans Thai Looped' !important;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 56px;
+}
+
+.destaque-azul{
+    font-weight: bold !important;
+    color: #269DD3;
+    text-decoration: underline;
+}
+
+.destaque-laranja{
+    font-weight: bold !important;
+    color: #D48526;
+    text-decoration: underline;
+}
+
+/* Carousel */
+
+/* Conteudo Pagina */
+
+.col-5 img{
+    object-fit: cover;
+}
+
+.img-promocional{
+    height: 500px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.quem-somos{
+    background-color: #0c0c0c;
+}
+
+.quem-somos h1{
+    color: #ffffff;
+    font-family: 'Nunito Sans';
+}
+
+.quem-somos p{
+    color: #ffffff;
+    font-family: 'Nunito Sans';
+}
+
+.row h1{
+    font-size: 42px;
+    font-weight: 600;
+}
+
+.row p{
+    font-size: 16px;
+}
+
+.row{
+    align-items: center;
+}
+
+.produto{
+    text-align: right;
+}
+
+.produto h1{
+    color: #0c0c0c;
+}
+
+.produto p{
+    color: #0c0c0c;
+}
+
+.btn-explorar{
+    background-color: #269DD3 !important;
+    color: #ffffff !important;
+    align-self: self-end;
+}
+
+/* Conteudo Pagina */
+
+/* Css Home | Fim */
