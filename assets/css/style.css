@@ -91,6 +91,27 @@
 
 /* Carousel */
 
+/* Separador Sessão */
+
+.separador{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background-color: #0c0c0c;
+}
+
+/* Separador Sessão */
+
+/* Galeria */
+
+.galeria img{
+    width: 100%;
+    height: auto;
+}
+
+/* Galeria */
+
 /* Conteudo Pagina */
 
 .col-5 img{
@@ -104,16 +125,16 @@
 }
 
 .quem-somos{
-    background-color: #0c0c0c;
+    /* background-color: #0c0c0c; */
 }
 
 .quem-somos h1{
-    color: #ffffff;
+    /* color: #ffffff; */
     font-family: 'Nunito Sans';
 }
 
 .quem-somos p{
-    color: #ffffff;
+    /* color: #ffffff; */
     font-family: 'Nunito Sans';
 }
 
