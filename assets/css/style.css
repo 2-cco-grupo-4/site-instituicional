@@ -32,7 +32,13 @@ body{
     font-size: 18px !important;
     font-weight: 500 !important;
     color: #000000 !important;
+    border-bottom: 2px solid #ffffff;
 }
+
+.texto-opcoes-menu:hover {
+    border-bottom: 2px solid #000000;
+}
+
 
 .btn-menu{
     font-family: 'IBM Plex Sans Thai Looped' !important;
@@ -48,7 +54,18 @@ body{
     color: #000000 !important;
 }
 
+.btn-login:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
 .btn-cadastro{
+    border: 2px solid #269DD3 !important;
+    background-color: #ffffff!important;
+    color: #269DD3 !important;
+}
+
+.btn-cadastro:hover {
     border: 2px solid #269DD3 !important;
     background-color: #269DD3!important;
     color: #ffffff !important;
@@ -113,6 +130,11 @@ body{
 .galeria img{
     width: 100%;
     height: auto;
+}
+
+.galeria img:hover {
+    filter: brightness(70%);
+    cursor: pointer;
 }
 
 /* Galeria */
@@ -337,3 +359,39 @@ input{
 }
 
 /* Css Login | Fim */
+
+/* Css Cadastro | Inicio */
+
+.tipo-cliente{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: row !important;
+}
+
+.tipo-cliente label{
+    margin-bottom: 0 !important;
+}
+
+.realizar-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 16px !important;
+}
+
+.realizar-login a{
+    text-decoration: none;
+    color: #484848;
+}
+
+.realizar-login a:hover {
+    color:#269DD3;
+}
+
+.insta-cadastro{
+    visibility: hidden;
+}
+
+/* Css Cadastro | Fim */
