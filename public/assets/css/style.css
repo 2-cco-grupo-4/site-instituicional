@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;700&family=IBM+Plex+Sans+Thai+Looped:wght@100;200;300;400;500;600;700&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
 /* Css Home | Inicio */
 
+:root {
+    --azulSite: #269DD3;
+    --azulEscuroSite: #006695;
+    --fontGrande: 'IBM Plex Sans Thai Looped';
+}
+
 body{
     overflow-x: hidden;
 }
@@ -9,17 +15,18 @@ body{
 
 .navbar-diff{
     background-color: #fff !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    align-items: center !important;
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
 }
 
 .collapse-diff{
-    width: 65vw !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: baseline;
+    width: 60vw !important; 
 }
 
 .navbar-nav-diff{
-    width: 40vw !important;
+    width: 30vw !important;
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
@@ -31,8 +38,15 @@ body{
 }
 
 .logo{
-    height: 30px;
+    height: 40px;
     width: auto;
+    padding: 8px 0px;
+}
+
+.navbar-toggler-diff {
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+    border: 0px !important;
 }
 
 .menu{
@@ -50,9 +64,6 @@ body{
     flex-direction: row;
 }
 
-.btn-login-diff, .btn-cadastro-diff {
-    padding: 8px 16px !important;
-}
 
 .texto-opcoes-menu{
     font-family: 'IBM Plex Sans Thai Looped' !important;
@@ -60,12 +71,20 @@ body{
     font-weight: 500 !important;
     color: #000000 !important;
     border-bottom: 2px solid #ffffff;
+    padding-bottom: 16px !important;
+    padding-top: 16px !important;
+    white-space: nowrap !important;
 }
 
 .texto-opcoes-menu:hover {
-    border-bottom: 2px solid #000000;
+    border-bottom: 2px solid #000000 !important;
 }
 
+.btn-login, .btn-cadastro {
+    width: auto !important;
+    padding: 4px !important;
+    white-space: nowrap;
+}
 
 .btn-menu{
     font-family: 'IBM Plex Sans Thai Looped' !important;
@@ -76,26 +95,46 @@ body{
 }
 
 .btn-login{
-    border: 2px solid #000000 !important;
     margin-right: 20px !important;
     color: #000000 !important;
+    border: 2px solid #fff !important;
 }
 
-.btn-login:hover {
-    background-color: #000000 !important;
-    color: #ffffff !important;
+.btn-login:hover{
+    border: 2px solid #000 !important;
 }
 
 .btn-cadastro{
-    border: 2px solid #269DD3 !important;
-    background-color: #ffffff!important;
-    color: #269DD3 !important;
+    background-color: var(--azulSite)!important;
+    color: #fff !important;
 }
 
 .btn-cadastro:hover {
-    border: 2px solid #269DD3 !important;
-    background-color: #269DD3!important;
+    background-color: var(--azulEscuroSite) !important;
     color: #ffffff !important;
+}
+
+@media only screen and (max-width: 991px){
+    .navbar-nav-diff{
+        align-items: baseline !important;
+    }
+    .btn-login {
+        border: 1px solid #000 !important;
+        background-color: #000 !important;
+        color: #fff !important;
+    }
+    .btn-login, .btn-cadastro {
+        margin: 0 !important;
+        width: 45vw !important;
+    }
+    .navbar-botoes-diff {
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        border-top: 0.5px solid rgba(0,0,0,.2) !important;
+        padding: 16px 0px !important;
+    }
 }
 
 /* NavBar */
@@ -109,8 +148,8 @@ body{
     filter: brightness(90%);
 }
 
-.div-texto-carousel {
-    width: 50%;
+.div-texto-carousel-fotografo, .div-texto-carousel-cliente {
+    width: 45vw;
     position: absolute;
     bottom: 10%;
     left: 8%;
@@ -119,16 +158,32 @@ body{
     text-shadow: 3px 2px 3px rgba(0,0,0,.6);
 }
 
+.div-texto-carousel-fotografo {
+    width: 35vw;
+}
+
 .texto-carousel{
     font-family: 'IBM Plex Sans Thai Looped' !important;
-    font-weight: 400;
+    font-weight: bold;
     color: #ffffff;
     font-size: 56px;
 }
 
+@media only screen and (max-width: 472px){
+    .img-carousel{
+        height: 75vh !important;
+    }
+    .div-texto-carousel-fotografo, .div-texto-carousel-cliente {
+        width: 75vw;
+    }
+    .texto-carousel {
+        font-size: 24px;
+    }
+}
+
 .destaque-azul{
     font-weight: bold !important;
-    color: #269DD3;
+    color: var(--azulSite);
     text-decoration: underline;
 }
 
@@ -144,10 +199,26 @@ body{
 
 .separador{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    background-color: #0c0c0c;
+    background-color: rgb(57, 57, 57);
+    font-size: large;
+    font-weight: bold;
+    font-family: var(--fontGrande);
+    position: relative;
+    z-index: 0;
+}
+
+.separador-pointer {
+    position: absolute;
+    z-index: 10;
+    width: 0;
+    height: 0;
+    top: 98%;
+    border: 16px solid transparent;
+    border-top-color:rgb(57, 57, 57);
 }
 
 /* Separador Sessão */
@@ -176,6 +247,16 @@ body{
     height: 500px;
     width: 100%;
     border-radius: 8px;
+}
+
+@media only screen and (max-width: 472px){
+    /* .row {
+        display: grid !important;
+        grid-template-columns: auto auto auto !important;
+    } */
+    #galeria-column-1 {
+        display: none;
+    }
 }
 
 .quem-somos{
@@ -218,7 +299,7 @@ body{
 }
 
 .btn-explorar{
-    background-color: #269DD3 !important;
+    background-color: var(--azulSite) !important;
     color: #ffffff !important;
     align-self: self-end;
 }
@@ -362,7 +443,7 @@ input{
 }
 
 .form-text:hover {
-    color: #269DD3;
+    color: var(--azulSite);
     text-decoration: underline;
     cursor: pointer;
 }
@@ -414,7 +495,7 @@ input{
 }
 
 .realizar-login a:hover {
-    color:#269DD3;
+    color:var(--azulSite);
 }
 
 .insta-cadastro{
