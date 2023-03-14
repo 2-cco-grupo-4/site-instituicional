@@ -104,7 +104,7 @@ body{
     border: 2px solid #000 !important;
 }
 
-.btn-cadastro{
+.btn-cadastro, .btn-cadastro-banner{
     background-color: var(--azulSite)!important;
     color: #fff !important;
 }
@@ -127,6 +127,7 @@ body{
         margin: 0 !important;
         width: 45vw !important;
     }
+    
     .navbar-botoes-diff {
         flex-direction: row !important;
         align-items: center;
@@ -143,7 +144,7 @@ body{
 
 .img-carousel{
     width: 100%;
-    height: 600px !important;
+    height: 78vh !important;
     object-fit: cover;
     filter: brightness(90%);
 }
@@ -166,7 +167,7 @@ body{
     font-family: 'IBM Plex Sans Thai Looped' !important;
     font-weight: bold;
     color: #ffffff;
-    font-size: 56px;
+    font-size: 48px;
 }
 
 @media only screen and (max-width: 472px){
@@ -235,6 +236,16 @@ body{
     cursor: pointer;
 }
 
+@media only screen and (max-width: 991px){
+    .galeria .row {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+    #galeria-column-1 {
+        display: none;
+    }
+}
+
 /* Galeria */
 
 /* Conteudo Pagina */
@@ -244,20 +255,20 @@ body{
     z-index: 1;
 }
 
-.img-tape-1, .img-tape-2, .img-tape-3, .img-tape-4 {
+.img-tape-1, .img-tape-2, .img-tape-3, .img-tape-4, .img-tape-5, .img-tape-6 {
     position: absolute;
     z-index: 10;
     bottom: 85%;
     width: 20%;
 }
 
-.img-tape-1 {
+.img-tape-1, .img-tape-5 {
     left: -6%;
     bottom: 87%;
     transform: rotate(90deg);
 }
 
-.img-tape-2 {
+.img-tape-2, .img-tape-6 {
     right: -10%;
 }
 
@@ -279,7 +290,7 @@ body{
     height: 500px;
     width: 100%;
     padding: 16px 16px 48px 16px;
-    box-shadow: 0px 2px 16px rgba(0,0,0,.2);
+    box-shadow: 0px 2px 16px rgba(0,0,0,.3);
 }
 
 .img-promocional-1, .img-promocional-3 {
@@ -288,17 +299,6 @@ body{
 
 .img-promocional-2 {
     transform: rotate(-2deg);
-}
-
-
-@media only screen and (max-width: 472px){
-    /* .row {
-        display: grid !important;
-        grid-template-columns: auto auto auto !important;
-    } */
-    #galeria-column-1 {
-        display: none;
-    }
 }
 
 
@@ -331,16 +331,67 @@ body{
 
 .produto h1{
     color: #0c0c0c;
+    font-family: 'Nunito Sans';
 }
 
 .produto p{
     color: #0c0c0c;
+    font-family: 'Nunito Sans';
 }
 
 .btn-explorar{
     background-color: var(--azulSite) !important;
     color: #ffffff !important;
     align-self: self-end;
+}
+
+@media only screen and (max-width: 991px){
+    .row-section-1 {
+        align-items: center;
+        flex-direction: column !important;
+    }
+    .row-section-2 {
+        align-items: center;
+        flex-direction: column-reverse !important;
+    }
+    .row h1 {
+        font-weight: bold;
+        font-family: var(--fontGrande);
+        font-size: xx-large !important;
+        margin-bottom: 16px !important;
+    }
+    .quem-somos, .produto {
+        text-align: center;
+    }
+
+    .quem-somos p, .produto p{
+        text-align: left;
+        text-align: justify ;
+    }
+
+    .img-promocional {
+        height: 20rem !important;
+    }
+    .col-7 {
+        width: 100% !important;
+        margin-bottom: 48px;
+    } 
+    .col-5 {
+        width: 70% !important;
+    }
+    .img-promocional-3 {
+        transform: rotate(0deg);
+    }
+    .img-tape-5, .img-tape-6 {
+        bottom: 90%;
+    }
+    .img-tape-5 {
+        left: -2%;
+    }
+    .img-tape-6 {
+        right: -2%;
+    }
+
 }
 
 /* Conteudo Pagina */
@@ -408,6 +459,16 @@ input{
     text-align: center;
 }
 
+.div-form-login .container {
+    align-items: center;
+}
+
+.div-form-login .container .row-login {
+    align-items: center !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+}
+
 .form-login-cima .col-12{
     display: flex;
     justify-content: center;
@@ -442,6 +503,7 @@ input{
 .botoes-login{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .btn-form-login{
@@ -489,7 +551,7 @@ input{
 
 .esqueci-senha{
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
     width: 100%;
 }
@@ -503,6 +565,26 @@ input{
     border: 2px solid #ffffff;
     padding: 5px;
     border-radius: 5px;
+}
+
+@media only screen and (max-width: 991px){
+    .tela-login {
+        height: 100vh !important;
+    }
+    .row-login {
+        height: 100% !important;
+        position: relative !important;
+        z-index: 0;
+    }
+
+    .div-form-login {
+        position: absolute;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
 }
 
 /* Css Login | Fim */
