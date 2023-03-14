@@ -7,6 +7,29 @@ body{
 
 /* NavBar */
 
+.navbar-diff{
+    background-color: #fff !important;
+}
+
+.collapse-diff{
+    width: 65vw !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: baseline;
+}
+
+.navbar-nav-diff{
+    width: 40vw !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.navbar-nav-diff a, .navbar-botoes button {
+    font-size: 16px !important;
+    font-weight: normal !important;
+}
+
 .logo{
     height: 30px;
     width: auto;
@@ -25,6 +48,10 @@ body{
 .navbar-botoes{
     display: flex;
     flex-direction: row;
+}
+
+.btn-login-diff, .btn-cadastro-diff {
+    padding: 8px 16px !important;
 }
 
 .texto-opcoes-menu{
