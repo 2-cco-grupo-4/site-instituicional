@@ -119,8 +119,8 @@ body{
         align-items: baseline !important;
     }
     .btn-login {
-        border: 1px solid #000 !important;
-        background-color: #000 !important;
+        border: 2px solid rgb(57, 57, 57) !important;
+        background-color: rgb(57, 57, 57)  !important;
         color: #fff !important;
     }
     .btn-login, .btn-cadastro {
@@ -239,6 +239,38 @@ body{
 
 /* Conteudo Pagina */
 
+.col-5-diff {
+    position: relative;
+    z-index: 1;
+}
+
+.img-tape-1, .img-tape-2, .img-tape-3, .img-tape-4 {
+    position: absolute;
+    z-index: 10;
+    bottom: 85%;
+    width: 20%;
+}
+
+.img-tape-1 {
+    left: -6%;
+    bottom: 87%;
+    transform: rotate(90deg);
+}
+
+.img-tape-2 {
+    right: -10%;
+}
+
+.img-tape-3 {
+    left: -10%;
+    transform: rotate(90deg);
+}
+
+.img-tape-4 {
+    right: -6%;
+    bottom: 87%;
+}
+
 .col-5 img{
     object-fit: cover;
 }
@@ -246,8 +278,18 @@ body{
 .img-promocional{
     height: 500px;
     width: 100%;
-    border-radius: 8px;
+    padding: 16px 16px 48px 16px;
+    box-shadow: 0px 2px 16px rgba(0,0,0,.2);
 }
+
+.img-promocional-1, .img-promocional-3 {
+    transform: rotate(2deg);
+}
+
+.img-promocional-2 {
+    transform: rotate(-2deg);
+}
+
 
 @media only screen and (max-width: 472px){
     /* .row {
@@ -259,9 +301,6 @@ body{
     }
 }
 
-.quem-somos{
-    /* background-color: #0c0c0c; */
-}
 
 .quem-somos h1{
     /* color: #ffffff; */
