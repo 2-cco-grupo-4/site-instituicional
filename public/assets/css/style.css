@@ -418,7 +418,8 @@ body{
 }
 
 .tela-login{
-    /* padding: 0 !important; */
+    padding: 0 !important;
+    height: 100%;
 }
 
 .div-bg-login img{
@@ -567,7 +568,7 @@ input{
     border-radius: 5px;
 }
 
-@media only screen and (max-width: 991px){
+/* @media only screen and (max-width: 991px){
     .tela-login {
         height: 100vh !important;
     }
@@ -585,7 +586,7 @@ input{
         align-items: center;
         width: 100%;
     }
-}
+} */
 
 /* Css Login | Fim */
 
