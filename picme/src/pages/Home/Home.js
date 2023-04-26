@@ -1,5 +1,4 @@
-import React from "react";
-import Header from "../../molecules/Header"
+import Header from "molecules/Header"
 
 const Home = () => {
   return (

@@ -1,17 +1,24 @@
-import { createTheme, ThemeProvider } from "@mui/material"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 
-const Theme = () => {
-  const theme = createTheme({
-    palette: {
-      primary: "#229DD2",
-      secondary: "#282828",
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#229DD2",
+    },
+    secondary: {
+      main: "#282828",
     }
-  })
+  },
+  typography: {
+    fontFamily: 'Inter, sans-serif'
+  }
+})
 
+const Theme = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       {children}  
-    </ ThemeProvider>
+    </ThemeProvider>
   )
 }
 

@@ -2,18 +2,17 @@ const makeStyles = (isHover) => {
   return (
     {
       opcoes: {
-        fontFamily: 'Roboto',
-        fontSize: 16,
-        fontWeight: 500,
         color: '#000000',
-        height: '100%',
+        height: `100%`,
         padding: 16,
+        boxSizing: 'border-box',
         whiteSpace: 'nowrap',
         textDecoration: 'none',
-        borderBottom: isHover ? '2px solid #000000' : '2px solid #fff',
+        cursor: 'pointer',
+        borderBottom: isHover ? '2px solid #282828' : '2px solid rgba(0,0,0,0)',
       },
     }
   )
 }
 
-export const useStyles = isHover => makeStyles(isHover)
+export const useStyles = (isHover) => makeStyles(isHover)

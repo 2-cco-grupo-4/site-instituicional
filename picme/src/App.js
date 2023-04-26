@@ -1,8 +1,11 @@
+import Theme from "templates/Theme/Theme";
 import Home from "pages/Home" 
 
 function App() {
   return (
-    <Home />
+    <Theme>
+      <Home />
+    </Theme>
   );
 }
 

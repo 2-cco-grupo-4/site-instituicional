@@ -6,19 +6,10 @@ const OptionNav = ({title, navigation}) => {
 
   const classes = useStyles(isHover)
 
-  const handleMouseEnter = () => {
-    setIsHover(true)
-  }
-
-  
-  const handleMouseLeave = () => {
-    setIsHover(false)
-  }
-
   return (
     <a style={classes.opcoes} 
-    onMouseEnter={handleMouseEnter} 
-    onMouseLeave={handleMouseLeave} 
+    onMouseEnter={() => setIsHover(!isHover)} 
+    onMouseLeave={() => setIsHover(!isHover)} 
     href={navigation}
     >
       {title}

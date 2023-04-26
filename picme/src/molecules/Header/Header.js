@@ -1,28 +1,36 @@
 import { useStyles } from "./Header.styles"
 import logo from "assets/img/picme.png"
 import OptionNav from "atoms/OptionNav"
-import Button from "atoms/Button"
-
+import CustomButton from "atoms/CustomButton/CustomButton"
+import { Box } from "@mui/material"
+import { HEADER_HEIGHT } from "constants/header"
 
 const Header = () => {
   const classes = useStyles();
 
   return (
-    <nav style={classes.navbar}>
-        <div style={classes.menu}>
-            <img src={logo} style={classes.logo} alt="logo" />
-            <div style={classes.navbarNav}>
-              <OptionNav title="Galeria" navigation="#galeria" />
-              <OptionNav title="Quem Somos" navigation="#quem-somos" />
-              <OptionNav title="Produto" navigation="#produto" />
-              <OptionNav title="Explorar" navigation="#explorar" />
-            </div>
-            <div style={classes.navBotoes}>
-                <Button style={classes.btnLogin} title="Login" onClick="location.href='login.html'" color="secondary"/>
-                <Button title="Cadastro" onClick="location.href='login.html'" color="primary"/>
-            </div>
+    <Box px={6} sx={classes.navbar}>
+      <Box 
+      height={HEADER_HEIGHT} 
+      width='100%' 
+      bgcolor={'#fff'}
+      display='flex' 
+      alignItems='center' 
+      justifyContent='space-between'
+      >
+        <img src={logo} style={classes.logo} alt="logo" />
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <OptionNav title="Galeria" navigation="#galeria" />
+          <OptionNav title="Quem Somos" navigation="#quem-somos" />
+          <OptionNav title="Produto" navigation="#produto" />
+          <OptionNav title="Explorar" navigation="#explorar" />
+        </Box>
+        <div style={classes.navBotoes}>
+          <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+          <CustomButton type="button" variant="contained" color="primary">Cadastro</CustomButton>
         </div>
-    </nav>
+      </Box>
+    </Box>
   )
 }
 
