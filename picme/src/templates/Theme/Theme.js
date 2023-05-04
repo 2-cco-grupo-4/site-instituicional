@@ -7,11 +7,17 @@ const theme = createTheme({
     },
     secondary: {
       main: "#282828",
+    },
+    white: {
+      main: "#FFFFFF",
     }
   },
   typography: {
     fontFamily: 'Inter, sans-serif'
-  }
+  },
+  title: {
+    fontSize: "48px",
+  },
 })
 
 const Theme = ({ children }) => {
