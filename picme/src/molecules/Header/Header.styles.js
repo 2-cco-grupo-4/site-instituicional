@@ -2,13 +2,11 @@ const makeStyles = () => {
   return (
     {
       navbar: {
-        backgroundColor: '#fff',
+        backgroundColor: 'white.main',
         boxShadow: '0 1px 16px rgba(0,0,0,0.1)',
-        display: 'flex',
-        justifyContent: 'space-between',
       },
       navbarNav: {
-        width: '30vw',
+        width: '30%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

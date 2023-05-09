@@ -4,20 +4,20 @@ import OptionNav from "atoms/OptionNav"
 import CustomButton from "atoms/CustomButton/CustomButton"
 import { Box } from "@mui/material"
 import { HEADER_HEIGHT } from "constants/header"
+import Container from "atoms/Container"
 
 const Header = () => {
   const classes = useStyles();
 
   return (
-    <Box px={6} sx={classes.navbar}>
-      <Box 
-      height={HEADER_HEIGHT} 
-      width='100%' 
-      bgcolor={'#fff'}
-      display='flex' 
-      alignItems='center' 
-      justifyContent='space-between'
-      >
+    <Container 
+    height={HEADER_HEIGHT}    
+    bgcolor="white.main"
+    display='flex' 
+    alignItems='center' 
+    justifyContent='space-between'
+    sx={classes.navbar}
+    >
         <img src={logo} style={classes.logo} alt="logo" />
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <OptionNav title="Galeria" navigation="#galeria" />
@@ -29,8 +29,7 @@ const Header = () => {
           <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
           <CustomButton type="button" variant="contained" color="primary">Cadastro</CustomButton>
         </div>
-      </Box>
-    </Box>
+    </Container>
   )
 }
 
