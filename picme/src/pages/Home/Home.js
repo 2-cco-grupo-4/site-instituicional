@@ -1,27 +1,43 @@
 import { Box, Typography } from "@mui/material"
+import Container from "atoms/Container"
+import CustomButton from "atoms/CustomButton"
 import Header from "molecules/Header"
 import { useStyles } from "./Home.styles"
-import { useTheme } from "@emotion/react"
 
 const Home = () => {
-  const theme = useTheme()
   const classes = useStyles()
   return (
-    <>
+    <Box>
       <Header />
-      <Box sx={classes.banner}>
-        <Typography 
-        sx={{
-          fontSize: "48px", 
-          fontWeight: "bold", 
-          width: "35%"
-        }}
-        color="white.main"
+      <Container 
+      alignItems="center" 
+      sx={classes.banner}
+      >
+        <Box 
+        display="flex" 
+        flexDirection="column" 
+        alignItems="left" 
+        width="35%"
         >
-          Transforme sua paixão em sucesso
-        </Typography>
+          <Typography
+          fontSize="48px" 
+          fontWeight="bold"
+          mb={2}
+          color="white.main"
+          >
+            Transforme sua paixão em sucesso
+          </Typography>
+          <CustomButton variant="contained">Começar!</CustomButton>
+        </Box>
+      </Container>
+      <Box style={classes.section}>
+        <Container alignItems="center" flexDirection="column" py={2}>
+          <Typography id="galeria" fontSize={24} fontWeight='bold' >
+            Galeria
+          </Typography>
+        </Container>
       </Box>
-    </>
+    </Box>
   )
 }
 
