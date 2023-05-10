@@ -1,27 +1,23 @@
-const makeStyles = () => {
-  return (
-    {
-      navbar: {
-        backgroundColor: 'white.main',
-        boxShadow: '0 1px 16px rgba(0,0,0,0.1)',
-      },
-      navbarNav: {
-        width: '30%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      },
-      logo: {
-        height: 24,
-        width: 'auto',
-        padding: '8px 0px',
-      },
-      navBotoes: {
-        display: 'flex',
-        flexDirection: 'row',
-      },
-    }
-  )
-}
+import { makeStyles } from '@mui/styles'
 
-export const useStyles = () => makeStyles()
+export default makeStyles(() => ({
+  navbar: {
+    backgroundColor: 'white.main',
+    boxShadow: '0 1px 16px rgba(0,0,0,0.1)',
+  },
+  navbarNav: {
+    width: '30%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logo: {
+    height: 24,
+    width: 'auto',
+    padding: '8px 0px',
+  },
+  navBotoes: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+}))

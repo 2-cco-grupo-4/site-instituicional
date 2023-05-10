@@ -1,8 +1,8 @@
-import { useStyles } from "./CustomButton.styles"
+import useStyles from "./CustomButton.styles"
 import { Button } from "@mui/material"
 
 
-const CustomButton = ({ children, variant, onClick, color, sx }) => {
+const CustomButton = ({ children, variant, onClick, color, ...props }) => {
   const classes = useStyles()
 
   return (
@@ -11,7 +11,8 @@ const CustomButton = ({ children, variant, onClick, color, sx }) => {
     onClick={onClick} 
     variant={variant}
     color={color}
-    sx={{...classes.btn, ...sx}}
+    className={classes.btn}
+    {...props}
     >
       {children}
     </Button>

@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material"
 import Container from "atoms/Container"
 import CustomButton from "atoms/CustomButton"
 import Header from "molecules/Header"
-import { useStyles } from "./Home.styles"
+import useStyles from "./Home.styles"
 
 const Home = () => {
   const classes = useStyles()
@@ -11,7 +11,7 @@ const Home = () => {
       <Header />
       <Container 
       alignItems="center" 
-      sx={classes.banner}
+      className={classes.banner}
       >
         <Box 
         display="flex" 
@@ -30,13 +30,16 @@ const Home = () => {
           <CustomButton variant="contained">Começar!</CustomButton>
         </Box>
       </Container>
-      <Box style={classes.section}>
+      <Box className={classes.separator}>
         <Container alignItems="center" flexDirection="column" py={2}>
           <Typography id="galeria" fontSize={24} fontWeight='bold' >
             Galeria
           </Typography>
         </Container>
       </Box>
+      <Container className={classes.section}>
+        <Typography></Typography>
+      </Container>
     </Box>
   )
 }
