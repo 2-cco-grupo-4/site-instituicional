@@ -1,15 +1,12 @@
 import { makeStyles } from "@mui/styles"
 
-export default makeStyles(() => (
+export default makeStyles((theme) => (
   {
-    btn: {
+    customBtn: {
       fontFamily: 'Inter, sans-serif',
-      fontSize: 16,
-      textTransform: 'none',
-      paddingRight: 2,
-      paddingLeft: 2,
-      paddingTop: 0,
-      paddingBottom: 0,        
+      fontSize: theme.spacing(2),
+      textTransform: 'none !important',
+      padding: 2, 
       width: 'fit-content', 
       height: 32,
       whiteSpace: 'nowrap',
