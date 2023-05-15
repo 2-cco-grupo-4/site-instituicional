@@ -13,11 +13,17 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Inter, sans-serif'
+    fontFamily: 'Inter, sans-serif',
+    titleBold: {
+      fontSize: 36,
+      fontWeight: 'bold',
+    },
+    subtitleBold: {
+      fontSize: 24,
+      fontWeight: "bold",
+    },
   },
-  title: {
-    fontSize: "48px",
-  },
+  spacing: 8,
 })
 
 const Theme = ({ children }) => {
