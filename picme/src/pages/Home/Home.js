@@ -1,13 +1,82 @@
-import { Box, Typography } from "@mui/material"
+import { 
+  Box, 
+  ImageList, 
+  ImageListItem, 
+  Stack, 
+  Typography
+} from "@mui/material"
 import Container from "atoms/Container"
 import CustomButton from "atoms/CustomButton"
 import Header from "molecules/Header"
 import useStyles from "./Home.styles"
 
+import baloes from "assets/img/baloes.jpg"
+import bolo from "assets/img/bolo.jpg"
+import buque from "assets/img/buque.jpg"
+import casal from "assets/img/casal.jpg"
+import criancaCasamento from "assets/img/crianca-casamento.jpg"
+import sobrinho from "assets/img/sobrinho.jpg"
+import senhorAniversario from "assets/img/senhor-aniversario.jpg"
+import tacas from "assets/img/tacas.jpg"
+import brinde from "assets/img/brinde.jpg"
+
+const imageList = [
+  {
+    alt: "senhor-aniversario",
+    src: senhorAniversario,
+  },
+  {
+    alt: "baloes",
+    src: baloes,
+  },
+  {
+    alt: "brinde",
+    src: brinde,
+  },
+  {
+    alt: "casal",
+    src: casal,
+  },
+  {
+    alt: "sobrinho",
+    src: sobrinho,
+  },
+  {
+    alt: "bolo",
+    src: bolo,
+  },
+  {
+    alt: "buque",
+    src: buque,
+  },
+  {
+    alt: "tacas",
+    src: tacas,
+  },
+  {
+    alt: "crianca-casamento",
+    src: criancaCasamento,
+  },
+]
+
+const Separator = ({title}) => {
+  const classes = useStyles()
+
+  return (
+  <Box className={classes.separator} mb={3}>
+    <Container alignItems="center" flexDirection="column" py={2}>
+      <Typography id="galeria" variant="subtitleBold" >
+        {title}
+      </Typography>
+    </Container>
+    <div className={classes.pointer} />
+  </Box>)
+}
+
 const Home = () => {
   const classes = useStyles()
   return (
-    <Box>
+    <Stack>
       <Header />
       <Container 
       alignItems="center" 
@@ -30,17 +99,35 @@ const Home = () => {
           <CustomButton variant="contained">Começar!</CustomButton>
         </Box>
       </Container>
-      <Box className={classes.separator}>
-        <Container alignItems="center" flexDirection="column" py={2}>
-          <Typography id="galeria" fontSize={24} fontWeight='bold' >
-            Galeria
-          </Typography>
-        </Container>
-      </Box>
-      <Container className={classes.section}>
-        <Typography></Typography>
+      <Separator title="Galeria" />
+      <Container pb={2}>
+        <ImageList variant="masonry" cols={3} gap={8}>
+          {imageList.map(({index, alt, src}) => (
+              <ImageListItem key={index}>
+                <img src={src} alt={alt} />
+              </ImageListItem>
+            ))}
+        </ImageList>
       </Container>
-    </Box>
+      <Separator title="Quem somos?" />
+      <Container className={classes.section}>
+          <Stack>
+            <Typography variant="subtitleBold">
+              Criamos conexões
+            </Typography>
+            <Typography variant="">
+            Nossa empresa nasceu com a ideia de conectar as pessoas com aquilo que elas procuravam, e após
+            identificarmos uma necessidade de exisitir uma simplificação no processo de encontrar fotógrafos
+            nós decidimos criar a Picme, um produto que busca colocar o trabalho do fotógrafo em evidência
+            para o mundo, de forma que possíveis clientes possam encontrar seu trabalho em nossa plataforma
+            e entrar em contato de forma imediata em busca de seu trabalho.
+            </Typography>
+          </Stack>
+          <Box>
+
+          </Box>
+      </Container>
+    </Stack>
   )
 }
 
