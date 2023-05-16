@@ -1,12 +1,8 @@
-const makeStyles = () => {
-  return (
-    {
-      teste: {
-        backgroundColor: '#000',
-        color: '#fff',
-      },
-    }
-  )
-}
+import { makeStyles } from '@mui/styles'
 
-export const useStyles = () => makeStyles()
+export default makeStyles(() => ({
+  teste: {
+    backgroundColor: '#000',
+    color: '#fff',
+  },
+}))
