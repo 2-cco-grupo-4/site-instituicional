@@ -7,7 +7,7 @@ import { HEADER_HEIGHT } from "constants/header"
 import Container from "atoms/Container"
 
 const Header = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Container 
@@ -16,6 +16,9 @@ const Header = () => {
     display='flex' 
     alignItems='center' 
     justifyContent='space-between'
+    position="sticky"
+    top={0}
+    zIndex={1000}
     className={classes.navbar}
     >
         <img src={logo} className={classes.logo} alt="logo" />
