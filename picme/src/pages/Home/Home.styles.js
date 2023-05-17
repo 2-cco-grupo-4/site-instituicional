@@ -31,6 +31,6 @@ export default makeStyles((theme) => ({
   },
   section: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    paddingBottom: theme.spacing(4),
   }
 }))

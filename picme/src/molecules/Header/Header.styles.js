@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles'
 export default makeStyles(() => ({
   navbar: {
     backgroundColor: 'white.main',
-    boxShadow: '0 1px 16px rgba(0,0,0,0.1)',
+    boxShadow: '0 1px 16px rgba(0,0,0,0.2)',
   },
   navbarNav: {
     width: '30%',
