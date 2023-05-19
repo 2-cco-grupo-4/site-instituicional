@@ -3,7 +3,7 @@ import logo from "assets/img/picme.png"
 import OptionNav from "atoms/OptionNav"
 import CustomButton from "atoms/CustomButton/CustomButton"
 import { Box } from "@mui/material"
-import { HEADER_HEIGHT } from "constants/header"
+import { HEADER_HEIGHT } from "utils/constants"
 import Container from "atoms/Container"
 
 const Header = () => {

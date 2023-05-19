@@ -1,8 +1,8 @@
-import { 
-  Box, 
-  ImageList, 
-  ImageListItem, 
-  Stack, 
+import {
+  Box,
+  ImageList,
+  ImageListItem,
+  Stack,
   Typography
 } from "@mui/material"
 import Container from "atoms/Container"
@@ -11,16 +11,19 @@ import Header from "molecules/Header"
 import PolaroidImage from "atoms/PolaroidImage"
 import useStyles from "./Home.styles"
 
+import aniversario from 'assets/img/aniversario.jpg'
 import baloes from "assets/img/baloes.jpg"
 import bolo from "assets/img/bolo.jpg"
+import brinde from "assets/img/brinde.jpg"
 import buque from "assets/img/buque.jpg"
 import casal from "assets/img/casal.jpg"
 import criancaCasamento from "assets/img/crianca-casamento.jpg"
-import sobrinho from "assets/img/sobrinho.jpg"
+import fotografo from "assets/img/fotografo.jpg"
 import senhorAniversario from "assets/img/senhor-aniversario.jpg"
-import tacas from "assets/img/tacas.jpg"
-import brinde from "assets/img/brinde.jpg"
 import smartphone from "assets/img/usuario-smartphone.jpg"
+import sobrinho from "assets/img/sobrinho.jpg"
+import tacas from "assets/img/tacas.jpg"
+import Footer from "molecules/Footer"
 
 const imageList = [
   {
@@ -61,50 +64,48 @@ const imageList = [
   },
 ]
 
-const Separator = ({title}) => {
+const Separator = ({ title }) => {
   const classes = useStyles()
 
   return (
-  <Box className={classes.separator} mb={3}>
-    <Container alignItems="center" flexDirection="column" py={2}>
-      <Typography id="galeria" variant="subtitleBold" >
-        {title}
-      </Typography>
-    </Container>
-    <div className={classes.pointer} />
-  </Box>)
+    <Box className={classes.separator} mb={3}>
+      <Container alignItems="center" flexDirection="column" py={2}>
+        <Typography id="galeria" variant="subtitleBold" >
+          {title}
+        </Typography>
+      </Container>
+      <div className={classes.pointer} />
+    </Box>)
 }
 
 const Home = () => {
   const classes = useStyles()
   return (
-    <Stack sx={{ transition: '2s all ease'}}>
+    <Stack sx={{ transition: '2s all ease' }}>
       <Header />
-      <Container 
-      alignItems="center" 
-      className={classes.banner}
+      <Container
+        alignItems="center"
+        className={classes.banner}
       >
-        <Box 
-        display="flex" 
-        flexDirection="column" 
-        alignItems="left" 
-        width="35%"
+        <Stack
+          spacing={2}
+          alignItems="left"
+          width="35%"
         >
           <Typography
-          fontSize="48px" 
-          fontWeight="bold"
-          mb={2}
-          color="white.main"
+            fontSize="48px"
+            fontWeight="bold"
+            color="white.main"
           >
             Transforme sua paixão em sucesso
           </Typography>
           <CustomButton variant="contained">Começar!</CustomButton>
-        </Box>
+        </Stack>
       </Container>
       <Separator title="Galeria" />
       <Container pb={2}>
         <ImageList variant="masonry" cols={3} gap={8}>
-          {imageList.map(({index, alt, src}) => (
+          {imageList.map(({ index, alt, src }) => (
             <ImageListItem key={index}>
               <img src={src} alt={alt} />
             </ImageListItem>
@@ -112,11 +113,11 @@ const Home = () => {
         </ImageList>
       </Container>
       <Separator title="Quem somos?" />
-      <Container 
-      flexDirection="row" 
-      alignItems="center" 
-      justifyContent="space-between"
-      className={classes.section}
+      <Container
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        className={classes.section}
       >
         <Stack width="50%">
           <Typography variant="titleBold" mb={4}>
@@ -133,11 +134,61 @@ const Home = () => {
         <Box width="50%" align="right">
           <Box width="70%">
             <PolaroidImage tilt="right" hasTapes>
-              <img src={smartphone} alt="" />    
+              <img src={smartphone} alt="" />
             </PolaroidImage>
           </Box>
         </Box>
       </Container>
+      <Container
+        flexDirection="row-reverse"
+        alignItems="center"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Stack width="50%">
+          <Typography variant="titleBold" mb={4}>
+            Apoiando os 2 lados
+          </Typography>
+          <Typography>
+            Nosso produto serve como a plataforma definitiva para um fotógrafo encontrar novos clientes e
+            publicar seu trabalho, e também para pessoas interessadas encontrem fotógrafos para suas
+            necessidades, com um sistema de busca por tags, o cliente consegue encontrar o fotógrafo ideal
+            para seu evento.
+          </Typography>
+        </Stack>
+        <Box width="50%" align="left">
+          <Box width="70%">
+            <PolaroidImage tilt="left" hasTapes>
+              <img src={fotografo} alt="" />
+            </PolaroidImage>
+          </Box>
+        </Box>
+      </Container>
+      <Container
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Stack width="50%">
+          <Typography variant="titleBold" mb={4}>
+            Não Perca Tempo
+          </Typography>
+          <Typography mb={4}>
+            Venha conhecer nossa plataforma e conhecer o trabalho de profissionais incriveis que estão
+            totalmente ao seu alcance
+          </Typography>
+          <CustomButton color="primary" variant="contained">Explorar</CustomButton>
+        </Stack>
+        <Box width="50%" align="right">
+          <Box width="70%">
+            <PolaroidImage tilt="right" hasTapes>
+              <img src={aniversario} alt="" />
+            </PolaroidImage>
+          </Box>
+        </Box>
+      </Container>
+      <Footer/>
     </Stack>
   )
 }

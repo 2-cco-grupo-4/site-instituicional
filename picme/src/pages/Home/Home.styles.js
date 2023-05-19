@@ -1,5 +1,5 @@
 import background from 'assets/img/banner-fotografo.jpg'
-import { HEADER_HEIGHT } from 'constants/header'
+import { HEADER_HEIGHT } from 'utils/constants'
 import { makeStyles } from '@mui/styles'
 
 export default makeStyles((theme) => ({

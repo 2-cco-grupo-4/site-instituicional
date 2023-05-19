@@ -1,15 +1,10 @@
-import { useState } from "react"
 import useStyles from "./OptionNav.styles"
 
 const OptionNav = ({title, navigation}) => {
-  const [isHover, setIsHover] = useState(false)
-
-  const classes = useStyles({isHover})
+  const classes = useStyles()
 
   return (
     <a className={classes.opcoes} 
-    onMouseEnter={() => setIsHover(!isHover)} 
-    onMouseLeave={() => setIsHover(!isHover)} 
     href={navigation}
     >
       {title}

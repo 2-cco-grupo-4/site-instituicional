@@ -9,8 +9,10 @@ const PolaroidImage = ({children, tilt, hasTapes, ...props}) => {
   const [tiltDeg, setTiltDeg] = useState(0)
 
   useEffect(() => {
-    setTiltDeg(tilt === 'left' ? -2 : 2) 
-  },[])
+    if(tilt){
+      setTiltDeg(tilt === 'left' ? -2 : 2) 
+    }
+  },[tilt])
 
   return (
     <Box 

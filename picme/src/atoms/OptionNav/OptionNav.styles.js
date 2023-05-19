@@ -9,6 +9,9 @@ export default makeStyles(() => ({
     whiteSpace: 'nowrap',
     textDecoration: 'none',
     cursor: 'pointer',
-    borderBottom: ({isHover}) => isHover ? '2px solid #282828' : '2px solid rgba(0,0,0,0)',
+    borderBottom: '2px solid rgba(0,0,0,0)',
+    "&:hover": {
+      borderBottom: '2px solid #282828',
+    }
   },
 }))
