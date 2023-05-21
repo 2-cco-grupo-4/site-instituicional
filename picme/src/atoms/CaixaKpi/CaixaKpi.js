@@ -23,8 +23,9 @@ const CaixaKpi = ({valorKpi, textoKpi}) => {
             color="black"
             fontFamily="Inter"
             >
-            <Box  fontWeight="bold" component="span">{valorKpi}</Box> {textoKpi}
+            <Box fontWeight="bold" component="span">{valorKpi}</Box> {textoKpi}
         </Typography>
+        
     </Box>
   )
 }

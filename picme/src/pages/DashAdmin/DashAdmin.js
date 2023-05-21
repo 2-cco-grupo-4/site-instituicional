@@ -11,10 +11,40 @@ import {
   } from "@mui/material"
 import Container from "atoms/Container"
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi"
+import CardChartPie from "atoms/CardChartPie/CardChartPie"
+import CardBarChart from "atoms/CardBarChart/CardBarChart"
 
 
 
 const DashAdmin = () => {
+
+    const dataBar = [
+        {
+          name: 'Casamento',
+          Contatos: 2400
+        },
+        {
+          name: 'Aniversário',
+          Contatos: 1398
+        },
+        {
+          name: 'Debutante',
+          Contatos: 9800
+        },
+        {
+          name: 'Encontros',
+          Contatos: 3908
+        },
+        {
+          name: 'Esportivo',
+          Contatos: 4800
+        },
+        {
+          name: 'Família',
+          Contatos: 3800
+        }
+      ];
+
   const classes = useStyles()
 
   return (
@@ -26,7 +56,7 @@ const DashAdmin = () => {
             py={6}
         > 
             <Typography
-                fontSize="24px"
+                fontSize="16px"
                 color="black"
                 fontFamily="Inter"
             >
@@ -61,6 +91,30 @@ const DashAdmin = () => {
                 >
                 </CaixaKpi>
 
+            </Container>
+            <Container
+                py={6}
+                flexDirection="row"
+                justifyContent="space-between"
+                paddingLeft="0"
+                paddingRight="0"
+            >
+                <CardChartPie 
+                    tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                    label01="Fecharam"
+                    label02="Não Fecharam"
+                    value01={20}
+                    value02={80}
+                >
+
+                </CardChartPie>
+
+                <CardBarChart
+                    tituloPieChart="Temas com mais ‘contatos’ iniciados"
+                    data={dataBar}
+                >
+                    
+                </CardBarChart>
             </Container>
             
 
