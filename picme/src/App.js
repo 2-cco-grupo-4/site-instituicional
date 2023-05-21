@@ -1,5 +1,5 @@
 import Theme from "templates/Theme/Theme";
-import Home from "pages/Home" 
+import Home from "pages/DashAdmin/DashAdmin" 
 
 function App() {
   return (
