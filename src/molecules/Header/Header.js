@@ -22,7 +22,7 @@ const Header = () => {
     className={classes.navbar}
     >
         <img src={logo} className={classes.logo} alt="logo" />
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box display="flex" alignItems="center" justifyContent="space-between" className={classes.navbarNav}>
           <OptionNav title="Galeria" navigation="#galeria" />
           <OptionNav title="Quem Somos" navigation="#quem-somos" />
           <OptionNav title="Produto" navigation="#produto" />

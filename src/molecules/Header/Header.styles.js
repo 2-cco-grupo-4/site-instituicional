@@ -7,6 +7,7 @@ export default makeStyles(() => ({
   },
   navbarNav: {
     width: '30%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
