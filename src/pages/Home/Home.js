@@ -70,7 +70,7 @@ const Separator = ({ title }) => {
   return (
     <Box className={classes.separator} mb={3}>
       <Container alignItems="center" flexDirection="column" py={2}>
-        <Typography id="galeria" variant="subtitleBold" >
+        <Typography id="galeria" variant="subtitle-small-bold" >
           {title}
         </Typography>
       </Container>
@@ -120,7 +120,7 @@ const Home = () => {
         className={classes.section}
       >
         <Stack width="50%">
-          <Typography variant="titleBold" mb={4}>
+          <Typography variant="title-small-bold" mb={4}>
             Criamos conexões
           </Typography>
           <Typography>
@@ -146,7 +146,7 @@ const Home = () => {
         className={classes.section}
       >
         <Stack width="50%">
-          <Typography variant="titleBold" mb={4}>
+          <Typography variant="title-small-bold" mb={4}>
             Apoiando os 2 lados
           </Typography>
           <Typography>
@@ -171,7 +171,7 @@ const Home = () => {
         className={classes.section}
       >
         <Stack width="50%">
-          <Typography variant="titleBold" mb={4}>
+          <Typography variant="title-small-bold" mb={4}>
             Não Perca Tempo
           </Typography>
           <Typography mb={4}>

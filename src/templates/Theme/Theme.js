@@ -14,13 +14,25 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
-    titleBold: {
+    "title-small-bold": {
       fontSize: 36,
       fontWeight: 'bold',
     },
-    subtitleBold: {
+    "subtitle-small-bold": {
       fontSize: 24,
       fontWeight: "bold",
+    },
+    "paragraph-medium-regular": {
+      fontSize: 16,
+      fontWeight: "regular",
+    },
+    "paragraph-small-regular": {
+      fontSize: 14,
+      fontWeight: "regular",
+    },
+    "paragraph-xsmall-regular": {
+      fontSize: 12,
+      fontWeight: "regular",
     },
   },
   spacing: 8,
