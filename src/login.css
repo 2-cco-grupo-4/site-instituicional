@@ -1,0 +1,290 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, b, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+  .row-login {
+    display: flex;
+    width: 100%;
+  }
+  
+  .tela-login {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .div-bg-login {
+    flex: 1;
+    position: relative;
+  }
+  
+  .bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .icone-voltar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    background-color: transparent;
+    border: none;
+  }
+  
+  .div-form-login {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+  }
+  
+  .container {
+    width: 80%;
+    height: 99%;
+    margin: auto;
+}
+  
+  .logo-form {
+    width: 28vh;
+    margin-bottom: 20px;
+  }
+  
+  .form-login-cima,
+  .form-login-baixo {
+    margin-bottom: 20px;
+  }
+  
+  .btn-primary {
+    display: block;
+    width: 100%;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .login {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #495057;
+    text-align: center;
+    margin-bottom: 4.5vh;
+    width: 100%;
+  }
+  
+  .labels {
+    font-family: 'Nunito Sans';
+    font-weight: 300;
+    font-size: 16px;
+    display: inline-flex;
+    padding-bottom: 1vh;
+    color: #617487;
+  }
+  
+  .form-input[type='email'],
+  .form-input[type='password'] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 16px;
+    margin-bottom: 2rem!important;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0069d9;
+  }
+  
+  .text-center a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .botoes-login {
+    display: flex;
+    align-items: center;
+  }
+  
+  .col-botao {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .esqueci-senha {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: 100%;
+  }
+
+  .esqueci-senha:hover {
+    color: #269dd3;
+    text-decoration: underline;
+    cursor: pointer;
+}
+  
+  .row-insta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid #ced4da;
+  }
+  
+  .row-insta svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    margin-right: 5px;
+  }
+  
+  .realizar-login {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 14px;
+    color: #212529;
+    text-align: center;
+  }
+  
+  .realizar-login a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .container-img {
+    width: 100%;
+    height: 15vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-login {
+    align-items: center !important;
+    flex-direction: column !important;
+    display: flex;
+  }
+
+  .dados-login {
+    width: 83.33333333%;
+    padding-top: 1rem!important;
+  }
+
+  .container-box{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2rem!important;
+  }
+
+  .form-check{
+    display: block;
+  }
+
+  .form-check-label{
+    font-family: 'Nunito Sans';
+    font-weight: 300;
+    font-size: 16px;
+    color: #29343f;
+  }
+  
+  .recuperar-senha{
+    font-family: 'Nunito Sans';
+    font-weight: 300;
+    font-size: 16px;
+    color: #29343f;
+    text-decoration: none;
+  }
+
+  button.logar {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: 2px solid #000000 !important;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans Thai Looped' !important;
+    font-size: 18px !important;
+    font-weight: 600;
+    padding-left: 20px !important;
+    width: 100%;
+  }
+  
+  button.logar:hover {
+    border: 2px solid #000000 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .container-insta{
+    display: flex;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    height: 4vh;
+    font-family: 'IBM Plex Sans Thai Looped' !important;
+    font-weight: 600;
+    font-size: 18px !important;
+    margin-bottom: 1.5rem;
+  }
+
+  .container-insta:hover {
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+  .img-insta{
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-right: 1rem;
+  }
+
+  .realizar-cadastro a{
+    font-family: 'Nunito Sans';
+    font-weight: 300;
+    font-size: 16px;
+    color: #29343f;
+    text-decoration: none;
+  }
+
+  .realizar-cadastro a:hover {
+    color: #269dd3;
+    text-decoration: underline;
+}
