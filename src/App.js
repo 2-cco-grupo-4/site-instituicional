@@ -1,11 +1,10 @@
-import Theme from "templates/Theme/Theme";
-import Home from "pages/Home" 
+
+import Login from "./components/Login";
+import "./html-css-template/css/login.css";
 
 function App() {
   return (
-    <Theme>
-      <Home />
-    </Theme>
+    <Login />
   );
 }
 
