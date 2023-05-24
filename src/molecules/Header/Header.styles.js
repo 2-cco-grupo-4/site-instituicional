@@ -20,5 +20,6 @@ export default makeStyles(() => ({
   navBotoes: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
 }))

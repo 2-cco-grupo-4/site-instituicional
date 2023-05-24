@@ -2,12 +2,15 @@ import useStyles from "./Header.styles"
 import logo from "assets/img/picme.png"
 import OptionNav from "atoms/OptionNav"
 import CustomButton from "atoms/CustomButton/CustomButton"
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { HEADER_HEIGHT } from "utils/constants"
 import Container from "atoms/Container"
+import { useUserContext } from "contexts"
+import CustomPopover from "atoms/CustomPopover"
 
-const Header = () => {
+const Header = ({ type }) => {
   const classes = useStyles()
+  const { isLogged } = useUserContext()
 
   return (
     <Container 
@@ -22,16 +25,29 @@ const Header = () => {
     className={classes.navbar}
     >
         <img src={logo} className={classes.logo} alt="logo" />
-        <Box display="flex" alignItems="center" justifyContent="space-between" className={classes.navbarNav}>
-          <OptionNav title="Galeria" navigation="#galeria" />
-          <OptionNav title="Quem Somos" navigation="#quem-somos" />
-          <OptionNav title="Produto" navigation="#produto" />
-          <OptionNav title="Explorar" navigation="#explorar" />
-        </Box>
-        <div className={classes.navBotoes}>
-          <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
-          <CustomButton type="button" variant="contained" color="primary">Cadastro</CustomButton>
-        </div>
+        {type === 1 && 
+          <Box display="flex" alignItems="center" justifyContent="space-between" className={classes.navbarNav}>
+            <OptionNav title="Galeria" navigation="#galeria" />
+            <OptionNav title="Quem Somos" navigation="#quem-somos" />
+            <OptionNav title="Produto" navigation="#produto" />
+            <OptionNav title="Explorar" navigation="#explorar" />
+          </Box>
+        }
+        {isLogged ? 
+         (
+          // <Box className={classes.navBotoes}>
+          //   <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
+          //   <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+          // </Box>
+          <CustomPopover />
+         ) : (
+          <Box className={classes.navBotoes}>
+              <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+              <CustomButton type="button" variant="contained" color="primary">Cadastro</CustomButton>
+          </Box>
+         )
+        }
+          
     </Container>
   )
 }

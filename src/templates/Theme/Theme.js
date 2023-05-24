@@ -14,6 +14,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
+    fontSize: '16px',
     "title-small-bold": {
       fontSize: 36,
       fontWeight: 'bold',
