@@ -6,11 +6,17 @@ import { Box, Typography } from "@mui/material"
 import { HEADER_HEIGHT } from "utils/constants"
 import Container from "atoms/Container"
 import { useUserContext } from "contexts"
+import { useNavigate } from "react-router-dom"
 import CustomPopover from "molecules/CustomPopover"
 
 const Header = ({ type }) => {
   const classes = useStyles()
+  const navigate = useNavigate()
   const { isLogged } = useUserContext()
+
+  const handleNavigation = (route) => {
+    navigate(route)
+  }
 
   return (
     <Container 
@@ -24,7 +30,7 @@ const Header = ({ type }) => {
     zIndex={1000}
     className={classes.navbar}
     >
-        <img src={logo} className={classes.logo} alt="logo" />
+        <img src={logo} onClick={() => handleNavigation("/")} className={classes.logo} alt="logo" />
         {type === 1 && 
           <Box display="flex" alignItems="center" justifyContent="space-between" className={classes.navbarNav}>
             <OptionNav title="Galeria" navigation="#galeria" />
@@ -40,12 +46,12 @@ const Header = ({ type }) => {
           type === 2 ? (
             <Box className={classes.navBotoes}>
              <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
-             <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+             <CustomButton type="button" onClick={() => handleNavigation("/login")} variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
            </Box>
           ) : (
             <Box className={classes.navBotoes}>
-                <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
-                <CustomButton type="button" variant="contained" color="primary">
+                <CustomButton type="button" onClick={() => handleNavigation("/login")} variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+                <CustomButton type="button" onClick={() => handleNavigation("/persona")} variant="contained" color="primary">
                   Cadastro
                 </CustomButton>
             </Box>

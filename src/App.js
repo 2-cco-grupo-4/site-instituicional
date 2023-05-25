@@ -18,7 +18,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<Home />}/>
-            <Route exact path="/personas" element={<ChooseProfileType />} />
+            <Route exact path="/persona" element={<ChooseProfileType />} />
           </Routes>
         </BrowserRouter>
       </DefaultProviders>

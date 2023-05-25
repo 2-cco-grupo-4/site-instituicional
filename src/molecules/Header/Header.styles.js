@@ -16,6 +16,7 @@ export default makeStyles(() => ({
     height: 24,
     width: 'auto',
     padding: '8px 0px',
+    cursor: 'pointer',
   },
   navBotoes: {
     display: 'flex',
