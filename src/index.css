@@ -12,3 +12,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+iframe {
+  pointer-events: none !important;
+  display: none;
+  visibility: hidden;
+  z-index: -10000 !important;
+}
