@@ -6,38 +6,46 @@ import arrow from "assets/icons/popover-arrow.svg"
 
 import useStyles from "./CustomPopover.styles"
 
-const CustomPopover = () => {
+const CustomPopover = ({...props}) => {
   const classes = useStyles()
   const { userName } = useUserContext()
-  const [isOpen, setIsOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const isOpen = !!anchorEl
 
-  const handleClick = () => {
-    setIsOpen(!isOpen)
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
   }
 
   return (
-    <Stack position="relative">
-      <Stack direction="row" alignItems="center" sx={{cursor: "pointer"}} onClick={() => handleClick()}>
+    <>
+      <Stack height="100%" aria-describedby={isOpen ? "menu" : undefined} aria-haspopup="true" direction="row" alignItems="center" sx={{cursor: "pointer"}} onClick={handleClick}>
         <Typography mr={1}>{userName}</Typography>
         <img src={arrow} />
       </Stack>
       <Popover 
+      id="menu"
       open={isOpen}
-      anchorEl={<Stack/>}
+      anchorReference='anchorEl'
+      anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
       }}
       transformOrigin={{
         vertical: 'top',
-        horizontal: 'right',
+        horizontal: 'left',
       }}
+      onClose={handleClose}
       >
-        <Stack>
-          oi
+        <Stack p={2}>
+          Teste do Popover
         </Stack>
       </Popover>
-    </Stack>
+    </>
   )
 }
 

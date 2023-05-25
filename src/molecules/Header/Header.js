@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/material"
 import { HEADER_HEIGHT } from "utils/constants"
 import Container from "atoms/Container"
 import { useUserContext } from "contexts"
-import CustomPopover from "atoms/CustomPopover"
+import CustomPopover from "molecules/CustomPopover"
 
 const Header = ({ type }) => {
   const classes = useStyles()
@@ -35,16 +35,21 @@ const Header = ({ type }) => {
         }
         {isLogged ? 
          (
-          // <Box className={classes.navBotoes}>
-          //   <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
-          //   <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
-          // </Box>
           <CustomPopover />
          ) : (
-          <Box className={classes.navBotoes}>
-              <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
-              <CustomButton type="button" variant="contained" color="primary">Cadastro</CustomButton>
-          </Box>
+          type === 2 ? (
+            <Box className={classes.navBotoes}>
+             <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
+             <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+           </Box>
+          ) : (
+            <Box className={classes.navBotoes}>
+                <CustomButton type="button" variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+                <CustomButton type="button" variant="contained" color="primary">
+                  Cadastro
+                </CustomButton>
+            </Box>
+          )
          )
         }
           
