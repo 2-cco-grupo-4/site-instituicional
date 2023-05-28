@@ -5,4 +5,8 @@ export default makeStyles(() => ({
     backgroundColor: '#000',
     color: '#fff',
   },
+  iconFunil: {
+    position: 'relative',
+    right: 0
+}
 }))

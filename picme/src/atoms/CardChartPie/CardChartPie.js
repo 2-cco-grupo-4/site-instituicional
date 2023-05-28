@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material"
-import { XAxis, YAxis, Legend, PieChart, Pie, Cell } from 'recharts';
+import { XAxis, YAxis, Legend, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import useStyles from "./CardChartPie.styles"
+import BoxShadow from "atoms/BoxShadow/BoxShadow";
 
   const colors = [
     '#249ACF',
@@ -8,7 +9,7 @@ import useStyles from "./CardChartPie.styles"
   ]
       
 
-const CardChartPie = ({tituloPieChart, value01, value02, label01, label02}) => {
+const CardChartPie = ({tituloPieChart, value01, value02, label01, label02, width}) => {
   const classes = useStyles()
 
   const data01 = [
@@ -36,35 +37,36 @@ const CardChartPie = ({tituloPieChart, value01, value02, label01, label02}) => {
     };
 
   return (
-    <Box className={classes.caixa}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        flexDirection="column"
+    <BoxShadow
+        width={width}
+        height="auto"
     >
         <Typography
             fontSize="16px"
             color="black"
-            fontFamily="Inter"
             fontWeight="bold"
             paddingTop="20px"
         >
             {tituloPieChart}
         </Typography>
 
+
+        <ResponsiveContainer width="70%" height={400}>
         
-        <PieChart width={500} height={400}>
-            <Legend layout="vertical" verticalAlign="middle" align="left" />
-            <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={160} labelLine={false} label={renderCustomizedLabel}>
-                {data01.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={colors[index % colors.length]} dataKey="teste" />
-                ))}
-                <XAxis dataKey="name" />
-                <YAxis />
-            </Pie>
-        </PieChart> 
+            <PieChart>
+                <Legend layout="vertical" verticalAlign="middle" align="left" />
+                <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={160} labelLine={false} label={renderCustomizedLabel}>
+                    {data01.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} dataKey="teste" />
+                    ))}
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                </Pie>
+            </PieChart> 
+
+        </ResponsiveContainer>
         
-    </Box>
+    </BoxShadow>
   )
 }
 

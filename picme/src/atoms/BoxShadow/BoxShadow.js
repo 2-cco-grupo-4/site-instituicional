@@ -1,19 +1,20 @@
-import useStyles from "./CardChartDir.styles"
+import useStyles from "./BoxShadow.styles"
+
 import { Box } from "@mui/material"
 
-const CardChartDir = () => {
+const BoxShadow = ({ children, ...props }) => {
   const classes = useStyles()
 
   return (
     <Box className={classes.caixa}
         display="flex"
         alignItems="center"
-        justifyContent="center"
         flexDirection="column"
+        {...props}
     >
-
+        { children }
     </Box>
   )
 }
 
-export default CardChartDir
+export default BoxShadow
