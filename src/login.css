@@ -208,6 +208,7 @@ time, mark, audio, video {
     display: flex;
     justify-content: space-between;
     padding-bottom: 2rem!important;
+    width: 100%;
   }
 
   .form-check{
@@ -262,6 +263,7 @@ time, mark, audio, video {
     font-weight: 600;
     font-size: 18px !important;
     margin-bottom: 1.5rem;
+    width: 100%;
   }
 
   .container-insta:hover {
