@@ -10,13 +10,23 @@ const theme = createTheme({
     },
     white: {
       main: "#FFFFFF",
+    },
+    stroke: {
+      main: "rgba(0,0,0,1)",
+    },
+    stroke50: {
+      main: "rgba(0,0,0,0.5)",
     }
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
     fontSize: '16px',
-    "title-small-bold": {
+    "title-medium-bold": {
       fontSize: 36,
+      fontWeight: 'bold',
+    },
+    "title-small-bold": {
+      fontSize: 32,
       fontWeight: 'bold',
     },
     "subtitle-small-bold": {
