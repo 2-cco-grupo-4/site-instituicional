@@ -4,10 +4,7 @@ import { useState } from "react"
 
 import arrow from "assets/icons/popover-arrow.svg"
 
-import useStyles from "./CustomPopover.styles"
-
 const CustomPopover = ({...props}) => {
-  const classes = useStyles()
   const { name } = useUserContext()
   const [anchorEl, setAnchorEl] = useState(null)
   const isOpen = !!anchorEl
@@ -24,7 +21,7 @@ const CustomPopover = ({...props}) => {
     <>
       <Stack height="100%" aria-describedby={isOpen ? "menu" : undefined} aria-haspopup="true" direction="row" alignItems="center" sx={{cursor: "pointer"}} onClick={handleClick}>
         <Typography mr={1}>{name}</Typography>
-        <img src={arrow} />
+        <img src={arrow} alt="arrow-icon"/>
       </Stack>
       <Popover 
       id="menu"
