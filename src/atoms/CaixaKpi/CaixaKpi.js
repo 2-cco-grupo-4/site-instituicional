@@ -22,6 +22,7 @@ const CaixaKpi = ({valorKpi, textoKpi, porcentagem}) => {
         flexDirection="row"
         alignItems="center"
         justifyContent="center"
+        padding="2%"
     >
         <Typography
             fontSize="16px"
@@ -44,7 +45,7 @@ const CaixaKpi = ({valorKpi, textoKpi, porcentagem}) => {
                 {porcentagem >= 0 ?  <ArrowDropUpIcon className={classes.positive}></ArrowDropUpIcon> : <ArrowDropDownIcon className={classes.negative}></ArrowDropDownIcon>}
                 
                 <Typography
-                    fontSize="14px"
+                    fontSize="12px"
                     marginLeft={-1}
                     >
                     {porcentagem}%

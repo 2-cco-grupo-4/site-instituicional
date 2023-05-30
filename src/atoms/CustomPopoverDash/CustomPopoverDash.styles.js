@@ -10,7 +10,10 @@ export default makeStyles(() => ({
     right: 0,
     fontSize: '30px'
   },
-  popoupOption: {
-    cursor: 'pointer'
-  }
+  popover: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '-60px'
+  },
 }))

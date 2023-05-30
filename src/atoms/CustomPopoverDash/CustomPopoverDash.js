@@ -3,10 +3,11 @@ import { useUserContext } from "contexts"
 import { useState } from "react"
 
 import arrow from "assets/icons/popover-arrow.svg"
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
-import useStyles from "./CustomPopover.styles"
+import useStyles from "./CustomPopoverDash.styles"
 
-const CustomPopover = ({...props}) => {
+const CustomPopoverDash = ({children, ...props}) => {
   const classes = useStyles()
   const { name } = useUserContext()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -23,31 +24,32 @@ const CustomPopover = ({...props}) => {
   return (
     <>
       <Stack height="100%" aria-describedby={isOpen ? "menu" : undefined} aria-haspopup="true" direction="row" alignItems="center" sx={{cursor: "pointer"}} onClick={handleClick}>
-        <Typography mr={1}>{name}</Typography>
-        <img src={arrow} />
+        <FilterAltIcon fontSize="40px" className={classes.iconFunil}></FilterAltIcon>
       </Stack>
-      <Popover 
+      <Popover
+      className={classes.popover} 
       id="menu"
       open={isOpen}
       anchorReference='anchorEl'
       anchorEl={anchorEl}
+      margingLeft="-100px"
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'right',
+        horizontal: 'center'
       }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
+      // transformOrigin={{
+      //   vertical: 'top',
+      //   horizontal: 'left',
+      // }}
       onClose={handleClose}
-      className={ classes.popover }
       >
-        <Stack p={2}>
+        {/* <Stack p={2}>
           Teste do Popover
-        </Stack>
+        </Stack> */}
+        { children }
       </Popover>
     </>
   )
 }
 
-export default CustomPopover
+export default CustomPopoverDash

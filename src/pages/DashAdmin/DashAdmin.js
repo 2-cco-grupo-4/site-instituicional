@@ -14,10 +14,19 @@ import CaixaKpi from "atoms/CaixaKpi/CaixaKpi"
 import CardChartPie from "atoms/CardChartPie/CardChartPie"
 import CardBarChart from "atoms/CardBarChart/CardBarChart"
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { useState } from "react"
+import CustomPopover from "molecules/CustomPopover"
+import CustomPopoverDash from "atoms/CustomPopoverDash"
 
 
 
 const DashAdmin = () => {
+
+    const defaultValues = {
+        metrica: "marketing"
+    }
+
+    const [metrica, setMetrica] = useState(defaultValues.metrica)
 
     const dataBar = [
         {
@@ -96,7 +105,7 @@ const DashAdmin = () => {
 
   return (
     <Stack sx={{ transition: '2s all ease' }}>
-        <Header />
+        <Header type={3} />
         <Container
             alignItems="center"
             flexDirection="column"
@@ -125,10 +134,17 @@ const DashAdmin = () => {
                     textAlign="center"
                     flex={1}
                     >
-                        Você está acessando as métricas de <Box display="inline" fontWeight="bold">marketing</Box>
+                        Você está acessando as métricas de <Box display="inline" fontWeight="bold">{metrica}</Box>
                     </Typography>
+
                     
-                    <FilterAltIcon marginLeft="auto" fontSize="40px" className={classes.iconFunil}></FilterAltIcon>
+                        <CustomPopoverDash>
+                            <Stack p={2} className={ classes.popoupOption } onClick={() => setMetrica("marketing")}>Marketing</Stack>
+                            <Stack p={2} className={ classes.popoupOption } onClick={() => setMetrica("usuários")}>Usuários</Stack>
+                        </CustomPopoverDash>
+                    
+                    
+                    {/* <FilterAltIcon onClick={ metrica === "marketing" ? () => setMetrica("usuários") : () => setMetrica("marketing") } marginLeft="auto" fontSize="40px" className={classes.iconFunil}></FilterAltIcon> */}
                 
                 </Container> 
                 
@@ -145,7 +161,7 @@ const DashAdmin = () => {
                 <CaixaKpi
                     valorKpi="1345"
                     textoKpi="Clientes"
-                    porcentagem={5}
+                    porcentagem={10}
                 >
                 </CaixaKpi>
 
@@ -164,54 +180,122 @@ const DashAdmin = () => {
                 </CaixaKpi>
 
             </Container>
-            <Container
-                py={3}
-                flexDirection="row"
-                justifyContent="space-between"
-                paddingLeft="0"
-                paddingRight="0"
-            >
-                <CardChartPie 
-                    tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
-                    label01="Fecharam"
-                    label02="Não Fecharam"
-                    width="40%"
-                    value01={20}
-                    value02={80}
-                >
+            {metrica === "marketing" ? 
+                (
+                    <>
+                    <Container
+                    py={3}
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    paddingLeft="0"
+                    paddingRight="0"
+                    >
+                        <CardChartPie 
+                            tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                            label01="Fecharam"
+                            label02="Não Fecharam"
+                            width="40%"
+                            value01={20}
+                            value02={80}
+                        >
 
-                </CardChartPie>
+                        </CardChartPie>
 
-                <CardBarChart
-                    tituloPieChart="Temas com mais ‘contatos’ iniciados"
-                    data={dataBar}
-                    width="55%"
-                >
+                        <CardBarChart
+                            tituloPieChart="Temas com mais ‘contatos’ iniciados"
+                            data={dataBar}
+                            width="55%"
+                        >
+                            
+                        </CardBarChart>
+                    </Container>
+
+                    <Container
+                        py={3}
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        paddingLeft="0"
+                        paddingRight="0"
+                    >
+
+                        <CardBarChart
+                            tituloPieChart="Faixa etária dos clientes"
+                            data={dataBarFaixaEtaria}
+                            width="40%"
+                        />
+
+                        <CardBarChart
+                            tituloPieChart="Faixa etária dos clientes por tema"
+                            data={dataBarFaixaEtariaTema}
+                            width="55%"
+                        />
+
+                    </Container>
+                    </>
+                ) : (
+                    <>
+                        <Container
+                        py={3}
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        >
+                            
+                            <CardChartPie
+                                tituloPieChart="Base de usuários cadastrados"
+                                label01="Fecharam"
+                                label02="Não Fecharam"
+                                width="40%"
+                                value01={80}
+                                value02={20}
+                            >
+
+                            </CardChartPie>
+
+                            <CardBarChart
+                                tituloPieChart="Progressão de novos usuários cadastrados"
+                                data={dataBarFaixaEtariaTema}
+                                width="55%"
+                            >
+
+                            </CardBarChart>
+
+                        </Container>
+
+                        <Container
+                        py={3}
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        >
+                            
+                            <CardChartPie
+                                tituloPieChart="Contatos convertidos em sessões"
+                                label01="Fecharam"
+                                label02="Não Fecharam"
+                                width="40%"
+                                value01={70}
+                                value02={30}
+                            >
+
+                            </CardChartPie>
+
+                            <CardBarChart
+                                tituloPieChart="Progressão sessões de fotos realizadas"
+                                data={dataBarFaixaEtariaTema}
+                                width="55%"
+                            >
+
+                            </CardBarChart>
+
+                        </Container>
+                    </>
                     
-                </CardBarChart>
-            </Container>
-
-            <Container
-                py={3}
-                flexDirection="row"
-                justifyContent="space-between"
-                paddingLeft="0"
-                paddingRight="0"
-            >
-
-                <CardBarChart
-                    tituloPieChart="Faixa etária dos clientes"
-                    data={dataBarFaixaEtaria}
-                    width="40%"
-                />
-
-                <CardBarChart
-                    tituloPieChart="Faixa etária dos clientes por tema"
-                    data={dataBarFaixaEtariaTema}
-                    width="55%"
-                />
-
-            </Container>
+                )
+             }
+            
             
 
             

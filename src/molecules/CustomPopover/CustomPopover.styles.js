@@ -5,4 +5,10 @@ export default makeStyles(() => ({
     backgroundColor: '#000',
     color: '#fff',
   },
+  popover: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '-60px'
+  },
 }))

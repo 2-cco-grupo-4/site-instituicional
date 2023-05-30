@@ -46,12 +46,13 @@ const CardChartPie = ({tituloPieChart, value01, value02, label01, label02, width
             color="black"
             fontWeight="bold"
             paddingTop="20px"
+            textAlign="center"
         >
             {tituloPieChart}
         </Typography>
 
 
-        <ResponsiveContainer width="70%" height={400}>
+        <ResponsiveContainer width="100%" height={400}>
         
             <PieChart>
                 <Legend layout="vertical" verticalAlign="middle" align="left" />

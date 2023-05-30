@@ -3,8 +3,8 @@ import { createContext, useContext, useState } from "react"
 const UserContext = createContext()
 
 const defaultValues = {
-  isLogged: false,
-  name: 'Ryan Miyazato',
+  isLogged: true,
+  name: 'Admin',
   email: 'ryan@email.com',
   senha: '1234'
 }

@@ -10,6 +10,7 @@ const BoxShadow = ({ children, ...props }) => {
         display="flex"
         alignItems="center"
         flexDirection="column"
+        padding="5px"
         {...props}
     >
         { children }
