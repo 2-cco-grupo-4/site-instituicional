@@ -12,12 +12,6 @@ export default makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  logo: {
-    height: 24,
-    width: 'auto',
-    padding: '8px 0px',
-    cursor: 'pointer',
-  },
   navBotoes: {
     display: 'flex',
     flexDirection: 'row',

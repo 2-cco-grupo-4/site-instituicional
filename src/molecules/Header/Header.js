@@ -1,5 +1,4 @@
 import useStyles from "./Header.styles"
-import logo from "assets/img/picme.png"
 import OptionNav from "atoms/OptionNav"
 import CustomButton from "atoms/CustomButton/CustomButton"
 import { Box, Typography } from "@mui/material"
@@ -8,6 +7,7 @@ import Container from "atoms/Container"
 import { useUserContext } from "contexts"
 import { useNavigate } from "react-router-dom"
 import CustomPopover from "molecules/CustomPopover"
+import LogoPicme from "atoms/LogoPicme"
 
 const Header = ({ type }) => {
   const classes = useStyles()
@@ -30,7 +30,7 @@ const Header = ({ type }) => {
     zIndex={1000}
     className={classes.navbar}
     >
-        <img src={logo} onClick={() => handleNavigation("/")} className={classes.logo} alt="logo" />
+        <LogoPicme />
         {type === 1 && 
           <Box display="flex" alignItems="center" justifyContent="space-between" className={classes.navbarNav}>
             <OptionNav title="Galeria" navigation="#galeria" />
