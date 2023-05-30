@@ -29,6 +29,10 @@ const theme = createTheme({
       fontSize: 32,
       fontWeight: 'bold',
     },
+    "subtitle-small-semibold": {
+      fontSize: 24,
+      fontWeight: '600',
+    },
     "subtitle-small-bold": {
       fontSize: 24,
       fontWeight: "bold",
@@ -36,6 +40,10 @@ const theme = createTheme({
     "paragraph-medium-regular": {
       fontSize: 16,
       fontWeight: "regular",
+    },
+    "paragraph-medium-light": {
+      fontSize: 16,
+      fontWeight: 300,
     },
     "paragraph-small-regular": {
       fontSize: 14,
