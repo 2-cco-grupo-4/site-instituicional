@@ -6,3 +6,9 @@ export const ROUTES = {
     LOGIN: "/login",
     CHOOSE_PROFILE: "/persona"
 }
+
+export const PROFILE_TYPES = {
+    0: "admin",
+    1: "cliente",
+    2: "fotógrafo",
+}
