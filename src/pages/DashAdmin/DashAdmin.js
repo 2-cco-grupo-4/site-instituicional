@@ -14,11 +14,12 @@ import CaixaKpi from "atoms/CaixaKpi/CaixaKpi"
 import CardChartPie from "atoms/CardChartPie/CardChartPie"
 import CardBarChart from "atoms/CardBarChart/CardBarChart"
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CustomPopover from "molecules/CustomPopover"
 import CustomPopoverDash from "atoms/CustomPopoverDash"
-
-
+import { getViewBarChartTemaContato } from "service/DashAdminPoint"
+import axios from "axios"
+import { Await } from "react-router-dom"
 
 const DashAdmin = () => {
 
@@ -27,83 +28,60 @@ const DashAdmin = () => {
     }
 
     const [metrica, setMetrica] = useState(defaultValues.metrica)
+    
 
-    const dataBar = [
-        {
-          name: 'Casamento',
-          Contatos: 2400
-        },
-        {
-          name: 'Aniversário',
-          Contatos: 1398
-        },
-        {
-          name: 'Debutante',
-          Contatos: 9800
-        },
-        {
-          name: 'Encontros',
-          Contatos: 3908
-        },
-        {
-          name: 'Esportivo',
-          Contatos: 4800
-        },
-        {
-          name: 'Família',
-          Contatos: 3800
-        }
-      ];
+    const [dataBar, setDataBar] = useState([{}])
 
-      const dataBarFaixaEtaria = [
-        {
-            faixa: "18-20",
-            quantidade: 300
-        },
-        {
-            faixa: "21-25",
-            quantidade: 1157
-        },
-        {
-            faixa: "26-30",
-            quantidade: 1056
-        },
-        {
-            faixa: "31-35",
-            quantidade: 278
-        },
-        {
-            faixa: "36-40",
-            quantidade: 140
-        }
-      ]
+    const [dataClienteSemana, setDataClienteSemana] = useState([{}])
 
-      const dataBarFaixaEtariaTema = [
-        {
-            faixa: "18-20",
-            quantidade: 250
-        },
-        {
-            faixa: "21-25",
-            quantidade: 300
-        },
-        {
-            faixa: "26-30",
-            quantidade: 80
-        },
-        {
-            faixa: "31-35",
-            quantidade: 15
-        },
-        {
-            faixa: "36-40",
-            quantidade: 3
-        }
-      ]
+    const [dataBarFaixaEtaria, setDataBarFaixaEtaria] = useState([{}])
+
+    const [dataBarFaixaEtariaTema, setDataBarFaixaEtariaTema] = useState([{}])
+    
+    const [dataClientesFotografos, setDataClientesFotografos] = useState([{}])
 
   const classes = useStyles()
 
+//   getViewBarChartTemaContato
+//             .then(function(response){
+//                 console.log(response)
+//             });
+
+        axios.create({
+            baseURL: "http://localhost:8080"
+        });
+
+        useEffect(() => {
+            
+            axios.get('http://localhost:8080/admin/contagem-tema-contato').then(function(response){
+                setDataBar(response.data)
+            })
+
+            axios.get('http://localhost:8080/admin/contagem-clientes-semana').then(function(response){
+                setDataClienteSemana(response.data)
+            })
+
+            axios.get('http://localhost:8080/admin/faixa-etaria-clientes').then(function(response){
+                setDataBarFaixaEtaria(response.data)
+            })
+
+            axios.get('http://localhost:8080/admin/faixa-etaria-clientes-tema/Casamentos').then(function(response){
+                setDataBarFaixaEtariaTema(response.data)
+            })
+
+            axios.get('http://localhost:8080/admin/total-clientes-fotografos').then(function(response){
+                setDataClientesFotografos(response.data)
+            })
+
+        }, [])
+
+      
+
+
   return (
+
+    
+
     <Stack sx={{ transition: '2s all ease' }}>
         <Header type={3} />
         <Container
@@ -140,6 +118,7 @@ const DashAdmin = () => {
                     
                         <CustomPopoverDash>
                             <Stack p={2} className={ classes.popoupOption } onClick={() => setMetrica("marketing")}>Marketing</Stack>
+                            <hr></hr>
                             <Stack p={2} className={ classes.popoupOption } onClick={() => setMetrica("usuários")}>Usuários</Stack>
                         </CustomPopoverDash>
                     
@@ -192,11 +171,8 @@ const DashAdmin = () => {
                     >
                         <CardChartPie 
                             tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
-                            label01="Fecharam"
-                            label02="Não Fecharam"
+                            data={dataClienteSemana}
                             width="40%"
-                            value01={20}
-                            value02={80}
                         >
 
                         </CardChartPie>
@@ -233,6 +209,7 @@ const DashAdmin = () => {
                     </Container>
                     </>
                 ) : (
+
                     <>
                         <Container
                         py={3}
@@ -242,13 +219,10 @@ const DashAdmin = () => {
                         paddingRight="0"
                         >
                             
-                            <CardChartPie
-                                tituloPieChart="Base de usuários cadastrados"
-                                label01="Fecharam"
-                                label02="Não Fecharam"
+                            <CardChartPie 
+                                tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                                data={dataClienteSemana}
                                 width="40%"
-                                value01={80}
-                                value02={20}
                             >
 
                             </CardChartPie>

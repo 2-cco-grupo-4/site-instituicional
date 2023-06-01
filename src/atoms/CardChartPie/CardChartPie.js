@@ -9,19 +9,15 @@ import BoxShadow from "atoms/BoxShadow/BoxShadow";
   ]
       
 
-const CardChartPie = ({tituloPieChart, value01, value02, label01, label02, width}) => {
+const CardChartPie = ({tituloPieChart, data, width}) => {
   const classes = useStyles()
 
-  const data01 = [
-    {
-      "name": label01,
-      "value": value01
-    },
-    {
-      "name": label02,
-      "value": value02
-    }
-  ];
+  const jsonModelString = JSON.stringify(data[0])
+  const jsonModel = JSON.parse(jsonModelString)
+
+
+  const keyName = Object.keys(jsonModel)[0]
+  const valueName = Object.keys(jsonModel)[1]
 
   const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -56,11 +52,11 @@ const CardChartPie = ({tituloPieChart, value01, value02, label01, label02, width
         
             <PieChart>
                 <Legend layout="vertical" verticalAlign="middle" align="left" />
-                <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={160} labelLine={false} label={renderCustomizedLabel}>
-                    {data01.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} dataKey="teste" />
+                <Pie data={data} dataKey={valueName} nameKey={keyName} cx="50%" cy="50%" outerRadius={160} labelLine={false} label={renderCustomizedLabel}>
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} dataKey={keyName} />
                     ))}
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey={keyName} />
                     <YAxis />
                 </Pie>
             </PieChart> 
