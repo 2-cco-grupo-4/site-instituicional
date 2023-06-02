@@ -1,9 +1,8 @@
 import useStyles from "./Register.styles"
 import Container from "atoms/Container"
-import { FormControlLabel, Stack, Radio, RadioGroup, TextField, Typography, Grid, IconButton, SvgIcon, Button } from "@mui/material"
+import { FormControlLabel, Stack, Radio, RadioGroup, TextField, Typography, Grid } from "@mui/material"
 import LogoPicme from "atoms/LogoPicme"
 import { useNavigate, useParams } from "react-router-dom"
-import { DatePicker } from "@mui/x-date-pickers"
 import CustomButton from "atoms/CustomButton"
 import InputMask from "react-input-mask"
 import { useState } from "react"
@@ -14,37 +13,57 @@ const Register = () => {
   const classes = useStyles()
   const navigate = useNavigate()
   const { profileType } = useParams()
-  const [profile, setProfile] = useState(profileType)
-  const [name, setName] = useState('')
-  const [surname, setSurname] = useState('')
-  const [email, setEmail] = useState('')
-  const [birthdate, setBirthdate] = useState('')
-  const [cpf, setCpf] = useState(null)
-  const [phone, setPhone] = useState(null)
-  const [password, setPassword] = useState('')
+
+
+  const defaultValue = {
+    profile: profileType,
+    nome: '',
+    email: '',
+    dataNascimento: '',
+    cpf: '',
+    telefone: '',
+    senha: '',
+  }
+
+  const [userData, setUserData] = useState(defaultValue)
+  const [confirmarSenha, setConfirmarSenha] = useState('')
+
+  const handleChange = (e) => {
+    const name = e.target.name
+    const value = e.target.value
+
+    console.log(name, value)
+    setUserData(values => ({...values, [name]: value}))
+  }
 
   const CONTENTS = [
-    <TextField id="email-ipt" label="E-mail" />,
+    <TextField id="email-ipt" name="email" label="E-mail" onChange={handleChange}/>,
   
-    <DatePicker id="data-ipt" label="Data de nascimento" format="DD/MM/YYYY"/>,
-  
-    <InputMask mask="999.999.999-99">
-      {() => <TextField id="cpf-ipt" label="CPF"/>}
+    <InputMask 
+    onChange={handleChange} 
+    mask="99/99/9999"
+    >
+      {() => <TextField id="data-ipt" name="dataNascimento"
+    label="Data de nascimento" placeholder="DD/MM/AAAA" />}
     </InputMask>,
   
-    <InputMask mask="(99) 99999-9999">
-      {() => <TextField id="phone-ipt" label="Telefone"/>}
+    <InputMask mask="999.999.999-99" onChange={handleChange}>
+      {() => <TextField id="cpf-ipt" name="cpf" label="CPF" />}
     </InputMask>,
   
-    <TextField id="password-ipt" type="password" label="Senha" />,
+    <InputMask mask="(99) 99999-9999" onChange={handleChange}>
+      {() => <TextField id="phone-ipt" name="telefone" label="Telefone"/>}
+    </InputMask>,
   
-    <TextField id="verify-password-ipt" type="password" label="Confirmar Senha" />
-  ]
+    <TextField id="password-ipt" name="senha" type="password" label="Senha" onChange={handleChange}/>,
+  
+    <TextField id="verify-password-ipt" name="confirmarSenha" type="password" label="Confirmar Senha" onChange={(e) => setConfirmarSenha(e.target.value)}/>
+  ]  
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    
-    // fazer validações
+    console.log(userData)
+    console.log(confirmarSenha)
   }
 
   return (
@@ -70,8 +89,9 @@ const Register = () => {
                 <RadioGroup 
                 row 
                 aria-labelledby="radio-profile-type" 
+                name="profile"
+                onChange={handleChange}
                 defaultValue={profileType} 
-                onChange={(e) => setProfile(e.target.value)}
                 >
                   <FormControlLabel 
                   value="cliente" 
@@ -87,7 +107,16 @@ const Register = () => {
                 </RadioGroup>
               </Stack>
               <Stack justifyContent="center">
-                <TextField id="name-ipt" label="Nome" sx={{marginBottom: 2}} width="100%" onChange={(e) => setName(e.target.value)}/>
+                <TextField 
+                id="name-ipt"
+                inputProps={{
+                  name: "nome"
+                }}
+                label="Nome" 
+                sx={{marginBottom: 2}} 
+                width="100%" 
+                onChange={handleChange}
+                />
                 <Grid container rowSpacing={2} columnSpacing={{ xs: 2 }}>
                   {
                     CONTENTS.map((content, index) => (
@@ -98,7 +127,9 @@ const Register = () => {
                   }
                 </Grid>
               </Stack>
-              <CustomButton variant="contained" color="secondary" type="submit" fullWidth>Continuar</CustomButton>
+              <CustomButton variant="contained" color="secondary" type="submit" fullWidth>
+                Continuar
+              </CustomButton>
               <Stack direction="row" alignItems="center" spacing={0.5}>
                 <Typography sx={{fontWeight: 300}}>
                   Já tem cadastro? 
