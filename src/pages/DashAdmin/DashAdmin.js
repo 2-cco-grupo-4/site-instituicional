@@ -40,18 +40,41 @@ const DashAdmin = () => {
     
     const [dataClientesFotografos, setDataClientesFotografos] = useState([{}])
 
-  const classes = useStyles()
+    const [dataContatosConvertidos, setDataContatosConvertidos] = useState([{}])
+
+    const [dataKpi1, setDataKpi1] = useState([{}])
+
+    const [dataKpi2, setDataKpi2] = useState([{}])
+
+    const [dataKpi3, setDataKpi3] = useState([{}])
+
+    const [valorKpi1, setValorKpi1] = useState(0)
+
+    const [valorKpi2, setValorKpi2] = useState(0)
+
+    const [valorKpi3, setValorKpi3] = useState(0)
+
+    const [porcentagemKpi1, setPorcentagemKpi1] = useState(0)
+
+    const [porcentagemKpi2, setPorcentagemKpi2] = useState(0)
+    
+    const [porcentagemKpi3, setPorcentagemKpi3] = useState(0)
+
+
+    const classes = useStyles()
 
 //   getViewBarChartTemaContato
 //             .then(function(response){
 //                 console.log(response)
 //             });
 
-        axios.create({
-            baseURL: "http://localhost:8080"
-        });
+        
 
         useEffect(() => {
+
+            axios.create({
+                baseURL: "http://localhost:8080"
+            });
             
             axios.get('http://localhost:8080/admin/contagem-tema-contato').then(function(response){
                 setDataBar(response.data)
@@ -73,7 +96,83 @@ const DashAdmin = () => {
                 setDataClientesFotografos(response.data)
             })
 
-        }, [])
+            axios.get('http://localhost:8080/admin/sessoes-finalizadas-canceladas').then(function(response){
+                setDataContatosConvertidos(response.data)
+            })
+            
+            axios.get('http://localhost:8080/admin/kpi-total-usuarios').then(function(response){
+                setDataKpi1(response.data)
+                var lista = (response.data)
+                if(lista[2].quantidade == 0){
+                    setPorcentagemKpi1(lista[1].quantidade * 100)
+                }else if(lista[1].quantidade == 0){
+                    setPorcentagemKpi1(lista[2].quantidade * -100)
+                }else{
+                    setPorcentagemKpi1((lista[1].quantidade * 100) / lista[2].quantidade - 100)
+                }
+                setValorKpi1(lista[0].quantidade)
+            })
+
+            axios.get('http://localhost:8080/admin/kpi-sessoes-realizadas').then(function(response){
+                setDataKpi2(response.data)
+                var lista = (response.data)
+                if(lista[2].quantidade == 0){
+                    setPorcentagemKpi2(lista[1].quantidade * 100)
+                }else if(lista[1].quantidade == 0){
+                    setPorcentagemKpi2(lista[2].quantidade * -100)
+                }else{
+                    setPorcentagemKpi2((lista[1].quantidade * 100) / lista[2].quantidade - 100)
+                }
+                setValorKpi2(lista[0].quantidade)
+            })
+
+            axios.get('http://localhost:8080/admin/kpi-total-acessos').then(function(response){
+                setDataKpi3(response.data)
+                var lista = (response.data)
+                if(lista[2].quantidade == 0){
+                    setPorcentagemKpi3(lista[1].quantidade * 100)
+                }else if(lista[1].quantidade == 0){
+                    setPorcentagemKpi3(lista[2].quantidade * -100)
+                }else{
+                    setPorcentagemKpi3((lista[1].quantidade * 100) / lista[2].quantidade - 100)
+                }
+                setValorKpi3(lista[0].quantidade)
+            })
+
+
+        }, [metrica])
+
+
+        const jsonBar = [
+            {
+                casa: "teste",
+                value: 40
+            },
+            {
+                casa: "teste2",
+                value: 60
+            },
+            {
+                casa: "teste3",
+                value: 80
+            },
+            {
+                casa: "teste4",
+                value: 45
+            },
+            {
+                casa: "teste5",
+                value: 120
+            },
+            {
+                casa: "teste6",
+                value: 10
+            },
+            {
+                casa: "teste7",
+                value: 20
+            }
+        ];
 
       
 
@@ -117,9 +216,9 @@ const DashAdmin = () => {
 
                     
                         <CustomPopoverDash>
-                            <Stack p={2} className={ classes.popoupOption } onClick={() => setMetrica("marketing")}>Marketing</Stack>
-                            <hr></hr>
-                            <Stack p={2} className={ classes.popoupOption } onClick={() => setMetrica("usuários")}>Usuários</Stack>
+                            <Stack p={2} paddingBottom={1} className={ classes.popoupOption } onClick={() => setMetrica("marketing")}>Marketing</Stack>
+                            <hr className={ classes.linha }></hr>
+                            <Stack p={2} paddingTop={1} className={ classes.popoupOption } onClick={() => setMetrica("usuários")}>Usuários</Stack>
                         </CustomPopoverDash>
                     
                     
@@ -138,23 +237,23 @@ const DashAdmin = () => {
                 paddingRight="0"
             >
                 <CaixaKpi
-                    valorKpi="1345"
+                    valorKpi={valorKpi1}
                     textoKpi="Clientes"
-                    porcentagem={10}
+                    porcentagem={porcentagemKpi1}
                 >
                 </CaixaKpi>
 
                 <CaixaKpi
-                    valorKpi="230"
+                    valorKpi={valorKpi2}
                     textoKpi="Sessões Realizadas"
-                    porcentagem={-15}
+                    porcentagem={porcentagemKpi2}
                 >
                 </CaixaKpi>
 
                 <CaixaKpi
-                    valorKpi="450"
+                    valorKpi={valorKpi3}
                     textoKpi="Acessos"
-                    porcentagem={20}
+                    porcentagem={porcentagemKpi3}
                 >
                 </CaixaKpi>
 
@@ -220,8 +319,8 @@ const DashAdmin = () => {
                         >
                             
                             <CardChartPie 
-                                tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
-                                data={dataClienteSemana}
+                                tituloPieChart="Base de usuários cadastrados"
+                                data={dataClientesFotografos}
                                 width="40%"
                             >
 
@@ -229,7 +328,7 @@ const DashAdmin = () => {
 
                             <CardBarChart
                                 tituloPieChart="Progressão de novos usuários cadastrados"
-                                data={dataBarFaixaEtariaTema}
+                                data={jsonBar}
                                 width="55%"
                             >
 
@@ -247,18 +346,15 @@ const DashAdmin = () => {
                             
                             <CardChartPie
                                 tituloPieChart="Contatos convertidos em sessões"
-                                label01="Fecharam"
-                                label02="Não Fecharam"
                                 width="40%"
-                                value01={70}
-                                value02={30}
+                                data={dataContatosConvertidos}
                             >
 
                             </CardChartPie>
 
                             <CardBarChart
                                 tituloPieChart="Progressão sessões de fotos realizadas"
-                                data={dataBarFaixaEtariaTema}
+                                data={jsonBar}
                                 width="55%"
                             >
 

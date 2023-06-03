@@ -11,6 +11,13 @@ export default makeStyles(() => ({
     fontSize: '30px'
   },
   popoupOption: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  linha: {
+    marginLeft: '12px',
+    marginRight: '12px',
+    color: '#000'
   }
 }))
