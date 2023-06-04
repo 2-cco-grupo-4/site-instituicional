@@ -2,7 +2,7 @@ import useStyles from "./Header.styles"
 import logo from "assets/img/picme.png"
 import OptionNav from "atoms/OptionNav"
 import CustomButton from "atoms/CustomButton/CustomButton"
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, Stack } from "@mui/material"
 import { HEADER_HEIGHT } from "utils/constants"
 import Container from "atoms/Container"
 import { useUserContext } from "contexts"
@@ -41,7 +41,9 @@ const Header = ({ type }) => {
         }
         {isLogged ? 
          (
-          <CustomPopover />
+          <CustomPopover children={
+            <Stack>Sair</Stack>
+          } />
          ) : (
           type === 2 ? (
             <Box className={classes.navBotoes}>

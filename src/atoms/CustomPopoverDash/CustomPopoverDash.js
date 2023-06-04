@@ -37,15 +37,8 @@ const CustomPopoverDash = ({children, ...props}) => {
         vertical: 'bottom',
         horizontal: 'center'
       }}
-      // transformOrigin={{
-      //   vertical: 'top',
-      //   horizontal: 'left',
-      // }}
       onClose={handleClose}
       >
-        {/* <Stack p={2}>
-          Teste do Popover
-        </Stack> */}
         { children }
       </Popover>
     </>

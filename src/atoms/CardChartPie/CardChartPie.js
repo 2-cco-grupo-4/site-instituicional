@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material"
-import { XAxis, YAxis, Legend, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { XAxis, YAxis, Legend, PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import useStyles from "./CardChartPie.styles"
 import BoxShadow from "atoms/BoxShadow/BoxShadow";
 
@@ -43,16 +43,19 @@ const CardChartPie = ({tituloPieChart, data, width}) => {
             fontWeight="bold"
             paddingTop="20px"
             textAlign="center"
+            marginLeft={3}
+            marginRight={3}
         >
             {tituloPieChart}
         </Typography>
 
 
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer width="85%" height={400}>
         
             <PieChart>
+                <Tooltip />
                 <Legend layout="vertical" verticalAlign="middle" align="left" />
-                <Pie data={data} dataKey={valueName} nameKey={keyName} cx="50%" cy="50%" outerRadius={160} labelLine={false} label={renderCustomizedLabel}>
+                <Pie data={data} dataKey={valueName} nameKey={keyName} cx="50%" cy="50%" outerRadius={120} labelLine={false} label={renderCustomizedLabel}>
                     {data.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={colors[index % colors.length]} dataKey={keyName} />
                     ))}

@@ -1,13 +1,13 @@
-import useStyles from "./CardBarChart.styles"
+import useStyles from "./CardBarLineChart.styles"
 import { Box, Typography } from "@mui/material"
 import BoxShadow from "atoms/BoxShadow/BoxShadow";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Line, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from 'recharts';
 
   const colors = [
     '#249ACF'
   ]
 
-const CardBarChart = ({tituloPieChart, data, width}) => {
+const CardBarLineChart = ({tituloPieChart, data, width}) => {
     const classes = useStyles()
 
     const jsonModelString = JSON.stringify(data[0])
@@ -33,24 +33,26 @@ const CardBarChart = ({tituloPieChart, data, width}) => {
         </Typography>
                 
         <ResponsiveContainer width="100%" height={400}>
-            <BarChart
+            <ComposedChart
             data={data}
             margin={{
-                top: 25,
-                right: 25,
-                left: 25,
-                bottom: 25,
+              top: 25,
+              right: 25,
+              left: 25,
+              bottom: 25,
             }}
             >
-                <XAxis dataKey={keyName} />
+                <XAxis dataKey={keyName} xAxisId={1} />
+                <XAxis xAxisId={2} hide={true}/>
                 <Tooltip />
-                <Legend />
-                <Bar radius={[10, 10, 0, 0]} dataKey={valueName} fill={colors[0]} label={{ position: 'top' }} />
-            </BarChart>
+                {/* <Legend /> */}
+                <Bar xAxisId={1} radius={[10, 10, 0, 0]} dataKey={valueName} fill={colors[0]} label={{ position: 'top' }} />
+                <Line xAxisId={2} strokeWidth={3} type="monotone" dataKey={valueName} stroke="#19CFA6" dot={true} />
+            </ComposedChart>
       </ResponsiveContainer>
 
     </BoxShadow>
   )
 }
 
-export default CardBarChart
+export default CardBarLineChart

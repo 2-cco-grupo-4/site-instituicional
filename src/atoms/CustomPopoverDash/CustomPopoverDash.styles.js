@@ -14,6 +14,6 @@ export default makeStyles(() => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '-60px'
+    marginLeft: '-60px',
   },
 }))

@@ -13,6 +13,7 @@ import Container from "atoms/Container"
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi"
 import CardChartPie from "atoms/CardChartPie/CardChartPie"
 import CardBarChart from "atoms/CardBarChart/CardBarChart"
+import CardBarLineChart from "atoms/CardBarLineChart/CardBarLineChart"
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useEffect, useState } from "react"
 import CustomPopover from "molecules/CustomPopover"
@@ -41,6 +42,10 @@ const DashAdmin = () => {
     const [dataClientesFotografos, setDataClientesFotografos] = useState([{}])
 
     const [dataContatosConvertidos, setDataContatosConvertidos] = useState([{}])
+
+    const [dataProgressaoUsuarios, setDataProgressaoUsuarios] = useState([{}])
+
+    const [dataProgressaoSessoes, setDataProgressaoSessoes] = useState([{}])
 
     const [dataKpi1, setDataKpi1] = useState([{}])
 
@@ -99,6 +104,14 @@ const DashAdmin = () => {
             axios.get('http://localhost:8080/admin/sessoes-finalizadas-canceladas').then(function(response){
                 setDataContatosConvertidos(response.data)
             })
+
+            axios.get('http://localhost:8080/admin/progressao-usuarios-mes').then(function(response){
+                setDataProgressaoUsuarios(response.data)
+            })
+
+            axios.get('http://localhost:8080/admin/progressao-relizacao-sessoes').then(function(response){
+                setDataProgressaoSessoes(response.data)
+            })
             
             axios.get('http://localhost:8080/admin/kpi-total-usuarios').then(function(response){
                 setDataKpi1(response.data)
@@ -142,47 +155,12 @@ const DashAdmin = () => {
 
         }, [metrica])
 
-
-        const jsonBar = [
-            {
-                casa: "teste",
-                value: 40
-            },
-            {
-                casa: "teste2",
-                value: 60
-            },
-            {
-                casa: "teste3",
-                value: 80
-            },
-            {
-                casa: "teste4",
-                value: 45
-            },
-            {
-                casa: "teste5",
-                value: 120
-            },
-            {
-                casa: "teste6",
-                value: 10
-            },
-            {
-                casa: "teste7",
-                value: 20
-            }
-        ];
-
-      
-
-
   return (
 
     
 
     <Stack sx={{ transition: '2s all ease' }}>
-        <Header type={3} />
+        <Header type={2} />
         <Container
             alignItems="center"
             flexDirection="column"
@@ -216,13 +194,10 @@ const DashAdmin = () => {
 
                     
                         <CustomPopoverDash>
-                            <Stack p={2} paddingBottom={1} className={ classes.popoupOption } onClick={() => setMetrica("marketing")}>Marketing</Stack>
+                            <Stack p={2} paddingBottom={1} paddingLeft={8} paddingRight={8} className={ classes.popoupOption } onClick={() => setMetrica("marketing")}>Marketing</Stack>
                             <hr className={ classes.linha }></hr>
-                            <Stack p={2} paddingTop={1} className={ classes.popoupOption } onClick={() => setMetrica("usuários")}>Usuários</Stack>
+                            <Stack p={2} paddingTop={1} paddingLeft={8} paddingRight={8} className={ classes.popoupOption } onClick={() => setMetrica("usuários")}>Usuários</Stack>
                         </CustomPopoverDash>
-                    
-                    
-                    {/* <FilterAltIcon onClick={ metrica === "marketing" ? () => setMetrica("usuários") : () => setMetrica("marketing") } marginLeft="auto" fontSize="40px" className={classes.iconFunil}></FilterAltIcon> */}
                 
                 </Container> 
                 
@@ -238,7 +213,7 @@ const DashAdmin = () => {
             >
                 <CaixaKpi
                     valorKpi={valorKpi1}
-                    textoKpi="Clientes"
+                    textoKpi="Usuários"
                     porcentagem={porcentagemKpi1}
                 >
                 </CaixaKpi>
@@ -326,13 +301,13 @@ const DashAdmin = () => {
 
                             </CardChartPie>
 
-                            <CardBarChart
+                            <CardBarLineChart
                                 tituloPieChart="Progressão de novos usuários cadastrados"
-                                data={jsonBar}
+                                data={dataProgressaoUsuarios}
                                 width="55%"
                             >
 
-                            </CardBarChart>
+                            </CardBarLineChart>
 
                         </Container>
 
@@ -352,13 +327,13 @@ const DashAdmin = () => {
 
                             </CardChartPie>
 
-                            <CardBarChart
+                            <CardBarLineChart
                                 tituloPieChart="Progressão sessões de fotos realizadas"
-                                data={jsonBar}
+                                data={dataProgressaoSessoes}
                                 width="55%"
                             >
 
-                            </CardBarChart>
+                            </CardBarLineChart>
 
                         </Container>
                     </>
