@@ -1,6 +1,5 @@
 import Theme from "templates/Theme/Theme";
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import VLibras from "@djpfs/react-vlibras"
 import { UserProvider } from "contexts";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
@@ -20,6 +19,7 @@ const DefaultProviders = ({children}) => (
 function App() {
   return (
     <Theme>
+      <VLibras />
       <DefaultProviders>
         <BrowserRouter>
           <Routes>
