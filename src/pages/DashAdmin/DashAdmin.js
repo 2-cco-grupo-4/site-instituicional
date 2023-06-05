@@ -65,6 +65,8 @@ const DashAdmin = () => {
     
     const [porcentagemKpi3, setPorcentagemKpi3] = useState(0)
 
+    const [conexao, setConexao] = useState()
+
 
     const classes = useStyles()
 
@@ -74,12 +76,39 @@ const DashAdmin = () => {
 //             });
 
         
+        useEffect(() => {
+            axios.create({
+                baseURL: "http://localhost:8080",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*',
+                    'Access-Control-Allow-Origin': '*'
+                  },
+            });
+
+            // axios.defaults.headers.common['Content-Type'] = 'application/json';
+            // axios.defaults.headers.common['Content-Type'] = 'application/json';
+
+        })
+
+        const login = {
+            "email": "admin@email.com",
+            "senha": "picme1234"
+        }
+
+        const headers = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': '*/*',
+              }
+        }
+
 
         useEffect(() => {
-
-            axios.create({
-                baseURL: "http://localhost:8080"
-            });
+            
+            axios.post('http://localhost:8080/login', login, headers).then(function(response){
+                console.log('TESTE: ' + response)
+            })
             
             axios.get('http://localhost:8080/admin/contagem-tema-contato').then(function(response){
                 setDataBar(response.data)
