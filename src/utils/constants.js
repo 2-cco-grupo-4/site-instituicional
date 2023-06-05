@@ -2,7 +2,7 @@ export const HEADER_HEIGHT = '56px'
 
 export const ROUTES = {
     HOME: "/",
-    REGISTER: "/cadastro",
+    REGISTER: profile => (`/cadastro/${profile}`),
     LOGIN: "/login",
     CHOOSE_PROFILE: "/persona"
 }

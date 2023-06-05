@@ -7,13 +7,12 @@ import { Routes } from "react-router-dom";
 import Home from "pages/Home";
 import ChooseProfileType from "pages/ChooseProfileType";
 import Register from "pages/Register";
+import Login from "pages/Login";
 
 const DefaultProviders = ({children}) => (
-  <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <UserProvider>
-      {children}
-    </UserProvider>
-  </LocalizationProvider>
+  <UserProvider>
+    {children}
+  </UserProvider>
 )
 
 function App() {
@@ -26,6 +25,7 @@ function App() {
             <Route exact path="/" element={<Home />}/>
             <Route exact path="/persona" element={<ChooseProfileType />} />
             <Route exact path="/cadastro/:profileType" element={<Register/>} />
+            <Route exact path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </DefaultProviders>

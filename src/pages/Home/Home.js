@@ -82,7 +82,7 @@ const Home = () => {
   const classes = useStyles()
   return (
     <Stack sx={{ transition: '2s all ease' }}>
-      <Header />
+      <Header type={1} />
       <Container
         alignItems="center"
         className={classes.banner}

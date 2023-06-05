@@ -29,7 +29,7 @@ const ChooseProfileType = () => {
               <Typography variant="paragraph-medium-regular" align="center" width={280}>
                Quero contratar fotógrafos e registrar momentos inesquecíveis
               </Typography>
-              <CustomButton onClick={() => handleNavigation(ROUTES.REGISTER + "/cliente")} variant="contained" color="secondary"fullWidth>
+              <CustomButton onClick={() => handleNavigation(ROUTES.REGISTER("cliente"))} variant="contained" color="secondary"fullWidth>
                 <Typography variant="paragraph-small-regular" color="white">
                   Cadastrar como <strong>cliente</strong>
                 </Typography>
@@ -40,7 +40,7 @@ const ChooseProfileType = () => {
               <Typography variant="paragraph-medium-regular" align="center" width={280}>
                 Quero mostrar meu trabalho para o mundo
               </Typography>
-              <CustomButton onClick={() => handleNavigation(ROUTES.REGISTER + "/fotografo")}  variant="contained" color="secondary"fullWidth>
+              <CustomButton onClick={() => handleNavigation(ROUTES.REGISTER("fotografo"))}  variant="contained" color="secondary"fullWidth>
                 <Typography variant="paragraph-small-regular" color="white">
                   Cadastrar como <strong>fotógrafo</strong>
                 </Typography>

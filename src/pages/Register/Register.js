@@ -8,32 +8,42 @@ import InputMask from "react-input-mask"
 import { useState } from "react"
 import goBackArrow from "assets/icons/go-back-arrow.svg"
 import { ROUTES } from "utils/constants"
+import { toTitleCase } from "utils/string"
+import { userDataSchema } from "./Register.schema"
+
+const defaultValue = {
+  nome: '',
+  email: '',
+  dataNasc: '',
+  cpf: '',
+  numCelular: '',
+  senha: '',
+}
 
 const Register = () => {
   const classes = useStyles()
   const navigate = useNavigate()
   const { profileType } = useParams()
 
-
-  const defaultValue = {
-    profile: profileType,
-    nome: '',
-    email: '',
-    dataNascimento: '',
-    cpf: '',
-    telefone: '',
-    senha: '',
-  }
-
+  const [profile, setProfile] = useState(profileType)
   const [userData, setUserData] = useState(defaultValue)
   const [confirmarSenha, setConfirmarSenha] = useState('')
 
   const handleChange = (e) => {
     const name = e.target.name
+
+    if(name === "nome"){
+      e.target.value = toTitleCase(e.target.value)
+    }
+
     const value = e.target.value
 
     console.log(name, value)
     setUserData(values => ({...values, [name]: value}))
+  }
+
+  const handleProfileChange = (e) => {
+    setProfile(e.target.value)
   }
 
   const CONTENTS = [
@@ -43,7 +53,7 @@ const Register = () => {
     onChange={handleChange} 
     mask="99/99/9999"
     >
-      {() => <TextField id="data-ipt" name="dataNascimento"
+      {() => <TextField id="data-ipt" name="dataNasc"
     label="Data de nascimento" placeholder="DD/MM/AAAA" />}
     </InputMask>,
   
@@ -52,18 +62,28 @@ const Register = () => {
     </InputMask>,
   
     <InputMask mask="(99) 99999-9999" onChange={handleChange}>
-      {() => <TextField id="phone-ipt" name="telefone" label="Telefone"/>}
+      {() => <TextField id="phone-ipt" name="numCelular" label="Telefone"/>}
     </InputMask>,
   
     <TextField id="password-ipt" name="senha" type="password" label="Senha" onChange={handleChange}/>,
   
-    <TextField id="verify-password-ipt" name="confirmarSenha" type="password" label="Confirmar Senha" onChange={(e) => setConfirmarSenha(e.target.value)}/>
+    <TextField 
+    id="verify-password-ipt" 
+    name="confirmarSenha" 
+    type="password" 
+    label="Confirmar Senha" 
+    onChange={(e) => setConfirmarSenha(e.target.value)}
+    />
   ]  
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(userData)
-    console.log(confirmarSenha)
+    setUserData(current => ({...current, dataNasc: userData["dataNasc"].replace(/\//g,"-")}))
+    userDataSchema.isValid(userData).then((valid) => {
+      if(valid) {
+        console.log(userData)
+      }
+    })
   }
 
   return (
@@ -90,7 +110,7 @@ const Register = () => {
                 row 
                 aria-labelledby="radio-profile-type" 
                 name="profile"
-                onChange={handleChange}
+                onChange={handleProfileChange}
                 defaultValue={profileType} 
                 >
                   <FormControlLabel 
