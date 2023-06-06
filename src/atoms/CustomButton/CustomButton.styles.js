@@ -6,7 +6,7 @@ export default makeStyles((theme) => (
       fontFamily: 'Inter, sans-serif',
       fontSize: theme.spacing(2),
       textTransform: 'none !important',
-      padding: 2, 
+      padding: theme.spacing(2), 
       width: 'fit-content', 
       height: 32,
       whiteSpace: 'nowrap',

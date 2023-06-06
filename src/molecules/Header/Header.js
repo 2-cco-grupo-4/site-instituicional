@@ -1,13 +1,13 @@
 import useStyles from "./Header.styles"
-import logo from "assets/img/picme.png"
 import OptionNav from "atoms/OptionNav"
 import CustomButton from "atoms/CustomButton/CustomButton"
 import { Box, Typography, Stack } from "@mui/material"
-import { HEADER_HEIGHT } from "utils/constants"
+import { HEADER_HEIGHT, ROUTES } from "utils/constants"
 import Container from "atoms/Container"
 import { useUserContext } from "contexts"
 import { useNavigate } from "react-router-dom"
 import CustomPopover from "molecules/CustomPopover"
+import LogoPicme from "atoms/LogoPicme"
 
 const Header = ({ type }) => {
   const classes = useStyles()
@@ -30,7 +30,7 @@ const Header = ({ type }) => {
     zIndex={1000}
     className={classes.navbar}
     >
-        <img src={logo} onClick={() => handleNavigation("/")} className={classes.logo} alt="logo" />
+        <LogoPicme />
         {type === 1 && 
           <Box display="flex" alignItems="center" justifyContent="space-between" className={classes.navbarNav}>
             <OptionNav title="Galeria" navigation="#galeria" />
@@ -47,13 +47,28 @@ const Header = ({ type }) => {
          ) : (
           type === 2 ? (
             <Box className={classes.navBotoes}>
-             <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
-             <CustomButton type="button" onClick={() => handleNavigation("/login")} variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
+              <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
+              <CustomButton type="button" onClick={() => handleNavigation(ROUTES.LOGIN)} variant="outlined"color="secondary">
+                Login
+              </CustomButton>
            </Box>
           ) : (
             <Box className={classes.navBotoes}>
-                <CustomButton type="button" onClick={() => handleNavigation("/login")} variant="outlined" sx={{ marginRight: 2 }} color="secondary">Login</CustomButton>
-                <CustomButton type="button" onClick={() => handleNavigation("/persona")} variant="contained" color="primary">
+                <CustomButton 
+                type="button" 
+                onClick={() => handleNavigation(ROUTES.LOGIN)} 
+                variant="outlined" 
+                sx={{ marginRight: 2 }} 
+                color="secondary"
+                >
+                  Login
+                </CustomButton>
+                <CustomButton 
+                type="button" 
+                onClick={() => handleNavigation(ROUTES.CHOOSE_PROFILE)} 
+                variant="contained" 
+                color="primary"
+                >
                   Cadastro
                 </CustomButton>
             </Box>

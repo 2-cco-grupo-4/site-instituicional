@@ -1,8 +1,8 @@
 import useStyles from "./CustomButton.styles"
-import { Button } from "@mui/material"
+import { Button, CircularProgress } from "@mui/material"
 
 
-const CustomButton = ({ children, variant, onClick, color, ...props }) => {
+const CustomButton = ({ children, variant, onClick, color, loading, ...props }) => {
   const classes = useStyles()
 
   return (
@@ -14,7 +14,7 @@ const CustomButton = ({ children, variant, onClick, color, ...props }) => {
       color={color}
       {...props}
     >
-      {children}
+      {loading ? <CircularProgress size={18} thickness={4} /> : <>{children}</>}
     </Button>
   )
 }

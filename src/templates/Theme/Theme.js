@@ -10,14 +10,28 @@ const theme = createTheme({
     },
     white: {
       main: "#FFFFFF",
+    },
+    stroke: {
+      main: "rgba(0,0,0,1)",
+    },
+    stroke50: {
+      main: "rgba(0,0,0,0.5)",
     }
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
     fontSize: '16px',
-    "title-small-bold": {
+    "title-medium-bold": {
       fontSize: 36,
       fontWeight: 'bold',
+    },
+    "title-small-bold": {
+      fontSize: 32,
+      fontWeight: 'bold',
+    },
+    "subtitle-small-semibold": {
+      fontSize: 24,
+      fontWeight: '600',
     },
     "subtitle-small-bold": {
       fontSize: 24,
@@ -26,6 +40,10 @@ const theme = createTheme({
     "paragraph-medium-regular": {
       fontSize: 16,
       fontWeight: "regular",
+    },
+    "paragraph-medium-light": {
+      fontSize: 16,
+      fontWeight: 300,
     },
     "paragraph-small-regular": {
       fontSize: 14,
