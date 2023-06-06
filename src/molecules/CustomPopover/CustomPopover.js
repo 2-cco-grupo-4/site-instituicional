@@ -2,11 +2,13 @@ import { Popover, Stack, Typography } from "@mui/material"
 import { useUserContext } from "contexts"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import useStyles from './CustomPopover.styles'
 
 import arrow from "assets/icons/popover-arrow.svg"
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const CustomPopover = ({...props}) => {
+  const classes = useStyles()
   const { name } = useUserContext()
   const [anchorEl, setAnchorEl] = useState(null)
   const isOpen = !!anchorEl
