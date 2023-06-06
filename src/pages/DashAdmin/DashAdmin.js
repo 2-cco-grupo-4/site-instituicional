@@ -65,6 +65,8 @@ const DashAdmin = () => {
     
     const [porcentagemKpi3, setPorcentagemKpi3] = useState(0)
 
+    const [token, setToken] = useState({})
+
     const [conexao, setConexao] = useState()
 
 
@@ -83,6 +85,7 @@ const DashAdmin = () => {
                     'Content-Type': 'application/json',
                     'Accept': '*/*',
                     'Access-Control-Allow-Origin': '*'
+                    // 'Authorization': `Bearer ${token.token}`
                   },
             });
 
@@ -107,42 +110,61 @@ const DashAdmin = () => {
         useEffect(() => {
             
             axios.post('http://localhost:8080/login', login, headers).then(function(response){
-                console.log('TESTE: ' + response)
+                setToken(response.data)
+                console.log('TESTE: ' + token.token)
             })
             
-            axios.get('http://localhost:8080/admin/contagem-tema-contato').then(function(response){
+            axios.get('http://localhost:8080/admin/contagem-tema-contato', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataBar(response.data)
             })
 
-            axios.get('http://localhost:8080/admin/contagem-clientes-semana').then(function(response){
+            axios.get('http://localhost:8080/admin/contagem-clientes-semana', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataClienteSemana(response.data)
             })
 
-            axios.get('http://localhost:8080/admin/faixa-etaria-clientes').then(function(response){
+            axios.get('http://localhost:8080/admin/faixa-etaria-clientes', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataBarFaixaEtaria(response.data)
             })
 
-            axios.get('http://localhost:8080/admin/faixa-etaria-clientes-tema/Casamentos').then(function(response){
+            axios.get('http://localhost:8080/admin/faixa-etaria-clientes-tema/Casamentos', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataBarFaixaEtariaTema(response.data)
             })
 
-            axios.get('http://localhost:8080/admin/total-clientes-fotografos').then(function(response){
+            axios.get('http://localhost:8080/admin/total-clientes-fotografos', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataClientesFotografos(response.data)
             })
 
-            axios.get('http://localhost:8080/admin/sessoes-finalizadas-canceladas').then(function(response){
+            axios.get('http://localhost:8080/admin/sessoes-finalizadas-canceladas', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataContatosConvertidos(response.data)
             })
 
-            axios.get('http://localhost:8080/admin/progressao-usuarios-mes').then(function(response){
+            axios.get('http://localhost:8080/admin/progressao-usuarios-mes', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataProgressaoUsuarios(response.data)
             })
 
-            axios.get('http://localhost:8080/admin/progressao-relizacao-sessoes').then(function(response){
+            axios.get('http://localhost:8080/admin/progressao-relizacao-sessoes', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataProgressaoSessoes(response.data)
             })
             
-            axios.get('http://localhost:8080/admin/kpi-total-usuarios').then(function(response){
+            axios.get('http://localhost:8080/admin/kpi-total-usuarios', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataKpi1(response.data)
                 var lista = (response.data)
                 if(lista[2].quantidade == 0){
@@ -155,7 +177,9 @@ const DashAdmin = () => {
                 setValorKpi1(lista[0].quantidade)
             })
 
-            axios.get('http://localhost:8080/admin/kpi-sessoes-realizadas').then(function(response){
+            axios.get('http://localhost:8080/admin/kpi-sessoes-realizadas', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataKpi2(response.data)
                 var lista = (response.data)
                 if(lista[2].quantidade == 0){
@@ -168,7 +192,9 @@ const DashAdmin = () => {
                 setValorKpi2(lista[0].quantidade)
             })
 
-            axios.get('http://localhost:8080/admin/kpi-total-acessos').then(function(response){
+            axios.get('http://localhost:8080/admin/kpi-total-acessos', {headers: {
+                'Authorization': `Bearer ${token.token}`
+              },}).then(function(response){
                 setDataKpi3(response.data)
                 var lista = (response.data)
                 if(lista[2].quantidade == 0){
