@@ -8,32 +8,34 @@ import { useState } from "react"
 import goBackArrow from "assets/icons/go-back-arrow.svg"
 import { ROUTES } from "utils/constants"
 import { userDataSchema } from "./Login.schema"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm } from "react-hook-form"
+import { useAsyncState } from "hooks/useAsyncState"
+
+const defaultValue = {
+  email: '',
+  senha: '',
+}
 
 const Login = () => {
   const theme = useTheme()
   const classes = useStyles()
   const navigate = useNavigate()
 
-  const defaultValue = {
-    email: '',
-    senha: '',
-  }
+  const [userData, setUserData, getUserData] = useAsyncState(defaultValue)
+  const [btnLoading, setBtnLoading] = useState(false)
 
-  const [userData, setUserData] = useState(defaultValue)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({resolver: yupResolver(userDataSchema)})
 
-  const handleChange = (e) => {
-    const name = e.target.name
-    const value = e.target.value
+  const onSubmitHandler = async (data) => {
+    setBtnLoading(true)
 
-    console.log(name, value)
-    setUserData(values => ({...values, [name]: value}))
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    userDataSchema.isValid(userData).then(
-      console.log(userData)
-    )
+    setUserData(data)
+    console.log(await getUserData())
   }
 
   return (
@@ -51,7 +53,7 @@ const Login = () => {
       <Stack className={classes.content}>
         <Container 
         component="form"
-        onSubmit={handleSubmit} 
+        onSubmit={handleSubmit(onSubmitHandler)} 
         py={4} 
         width="100%" 
         height="100vh" 
@@ -69,18 +71,28 @@ const Login = () => {
 
             <Stack width="100%" alignItems="center" spacing={3}>
               <Typography variant="subtitle-small-semibold">Login</Typography>
-              <Stack width="100%" justifyContent="center">
+              <Stack width="100%" justifyContent="center" spacing={3}>
                 <TextField 
                 id="email-ipt" 
                 name="email" 
                 label="E-mail" 
-                width="auto" 
-                sx={{marginBottom: 2}} 
-                onChange={handleChange}
+                fullWidth
+                {...register("email")}
+                error={!!errors.email}
+                helperText={errors.email?.message}
                 />
-                <TextField id="password-ipt" name="senha" type="password" label="Senha" onChange={handleChange}/>
+                <TextField 
+                id="password-ipt" 
+                name="senha" 
+                type="password" 
+                label="Senha" 
+                fullWidth
+                {...register("senha")}
+                error={!!errors.senha}
+                helperText={errors.senha?.message}
+                />
               </Stack>
-              <CustomButton variant="contained" color="secondary" type="submit" fullWidth>
+              <CustomButton loading={btnLoading} variant="contained" color="secondary" type="submit" fullWidth>
                 Entrar
               </CustomButton>
               <Stack direction="row" alignItems="center" spacing={0.5}>

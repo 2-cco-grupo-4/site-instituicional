@@ -25,3 +25,7 @@ iframe {
   padding: 16px !important;
   border-radius: 4px !important;
 }
+
+.MuiFormHelperText-root {
+  font-size: 12px !important;
+}

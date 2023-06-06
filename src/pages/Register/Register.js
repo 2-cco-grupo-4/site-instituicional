@@ -31,7 +31,7 @@ const Register = () => {
   const { profileType } = useParams()
 
   const [profile, setProfile] = useState(profileType)
-  const [userData, setUserData, getState] = useAsyncState(defaultValue)
+  const [userData, setUserData, getUserData] = useAsyncState(defaultValue)
   const [btnLoading, setBtnLoading] = useState(false)
 
   const {
@@ -48,6 +48,7 @@ const Register = () => {
 
   const handleProfileChange = (e) => {
     setProfile(e.target.value)
+    navigate(ROUTES.REGISTER(e.target.value))
   }
 
   const onSubmitHandler = async (data) => {
@@ -55,8 +56,9 @@ const Register = () => {
 
     const payload = {...data, dataNasc: data["dataNasc"].replace(/\//g,"-")}
     delete payload["confirmarSenha"]
+    
     setUserData(payload)
-    console.log(await getState())
+    console.log(await getUserData())
   }
 
 
@@ -99,11 +101,7 @@ const Register = () => {
 
               </RadioGroup>
             </Stack>
-            <Stack justifyContent="top" width="100%" spacing={2} sx={{
-              '& .MuiFormHelperText-root': {
-                fontSize: theme.typography['paragraph-xsmall-regular'].fontSize,
-              }
-            }}>
+            <Stack justifyContent="top" width="100%" spacing={2}>
               <TextField 
               id="name-ipt"
               name="nome"
