@@ -12,7 +12,7 @@ import LogoPicme from "atoms/LogoPicme"
 const Header = ({ type }) => {
   const classes = useStyles()
   const navigate = useNavigate()
-  const { isLogged } = useUserContext()
+  const { autenticado } = useUserContext()
 
   const handleNavigation = (route) => {
     navigate(route)
@@ -39,7 +39,7 @@ const Header = ({ type }) => {
             <OptionNav title="Explorar" navigation="#explorar" />
           </Box>
         }
-        {isLogged ? 
+        {autenticado ? 
          (
           <CustomPopover children={
             <Stack>Sair</Stack>

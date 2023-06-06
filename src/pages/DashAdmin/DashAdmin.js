@@ -18,9 +18,10 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useEffect, useState } from "react"
 import CustomPopover from "molecules/CustomPopover"
 import CustomPopoverDash from "atoms/CustomPopoverDash"
-import { getViewBarChartTemaContato } from "service/DashAdminPoint"
+import { ADMIN } from "service/dashboard"
 import axios from "axios"
 import { Await } from "react-router-dom"
+import { CLIENTE } from "service/user"
 
 const DashAdmin = () => {
 
@@ -86,6 +87,8 @@ const DashAdmin = () => {
                     'Accept': '*/*',
                     'Access-Control-Allow-Origin': '*'
                     // 'Authorization': `Bearer ${token.token}`
+
+                    
                   },
             });
 
@@ -109,9 +112,9 @@ const DashAdmin = () => {
 
         useEffect(() => {
             
-            axios.post('http://localhost:8080/login', login, headers).then(function(response){
+            CLIENTE.ENTRAR(login).then(function(response){
                 setToken(response.data)
-                console.log('TESTE: ' + token.token)
+                console.log('TESTE: ' + token.token)    
             })
             
             axios.get('http://localhost:8080/admin/contagem-tema-contato', {headers: {

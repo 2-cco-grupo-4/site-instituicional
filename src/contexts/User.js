@@ -3,20 +3,21 @@ import { createContext, useContext, useState } from "react"
 const UserContext = createContext()
 
 const defaultValues = {
-  isLogged: true,
-  name: 'Admin',
-  email: 'ryan@email.com',
-  senha: '1234'
+  autenticado: false,
+  id: 1,
+  nome: 'Admin',
+  tipoUsuario: 0,
+  temas: []
 }
 
 export const UserProvider = ({ children }) => {
-    const [isLogged, setIsLogged] = useState(defaultValues.isLogged)
+    const [autenticado, setAutenticado] = useState(defaultValues.autenticado)
     const [name, setName] = useState(defaultValues.name)
     const [email, setEmail] = useState(defaultValues.email)
     const [senha, setSenha] = useState(defaultValues.senha)
 
     return (
-        <UserContext.Provider value={{isLogged, setIsLogged, name, setName, email, setEmail, senha, setSenha}}>
+        <UserContext.Provider value={{autenticado, setAutenticado, name, setName, email, setEmail, senha, setSenha}}>
           {children}
         </UserContext.Provider>
     )
