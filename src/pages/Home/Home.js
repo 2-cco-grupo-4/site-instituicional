@@ -102,7 +102,7 @@ const Home = () => {
           <CustomButton variant="contained">Começar!</CustomButton>
         </Stack>
       </Container>
-      <Separator title="Galeria" />
+      <Separator title="Galeria" id="galeria" />
       <Container pb={2}>
         <ImageList variant="masonry" cols={3} gap={8}>
           {imageList.map(({ index, alt, src }) => (
@@ -112,8 +112,9 @@ const Home = () => {
           ))}
         </ImageList>
       </Container>
-      <Separator title="Quem somos?" />
+      <Separator title="Quem somos?"/>
       <Container
+        id="quem-somos"
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
@@ -140,6 +141,7 @@ const Home = () => {
         </Box>
       </Container>
       <Container
+        id="produto"
         flexDirection="row-reverse"
         alignItems="center"
         justifyContent="space-between"
@@ -165,6 +167,7 @@ const Home = () => {
         </Box>
       </Container>
       <Container
+        id="explorar"
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
