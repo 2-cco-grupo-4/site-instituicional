@@ -66,7 +66,7 @@ const Login = () => {
               position: "absolute",
               top: theme.spacing(4)
             }}>
-              <LogoPicme />
+              <LogoPicme height={36} />
             </Box>
 
             <Stack width="100%" alignItems="center" spacing={3}>

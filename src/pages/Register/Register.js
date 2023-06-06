@@ -77,7 +77,7 @@ const Register = () => {
       <Stack className={classes.content}>
         <Container component="form" onSubmit={handleSubmit(onSubmitHandler)} py={4}>
           <Stack width="100%" minHeight="100%" alignItems="center" spacing={3}>
-            <LogoPicme />
+            <LogoPicme height={36}/>
             <Typography variant="subtitle-small-semibold">Cadastre-se</Typography>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Typography variant="paragraph-medium-light">Sou um:</Typography>
