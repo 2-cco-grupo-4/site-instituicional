@@ -25,6 +25,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   const { token, setToken } = useUserContext()
+  const { name, setName } = useUserContext()
   const [btnLoading, setBtnLoading] = useState(false)
 
   const {
@@ -40,6 +41,7 @@ const Login = () => {
     .then((response) => {
       console.log(response.data.token)
       setToken(response.data.token)
+      setName(response.data.nome)
       navigate(ROUTES.DASH_ADMIN)
     })
     .catch((err) => {

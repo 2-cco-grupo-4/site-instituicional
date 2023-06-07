@@ -9,7 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const CustomPopover = ({...props}) => {
   const classes = useStyles()
-  const { name } = useUserContext()
+  const { name, setAutenticado } = useUserContext()
   const [anchorEl, setAnchorEl] = useState(null)
   const isOpen = !!anchorEl
   const navigate = useNavigate()
@@ -48,7 +48,11 @@ const CustomPopover = ({...props}) => {
       onClose={handleClose}
       className={ classes.popover }
       >
-        <Stack onClick={() => handleNavigation("/")} direction="row" alignItems="center" sx={{cursor: "pointer"}} p={2}>
+        <Stack onClick={() => {
+          localStorage.removeItem('token') 
+          handleNavigation("/")
+          setAutenticado(false)
+        }} direction="row" alignItems="center" sx={{cursor: "pointer"}} p={2}>
           <LogoutIcon></LogoutIcon>
           <Typography paddingLeft={1}>Logoff</Typography>
         </Stack>

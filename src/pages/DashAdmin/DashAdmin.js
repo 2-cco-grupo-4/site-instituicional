@@ -98,19 +98,6 @@ const DashAdmin = () => {
 
         })
 
-        const login = {
-            "email": "admin@email.com",
-            "senha": "picme1234"
-        }
-
-        const headers = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': '*/*',
-              }
-        }
-
-
         useEffect(() => {
             
             
