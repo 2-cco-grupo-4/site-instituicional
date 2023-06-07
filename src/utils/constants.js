@@ -4,7 +4,8 @@ export const ROUTES = {
     HOME: "/",
     REGISTER: profile => (`/cadastro/${profile}`),
     LOGIN: "/login",
-    CHOOSE_PROFILE: "/persona"
+    CHOOSE_PROFILE: "/persona",
+    DASH_ADMIN: "/dash-admin"
 }
 
 export const PROFILE_TYPES = {

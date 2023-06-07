@@ -11,3 +11,5 @@ export const FOTOGRAFO = {
   ENTRAR: (payload) => api.post("/fotografos/entrar", payload),
   SAIR: (usuario) => api.patch("/fotografos/sair", usuario),
 }
+
+export const LOGIN = (usuario) => api.post("/login", usuario)

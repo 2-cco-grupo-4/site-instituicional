@@ -22,6 +22,7 @@ import { ADMIN } from "service/dashboard"
 import axios from "axios"
 import { Await } from "react-router-dom"
 import { CLIENTE } from "service/user"
+import { useUserContext } from "contexts"
 
 const DashAdmin = () => {
 
@@ -66,7 +67,7 @@ const DashAdmin = () => {
     
     const [porcentagemKpi3, setPorcentagemKpi3] = useState(0)
 
-    const [token, setToken] = useState({})
+    const { token } = useUserContext()
 
     const [conexao, setConexao] = useState()
 
@@ -86,7 +87,7 @@ const DashAdmin = () => {
                     'Content-Type': 'application/json',
                     'Accept': '*/*',
                     'Access-Control-Allow-Origin': '*'
-                    // 'Authorization': `Bearer ${token.token}`
+                    // 'Authorization': `Bearer ${token}`
 
                     
                   },
@@ -112,61 +113,58 @@ const DashAdmin = () => {
 
         useEffect(() => {
             
-            CLIENTE.ENTRAR(login).then(function(response){
-                setToken(response.data)
-                console.log('TESTE: ' + token.token)    
-            })
+            
             
             axios.get('http://localhost:8080/admin/contagem-tema-contato', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataBar(response.data)
             })
 
             axios.get('http://localhost:8080/admin/contagem-clientes-semana', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataClienteSemana(response.data)
             })
 
             axios.get('http://localhost:8080/admin/faixa-etaria-clientes', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataBarFaixaEtaria(response.data)
             })
 
             axios.get('http://localhost:8080/admin/faixa-etaria-clientes-tema/Casamentos', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataBarFaixaEtariaTema(response.data)
             })
 
             axios.get('http://localhost:8080/admin/total-clientes-fotografos', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataClientesFotografos(response.data)
             })
 
             axios.get('http://localhost:8080/admin/sessoes-finalizadas-canceladas', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataContatosConvertidos(response.data)
             })
 
             axios.get('http://localhost:8080/admin/progressao-usuarios-mes', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataProgressaoUsuarios(response.data)
             })
 
             axios.get('http://localhost:8080/admin/progressao-relizacao-sessoes', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataProgressaoSessoes(response.data)
             })
             
             axios.get('http://localhost:8080/admin/kpi-total-usuarios', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataKpi1(response.data)
                 var lista = (response.data)
@@ -181,7 +179,7 @@ const DashAdmin = () => {
             })
 
             axios.get('http://localhost:8080/admin/kpi-sessoes-realizadas', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataKpi2(response.data)
                 var lista = (response.data)
@@ -196,7 +194,7 @@ const DashAdmin = () => {
             })
 
             axios.get('http://localhost:8080/admin/kpi-total-acessos', {headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
               },}).then(function(response){
                 setDataKpi3(response.data)
                 var lista = (response.data)
