@@ -4,7 +4,7 @@ const UserContext = createContext()
 
 const defaultValues = {
   autenticado: false,
-  nome: 'Admin',
+  nome: '',
   tipoUsuario: null,
   temas: [],
   token: null
@@ -12,22 +12,29 @@ const defaultValues = {
 
 export const UserProvider = ({ children }) => {
     const [autenticado, setAutenticado] = useState(defaultValues.autenticado)
-    const [name, setName] = useState(defaultValues.name)
+    const [nome, setNome] = useState(defaultValues.nome)
+    const [tipoUsuario, setTipoUsuario] = useState(defaultValues.tipoUsuario)
+    const [temas, setTemas] = useState(defaultValues.temas)
     const [email, setEmail] = useState(defaultValues.email)
-    const [senha, setSenha] = useState(defaultValues.senha)
     const [token, setToken] = useState(defaultValues.token)
 
     useEffect(() => {
+
       if(!!token) {
         setAutenticado(true)
-        localStorage.setItem("token", token)
       } else {
-        const tokenStorage = localStorage.getItem("token")
-        if(!!tokenStorage){
-          localStorage.setItem("token", tokenStorage)
-          setToken(tokenStorage)
-        }
+        setAutenticado(false)
       }
+      // if(!!token) {
+      //   setAutenticado(true)
+      //   localStorage.setItem("token", token)
+      // } else {
+      //   const tokenStorage = localStorage.getItem("token")
+      //   if(!!tokenStorage){
+      //     localStorage.setItem("token", tokenStorage)
+      //     setToken(tokenStorage)
+      //   }
+      // }
     },[token])
 
     return (
@@ -35,12 +42,14 @@ export const UserProvider = ({ children }) => {
         value={{
           autenticado, 
           setAutenticado, 
-          name, 
-          setName, 
+          nome, 
+          setNome, 
+          tipoUsuario,
+          setTipoUsuario,
+          temas,
+          setTemas,
           email, 
           setEmail, 
-          senha, 
-          setSenha,
           token,
           setToken,
           }}

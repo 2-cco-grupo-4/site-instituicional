@@ -10,21 +10,15 @@ import { ROUTES } from "utils/constants"
 import { userDataSchema } from "./Login.schema"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import { useAsyncState } from "hooks/useAsyncState"
 import { LOGIN } from "service/user"
 import { useUserContext } from "contexts"
-
-const defaultValue = {
-  email: '',
-  senha: '',
-}
 
 const Login = () => {
   const theme = useTheme()
   const classes = useStyles()
   const navigate = useNavigate()
 
-  const { token, setToken } = useUserContext()
+  const { setNome, setTipoUsuario, setToken } = useUserContext()
   const [btnLoading, setBtnLoading] = useState(false)
 
   const {
@@ -38,7 +32,9 @@ const Login = () => {
 
     await LOGIN(data)
     .then((response) => {
-      console.log(response.data.token)
+      console.log(response.data)
+      setNome(response.data.nome)
+      setTipoUsuario(response.data.tipoUsuario)
       setToken(response.data.token)
       navigate(ROUTES.DASH_ADMIN)
     })

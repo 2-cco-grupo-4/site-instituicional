@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useTheme } from "@mui/styles"
 import { useAsyncState } from "hooks/useAsyncState"
-import { CLIENTE } from "service/user"
+import { CLIENTE, FOTOGRAFO } from "service/user"
 
 const defaultValue = {
   nome: '',
@@ -58,7 +58,11 @@ const Register = () => {
     const payload = {...data, dataNasc: data["dataNasc"].replace(/\//g,"-")}
     delete payload["confirmarSenha"]
     
-    await CLIENTE.CADASTRAR(payload)
+    console.log(profile)
+    console.log(payload)
+    const USUARIO = profile === "cliente" ? CLIENTE : FOTOGRAFO
+
+    await USUARIO.CADASTRAR(payload)
     .then(response => {
       console.log(response)
     })

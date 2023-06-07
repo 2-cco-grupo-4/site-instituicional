@@ -20,11 +20,14 @@ import CustomPopover from "molecules/CustomPopover"
 import CustomPopoverDash from "atoms/CustomPopoverDash"
 import { ADMIN } from "service/dashboard"
 import axios from "axios"
-import { Await } from "react-router-dom"
+import {  useNavigate } from "react-router-dom"
 import { CLIENTE } from "service/user"
 import { useUserContext } from "contexts"
+import { ROUTES } from "utils/constants"
 
 const DashAdmin = () => {
+
+    const navigate = useNavigate()
 
     const defaultValues = {
         metrica: "marketing"
@@ -67,12 +70,20 @@ const DashAdmin = () => {
     
     const [porcentagemKpi3, setPorcentagemKpi3] = useState(0)
 
-    const { token } = useUserContext()
+    const { autenticado, token } = useUserContext()
 
     const [conexao, setConexao] = useState()
 
 
     const classes = useStyles()
+
+
+    useEffect(() => {
+        if(!autenticado){
+            navigate(ROUTES.HOME)
+        }
+    },[])
+
 
 //   getViewBarChartTemaContato
 //             .then(function(response){

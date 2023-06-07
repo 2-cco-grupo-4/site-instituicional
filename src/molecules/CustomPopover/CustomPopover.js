@@ -6,10 +6,11 @@ import useStyles from './CustomPopover.styles'
 
 import arrow from "assets/icons/popover-arrow.svg"
 import LogoutIcon from '@mui/icons-material/Logout';
+import { ROUTES } from "utils/constants"
 
 const CustomPopover = ({...props}) => {
   const classes = useStyles()
-  const { name } = useUserContext()
+  const { nome, setToken } = useUserContext()
   const [anchorEl, setAnchorEl] = useState(null)
   const isOpen = !!anchorEl
   const navigate = useNavigate()
@@ -18,8 +19,10 @@ const CustomPopover = ({...props}) => {
     setAnchorEl(e.currentTarget)
   }
 
-  const handleNavigation = (route) => {
-    navigate(route)
+  const handleLogoff = async () => {
+    setToken(null)
+    navigate(ROUTES.HOME)
+
   }
 
   const handleClose = () => {
@@ -29,7 +32,7 @@ const CustomPopover = ({...props}) => {
   return (
     <>
       <Stack height="100%" aria-describedby={isOpen ? "menu" : undefined} aria-haspopup="true" direction="row" alignItems="center" sx={{cursor: "pointer"}} onClick={handleClick}>
-        <Typography mr={1}>{name}</Typography>
+        <Typography mr={1}>{nome}</Typography>
         <img src={arrow} alt="arrow-icon"/>
       </Stack>
       <Popover 
@@ -46,10 +49,10 @@ const CustomPopover = ({...props}) => {
         horizontal: 'left',
       }}
       onClose={handleClose}
-      className={ classes.popover }
+      classnome={ classes.popover }
       >
-        <Stack onClick={() => handleNavigation("/")} direction="row" alignItems="center" sx={{cursor: "pointer"}} p={2}>
-          <LogoutIcon></LogoutIcon>
+        <Stack onClick={handleLogoff} direction="row" alignItems="center" sx={{cursor: "pointer"}} p={2}>
+          <LogoutIcon />
           <Typography paddingLeft={1}>Logoff</Typography>
         </Stack>
       </Popover>
