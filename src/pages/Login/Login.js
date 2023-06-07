@@ -11,6 +11,8 @@ import { userDataSchema } from "./Login.schema"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import { useAsyncState } from "hooks/useAsyncState"
+import { LOGIN } from "service/user"
+import { useUserContext } from "contexts"
 
 const defaultValue = {
   email: '',
@@ -22,7 +24,7 @@ const Login = () => {
   const classes = useStyles()
   const navigate = useNavigate()
 
-  const [userData, setUserData, getUserData] = useAsyncState(defaultValue)
+  const { token, setToken } = useUserContext()
   const [btnLoading, setBtnLoading] = useState(false)
 
   const {
@@ -34,8 +36,15 @@ const Login = () => {
   const onSubmitHandler = async (data) => {
     setBtnLoading(true)
 
-    setUserData(data)
-    console.log(await getUserData())
+    await LOGIN(data)
+    .then((response) => {
+      console.log(response.data.token)
+      setToken(response.data.token)
+      navigate(ROUTES.DASH_ADMIN)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   return (

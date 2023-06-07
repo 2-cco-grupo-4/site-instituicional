@@ -8,6 +8,7 @@ import Home from "pages/Home";
 import ChooseProfileType from "pages/ChooseProfileType";
 import Register from "pages/Register";
 import Login from "pages/Login";
+import DashAdmin from "pages/DashAdmin/DashAdmin";
 
 const DefaultProviders = ({children}) => (
   <UserProvider>
@@ -26,6 +27,7 @@ function App() {
             <Route exact path="/persona" element={<ChooseProfileType />} />
             <Route exact path="/cadastro/:profileType" element={<Register/>} />
             <Route exact path="/login" element={<Login />} />
+            <Route exact path="/dash-admin" element={<DashAdmin />} />
           </Routes>
         </BrowserRouter>
       </DefaultProviders>

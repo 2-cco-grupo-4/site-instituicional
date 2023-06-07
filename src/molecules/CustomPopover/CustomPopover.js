@@ -1,16 +1,25 @@
 import { Popover, Stack, Typography } from "@mui/material"
 import { useUserContext } from "contexts"
+import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import useStyles from './CustomPopover.styles'
 
 import arrow from "assets/icons/popover-arrow.svg"
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const CustomPopover = ({...props}) => {
+  const classes = useStyles()
   const { name } = useUserContext()
   const [anchorEl, setAnchorEl] = useState(null)
   const isOpen = !!anchorEl
+  const navigate = useNavigate()
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget)
+  }
+
+  const handleNavigation = (route) => {
+    navigate(route)
   }
 
   const handleClose = () => {
@@ -37,9 +46,11 @@ const CustomPopover = ({...props}) => {
         horizontal: 'left',
       }}
       onClose={handleClose}
+      className={ classes.popover }
       >
-        <Stack p={2}>
-          Teste do Popover
+        <Stack onClick={() => handleNavigation("/")} direction="row" alignItems="center" sx={{cursor: "pointer"}} p={2}>
+          <LogoutIcon></LogoutIcon>
+          <Typography paddingLeft={1}>Logoff</Typography>
         </Stack>
       </Popover>
     </>

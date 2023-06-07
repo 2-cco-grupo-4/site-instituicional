@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useTheme } from "@mui/styles"
 import { useAsyncState } from "hooks/useAsyncState"
+import { CLIENTE } from "service/user"
 
 const defaultValue = {
   nome: '',
@@ -57,8 +58,13 @@ const Register = () => {
     const payload = {...data, dataNasc: data["dataNasc"].replace(/\//g,"-")}
     delete payload["confirmarSenha"]
     
-    setUserData(payload)
-    console.log(await getUserData())
+    await CLIENTE.CADASTRAR(payload)
+    .then(response => {
+      console.log(response)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
 
@@ -112,7 +118,7 @@ const Register = () => {
               width="100%" 
               onChange={handleChange}
               />
-              <Stack spacing={3}>
+              <Stack spacing={2}>
                 <Stack direction="row" width="100%" alignItems="top" spacing={2}>
                   <TextField 
                   id="email-ipt" 
