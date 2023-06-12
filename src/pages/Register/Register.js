@@ -14,7 +14,8 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useTheme } from "@mui/styles"
 import { useAsyncState } from "hooks/useAsyncState"
-import { CLIENTE } from "service/user"
+import { CLIENTE, LOGIN } from "service/user"
+import { useUserContext } from "contexts"
 
 const defaultValue = {
   nome: '',
@@ -30,9 +31,9 @@ const Register = () => {
   const classes = useStyles()
   const navigate = useNavigate()
   const { profileType } = useParams()
+  const {setId, setNome, setTipoUsuario, setTemas, setToken} = useUserContext()
 
   const [profile, setProfile] = useState(profileType)
-  const [userData, setUserData, getUserData] = useAsyncState(defaultValue)
   const [btnLoading, setBtnLoading] = useState(false)
 
   const {
@@ -55,15 +56,32 @@ const Register = () => {
   const onSubmitHandler = async (data) => {
     setBtnLoading(true)
 
-    const payload = {...data, dataNasc: data["dataNasc"].replace(/\//g,"-")}
+    data["dataNasc"] = data["dataNasc"].split("/").reverse().join("-")
+    const payload = {...data}
     delete payload["confirmarSenha"]
     
+    const login = {email: payload.email, senha: payload.senha}
+    
     await CLIENTE.CADASTRAR(payload)
-    .then(response => {
-      console.log(response)
+    .then(async (response) => {
+      console.log(response.data)
+      setId(response.data.id)
+      setNome(response.data.nome)
+      setTipoUsuario(response.data.tipoUsuario)
+      setTemas(response.data.temas)
+
+      await LOGIN(login).then(() => {
+        navigate(ROUTES.FEED)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     })
     .catch((err) => {
       console.log(err)
+    })
+    .finally(() => {
+      setBtnLoading(false)
     })
   }
 

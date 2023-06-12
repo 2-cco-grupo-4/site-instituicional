@@ -19,7 +19,7 @@ const ChooseProfileType = () => {
 
   return (
     <>
-      <Header type={2} />
+      <Header type={3} />
       <Container>
         <Stack className={classes.content} spacing={4}>
           <Typography variant="title-small-bold">Em qual perfil você se encaixa?</Typography>

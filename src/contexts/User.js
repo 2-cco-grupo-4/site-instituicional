@@ -4,7 +4,8 @@ const UserContext = createContext()
 
 const defaultValues = {
   autenticado: false,
-  nome: 'Admin',
+  id: null,
+  nome: '',
   tipoUsuario: null,
   temas: [],
   token: null
@@ -12,9 +13,10 @@ const defaultValues = {
 
 export const UserProvider = ({ children }) => {
     const [autenticado, setAutenticado] = useState(defaultValues.autenticado)
-    const [name, setName] = useState(defaultValues.name)
-    const [email, setEmail] = useState(defaultValues.email)
-    const [senha, setSenha] = useState(defaultValues.senha)
+    const [id, setId] = useState(defaultValues.id)
+    const [nome, setNome] = useState(defaultValues.nome)
+    const [tipoUsuario, setTipoUsuario] = useState(defaultValues.tipoUsuario)
+    const [temas, setTemas] = useState(defaultValues.temas)
     const [token, setToken] = useState(defaultValues.token)
 
     useEffect(() => {
@@ -35,12 +37,14 @@ export const UserProvider = ({ children }) => {
         value={{
           autenticado, 
           setAutenticado, 
-          name, 
-          setName, 
-          email, 
-          setEmail, 
-          senha, 
-          setSenha,
+          id,
+          setId,
+          nome, 
+          setNome, 
+          tipoUsuario,
+          setTipoUsuario,
+          temas,
+          setTemas,
           token,
           setToken,
           }}
