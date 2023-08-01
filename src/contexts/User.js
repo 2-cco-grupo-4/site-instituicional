@@ -5,7 +5,7 @@ const UserContext = createContext()
 const defaultValues = {
   autenticado: false,
   id: null,
-  nome: '',
+  nome: null,
   tipoUsuario: null,
   temas: [],
   token: null
@@ -31,6 +31,18 @@ export const UserProvider = ({ children }) => {
         }
       }
     },[token])
+
+    useEffect(() => {
+      if(!!nome) {
+        localStorage.setItem("nome", nome)
+      } else {
+        const nomeStorage = localStorage.getItem("nome")
+        if(!!nomeStorage){
+          localStorage.setItem("nome", nome)
+          setNome(nomeStorage)
+        }
+      }
+    })
 
     return (
         <UserContext.Provider 

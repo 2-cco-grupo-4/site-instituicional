@@ -9,7 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const CustomPopover = ({...props}) => {
   const classes = useStyles()
-  const { name, setAutenticado } = useUserContext()
+  const { nome, setAutenticado } = useUserContext()
   const [anchorEl, setAnchorEl] = useState(null)
   const isOpen = !!anchorEl
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ const CustomPopover = ({...props}) => {
   return (
     <>
       <Stack height="100%" aria-describedby={isOpen ? "menu" : undefined} aria-haspopup="true" direction="row" alignItems="center" sx={{cursor: "pointer"}} onClick={handleClick}>
-        <Typography mr={1}>{name}</Typography>
+        <Typography mr={1}>{nome}</Typography>
         <img src={arrow} alt="arrow-icon"/>
       </Stack>
       <Popover 
@@ -49,7 +49,8 @@ const CustomPopover = ({...props}) => {
       className={ classes.popover }
       >
         <Stack onClick={() => {
-          localStorage.removeItem('token') 
+          localStorage.removeItem('token')
+          localStorage.removeItem('nome')
           handleNavigation("/")
           setAutenticado(false)
         }} direction="row" alignItems="center" sx={{cursor: "pointer"}} p={2}>

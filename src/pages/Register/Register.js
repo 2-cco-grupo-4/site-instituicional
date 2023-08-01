@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useTheme } from "@mui/styles"
 import { useAsyncState } from "hooks/useAsyncState"
-import { CLIENTE, LOGIN } from "service/user"
+import { CLIENTE, FOTOGRAFO, LOGIN, VALIDACAOUSER } from "service/user"
 import { useUserContext } from "contexts"
 
 const defaultValue = {
@@ -24,6 +24,7 @@ const defaultValue = {
   cpf: '',
   numCelular: '',
   senha: '',
+  profile: ''
 }
 
 const Register = () => {
@@ -57,32 +58,86 @@ const Register = () => {
     setBtnLoading(true)
 
     data["dataNasc"] = data["dataNasc"].split("/").reverse().join("-")
+    var perfil = data["profile"]
+
+    if(perfil === "fotografo") {
+      data["profile"] = 2
+    }else if(perfil === "cliente") {
+      data["profile"] = 1
+    } else {
+      alert("Perfil inválido!")
+    }
+
     const payload = {...data}
     delete payload["confirmarSenha"]
+
     
     const login = {email: payload.email, senha: payload.senha}
-    
-    await CLIENTE.CADASTRAR(payload)
-    .then(async (response) => {
-      console.log(response.data)
-      setId(response.data.id)
-      setNome(response.data.nome)
-      setTipoUsuario(response.data.tipoUsuario)
-      setTemas(response.data.temas)
 
-      await LOGIN(login).then(() => {
-        navigate(ROUTES.FEED)
+    const dadosValidarNovoUsuario = {email: payload.email, cpf: payload.cpf}
+
+    var novoUsuario = true
+
+    await VALIDACAOUSER(dadosValidarNovoUsuario)
+    .then(async (response) => {
+      if(response.status === 204) {
+        alert("Usuário já cadastrado!")
+        novoUsuario = false
+      }
+    })
+
+    if(payload.profile === 1 && novoUsuario) {
+
+      await CLIENTE.CADASTRAR(payload)
+      .then(async (response) => {
+        console.log(response.data)
+        setId(response.data.id)
+        setNome(response.data.nome)
+        setTipoUsuario(response.data.tipoUsuario)
+        setTemas(response.data.temas)
+
+        await LOGIN(login).then(() => {
+          navigate(ROUTES.FEED)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
       })
       .catch((err) => {
         console.log(err)
       })
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {
-      setBtnLoading(false)
-    })
+      .finally(() => {
+        setBtnLoading(false)
+      })
+
+    } else if(payload.profile === 2 && novoUsuario){
+
+      await FOTOGRAFO.CADASTRAR(payload)
+      .then(async (response) => {
+        console.log(response.data)
+        setId(response.data.id)
+        setNome(response.data.nome)
+        setTipoUsuario(response.data.tipoUsuario)
+        setTemas(response.data.temas)
+
+        await LOGIN(login).then(() => {
+          navigate(ROUTES.PREFERENCES_REGISTER)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+      .finally(() => {
+        setBtnLoading(false)
+      })
+
+    }
+    
+    setBtnLoading(false)
+    
   }
 
 
@@ -110,15 +165,17 @@ const Register = () => {
               aria-labelledby="radio-profile-type" 
               name="profile"
               onChange={handleProfileChange}
-              defaultValue={profileType} 
+              defaultValue={profileType}
               >
                 <FormControlLabel 
-                value="cliente" 
+                value="cliente"
+                {...register("profile")}
                 control={<Radio />} 
                 label={<Typography variant="paragraph-medium-light">Cliente</Typography>} />
 
                 <FormControlLabel 
                 value="fotografo" 
+                {...register("profile")}
                 control={<Radio />}  
                 label={<Typography variant="paragraph-medium-light">Fotógrafo</Typography>} 
                 />

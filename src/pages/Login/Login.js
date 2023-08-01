@@ -25,7 +25,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   const { token, setToken } = useUserContext()
-  const { name, setName } = useUserContext()
+  const { nome, setNome } = useUserContext()
   const [btnLoading, setBtnLoading] = useState(false)
 
   const {
@@ -40,9 +40,16 @@ const Login = () => {
     await LOGIN(data)
     .then((response) => {
       console.log(response.data.token)
+      console.log(response.data.nome)
+      var role = response.data.tipoUsuario
+      console.log(role)
       setToken(response.data.token)
-      setName(response.data.nome)
-      navigate(ROUTES.DASH_ADMIN)
+      setNome(response.data.nome)
+      if(role === 0){
+        navigate(ROUTES.DASH_ADMIN)
+      } else {
+        navigate(ROUTES.FEED)
+      }
     })
     .catch((err) => {
       console.log(err)
