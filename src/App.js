@@ -10,6 +10,8 @@ import Register from "pages/Register";
 import Login from "pages/Login";
 import DashAdmin from "pages/DashAdmin/DashAdmin";
 import Feed from "pages/Feed";
+import PhotographerPreferences from "pages/PhotographerPreferences";
+import PreferencesRegister from "pages/PreferencesRegister";
 
 const DefaultProviders = ({children}) => (
   <UserProvider>
@@ -30,6 +32,8 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/explorar" element={<Feed />} />
             <Route exact path="/dash-admin" element={<DashAdmin />} />
+            <Route exact path="/preferencias-fotografo" element={<PhotographerPreferences />}></Route>
+            <Route exact path="/preferencias-cadastro" element={<PreferencesRegister />}></Route>
           </Routes>
         </BrowserRouter>
       </DefaultProviders>

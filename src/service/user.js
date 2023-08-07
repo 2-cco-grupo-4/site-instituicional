@@ -13,3 +13,5 @@ export const FOTOGRAFO = {
 }
 
 export const LOGIN = (usuario) => api.post("/login", usuario)
+
+export const VALIDACAOUSER = (emailCpf) => api.post("/usuario/validarNovoUsuario", emailCpf)
