@@ -1,6 +1,6 @@
 import useStyles from "./Feed.styles"
 import Header from 'molecules/Header'
-import { ImageList, ImageListItem, Stack } from "@mui/material"
+import { Stack } from "@mui/material"
 
 import baloes from "assets/img/baloes.jpg"
 import bolo from "assets/img/bolo.jpg"
@@ -11,8 +11,10 @@ import criancaCasamento from "assets/img/crianca-casamento.jpg"
 import senhorAniversario from "assets/img/senhor-aniversario.jpg"
 import sobrinho from "assets/img/sobrinho.jpg"
 import tacas from "assets/img/tacas.jpg"
-import Footer from "molecules/Footer"
+// import Footer from "molecules/Footer"
 import Container from "atoms/Container"
+import FeedAlbum from "molecules/FeedAlbum/FeedAlbum"
+import { Masonry } from "@mui/lab"
 
 const imageList = [
   {
@@ -59,15 +61,13 @@ const Feed = () => {
   return (
     <>
       <Header type={2} />
-      <Stack>
+      <Stack py={4}>
         <Container>
-          <ImageList variant="masonry" cols={3} gap={8}>
+          <Masonry columns={3} spacing={3}>
             {imageList.map(({ index, alt, src }) => (
-              <ImageListItem key={index}>
-                <img src={src} alt={alt} />
-              </ImageListItem>
+              <FeedAlbum key={index} src={src} alt={alt} autor="Freddie" />
             ))}
-          </ImageList>
+          </Masonry >
         </Container>
       </Stack>
     </>

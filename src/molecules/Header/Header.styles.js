@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles'
 
 export default makeStyles((theme) => ({
   navbar: {
-    backgroundColor: 'white.main',
+    backgroundColor: theme.palette.white.main,
     boxShadow: '0 1px 16px rgba(0,0,0,0.2)',
   },
   navbarNav: {
@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
   },
   search: {
     width: '35vw',
-    backgroundColor: theme.palette.gray,
+    backgroundColor: theme.palette.gray.main,
     borderRadius: theme.shape.borderRadius,
     display: 'flex',
     justifyContent: 'left',
