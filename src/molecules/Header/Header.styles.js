@@ -4,6 +4,10 @@ export default makeStyles((theme) => ({
   navbar: {
     backgroundColor: 'white.main',
     boxShadow: '0 1px 16px rgba(0,0,0,0.2)',
+    // justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center'
+    }
   },
   navbarNav: {
     width: '30%',
@@ -11,11 +15,17 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
+    }
   },
   navBotoes: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   },
   search: {
     width: '35vw',

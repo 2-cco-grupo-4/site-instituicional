@@ -115,7 +115,6 @@ const Home = () => {
       <Separator title="Quem somos?"/>
       <Container
         id="quem-somos"
-        flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
         className={classes.section}
@@ -132,7 +131,7 @@ const Home = () => {
             e entrar em contato de forma imediata em busca de seu trabalho.
           </Typography>
         </Stack>
-        <Box width="50%" align="right">
+        <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="right" hasTapes>
               <img src={smartphone} alt="" />
@@ -142,10 +141,9 @@ const Home = () => {
       </Container>
       <Container
         id="produto"
-        flexDirection="row-reverse"
         alignItems="center"
         justifyContent="space-between"
-        className={classes.section}
+        className={classes.sectionInvertida}
       >
         <Stack width="50%">
           <Typography variant="title-small-bold" mb={4}>
@@ -158,7 +156,7 @@ const Home = () => {
             para seu evento.
           </Typography>
         </Stack>
-        <Box width="50%" align="left">
+        <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="left" hasTapes>
               <img src={fotografo} alt="" />
@@ -168,7 +166,6 @@ const Home = () => {
       </Container>
       <Container
         id="explorar"
-        flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
         className={classes.section}
@@ -183,7 +180,7 @@ const Home = () => {
           </Typography>
           <CustomButton color="primary" variant="contained">Explorar</CustomButton>
         </Stack>
-        <Box width="50%" align="right">
+        <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="right" hasTapes>
               <img src={aniversario} alt="" />

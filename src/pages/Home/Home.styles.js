@@ -1,6 +1,7 @@
 import background from 'assets/img/banner-fotografo.jpg'
 import { HEADER_HEIGHT } from 'utils/constants'
 import { makeStyles } from '@mui/styles'
+// import useMediaQuery from '@mui/material/useMediaQuery'
 
 export default makeStyles((theme) => ({
   banner: {
@@ -32,5 +33,50 @@ export default makeStyles((theme) => ({
   section: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column'
+    }
+  },
+  sectionInvertida: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  },
+  pastedPhoto: {
+    width: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '70%',
+      marginTop: theme.spacing(8)
+    }
+  },
+  pastedPhotoInvertida: {
+    width: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '70%',
+      marginTop: theme.spacing(8)
+    }
   }
+
+
+  /* 
+    Medias Querys:
+    320px — 480px: dispositivos móveis
+    481px — 768px: iPads, tablets
+    769px — 1024px: telas pequenas, laptops
+    1025px — 1200px: desktops, telas grandes
+    1201px e acima —  telas muito grandes, TVs
+  */
+
 }))

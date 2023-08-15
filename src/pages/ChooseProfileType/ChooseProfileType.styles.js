@@ -7,6 +7,13 @@ export default makeStyles((theme) => ({
     alignItems: "center", 
     justifyContent: "top",
   },
+  cardPerfil: {
+    direction: 'row',
+    // backgroundColor: 'white',
+    [theme.breakpoints.down('md')]: {
+      // direction: 'column'
+    }
+  },
   image: {
     height: 200,
     width: "100%",

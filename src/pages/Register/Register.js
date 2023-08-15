@@ -143,7 +143,7 @@ const Register = () => {
 
   return (
     <Stack direction="row" alignItems="top">
-      <Stack className={classes.banner}>
+      <Stack display={{md: 'flex', sm: 'none', xs: 'none'}} className={classes.banner}>
         <Container py={4}>
           <img 
           src={goBackArrow} 
@@ -153,12 +153,12 @@ const Register = () => {
           />
         </Container>
       </Stack>
-      <Stack className={classes.content}>
+      <Stack width={{md: '40%', sm: '100%', xs: '100%'}} className={classes.content}>
         <Container component="form" onSubmit={handleSubmit(onSubmitHandler)} py={4}>
           <Stack width="100%" minHeight="100%" alignItems="center" spacing={3}>
             <LogoPicme height={36}/>
             <Typography variant="subtitle-small-semibold">Cadastre-se</Typography>
-            <Stack direction="row" alignItems="center" spacing={2}>
+            <Stack direction={{lg: 'row', md: 'column', xs: 'column'}} alignItems="center" spacing={2}>
               <Typography variant="paragraph-medium-light">Sou um:</Typography>
               <RadioGroup 
               row 
@@ -194,7 +194,7 @@ const Register = () => {
               onChange={handleChange}
               />
               <Stack spacing={2}>
-                <Stack direction="row" width="100%" alignItems="top" spacing={2}>
+                <Stack direction={{lg: 'row', md: 'column'}} width="100%" alignItems="top" spacing={2}>
                   <TextField 
                   id="email-ipt" 
                   name="email" 
@@ -206,18 +206,18 @@ const Register = () => {
                   fullWidth
                   />
 
-                  <InputMask 
+                  <InputMask
                   {...register("dataNasc")}
                   onChange={handleChange} 
                   mask="99/99/9999"
                   >
-                    {() => <TextField id="data-ipt" name="dataNasc" fullWidth
+                    {() => <TextField className={classes.spacingInput} spacing={{md: 0, sm: 2}} marginTop={{md: '0px', sm: '16px'}}  id="data-ipt" name="dataNasc" fullWidth
                     label="Data de nascimento" placeholder="DD/MM/AAAA" 
                     error={!!errors.dataNasc} helperText={errors.dataNasc?.message}
                     />}
                   </InputMask>
                 </Stack>
-                <Stack direction="row" width="100%" alignItems="top" spacing={2}>
+                <Stack direction={{lg: 'row', md: 'column'}} width="100%" alignItems="top" spacing={2}>
                   <InputMask mask="999.999.999-99" {...register("cpf")} onChange={handleChange} >
                     {() => <TextField id="cpf-ipt" name="cpf" label="CPF" fullWidth error={!!errors.cpf}
                     helperText={errors.cpf?.message} />} 
@@ -228,7 +228,7 @@ const Register = () => {
                   error={!!errors.numCelular} helperText={errors.numCelular?.message}/>}
                   </InputMask>
                 </Stack>
-                <Stack direction="row" width="100%" alignItems="top" spacing={2}>
+                <Stack direction={{lg: 'row', md: 'column'}} width="100%" alignItems="top" spacing={2}>
                   <TextField 
                   id="password-ipt" 
                   name="senha" 

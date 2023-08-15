@@ -23,10 +23,10 @@ const ChooseProfileType = () => {
       <Container>
         <Stack className={classes.content} spacing={4}>
           <Typography variant="title-small-bold">Em qual perfil você se encaixa?</Typography>
-          <Stack direction="row" spacing={5}>
-            <DashedCard width={350} alignItems="center" spacing={4}>
+          <Stack direction={{xs: 'column', md: 'row'}} spacing={5}>
+            <DashedCard width={{xs: 230, sm: 350}} alignItems="center" spacing={4}>
               <img src={imageCustomer} alt="customer-navigating-through-feed" className={classes.image}/>
-              <Typography variant="paragraph-medium-regular" align="center" width={280}>
+              <Typography variant="paragraph-medium-regular" align="center" width={{xs: 200, sm: 280}}>
                Quero contratar fotógrafos e registrar momentos inesquecíveis
               </Typography>
               <CustomButton onClick={() => handleNavigation(ROUTES.REGISTER("cliente"))} variant="contained" color="secondary"fullWidth>
@@ -35,9 +35,9 @@ const ChooseProfileType = () => {
                 </Typography>
               </CustomButton>
             </DashedCard>
-            <DashedCard width={350} alignItems="center" spacing={4}>
+            <DashedCard width={{xs: 230, sm: 350}} alignItems="center" spacing={4}>
               <img src={imagePhotographer} alt="customer-navigating-through-feed" className={classes.image}/>
-              <Typography variant="paragraph-medium-regular" align="center" width={280}>
+              <Typography variant="paragraph-medium-regular" align="center" width={{xs: 200, sm: 280}}>
                 Quero mostrar meu trabalho para o mundo
               </Typography>
               <CustomButton onClick={() => handleNavigation(ROUTES.REGISTER("fotografo"))}  variant="contained" color="secondary"fullWidth>
