@@ -7,9 +7,14 @@ export default makeStyles((theme) => ({
     borderBottomWidth: 1,
     borderBottomStyle: 'solid',
     borderBottomColor: theme.palette.gray.main,
+    padding: 0,
     "& .MuiButtonBase-root": {
       padding: theme.spacing(2, 5),
       textTransform: 'none',
+    },
+    "& .MuiTabScrollButton-root": {
+      padding: theme.spacing(2, 3),
+      width: theme.spacing(8),
     },
   },
 }))

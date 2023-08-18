@@ -17,7 +17,7 @@ import FeedAlbum from "molecules/FeedAlbum/FeedAlbum"
 import { Masonry } from "@mui/lab"
 import { useState } from "react"
 
-const imageList = [
+const IMAGE_LIST = [
   {
     alt: "senhor-aniversario",
     src: senhorAniversario,
@@ -56,56 +56,73 @@ const imageList = [
   },
 ]
 
+const CATEGORIES = [
+  'Casamento',
+  'Vintage',
+  'Evento', 'Família',
+  'Aniversário',
+  'Festa',
+  'Pets',
+  'Debutante',
+  'Formatura',
+  'Esporte',
+  'Paisagem'
+]
+
 const Feed = () => {
   const classes = useStyles()
   const theme = useTheme()
-  const [category, setCategory] = useState(0)
+  const [category, setCategory] = useState()
   const [isInfoOpen, setIsInfoOpen] = useState(true)
 
   const handleTabChange = (_, newCategory) => {
+    console.log(newCategory)
     setCategory(newCategory)
   }
 
   return (
     <>
       <Header type={2} />
-      <Tabs 
+      <Tabs
         className={classes.tabs}
         value={category}
-        variant="scrollable" 
-        scrollButtons="auto" 
-        aria-label="scrollable auto tabs example"
+        variant="scrollable"
+        scrollButtons
+        aria-label="scrollable categories"
         onChange={handleTabChange}
       >
-        <Tab className={classes.tabItem} label="Item 1" />
-        <Tab className={classes.tabItem} label="Item 2" />
-        <Tab className={classes.tabItem} label="Item 3" />
-      </Tabs>
+        {CATEGORIES.map((content) => (
+          <Tab key={content} label={content} />
+        ))}
+      </Tabs >
       <Collapse in={isInfoOpen}>
-        <Alert 
-          icon={false} 
+        <Alert
+          icon={false}
           onClose={() => setIsInfoOpen(false)}
-          variant="filled" 
+          variant="filled"
           style={{
-            borderRadius: 0, 
-            backgroundColor: theme.palette.secondary.main, 
+            borderRadius: 0,
+            backgroundColor: theme.palette.secondary.main,
             display: 'flex',
             alignItems: 'center',
+            padding: theme.spacing(0, 8),
           }}
         >
-          <Typography variant="paragraph-small-regular">
+          <Typography variant="paragraph-xsmall-regular">
             Escolhemos essas imagens com base nas suas preferências, caso deseje ver mais opções{' '}
             você pode fazer uma busca ou navegar pelas tags!
           </Typography>
         </Alert>
       </Collapse>
       <Stack py={4}>
-        <Container>
-          <Masonry columns={3} spacing={3}>
-            {imageList.map(({ index, alt, src }) => (
-              <FeedAlbum key={index} src={src} alt={alt} autor="Freddie" />
-            ))}
-          </Masonry >
+        <Container display="flex" flexDirection="column" alignItems="center">
+          <Stack alignItems="center" sx={{ width: "calc(100% + 24px)" }}>
+            <Masonry columns={3} spacing={3} sx={{ width: '100%' }}>
+              {IMAGE_LIST.map(({ index, alt, src }) => (
+                <FeedAlbum key={index} src={src} alt={alt} autor="Freddie" />
+              ))}
+            </Masonry >
+          </Stack>
         </Container>
       </Stack>
     </>
