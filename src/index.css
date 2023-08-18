@@ -20,12 +20,6 @@ iframe {
   z-index: -10000 !important;
 }
 
-.MuiButtonBase-root {
-  text-transform: none !important; 
-  padding: 16px !important;
-  border-radius: 4px !important;
-}
-
 .MuiFormHelperText-root {
   font-size: 12px !important;
 }
