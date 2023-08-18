@@ -12,6 +12,8 @@ import DashAdmin from "pages/DashAdmin/DashAdmin";
 import Feed from "pages/Feed";
 import PhotographerPreferences from "pages/PhotographerPreferences";
 import PreferencesRegister from "pages/PreferencesRegister";
+import CustomLogin from "molecules/CustomLogin/CustomLogin";
+import { Modal } from "@mui/material";
 
 const DefaultProviders = ({children}) => (
   <UserProvider>
@@ -27,6 +29,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<Home />}/>
+            <Route exact path="/modal" element={<CustomLogin />}/>
             <Route exact path="/persona" element={<ChooseProfileType />} />
             <Route exact path="/cadastro/:profileType" element={<Register/>} />
             <Route exact path="/login" element={<Login />} />
