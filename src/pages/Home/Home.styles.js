@@ -11,7 +11,13 @@ export default makeStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    [theme.breakpoints.down('md')]: {
+      height: `calc(60vh - ${HEADER_HEIGHT})`
+    },
+    [theme.breakpoints.down('sm')]: {
+      backgroundSize: 'cover'
+    }
   },
   separator: {
     backgroundColor: theme.palette.secondary.main,
@@ -55,7 +61,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     [theme.breakpoints.down('md')]: {
-      width: '70%',
+      width: '100%',
       marginTop: theme.spacing(8)
     }
   },

@@ -48,7 +48,7 @@ const Header = ({ type }) => {
     bgcolor="white.main"
     display='flex' 
     alignItems='center' 
-    justifyContent='space-between'
+    justifyContent={{sm: 'space-between', xs: 'center'}}
     position="sticky"
     top={0}
     zIndex={1000}

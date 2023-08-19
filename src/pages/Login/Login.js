@@ -58,7 +58,7 @@ const Login = () => {
 
   return (
     <Stack direction="row" alignItems="top">
-      <Stack className={classes.banner}>
+      <Stack display={{md: 'flex', sm: 'none', xs: 'none'}} className={classes.banner}>
         <Container py={4}>
           <img 
           src={goBackArrow} 
@@ -68,7 +68,7 @@ const Login = () => {
           />
         </Container>
       </Stack>
-      <Stack className={classes.content}>
+      <Stack width={{md: '40%', sm: '100%', xs: '100%'}} className={classes.content}>
         <Container 
         component="form"
         onSubmit={handleSubmit(onSubmitHandler)} 
@@ -113,7 +113,7 @@ const Login = () => {
               <CustomButton loading={btnLoading} variant="contained" color="secondary" type="submit" fullWidth>
                 Entrar
               </CustomButton>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Stack direction={{sm: 'row', xs: 'column'}} alignItems="center" spacing={0.5}>
                 <Typography sx={{fontWeight: 300}}>
                   Não tem um cadastro? 
                 </Typography>

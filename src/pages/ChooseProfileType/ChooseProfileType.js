@@ -22,7 +22,7 @@ const ChooseProfileType = () => {
       <Header type={3} />
       <Container>
         <Stack className={classes.content} spacing={4}>
-          <Typography variant="title-small-bold">Em qual perfil você se encaixa?</Typography>
+          <Typography variant="title-small-bold" fontSize={{md: '32px', sm: '28px', xs: '24px'}} textAlign={'center'}>Em qual perfil você se encaixa?</Typography>
           <Stack direction={{xs: 'column', md: 'row'}} spacing={5}>
             <DashedCard width={{xs: 230, sm: 350}} alignItems="center" spacing={4}>
               <img src={imageCustomer} alt="customer-navigating-through-feed" className={classes.image}/>

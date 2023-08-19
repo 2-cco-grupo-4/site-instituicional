@@ -22,7 +22,8 @@ export default makeStyles((theme) => ({
   spacingInput: {
     marginTop: 0,
     [theme.breakpoints.down('md')]: {
-      direction: '16px'
+      top: '16px',
+      paddingBottom: '16px !important'
     }
   }
 }))

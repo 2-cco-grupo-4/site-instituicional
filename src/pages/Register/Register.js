@@ -158,7 +158,7 @@ const Register = () => {
           <Stack width="100%" minHeight="100%" alignItems="center" spacing={3}>
             <LogoPicme height={36}/>
             <Typography variant="subtitle-small-semibold">Cadastre-se</Typography>
-            <Stack direction={{lg: 'row', md: 'column', xs: 'column'}} alignItems="center" spacing={2}>
+            <Stack direction={{lg: 'row', md: 'column', xs: 'column'}} alignItems="center" justifyContent='center' spacing={2}>
               <Typography variant="paragraph-medium-light">Sou um:</Typography>
               <RadioGroup 
               row 
@@ -211,7 +211,7 @@ const Register = () => {
                   onChange={handleChange} 
                   mask="99/99/9999"
                   >
-                    {() => <TextField className={classes.spacingInput} spacing={{md: 0, sm: 2}} marginTop={{md: '0px', sm: '16px'}}  id="data-ipt" name="dataNasc" fullWidth
+                    {() => <TextField className={classes.spacingInput} id="data-ipt" name="dataNasc" fullWidth
                     label="Data de nascimento" placeholder="DD/MM/AAAA" 
                     error={!!errors.dataNasc} helperText={errors.dataNasc?.message}
                     />}
@@ -224,7 +224,7 @@ const Register = () => {
                   </InputMask>
                   
                   <InputMask mask="(99) 99999-9999" {...register("numCelular")} onChange={handleChange}>
-                  {() => <TextField id="phone-ipt" name="numCelular" label="Telefone" fullWidth
+                  {() => <TextField className={classes.spacingInput} id="phone-ipt" name="numCelular" label="Telefone" fullWidth
                   error={!!errors.numCelular} helperText={errors.numCelular?.message}/>}
                   </InputMask>
                 </Stack>
@@ -251,6 +251,7 @@ const Register = () => {
                   onChange={handleChange}
                   helperText={errors.confirmarSenha?.message}
                   error={!!errors.confirmarSenha}
+                  className={classes.spacingInput}
                   />
                 </Stack>
               </Stack>
@@ -258,7 +259,7 @@ const Register = () => {
             <CustomButton loading={btnLoading} variant="contained" color="secondary" type="submit" fullWidth>
               Continuar
             </CustomButton>
-            <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Stack direction={{md: 'row', sm: 'column'}} alignItems="center" spacing={0.5}>
               <Typography sx={{fontWeight: 300}}>
                 Já tem cadastro? 
               </Typography>
