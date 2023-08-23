@@ -3,7 +3,7 @@ import VLibras from "@djpfs/react-vlibras"
 import { UserProvider } from "contexts";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
-
+import Pedido from "pages/Pedido";
 import Home from "pages/Home";
 import ChooseProfileType from "pages/ChooseProfileType";
 import Register from "pages/Register";
@@ -30,6 +30,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />}/>
             <Route exact path="/modal" element={<CustomLogin />}/>
+            <Route exact path="/pedido" element={<Pedido />}/>
             <Route exact path="/persona" element={<ChooseProfileType />} />
             <Route exact path="/cadastro/:profileType" element={<Register/>} />
             <Route exact path="/login" element={<Login />} />
