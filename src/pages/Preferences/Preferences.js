@@ -10,6 +10,8 @@ import debutante from 'assets/img/tema-debutante.png'
 import familia from 'assets/img/tema-familia.png'
 import formatura from 'assets/img/tema-formatura.png'
 import aniversario from 'assets/img/tema-aniversario.png'
+import { useEffect, useState } from "react"
+import { ROUTES } from "utils/constants"
 
 const PREFERENCES_LIST = [
   {
@@ -41,6 +43,21 @@ const PREFERENCES_LIST = [
 const Preferences = () => {
   const theme = useTheme()
   const classes = useStyles()
+  const navigate = useNavigate()
+
+  const [selectedThemes, setSelectedThemes] = useState([])
+
+  const handleClick = (e) => {
+    if (selectedThemes.find((selectedTheme) => selectedTheme === e.target.id)) {
+      setSelectedThemes(selectedThemes.filter((selectedTheme) => selectedTheme !== e.target.id))
+    } else {
+      setSelectedThemes([...selectedThemes, e.target.id])
+    }
+  }
+
+  const handleNavigate = () => {
+    navigate(ROUTES.FEED)
+  }
 
   return (
     <Container flexDirection="column" py={4} rowGap={8}>
@@ -58,7 +75,7 @@ const Preferences = () => {
         </Stack>
         <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
           <Typography variant="subtitle-small-bold">Tema</Typography>
-          <CustomButton variant="contained" color="secondary">Continuar</CustomButton>
+          <CustomButton variant="contained" color="secondary" onClick={handleNavigate}>Continuar</CustomButton>
         </Stack>
       </Stack>
       <Grid container spacing={2}>
@@ -70,12 +87,18 @@ const Preferences = () => {
                 backgroundImage: `url(${info.image})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                position: 'relative',
               }}
             >
+              {selectedThemes.find((selectedTheme) => selectedTheme === info.name) && (
+                <Stack id={info.name} onClick={handleClick} className={classes.check} />
+              )}
               <Stack
+                id={info.name}
+                onClick={handleClick}
                 className={classes.content}
                 sx={{
-                  background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 66.67%, #000 85.42%)',
+                  background: selectedThemes.find((selectedTheme) => selectedTheme === info.name) ? 'rgba(0,0,0,0.8)' : 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 66.67%, #000 85.42%)',
                 }}
               >
                 <Typography variant="paragraph-medium-bold">{info.name}</Typography>
