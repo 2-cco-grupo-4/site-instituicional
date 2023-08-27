@@ -3,6 +3,8 @@ import {
   ImageList,
   ImageListItem,
   Stack,
+  Tab,
+  Tabs,
   Typography,
 } from "@mui/material";
 import useStyles from "./PerfilFotografo.styles";
@@ -10,46 +12,49 @@ import Container from "atoms/Container";
 import CustomButton from "atoms/CustomButton/CustomButton";
 import Header from "molecules/Header";
 
-
+import noivosSorriso from "assets/img/noivos-sorriso.png";
+import noivaFlorestaBuque from "assets/img/noiva-floresta-buque.png";
+import noivosPonte from "assets/img/noivos-ponte.png";
+import cerimonia from "assets/img/cerimonia.png";
+import noivosPorDoSol from "assets/img/noivos-por-do-sol.png";
+import noivaPai from "assets/img/noiva-e-pai.png";
+import noivaPraia from "assets/img/noivos-praia.png";
+import noivaSolitaria from "assets/img/noiva-solitaria.png";
 
 const imageList = [
   {
-    alt: "senhor-aniversario",
-    src: senhorAniversario,
+    alt: "noivos-sorriso",
+    src: noivosSorriso,
   },
   {
-    alt: "baloes",
-    src: baloes,
+    alt: "noiva-floresta-buque",
+    src: noivaFlorestaBuque,
   },
   {
-    alt: "brinde",
-    src: brinde,
+    alt: "noivosPonte",
+    src: noivosPonte,
   },
   {
-    alt: "casal",
-    src: casal,
+    alt: "cerimonia",
+    src: cerimonia,
   },
   {
-    alt: "sobrinho",
-    src: sobrinho,
+    alt: "noivosPorDoSol",
+    src: noivosPorDoSol,
   },
   {
-    alt: "bolo",
-    src: bolo,
+    alt: "noivaPai",
+    src: noivaPai,
   },
   {
-    alt: "buque",
-    src: buque,
+    alt: "noivaPraia",
+    src: noivaPraia,
   },
   {
-    alt: "tacas",
-    src: tacas,
+    alt: "noiva-solitaria",
+    src: noivaSolitaria,
   },
-  {
-    alt: "crianca-casamento",
-    src: criancaCasamento,
-  },
-]
+];
 
 const PerfilFotografo = () => {
   const classes = useStyles();
@@ -58,7 +63,7 @@ const PerfilFotografo = () => {
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={2} />
       <Container className={classes.banner}></Container>
-      <Typography fontSize={"16px"} margin={"12px"}>
+      <Typography paddingLeft={"64px"} fontSize={"16px"} margin={"12px"}>
         {"Home > Renata Fereira"}
       </Typography>
       <Stack className={classes.cabecalho}></Stack>
@@ -80,7 +85,7 @@ const PerfilFotografo = () => {
           <Typography fontWeight={"bold"}> Álbuns</Typography>
         </Container>
         <Container className={classes.sectionTwo}>
-          <Typography fontWeight={"bold"}> Avaliações </Typography>
+          <Typography fontWeight={"bold"}> Avaliação </Typography>
         </Container>
       </Box>
       <Container pb={2}>

@@ -44,13 +44,16 @@ export default makeStyles(() => ({
     backgroundColor: "Black",
     border: "1px solid black",
     color: "white",
-    alignContent: "center",
-    textAlign: "center"
+    justifyContent: "center",
+    borderRadius: "4px",
+    padding: "4px"
   },
   sectionTwo: {
     maxWidth: "43.5%",
     justifyContent: "center",
+    borderRadius: "4px",
     border: "1px solid black",
+    padding: "4px"
 
   }
 }));
