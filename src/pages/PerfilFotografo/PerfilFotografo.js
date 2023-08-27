@@ -1,6 +1,7 @@
 import useStyles from "./PerfilFotografo.styles";
 import { Stack, Typography } from "@mui/material";
 import Container from "atoms/Container";
+import CustomButton from "atoms/CustomButton/CustomButton";
 import Header from "molecules/Header";
 
 const PerfilFotografo = () => {
@@ -13,10 +14,11 @@ const PerfilFotografo = () => {
       <Typography fontSize={"16px"} margin={"12px"}>{"Home > Renata Fereira"}</Typography>
       <Stack className={classes.cabecalho}>
       </Stack>
-      <Stack padding={"32px"} position={"relative"} alignItems={"center"}>
+      <Stack className={classes.textoCabecalho} >
         <Typography fontWeight={"bold"} fontSize={"24px"}>Renata Fereira</Typography>
-        <Typography>@referphots</Typography>
-        <Typography>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</Typography>
+        <Typography color={"grey"} fontWeight={"bold"} paddingTop={"10px"}>@referphots</Typography>
+        <Typography marginBottom={"15px"} paddingTop={"10px"}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</Typography>
+        <CustomButton variant={"contained"}> Editar Perfil</CustomButton>
       </Stack>
     </Stack>
   );

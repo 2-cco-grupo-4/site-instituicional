@@ -21,7 +21,15 @@ export default makeStyles(() => ({
     backgroundRepeat: "no-repeat",
     borderRadius: "50%",
     position: "absolute",
-    top: "150px",
+    top: "210px",
     alignSelf: "center",
+  },
+  textoCabecalho: {
+    maxWidth: "100%",
+    padding: "32px",
+    display: "flex",
+    alignItems: "center",
+    textAlign: "center",
+    marginBottom: "20px",
   },
 }));
