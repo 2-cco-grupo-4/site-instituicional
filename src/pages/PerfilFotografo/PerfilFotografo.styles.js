@@ -2,9 +2,8 @@ import background from "assets/img/banner-perfil-fotografo.png";
 import backgroundPerfil from "assets/img/foto-perfil-fotografo.png";
 import { HEADER_HEIGHT } from "utils/constants";
 import { makeStyles } from "@mui/styles";
-import { colors } from "@mui/material";
 
-export default makeStyles(() => ({
+export default makeStyles((props) => ({
   banner: {
     height: `calc(30vh - ${HEADER_HEIGHT})`,
     maxWidth: "100%",
@@ -37,23 +36,33 @@ export default makeStyles(() => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
-    marginBottom: "16px"
+    marginBottom: "16px",
   },
   sectionOne: {
     maxWidth: "43.5%",
-    backgroundColor: "Black",
+    backgroundColor: "black",
     border: "1px solid black",
     color: "white",
     justifyContent: "center",
     borderRadius: "4px",
-    padding: "4px"
+    padding: "4px",
   },
   sectionTwo: {
     maxWidth: "43.5%",
+    backgroundColor: "white",
     justifyContent: "center",
     borderRadius: "4px",
     border: "1px solid black",
-    padding: "4px"
-
-  }
+    padding: "4px",
+  },
+  linkAlbum: {
+    "& a:hover": {
+      
+    },
+  },
+  linkAvaliacao: {
+    "&:hover": {
+      
+    },
+  },
 }));

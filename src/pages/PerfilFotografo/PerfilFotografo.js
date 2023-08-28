@@ -20,6 +20,7 @@ import noivosPorDoSol from "assets/img/noivos-por-do-sol.png";
 import noivaPai from "assets/img/noiva-e-pai.png";
 import noivaPraia from "assets/img/noivos-praia.png";
 import noivaSolitaria from "assets/img/noiva-solitaria.png";
+import { useState } from "react";
 
 const imageList = [
   {
@@ -57,7 +58,29 @@ const imageList = [
 ];
 
 const PerfilFotografo = () => {
-  const classes = useStyles();
+  const [displayAlbum, setDisplayAlbum] = useState("block");
+  const [displayAvaliacao, setDisplayAvaliacao] = useState("none");
+  const [colorAlbum, setColorAlbum] = useState("black !important");
+  const [colorAvaliacao, setColorAvaliacao] = useState("white !important");
+
+  const aoClicar = (evento) => {
+    evento.preventDefault();
+    if (displayAlbum === "block") {
+      setDisplayAlbum("none");
+      setDisplayAvaliacao("block");
+      setColorAlbum("white !important");
+      setColorAvaliacao("black !important");
+    } else {
+      setDisplayAlbum("block");
+      setDisplayAvaliacao("none");
+      setColorAlbum("black !important");
+      setColorAvaliacao("white !important");
+    }
+  };
+
+  console.log(colorAlbum, colorAvaliacao);
+
+  const classes = useStyles(colorAlbum, colorAvaliacao);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -82,14 +105,42 @@ const PerfilFotografo = () => {
       </Stack>
       <Box className={classes.section}>
         <Container className={classes.sectionOne}>
-          <Typography fontWeight={"bold"}> Álbuns</Typography>
+          <Typography fontWeight={"bold"}>
+            <a
+              className={classes.linkAlbum}
+              href="/perfil-fotografo"
+              alt="Página do perfil do fotografo"
+              style={{ color: "white", textDecoration: "none" }}
+              onClick={aoClicar}
+            >
+              Álbuns
+            </a>
+          </Typography>
         </Container>
         <Container className={classes.sectionTwo}>
-          <Typography fontWeight={"bold"}> Avaliação </Typography>
+          <Typography fontWeight={"bold"}>
+            <a
+              className={classes.linkAvaliacao}
+              href="/perfil-fotografo"
+              alt="Página do perfil do fotografo"
+              style={{ color: "black", textDecoration: "none" }}
+              onClick={aoClicar}
+            >
+              Avaliação
+            </a>
+          </Typography>
         </Container>
       </Box>
+
+      {/* Parte album */}
+
       <Container pb={2}>
-        <ImageList variant="masonry" cols={4} gap={8}>
+        <ImageList
+          variant="masonry"
+          cols={4}
+          gap={8}
+          style={{ display: displayAlbum }}
+        >
           {imageList.map(({ index, alt, src }) => (
             <ImageListItem key={index}>
               <img src={src} alt={alt} />
@@ -97,6 +148,8 @@ const PerfilFotografo = () => {
           ))}
         </ImageList>
       </Container>
+
+      {/* Parte Avaliação */}
     </Stack>
   );
 };
