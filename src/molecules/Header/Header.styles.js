@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   navbar: {
     backgroundColor: 'white.main',
     boxShadow: '0 1px 16px rgba(0,0,0,0.2)',
-    // justifyContent: 'space-between',
+    justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'center'
     }
