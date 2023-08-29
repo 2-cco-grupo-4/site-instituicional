@@ -60,27 +60,42 @@ const imageList = [
 const PerfilFotografo = () => {
   const [displayAlbum, setDisplayAlbum] = useState("block");
   const [displayAvaliacao, setDisplayAvaliacao] = useState("none");
-  const [colorAlbum, setColorAlbum] = useState("black !important");
-  const [colorAvaliacao, setColorAvaliacao] = useState("white !important");
 
-  const aoClicar = (evento) => {
+  const [colorTextAlbum, setColorTextAlbum] = useState("white");
+  const [colorBackAlbum, setColorBackAlbum] = useState("black");
+  const [colorTextAvaliacao, setColorTextAvaliacao] = useState("black");
+  const [colorBackAvaliacao, setColorBackAvaliacao] = useState("white");
+
+  const aoClicarAlbum = (evento) => {
     evento.preventDefault();
-    if (displayAlbum === "block") {
-      setDisplayAlbum("none");
-      setDisplayAvaliacao("block");
-      setColorAlbum("white !important");
-      setColorAvaliacao("black !important");
-    } else {
-      setDisplayAlbum("block");
-      setDisplayAvaliacao("none");
-      setColorAlbum("black !important");
-      setColorAvaliacao("white !important");
-    }
+    setDisplayAlbum("block");
+    setDisplayAvaliacao("none");
+
+    setColorTextAlbum("white");
+    setColorBackAlbum("black");
+    setColorTextAvaliacao("black");
+    setColorBackAvaliacao("white");
+
+    // console.log("ColorTextAlbum: " + colorTextAlbum);
   };
 
-  console.log(colorAlbum, colorAvaliacao);
+  const aoClicarAvaliacao = (evento) => {
+    evento.preventDefault();
+    setDisplayAlbum("none");
+    setDisplayAvaliacao("block");
 
-  const classes = useStyles(colorAlbum, colorAvaliacao);
+    setColorTextAlbum("black");
+    setColorBackAlbum("white");
+    setColorTextAvaliacao("white");
+    setColorBackAvaliacao("black");
+  };
+
+  // console.log(
+  //   "corAlbum = " + colorAlbum[0],
+  //   "corAvaliacao = " + colorAvaliacao[1]
+  // );
+
+  const classes = useStyles();
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -104,27 +119,33 @@ const PerfilFotografo = () => {
         <CustomButton variant={"contained"}> Editar Perfil</CustomButton>
       </Stack>
       <Box className={classes.section}>
-        <Container className={classes.sectionOne}>
+        <Container
+          className={classes.sectionOne}
+          sx={{
+            backgroundColor: colorBackAlbum,
+          }}
+        >
           <Typography fontWeight={"bold"}>
             <a
-              className={classes.linkAlbum}
+              style={{color: colorTextAlbum, textDecoration: "none"}}
               href="/perfil-fotografo"
               alt="Página do perfil do fotografo"
-              style={{ color: "white", textDecoration: "none" }}
-              onClick={aoClicar}
+              onClick={aoClicarAlbum}
             >
               Álbuns
             </a>
           </Typography>
         </Container>
-        <Container className={classes.sectionTwo}>
+        <Container
+          className={classes.sectionTwo}
+          sx={{ backgroundColor: colorBackAvaliacao }}
+        >
           <Typography fontWeight={"bold"}>
             <a
-              className={classes.linkAvaliacao}
+              style={{color: colorTextAvaliacao, textDecoration: "none"}}
               href="/perfil-fotografo"
               alt="Página do perfil do fotografo"
-              style={{ color: "black", textDecoration: "none" }}
-              onClick={aoClicar}
+              onClick={aoClicarAvaliacao}
             >
               Avaliação
             </a>
@@ -137,7 +158,7 @@ const PerfilFotografo = () => {
       <Container pb={2}>
         <ImageList
           variant="masonry"
-          cols={4}
+          cols={5}
           gap={8}
           style={{ display: displayAlbum }}
         >
