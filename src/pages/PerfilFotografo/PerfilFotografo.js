@@ -2,6 +2,7 @@ import {
   Box,
   ImageList,
   ImageListItem,
+  Rating,
   Stack,
   Tab,
   Tabs,
@@ -21,6 +22,7 @@ import noivaPai from "assets/img/noiva-e-pai.png";
 import noivaPraia from "assets/img/noivos-praia.png";
 import noivaSolitaria from "assets/img/noiva-solitaria.png";
 import { useState } from "react";
+import CardAvaliacao from "molecules/CardAvaliacao/CardAvaliacao";
 
 const imageList = [
   {
@@ -58,7 +60,7 @@ const imageList = [
 ];
 
 const PerfilFotografo = () => {
-  const [displayAlbum, setDisplayAlbum] = useState("block");
+  const [displayAlbum, setDisplayAlbum] = useState("");
   const [displayAvaliacao, setDisplayAvaliacao] = useState("none");
 
   const [colorTextAlbum, setColorTextAlbum] = useState("white");
@@ -68,7 +70,7 @@ const PerfilFotografo = () => {
 
   const aoClicarAlbum = (evento) => {
     evento.preventDefault();
-    setDisplayAlbum("block");
+    setDisplayAlbum("");
     setDisplayAvaliacao("none");
 
     setColorTextAlbum("white");
@@ -82,18 +84,13 @@ const PerfilFotografo = () => {
   const aoClicarAvaliacao = (evento) => {
     evento.preventDefault();
     setDisplayAlbum("none");
-    setDisplayAvaliacao("block");
+    setDisplayAvaliacao("");
 
     setColorTextAlbum("black");
     setColorBackAlbum("white");
     setColorTextAvaliacao("white");
     setColorBackAvaliacao("black");
   };
-
-  // console.log(
-  //   "corAlbum = " + colorAlbum[0],
-  //   "corAvaliacao = " + colorAvaliacao[1]
-  // );
 
   const classes = useStyles();
 
@@ -127,7 +124,7 @@ const PerfilFotografo = () => {
         >
           <Typography fontWeight={"bold"}>
             <a
-              style={{color: colorTextAlbum, textDecoration: "none"}}
+              style={{ color: colorTextAlbum, textDecoration: "none" }}
               href="/perfil-fotografo"
               alt="Página do perfil do fotografo"
               onClick={aoClicarAlbum}
@@ -142,7 +139,7 @@ const PerfilFotografo = () => {
         >
           <Typography fontWeight={"bold"}>
             <a
-              style={{color: colorTextAvaliacao, textDecoration: "none"}}
+              style={{ color: colorTextAvaliacao, textDecoration: "none" }}
               href="/perfil-fotografo"
               alt="Página do perfil do fotografo"
               onClick={aoClicarAvaliacao}
@@ -155,13 +152,8 @@ const PerfilFotografo = () => {
 
       {/* Parte album */}
 
-      <Container pb={2}>
-        <ImageList
-          variant="masonry"
-          cols={5}
-          gap={8}
-          style={{ display: displayAlbum }}
-        >
+      <Container sx={{ display: displayAlbum }} pb={2}>
+        <ImageList variant="masonry" cols={4} gap={8}>
           {imageList.map(({ index, alt, src }) => (
             <ImageListItem key={index}>
               <img src={src} alt={alt} />
@@ -171,6 +163,11 @@ const PerfilFotografo = () => {
       </Container>
 
       {/* Parte Avaliação */}
+
+      <Box sx={{display: displayAvaliacao}} className={classes.avaliacoes}>
+        <CardAvaliacao name={"Davi"}/>
+        <CardAvaliacao name={"Davi"}/>
+      </Box>
     </Stack>
   );
 };

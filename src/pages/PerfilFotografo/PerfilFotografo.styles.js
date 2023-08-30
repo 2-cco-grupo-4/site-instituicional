@@ -51,5 +51,10 @@ export default makeStyles(() => ({
     borderRadius: "4px",
     border: "1px solid black",
     padding: "4px",
-  }
+  },
+  avaliacoes: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+  },
 }));
