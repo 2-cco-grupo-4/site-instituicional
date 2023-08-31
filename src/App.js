@@ -12,6 +12,7 @@ import DashAdmin from "pages/DashAdmin/DashAdmin";
 import Feed from "pages/Feed";
 import PhotographerPreferences from "pages/PhotographerPreferences";
 import PreferencesRegister from "pages/PreferencesRegister";
+import Album from "pages/Album"; 
 
 const DefaultProviders = ({children}) => (
   <UserProvider>
@@ -34,6 +35,7 @@ function App() {
             <Route exact path="/dash-admin" element={<DashAdmin />} />
             <Route exact path="/preferencias-fotografo" element={<PhotographerPreferences />}></Route>
             <Route exact path="/preferencias-cadastro" element={<PreferencesRegister />}></Route>
+            <Route exact path="/album" element={<Album />}></Route>
           </Routes>
         </BrowserRouter>
       </DefaultProviders>
