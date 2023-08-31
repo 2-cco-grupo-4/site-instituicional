@@ -8,11 +8,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Header from 'molecules/Header'
 import useStyles from "./Pedido.styles"
-import { Box, Stack, TextField, Typography, useTheme, Container, Button, InputLabel, MenuItem, FormControl, Select, FormGroup } from "@mui/material"
+import { Box, Stack, TextField, Typography, useTheme, Button, InputLabel, MenuItem, FormControl, Select, FormGroup, Grid } from "@mui/material"
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Container from 'atoms/Container/Container';
 
 function createData(foto, nomeFotografo, status, evento, dataSolicitacao, detalhes) {
   return { foto, nomeFotografo, status, evento, dataSolicitacao, detalhes };
@@ -21,8 +22,8 @@ function createData(foto, nomeFotografo, status, evento, dataSolicitacao, detalh
 function BasicDatePicker() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DatePicker']}>
-        <DatePicker label="Data" />
+      <DemoContainer sx={{paddingTop: 0, width:'100%'}} components={['DatePicker']}>
+        <DatePicker label="Data" sx={{width: '100%'}}/>
       </DemoContainer>
     </LocalizationProvider>
   );
@@ -56,50 +57,56 @@ function BasicSelect() {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormGroup>
-        <FormControl width="20%">
-          <InputLabel sx={{display:'flex'}} id="demo-simple-select-label">Tema</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={theme}
-            label="Theme"
-            onChange={handleChangeTheme}
-          >
-            <MenuItem value={theme}>Aniversário</MenuItem>
-            <MenuItem value={theme}>Casamento</MenuItem>
-            <MenuItem value={theme}>Chá de Bebê</MenuItem>
-            <MenuItem value={theme}>Debutante</MenuItem>
-            <MenuItem value={theme}>Formatura</MenuItem>
-          </Select>
-        </FormControl>
+        <Grid container width="100%" columnSpacing={1}>
+          <Grid item md={4} sm={4}>
+            <FormControl fullWidth>
+            <InputLabel sx={{display:'flex'}} id="demo-simple-select-label">Tema</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={theme}
+              label="Theme"
+              onChange={handleChangeTheme}
+            >
+              <MenuItem value={theme}>Aniversário</MenuItem>
+              <MenuItem value={theme}>Casamento</MenuItem>
+              <MenuItem value={theme}>Chá de Bebê</MenuItem>
+              <MenuItem value={theme}>Debutante</MenuItem>
+              <MenuItem value={theme}>Formatura</MenuItem>
+            </Select>
+            </FormControl>
+          </Grid>
+          <Grid item md={4}>
+            <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={status}
+              label="Status"
+              onChange={handleChangeStatus}
+            >
+              <MenuItem value={status}>Agendado</MenuItem>
+              <MenuItem value={status}>Cancelado</MenuItem>
+              <MenuItem value={status}>Concluído</MenuItem>
+              <MenuItem value={status}>Em espera</MenuItem>
+              <MenuItem value={status}>Negociando</MenuItem>
+            </Select>
+            </FormControl>
+          </Grid>
+          <Grid item md={4} sx={{paddinTop: 0}}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label"></InputLabel>
+              <BasicDatePicker
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={dataSolicitacao}
+                onChange={handleChangeDataSolicitacao}
+              />
 
-        <FormControl width="300px">
-          <InputLabel id="demo-simple-select-label">Status</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={status}
-            label="Status"
-            onChange={handleChangeStatus}
-          >
-            <MenuItem value={status}>Agendado</MenuItem>
-            <MenuItem value={status}>Cancelado</MenuItem>
-            <MenuItem value={status}>Concluído</MenuItem>
-            <MenuItem value={status}>Em espera</MenuItem>
-            <MenuItem value={status}>Negociando</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label"></InputLabel>
-          <BasicDatePicker
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={dataSolicitacao}
-            onChange={handleChangeDataSolicitacao}
-          />
-
-        </FormControl>
+          </FormControl>
+          </Grid>
+        </Grid>
       </FormGroup>
 
     </Box>
@@ -134,10 +141,12 @@ const head = () => {
 
 
 export default function BasicTable() {
+  const classes = useStyles()
   return (
-    <Stack sx={{ transition: '2s all ease' }}>
+    <>
       <Header type={2} />
-      <Box sx={{marginTop: '50px', p: 2}}>
+    <Container sx={{ transition: '2s all ease', width: '100%' }}>
+      <Box width="100%" sx={{marginTop: '50px', p: 2}}>
         <Typography variant="subtitle-small-semibold" sx={{marginBottom: '50px', fontSize: '25px' }}>
           Pedidos
         </Typography>
@@ -178,6 +187,7 @@ export default function BasicTable() {
           </Table>
         </TableContainer>
       </Box>
-    </Stack>
+    </Container>
+    </>
   );
 }

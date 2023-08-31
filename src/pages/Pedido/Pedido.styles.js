@@ -1,8 +1,10 @@
 import { makeStyles } from '@mui/styles'
 
-export default makeStyles(() => ({
-  teste: {
-    backgroundColor: '#000',
-    color: '#fff',
+export default makeStyles((theme) => ({
+  font:{
+    color: theme.palette.white.main, 
+    fontWeight: 700,
+    // fontSize: '25px',
+    
   },
 }))
