@@ -38,15 +38,19 @@ const CardAvaliacao = ({ name }) => {
 
   return (
     <Stack className={classes.sectionAvaliacao}>
-      <FeedAlbum autor={name}/>
-      <Typography> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</Typography>
+      <FeedAlbum autor={name} />
+      <Typography>
+        {" "}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore
+      </Typography>
       <ImageList variant="standard" cols={4} gap={8}>
-          {imageList.map(({ index, alt, src }) => (
-            <ImageListItem key={index}>
-              <img src={src} alt={alt} />
-            </ImageListItem>
-          ))}
-        </ImageList>
+        {imageList.map(({ index, alt, src }) => (
+          <ImageListItem key={index}>
+            <img src={src} alt={alt} />
+          </ImageListItem>
+        ))}
+      </ImageList>
     </Stack>
   );
 };

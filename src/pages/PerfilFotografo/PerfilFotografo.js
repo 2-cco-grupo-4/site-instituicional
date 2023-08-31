@@ -115,7 +115,7 @@ const PerfilFotografo = () => {
         </Typography>
         <CustomButton variant={"contained"}> Editar Perfil</CustomButton>
       </Stack>
-      <Box className={classes.section}>
+      <Container className={classes.section}>
         <Container
           className={classes.sectionOne}
           sx={{
@@ -148,7 +148,7 @@ const PerfilFotografo = () => {
             </a>
           </Typography>
         </Container>
-      </Box>
+      </Container>
 
       {/* Parte album */}
 
@@ -164,10 +164,14 @@ const PerfilFotografo = () => {
 
       {/* Parte Avaliação */}
 
-      <Box sx={{display: displayAvaliacao}} className={classes.avaliacoes}>
+      <Container sx={{display: displayAvaliacao}} className={classes.avaliacoes}>
         <CardAvaliacao name={"Davi"}/>
         <CardAvaliacao name={"Davi"}/>
-      </Box>
+        <CardAvaliacao name={"Davi"}/>
+        <CardAvaliacao name={"Davi"}/>
+
+
+      </Container>
     </Stack>
   );
 };

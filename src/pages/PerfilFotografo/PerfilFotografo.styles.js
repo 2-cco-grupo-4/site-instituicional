@@ -35,18 +35,18 @@ export default makeStyles(() => ({
     maxWidth: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     marginBottom: "16px",
   },
   sectionOne: {
-    maxWidth: "43.5%",
+    maxWidth: "48.5%",
     border: "1px solid black",
     justifyContent: "center",
     borderRadius: "4px",
     padding: "4px",
   },
   sectionTwo: {
-    maxWidth: "43.5%",
+    maxWidth: "48.5%",
     justifyContent: "center",
     borderRadius: "4px",
     border: "1px solid black",
@@ -54,7 +54,8 @@ export default makeStyles(() => ({
   },
   avaliacoes: {
     display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: "36px",
   },
 }));
