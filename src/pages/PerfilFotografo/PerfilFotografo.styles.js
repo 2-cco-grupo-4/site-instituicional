@@ -53,9 +53,8 @@ export default makeStyles(() => ({
     padding: "4px",
   },
   avaliacoes: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
     gap: "36px",
   },
 }));

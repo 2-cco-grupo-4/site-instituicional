@@ -33,16 +33,14 @@ const imageList = [
   },
 ];
 
-const CardAvaliacao = ({ name }) => {
+const CardAvaliacao = ({ name, text }) => {
   const classes = useStyles();
 
   return (
     <Stack className={classes.sectionAvaliacao}>
       <FeedAlbum autor={name} />
       <Typography>
-        {" "}
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore
+        {text}
       </Typography>
       <ImageList variant="standard" cols={4} gap={8}>
         {imageList.map(({ index, alt, src }) => (

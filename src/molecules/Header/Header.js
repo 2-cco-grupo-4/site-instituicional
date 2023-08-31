@@ -19,7 +19,7 @@ const Header = ({ type }) => {
     navigate(route)
   }
 
-  const Content = () => {
+  const Content = (props) => {
     switch (type) {
       case 1:
         return (

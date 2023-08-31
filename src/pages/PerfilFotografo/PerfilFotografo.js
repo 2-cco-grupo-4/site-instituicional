@@ -59,6 +59,26 @@ const imageList = [
   },
 ];
 
+const avaliacaoList = [
+  {
+    name: "Davi",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+  },
+  {
+    name: "Davi",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+  },
+  {
+    name: "Davi",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+  },
+  {
+    name: "Davi",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+  },
+  
+];
+
 const PerfilFotografo = () => {
   const [displayAlbum, setDisplayAlbum] = useState("");
   const [displayAvaliacao, setDisplayAvaliacao] = useState("none");
@@ -164,13 +184,13 @@ const PerfilFotografo = () => {
 
       {/* Parte Avaliação */}
 
-      <Container sx={{display: displayAvaliacao}} className={classes.avaliacoes}>
-        <CardAvaliacao name={"Davi"}/>
-        <CardAvaliacao name={"Davi"}/>
-        <CardAvaliacao name={"Davi"}/>
-        <CardAvaliacao name={"Davi"}/>
-
-
+      <Container
+        sx={{ display: displayAvaliacao }}
+        className={classes.avaliacoes}
+      >
+        {avaliacaoList.map(({ name, text }) => (
+          <CardAvaliacao name={name} text={text} />
+        ))}
       </Container>
     </Stack>
   );

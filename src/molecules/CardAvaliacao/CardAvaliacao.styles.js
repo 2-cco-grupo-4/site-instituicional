@@ -4,8 +4,8 @@ import { makeStyles } from "@mui/styles";
 export default makeStyles(() => ({
   sectionAvaliacao: {
     border: "2px dotted black",
-    maxWidth: "48.5%",
+    maxWidth: "100%",
     padding: "12px",
-    marginBottom: "16px",
+    marginBottom: "0",
   },
 }));
