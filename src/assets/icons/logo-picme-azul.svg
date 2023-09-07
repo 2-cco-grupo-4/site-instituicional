@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459.76 159.27">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #309dd1;
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        font-family: BaronNeue, 'Baron Neue';
+        font-size: 145.47px;
+      }
+    </style>
+  </defs>
+  <g id="Camada_1-2" data-name="Camada 1">
+    <text class="cls-2" transform="translate(0 123.65)"><tspan x="0" y="0">PI</tspan></text>
+    <text class="cls-2" transform="translate(233 124.36)"><tspan x="0" y="0">ME</tspan></text>
+    <g>
+      <path class="cls-1" d="m146.56,43.72s4.86-14.58,36.25-24.09l14.58,24.09"/>
+      <path class="cls-1" d="m191.16,19.63s23.46-.74,38.47,21.66l-12.89,21.77"/>
+      <path class="cls-1" d="m142.33,49.11s-7.61,21.98,2.11,43.75l25.57-43.75"/>
+      <path class="cls-1" d="m161.78,77.01l-13.95,22.61s7.6,16.91,38.67,20.5"/>
+      <path class="cls-1" d="m180.59,96.45l13.1,23.67s21.77,1.06,37.62-23.67"/>
+    </g>
+  </g>
+</svg>
