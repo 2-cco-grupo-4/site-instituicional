@@ -15,6 +15,7 @@ import PreferencesRegister from "pages/PreferencesRegister";
 import Album from "pages/Album";
 import CustomLogin from "molecules/CustomLogin/CustomLogin";
 import { Modal } from "@mui/material";
+import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
 
 const DefaultProviders = ({ children }) => (
   <UserProvider>{children}</UserProvider>
@@ -46,6 +47,11 @@ function App() {
               element={<PreferencesRegister />}
             ></Route>
             <Route exact path="/album" element={<Album />}></Route>
+            <Route
+              exact
+              path="/perfil-fotografo"
+              element={<PerfilFotografo />}
+            ></Route>
           </Routes>
         </BrowserRouter>
       </DefaultProviders>
