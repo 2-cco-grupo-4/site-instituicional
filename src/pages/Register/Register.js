@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useTheme } from "@mui/styles"
 import { useAsyncState } from "hooks/useAsyncState"
-import { CLIENTE, FOTOGRAFO, LOGIN, VALIDACAOUSER } from "service/user"
+import { CLIENTE, FOTOGRAFO, LOGIN} from "service/user"
 import { useUserContext } from "contexts"
 
 const defaultValue = {
@@ -77,14 +77,6 @@ const Register = () => {
     const dadosValidarNovoUsuario = {email: payload.email, cpf: payload.cpf}
 
     var novoUsuario = true
-
-    await VALIDACAOUSER(dadosValidarNovoUsuario)
-    .then(async (response) => {
-      if(response.status === 204) {
-        alert("Usuário já cadastrado!")
-        novoUsuario = false
-      }
-    })
 
     if(payload.profile === 1 && novoUsuario) {
 
