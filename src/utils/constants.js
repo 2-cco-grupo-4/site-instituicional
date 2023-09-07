@@ -7,8 +7,7 @@ export const ROUTES = {
     CHOOSE_PROFILE: "/persona",
     FEED: "/explorar",
     DASH_ADMIN: "/dash-admin",
-    PHOTOGRAPHER_PREFERENCES: "/preferencias-fotografo",
-    PREFERENCES_REGISTER: "/preferencias-cadastro"
+    PREFERENCES: "/preferencias",
 }
 
 export const PROFILE_TYPES = {
