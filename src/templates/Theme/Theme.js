@@ -40,6 +40,10 @@ const theme = createTheme({
       fontSize: 24,
       fontWeight: "bold",
     },
+    "paragraph-medium-bold": {
+      fontSize: 16,
+      fontWeight: "bold",
+    },
     "paragraph-medium-regular": {
       fontSize: 16,
       fontWeight: "regular",
