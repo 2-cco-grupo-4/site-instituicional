@@ -15,6 +15,7 @@ import Album from "pages/Album";
 import CustomLogin from "molecules/CustomLogin/CustomLogin";
 import { Modal } from "@mui/material";
 import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
+import Contrato from "molecules/Contrato/Contrato";
 
 const DefaultProviders = ({ children }) => (
   <UserProvider>{children}</UserProvider>
@@ -29,6 +30,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/modal" element={<CustomLogin />} />
+            <Route exact path="/modal-contrato" element={<Contrato />} />
             <Route exact path="/pedido" element={<Pedido />} />
             <Route exact path="/persona" element={<ChooseProfileType />} />
             <Route exact path="/cadastro/:profileType" element={<Register />} />
