@@ -42,5 +42,22 @@ export default makeStyles((theme) => ({
       minWidth: "auto",
       width: "25vw",
     }
+  },
+  largeIcon: {
+    width: 60,
+    height: 60
+  },
+  navbarNavApp: {
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  navbarBotoesApp: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 }))

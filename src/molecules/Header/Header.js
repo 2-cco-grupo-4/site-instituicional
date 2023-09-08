@@ -11,7 +11,7 @@ import {
   IconButton,
   Drawer,
   Menu,
-  Grid
+  Grid,
 } from "@mui/material";
 import { HEADER_HEIGHT, ROUTES } from "utils/constants";
 import Container from "atoms/Container";
@@ -83,84 +83,110 @@ const Header = ({ type }) => {
       zIndex={1000}
       className={classes.navbar}
     >
-      
       <LogoPicme />
-        <Content />
-        {autenticado ? 
-         (
-          <CustomPopover>
-            <Stack>Sair</Stack>
-          </CustomPopover>
-         ) : (
-          type === 3 ? (
-            <Box className={classes.navBotoes}>
-              <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
-              <CustomButton type="button" onClick={() => handleNavigation(ROUTES.LOGIN)} variant="outlined"color="secondary">
-                Login
-              </CustomButton>
-           </Box>
-          ) : (
-            <Box className={classes.navBotoes}>
-                <CustomButton 
-                type="button" 
-                onClick={() => handleNavigation(ROUTES.LOGIN)} 
-                variant="outlined" 
-                sx={{ marginRight: 2 }} 
-                color="secondary"
-                >
-                  Login
-                </CustomButton>
-                <CustomButton 
-                type="button" 
-                onClick={() => handleNavigation(ROUTES.CHOOSE_PROFILE)} 
-                variant="contained" 
-                color="primary"
-                >
-                  Cadastro
-                </CustomButton>
-            </Box>
-          )
-         )
-        }
-      
-      
+      <Content />
+      {autenticado ? (
+        <CustomPopover>
+          <Stack>Sair</Stack>
+        </CustomPopover>
+      ) : type === 3 ? (
+        <Box className={classes.navBotoes}>
+          <Typography sx={{ marginRight: 2 }}>Já possui conta?</Typography>
+          <CustomButton
+            type="button"
+            onClick={() => handleNavigation(ROUTES.LOGIN)}
+            variant="outlined"
+            color="secondary"
+          >
+            Login
+          </CustomButton>
+        </Box>
+      ) : (
+        <Box className={classes.navBotoes}>
+          <CustomButton
+            type="button"
+            onClick={() => handleNavigation(ROUTES.LOGIN)}
+            variant="outlined"
+            sx={{ marginRight: 2 }}
+            color="secondary"
+          >
+            Login
+          </CustomButton>
+          <CustomButton
+            type="button"
+            onClick={() => handleNavigation(ROUTES.CHOOSE_PROFILE)}
+            variant="contained"
+            color="primary"
+          >
+            Cadastro
+          </CustomButton>
+        </Box>
+      )}
 
       <AppBar
         position="absolute"
-        sx={{ display: { lg: 'none', md: 'none', sm: "none", xs: "flex" }, backgroundColor: "white.main" }}
+        sx={{
+          display: { lg: "none", md: "none", sm: "none", xs: "flex" },
+          backgroundColor: "white.main",
+        }}
       >
         <Toolbar>
           <Grid container spacing={0}>
-            <Grid item xs={10} display='flex' alignItems='center' justifyContent='center' paddingLeft={0}>
-              <LogoPicme paddingLeft={2}></LogoPicme>
+            <Grid
+              item
+              xs={10}
+              display="flex"
+              alignItems="center"
+              paddingLeft={2}
+            >
+              <LogoPicme paddingLeft={0}></LogoPicme>
             </Grid>
 
             <Grid item xs={1}>
               <IconButton
-                edge="start"
+                edge="end"
                 color="#000"
                 aria-label="open drawer"
                 onClick={toggleDrawer(true)}
                 sx={{ mr: 0, display: { xs: "block", sm: "none" }, left: 0 }}
               >
-                <MenuIcon />
+                <MenuIcon style={{ fontSize: 20 }} />
               </IconButton>
 
-              
               <Drawer
-                display='flex'
-                flexDirection='column'
+                display="flex"
+                flexDirection="column"
                 anchor="right" //from which side the drawer slides in
                 variant="temporary" //if and how easily the drawer can be closed
                 open={open} //if open is true, drawer is shown
                 onClose={toggleDrawer(false)} //function that is called when the drawer should close
                 onOpen={toggleDrawer(true)} //function that is called when the drawer should open
               >
-                <Box>
-                <Typography title="Galeria" navigation="#galeria">Galeria</Typography>
-                <Typography title="Quem Somos" navigation="#quem-somos">Quem Somos</Typography>
-                <Typography title="Produto" navigation="#produto">Produto</Typography>
-                <Typography title="Explorar" navigation="#explorar">Explorar</Typography>
+                <Box className={classes.navbarNavApp}>
+                  <OptionNav title="Galeria" navigation="#galeria" />
+                  <OptionNav title="Quem Somos" navigation="#quem-somos" />
+                  <OptionNav title="Produto" navigation="#produto" />
+                  <OptionNav title="Explorar" navigation="#explorar" />
+
+                  <Box className={classes.navbarBotoesApp}>
+                    <CustomButton
+                      type="button"
+                      onClick={() => handleNavigation(ROUTES.LOGIN)}
+                      variant="outlined"
+                      sx={{ marginBottom: 2 }}
+                      color="secondary"
+                    >
+                      Login
+                    </CustomButton>
+                    <CustomButton
+                      type="button"
+                      onClick={() => handleNavigation(ROUTES.CHOOSE_PROFILE)}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Cadastro
+                    </CustomButton>
+                  </Box>
                 </Box>
               </Drawer>
             </Grid>
