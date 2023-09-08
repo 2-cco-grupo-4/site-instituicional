@@ -162,11 +162,13 @@ const Header = ({ type }) => {
                 onClose={toggleDrawer(false)} //function that is called when the drawer should close
                 onOpen={toggleDrawer(true)} //function that is called when the drawer should open
               >
-                <Box className={classes.navbarNavApp}>
-                  <OptionNav title="Galeria" navigation="#galeria" />
-                  <OptionNav title="Quem Somos" navigation="#quem-somos" />
-                  <OptionNav title="Produto" navigation="#produto" />
-                  <OptionNav title="Explorar" navigation="#explorar" />
+                <Box className={classes.navbarNavApp} px={1} py={3}>
+                  <Box className={classes.navbarLinksApp}>
+                    <OptionNav title="Galeria" navigation="#galeria" />
+                    <OptionNav title="Quem Somos" navigation="#quem-somos" />
+                    <OptionNav title="Produto" navigation="#produto" />
+                    <OptionNav title="Explorar" navigation="#explorar" />
+                  </Box>
 
                   <Box className={classes.navbarBotoesApp}>
                     <CustomButton

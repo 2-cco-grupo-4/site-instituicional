@@ -52,15 +52,20 @@ export default makeStyles((theme) => ({
   },
   navbarNavApp: {
     width: "auto",
-    height: "auto",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "end",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   navbarBotoesApp: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+  },
+  navbarLinksApp: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "end",
   },
 }));
