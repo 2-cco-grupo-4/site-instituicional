@@ -1,0 +1,8 @@
+FROM node:16.20.2
+WORKDIR /site-picme
+ARG PORT_BUILD=80
+ENV PORT=$PORT_BUILD
+EXPOSE $PORT_BUILD
+COPY . .
+RUN npm install
+ENTRYPOINT npm start

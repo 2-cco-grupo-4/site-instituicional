@@ -1,145 +1,140 @@
-import useStyles from "./Register.styles"
-import Container from "atoms/Container"
-import { FormControlLabel, Stack, Radio, RadioGroup, TextField, Typography } from "@mui/material"
-import LogoPicme from "atoms/LogoPicme"
-import { useNavigate, useParams } from "react-router-dom"
-import CustomButton from "atoms/CustomButton"
-import InputMask from "react-input-mask"
-import { useState } from "react"
-import goBackArrow from "assets/icons/go-back-arrow.svg"
-import { ROUTES } from "utils/constants"
-import { toTitleCase } from "utils/helpers/string"
-import { userDataSchema } from "./Register.schema"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useTheme } from "@mui/styles"
-import { useAsyncState } from "hooks/useAsyncState"
-import { CLIENTE, FOTOGRAFO, LOGIN, VALIDACAOUSER } from "service/user"
-import { useUserContext } from "contexts"
+import useStyles from "./Register.styles";
+import Container from "atoms/Container";
+import {
+  FormControlLabel,
+  Stack,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
+import LogoPicme from "atoms/LogoPicme";
+import { useNavigate, useParams } from "react-router-dom";
+import CustomButton from "atoms/CustomButton";
+import InputMask from "react-input-mask";
+import { useState } from "react";
+import goBackArrow from "assets/icons/go-back-arrow.svg";
+import { ROUTES } from "utils/constants";
+import { toTitleCase } from "utils/helpers/string";
+import { userDataSchema } from "./Register.schema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useTheme } from "@mui/styles";
+import { useAsyncState } from "hooks/useAsyncState";
+import { CLIENTE, FOTOGRAFO, LOGIN } from "service/user";
+import { useUserContext } from "contexts";
 
 const defaultValue = {
-  nome: '',
-  email: '',
-  dataNasc: '',
-  cpf: '',
-  numCelular: '',
-  senha: '',
-  profile: ''
-}
+  nome: "",
+  email: "",
+  dataNasc: "",
+  cpf: "",
+  numCelular: "",
+  senha: "",
+  profile: "",
+};
 
 const Register = () => {
-  const theme = useTheme()
-  const classes = useStyles()
-  const navigate = useNavigate()
-  const { profileType } = useParams()
-  const { setId, setNome, setTipoUsuario, setTemas, setToken } = useUserContext()
+  const theme = useTheme();
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const { profileType } = useParams();
+  const { setId, setNome, setTipoUsuario, setTemas, setToken } =
+    useUserContext();
 
-  const [profile, setProfile] = useState(profileType)
-  const [btnLoading, setBtnLoading] = useState(false)
+  const [profile, setProfile] = useState(profileType);
+  const [btnLoading, setBtnLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(userDataSchema) })
+  } = useForm({ resolver: yupResolver(userDataSchema) });
 
   const handleChange = (e) => {
     if (e.target.name === "nome") {
-      e.target.value = toTitleCase(e.target.value)
+      e.target.value = toTitleCase(e.target.value);
     }
-  }
+  };
 
   const handleProfileChange = (e) => {
-    setProfile(e.target.value)
-    navigate(ROUTES.REGISTER(e.target.value))
-  }
+    setProfile(e.target.value);
+    navigate(ROUTES.REGISTER(e.target.value));
+  };
 
   const onSubmitHandler = async (data) => {
-    setBtnLoading(true)
+    setBtnLoading(true);
 
-    data["dataNasc"] = data["dataNasc"].split("/").reverse().join("-")
-    var perfil = data["profile"]
+    data["dataNasc"] = data["dataNasc"].split("/").reverse().join("-");
+    var perfil = data["profile"];
 
     if (perfil === "fotografo") {
-      data["profile"] = 2
+      data["profile"] = 2;
     } else if (perfil === "cliente") {
-      data["profile"] = 1
+      data["profile"] = 1;
     } else {
-      alert("Perfil inválido!")
+      alert("Perfil inválido!");
     }
 
-    const payload = { ...data }
-    delete payload["confirmarSenha"]
+    const payload = { ...data };
+    delete payload["confirmarSenha"];
 
+    const login = { email: payload.email, senha: payload.senha };
 
-    const login = { email: payload.email, senha: payload.senha }
+    const dadosValidarNovoUsuario = { email: payload.email, cpf: payload.cpf };
 
-    const dadosValidarNovoUsuario = { email: payload.email, cpf: payload.cpf }
-
-    var novoUsuario = true
-
-    await VALIDACAOUSER(dadosValidarNovoUsuario)
-      .then(async (response) => {
-        if (response.status === 204) {
-          alert("Usuário já cadastrado!")
-          novoUsuario = false
-        }
-      })
+    var novoUsuario = true;
 
     if (payload.profile === 1 && novoUsuario) {
-
       await CLIENTE.CADASTRAR(payload)
         .then(async (response) => {
-          console.log(response.data)
-          setId(response.data.id)
-          setNome(response.data.nome)
-          setTipoUsuario(response.data.tipoUsuario)
-          setTemas(response.data.temas)
+          console.log(response.data);
+          setId(response.data.id);
+          setNome(response.data.nome);
+          setTipoUsuario(response.data.tipoUsuario);
+          setTemas(response.data.temas);
 
-          await LOGIN(login).then(() => {
-            navigate(ROUTES.PREFERENCES)
-          })
-            .catch((err) => {
-              console.log(err)
+          await LOGIN(login)
+            .then(() => {
+              navigate(ROUTES.PREFERENCES);
             })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
         })
         .finally(() => {
-          setBtnLoading(false)
-        })
-
+          setBtnLoading(false);
+        });
     } else if (payload.profile === 2 && novoUsuario) {
-
       await FOTOGRAFO.CADASTRAR(payload)
         .then(async (response) => {
-          console.log(response.data)
-          setId(response.data.id)
-          setNome(response.data.nome)
-          setTipoUsuario(response.data.tipoUsuario)
-          setTemas(response.data.temas)
+          console.log(response.data);
+          setId(response.data.id);
+          setNome(response.data.nome);
+          setTipoUsuario(response.data.tipoUsuario);
+          setTemas(response.data.temas);
 
-          await LOGIN(login).then(() => {
-            navigate(ROUTES.PREFERENCES)
-          })
-            .catch((err) => {
-              console.log(err)
+          await LOGIN(login)
+            .then(() => {
+              navigate(ROUTES.PREFERENCES);
             })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
         })
         .finally(() => {
-          setBtnLoading(false)
-        })
-
+          setBtnLoading(false);
+        });
     }
 
-    setBtnLoading(false)
-
-  }
-
+    setBtnLoading(false);
+  };
 
   return (
     <Stack direction="row" alignItems="top">
@@ -154,10 +149,16 @@ const Register = () => {
         </Container>
       </Stack>
       <Stack className={classes.content}>
-        <Container component="form" onSubmit={handleSubmit(onSubmitHandler)} py={4}>
+        <Container
+          component="form"
+          onSubmit={handleSubmit(onSubmitHandler)}
+          py={4}
+        >
           <Stack width="100%" minHeight="100%" alignItems="center" spacing={3}>
             <LogoPicme height={36} />
-            <Typography variant="subtitle-small-semibold">Cadastre-se</Typography>
+            <Typography variant="subtitle-small-semibold">
+              Cadastre-se
+            </Typography>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Typography variant="paragraph-medium-light">Sou um:</Typography>
               <RadioGroup
@@ -171,15 +172,23 @@ const Register = () => {
                   value="cliente"
                   {...register("profile")}
                   control={<Radio />}
-                  label={<Typography variant="paragraph-medium-light">Cliente</Typography>} />
+                  label={
+                    <Typography variant="paragraph-medium-light">
+                      Cliente
+                    </Typography>
+                  }
+                />
 
                 <FormControlLabel
                   value="fotografo"
                   {...register("profile")}
                   control={<Radio />}
-                  label={<Typography variant="paragraph-medium-light">Fotógrafo</Typography>}
+                  label={
+                    <Typography variant="paragraph-medium-light">
+                      Fotógrafo
+                    </Typography>
+                  }
                 />
-
               </RadioGroup>
             </Stack>
             <Stack justifyContent="top" width="100%" spacing={2}>
@@ -194,7 +203,12 @@ const Register = () => {
                 onChange={handleChange}
               />
               <Stack spacing={2}>
-                <Stack direction="row" width="100%" alignItems="top" spacing={2}>
+                <Stack
+                  direction="row"
+                  width="100%"
+                  alignItems="top"
+                  spacing={2}
+                >
                   <TextField
                     id="email-ipt"
                     name="email"
@@ -211,24 +225,65 @@ const Register = () => {
                     onChange={handleChange}
                     mask="99/99/9999"
                   >
-                    {() => <TextField id="data-ipt" name="dataNasc" fullWidth
-                      label="Data de nascimento" placeholder="DD/MM/AAAA"
-                      error={!!errors.dataNasc} helperText={errors.dataNasc?.message}
-                    />}
+                    {() => (
+                      <TextField
+                        id="data-ipt"
+                        name="dataNasc"
+                        fullWidth
+                        label="Data de nascimento"
+                        placeholder="DD/MM/AAAA"
+                        error={!!errors.dataNasc}
+                        helperText={errors.dataNasc?.message}
+                      />
+                    )}
                   </InputMask>
                 </Stack>
-                <Stack direction="row" width="100%" alignItems="top" spacing={2}>
-                  <InputMask mask="999.999.999-99" {...register("cpf")} onChange={handleChange} >
-                    {() => <TextField id="cpf-ipt" name="cpf" label="CPF" fullWidth error={!!errors.cpf}
-                      helperText={errors.cpf?.message} />}
+                <Stack
+                  direction="row"
+                  width="100%"
+                  alignItems="top"
+                  spacing={2}
+                >
+                  <InputMask
+                    mask="999.999.999-99"
+                    {...register("cpf")}
+                    onChange={handleChange}
+                  >
+                    {() => (
+                      <TextField
+                        id="cpf-ipt"
+                        name="cpf"
+                        label="CPF"
+                        fullWidth
+                        error={!!errors.cpf}
+                        helperText={errors.cpf?.message}
+                      />
+                    )}
                   </InputMask>
 
-                  <InputMask mask="(99) 99999-9999" {...register("numCelular")} onChange={handleChange}>
-                    {() => <TextField id="phone-ipt" name="numCelular" label="Telefone" fullWidth
-                      error={!!errors.numCelular} helperText={errors.numCelular?.message} />}
+                  <InputMask
+                    mask="(99) 99999-9999"
+                    {...register("numCelular")}
+                    onChange={handleChange}
+                  >
+                    {() => (
+                      <TextField
+                        id="phone-ipt"
+                        name="numCelular"
+                        label="Telefone"
+                        fullWidth
+                        error={!!errors.numCelular}
+                        helperText={errors.numCelular?.message}
+                      />
+                    )}
                   </InputMask>
                 </Stack>
-                <Stack direction="row" width="100%" alignItems="top" spacing={2}>
+                <Stack
+                  direction="row"
+                  width="100%"
+                  alignItems="top"
+                  spacing={2}
+                >
                   <TextField
                     id="password-ipt"
                     name="senha"
@@ -255,13 +310,17 @@ const Register = () => {
                 </Stack>
               </Stack>
             </Stack>
-            <CustomButton loading={btnLoading} variant="contained" color="secondary" type="submit" fullWidth>
+            <CustomButton
+              loading={btnLoading}
+              variant="contained"
+              color="secondary"
+              type="submit"
+              fullWidth
+            >
               Continuar
             </CustomButton>
             <Stack direction="row" alignItems="center" spacing={0.5}>
-              <Typography sx={{ fontWeight: 300 }}>
-                Já tem cadastro?
-              </Typography>
+              <Typography sx={{ fontWeight: 300 }}>Já tem cadastro?</Typography>
               <Typography
                 color="primary"
                 onClick={() => navigate(ROUTES.LOGIN)}
@@ -274,7 +333,7 @@ const Register = () => {
         </Container>
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
