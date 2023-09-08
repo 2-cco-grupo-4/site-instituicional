@@ -55,8 +55,8 @@ export default makeStyles((theme) => ({
     height: "auto",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: "center",
+    alignItems: "end",
   },
   navbarBotoesApp: {
     display: "flex",
