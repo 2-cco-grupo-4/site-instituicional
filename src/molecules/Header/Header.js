@@ -45,7 +45,7 @@ const Header = ({ type }) => {
     setState(open);
   };
 
-  const Content = () => {
+  const Content = (props) => {
     switch (type) {
       case 1:
         return (

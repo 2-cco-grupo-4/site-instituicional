@@ -26,6 +26,10 @@ import smartphone from "assets/img/usuario-smartphone.jpg"
 import sobrinho from "assets/img/sobrinho.jpg"
 import tacas from "assets/img/tacas.jpg"
 import Footer from "molecules/Footer"
+import CustomLogin from "molecules/CustomLogin/CustomLogin"
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import handleOpen from "molecules/CustomLogin/CustomLogin"
 
 const imageList = [
   {
@@ -90,6 +94,7 @@ const Home = () => {
 
   return (
     <Stack sx={{ transition: '2s all ease' }}>
+      
       <Header type={1} />
       <Container
         alignItems="center"

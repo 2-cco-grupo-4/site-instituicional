@@ -1,63 +1,66 @@
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
   navbar: {
-    backgroundColor: 'white.main',
-    boxShadow: '0 1px 16px rgba(0,0,0,0.2)',
-    justifyContent: 'space-between',
-    [theme.breakpoints.down('sm')]: {
-      justifyContent: 'center'
-    }
+    backgroundColor: theme.palette.white.main,
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: theme.palette.gray.main,
+    // boxShadow: '0 1px 16px rgba(0,0,0,0.2)',
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
   },
   navbarNav: {
-    width: '30%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      display: 'none'
-    }
+    width: "30%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
   },
   navBotoes: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
-    }
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   search: {
-    width: '35vw',
-    backgroundColor: theme.palette.gray,
+    width: "35vw",
+    backgroundColor: theme.palette.gray.main,
     borderRadius: theme.shape.borderRadius,
-    display: 'flex',
-    justifyContent: 'left',
-    alignItems: 'center',
-    boxShadow: 'inset 0px 0px 4px rgba(0, 0, 0, 0.25)',
+    display: "flex",
+    justifyContent: "left",
+    alignItems: "center",
+    boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.25)",
     "& > img": {
       margin: theme.spacing(1),
     },
     "& .MuiInputBase-input": {
       minWidth: "auto",
       width: "25vw",
-    }
+    },
   },
   largeIcon: {
     width: 60,
-    height: 60
+    height: 60,
   },
   navbarNavApp: {
-    width: 'auto',
-    height: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    width: "auto",
+    height: "auto",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   navbarBotoesApp: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  }
-}))
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+}));
