@@ -12,8 +12,10 @@ import DashAdmin from "pages/DashAdmin/DashAdmin";
 import Feed from "pages/Feed";
 import PhotographerPreferences from "pages/PhotographerPreferences";
 import PreferencesRegister from "pages/PreferencesRegister";
+import Contrato from "molecules/Contrato/Contrato";
+import { Modal } from "@mui/material";
 
-const DefaultProviders = ({children}) => (
+const DefaultProviders = ({ children }) => (
   <UserProvider>
     {children}
   </UserProvider>
@@ -26,10 +28,11 @@ function App() {
       <DefaultProviders>
         <BrowserRouter>
           <Routes>
-            <Route exact path="/" element={<Home />}/>
+            <Route exact path="/" element={<Home />} />
             <Route exact path="/persona" element={<ChooseProfileType />} />
-            <Route exact path="/cadastro/:profileType" element={<Register/>} />
+            <Route exact path="/cadastro/:profileType" element={<Register />} />
             <Route exact path="/login" element={<Login />} />
+            <Route exact path="/modal" element={<Contrato />} />
             <Route exact path="/explorar" element={<Feed />} />
             <Route exact path="/dash-admin" element={<DashAdmin />} />
             <Route exact path="/preferencias-fotografo" element={<PhotographerPreferences />}></Route>
