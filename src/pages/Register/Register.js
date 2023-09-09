@@ -138,7 +138,10 @@ const Register = () => {
 
   return (
     <Stack direction="row" alignItems="top">
-      <Stack className={classes.banner}>
+      <Stack
+        display={{ md: "flex", sm: "none", xs: "none" }}
+        className={classes.banner}
+      >
         <Container py={4}>
           <img
             src={goBackArrow}
@@ -148,7 +151,10 @@ const Register = () => {
           />
         </Container>
       </Stack>
-      <Stack className={classes.content}>
+      <Stack
+        width={{ md: "40%", sm: "100%", xs: "100%" }}
+        className={classes.content}
+      >
         <Container
           component="form"
           onSubmit={handleSubmit(onSubmitHandler)}
@@ -159,7 +165,12 @@ const Register = () => {
             <Typography variant="subtitle-small-semibold">
               Cadastre-se
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={2}>
+            <Stack
+              direction={{ lg: "row", md: "column", xs: "column" }}
+              alignItems="center"
+              justifyContent="center"
+              spacing={2}
+            >
               <Typography variant="paragraph-medium-light">Sou um:</Typography>
               <RadioGroup
                 row
@@ -204,7 +215,7 @@ const Register = () => {
               />
               <Stack spacing={2}>
                 <Stack
-                  direction="row"
+                  direction={{ lg: "row", md: "column" }}
                   width="100%"
                   alignItems="top"
                   spacing={2}
@@ -239,7 +250,7 @@ const Register = () => {
                   </InputMask>
                 </Stack>
                 <Stack
-                  direction="row"
+                  direction={{ lg: "row", md: "column" }}
                   width="100%"
                   alignItems="top"
                   spacing={2}
@@ -279,7 +290,7 @@ const Register = () => {
                   </InputMask>
                 </Stack>
                 <Stack
-                  direction="row"
+                  direction={{ lg: "row", md: "column" }}
                   width="100%"
                   alignItems="top"
                   spacing={2}

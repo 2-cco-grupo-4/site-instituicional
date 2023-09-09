@@ -3,13 +3,15 @@ import {
   ImageList,
   ImageListItem,
   Stack,
-  Typography
+  Typography,
+  useMediaQuery
 } from "@mui/material"
 import Container from "atoms/Container"
 import CustomButton from "atoms/CustomButton"
 import Header from "molecules/Header"
 import PolaroidImage from "atoms/PolaroidImage"
 import useStyles from "./Home.styles"
+import { useTheme } from "@mui/styles"
 
 import aniversario from 'assets/img/aniversario.jpg'
 import baloes from "assets/img/baloes.jpg"
@@ -68,6 +70,8 @@ const imageList = [
   },
 ]
 
+
+
 const Separator = ({ title }) => {
   const classes = useStyles()
 
@@ -84,6 +88,10 @@ const Separator = ({ title }) => {
 
 const Home = () => {
   const classes = useStyles()
+  const theme = useTheme()
+
+  const downSm = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
     <Stack sx={{ transition: '2s all ease' }}>
       
@@ -94,13 +102,14 @@ const Home = () => {
       >
         <Stack
           spacing={2}
+          flexDirection='column'
           alignItems="left"
           width="35%"
         >
           <Typography
-            fontSize="48px"
             fontWeight="bold"
             color="white.main"
+            fontSize={{lg: '48px', md: '48px', sm: '32px', xs: '24px'}}
           >
             Transforme sua paixão em sucesso
           </Typography>
@@ -109,7 +118,7 @@ const Home = () => {
       </Container>
       <Separator title="Galeria" id="galeria" />
       <Container pb={2}>
-        <ImageList variant="masonry" cols={3} gap={8}>
+        <ImageList variant="masonry" cols={downSm ? 1 : 3} gap={8}>
           {imageList.map(({ index, alt, src }) => (
             <ImageListItem key={index}>
               <img src={src} alt={alt} />
@@ -120,13 +129,12 @@ const Home = () => {
       <Separator title="Quem somos?"/>
       <Container
         id="quem-somos"
-        flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Stack width="50%">
-          <Typography variant="title-small-bold" mb={4}>
+        <Stack width={{lg: "50%", md: "50%", sm: "70%", xs: "90%"}}>
+          <Typography variant="title-small-bold" mb={4} fontSize={{md: '32px', sm: '28px', xs: '24px'}}>
             Criamos conexões
           </Typography>
           <Typography>
@@ -137,22 +145,21 @@ const Home = () => {
             e entrar em contato de forma imediata em busca de seu trabalho.
           </Typography>
         </Stack>
-        <Box width="50%" align="right">
+        <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="right" hasTapes>
-              <img src={smartphone} alt="" />
+              <img width={{lg: '50%', md: '70%'}} src={smartphone} alt="" />
             </PolaroidImage>
           </Box>
         </Box>
       </Container>
       <Container
         id="produto"
-        flexDirection="row-reverse"
         alignItems="center"
         justifyContent="space-between"
-        className={classes.section}
+        className={classes.sectionInvertida}
       >
-        <Stack width="50%">
+        <Stack width={{lg: "50%", md: "50%", sm: "70%", xs: "90%"}}>
           <Typography variant="title-small-bold" mb={4}>
             Apoiando os 2 lados
           </Typography>
@@ -163,7 +170,7 @@ const Home = () => {
             para seu evento.
           </Typography>
         </Stack>
-        <Box width="50%" align="left">
+        <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="left" hasTapes>
               <img src={fotografo} alt="" />
@@ -173,12 +180,11 @@ const Home = () => {
       </Container>
       <Container
         id="explorar"
-        flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Stack width="50%">
+        <Stack width={{lg: "50%", md: "50%", sm: "70%", xs: "90%"}}>
           <Typography variant="title-small-bold" mb={4}>
             Não Perca Tempo
           </Typography>
@@ -188,7 +194,7 @@ const Home = () => {
           </Typography>
           <CustomButton color="primary" variant="contained">Explorar</CustomButton>
         </Stack>
-        <Box width="50%" align="right">
+        <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="right" hasTapes>
               <img src={aniversario} alt="" />

@@ -5,7 +5,7 @@ const Container = ({children, ...props}) => (
     display="flex"
     width="100%"
     boxSizing="border-box"
-    px={8}
+    px={{lg: 8, md: 8, sm: 4, xs: 3}}
     {...props}
     >
         {children}
