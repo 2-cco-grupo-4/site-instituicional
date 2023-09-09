@@ -156,11 +156,11 @@ const Header = ({ type }) => {
               <Drawer
                 display="flex"
                 flexDirection="column"
-                anchor="right" //from which side the drawer slides in
-                variant="temporary" //if and how easily the drawer can be closed
-                open={open} //if open is true, drawer is shown
-                onClose={toggleDrawer(false)} //function that is called when the drawer should close
-                onOpen={toggleDrawer(true)} //function that is called when the drawer should open
+                anchor="right"
+                variant="temporary"
+                open={open}
+                onClose={toggleDrawer(false)}
+                onOpen={toggleDrawer(true)}
               >
                 <Box className={classes.navbarNavApp} px={1} py={3}>
                   <Box className={classes.navbarLinksApp}>

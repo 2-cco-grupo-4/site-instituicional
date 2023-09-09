@@ -67,5 +67,6 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "end",
+    fontSize: "14px",
   },
 }));
