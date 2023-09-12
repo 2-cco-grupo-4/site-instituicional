@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Typography, Button, Avatar, Chip } from "@mui/material";
+import { Stack, Typography, Button, Avatar, Chip, useTheme } from "@mui/material";
 import Header from "molecules/Header";
 import Footer from "molecules/Footer";
 import {
@@ -7,14 +7,16 @@ import {
   ImageContainer,
   ImageElement,
   Sidebar,
-  UserNameTypography,
   UserArea,
   AvaliacaoBox,
   StarIcon,
 } from "./Album.styles";
 import PersonIcon from "@mui/icons-material/Person";
+import CustomButton from "atoms/CustomButton/CustomButton";
 
 function Album(props) {
+  const theme = useTheme()
+
   const images = [
     {
       id: 1,
@@ -32,66 +34,48 @@ function Album(props) {
     // Adicione mais objetos de imagem aqui, se necessário
   ];
 
-  console.log("Rendering Album component");
 
   return (
     <>
-      <Header type={3} />
+      <Header type={2} />
       <Stack direction="row" sx={{ width: "100%" }}>
-      <ImageStack>
-  {images.map((image) => (
-    <ImageContainer key={image.id} className="image">
-      <ImageElement
-        src={image.src}
-        alt={image.title}
-        style={{ width: "100%" }} 
-      />
-    </ImageContainer>
-  ))}
-</ImageStack>
-        <Sidebar>
+        <ImageStack>
+          {images.map((image) => (
+            <ImageContainer key={image.id} className="image">
+              <ImageElement
+                src={image.src}
+                alt={image.title}
+                style={{ width: "100%" }}
+              />
+            </ImageContainer>
+          ))}
+        </ImageStack>
+        <Sidebar spacing={3}>
           <UserArea>
-            <div style={{ display: "flex", width: "75%" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
+            <Stack direction="row" alignItems="center" spacing={2}>
 
-                  justifyContent: "center",
-                  flex: 1,
-                }}
-              >
-                <Avatar style={{ width: "86px", height: "86px" }}>
-                  <PersonIcon style={{ fontSize: "32px" }} />
-                </Avatar>
-              </div>
-              <div
-                style={{
-                  flex: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  marginLeft: "10px",
-                  padding:"12px"
-                }}
-              >
-                <UserNameTypography variant="h6">
-                  Nome do Usuário
-                </UserNameTypography>
-                <Typography>Localização do Usuário</Typography>
-                <Button
+              <Avatar style={{ width: 56, height: 56 }}>
+                <PersonIcon style={{ fontSize: "32px" }} />
+              </Avatar>
+
+              <Stack spacing={0.5}>
+                <Typography variant="paragraph-medium-bold">
+                  Renata Ferreira
+                </Typography>
+                <Typography>São Paulo - SP</Typography>
+                <CustomButton
                   variant="contained"
                   color="primary"
-                  style={{ height: "30px", fontWeight: "bold" }}
+                  size="small"
                 >
                   Contratar
-                </Button>
-              </div>
-            </div>
+                </CustomButton>
+              </Stack>
+            </Stack>
           </UserArea>
-          <div style={{padding:"12px"}}>
+          <Stack>
             <Typography
-              variant="h2"
-              style={{ marginTop: "16px", fontWeight: "700" }}
+              variant="subtitle-small-bold"
             >
               Título
             </Typography>
@@ -121,15 +105,15 @@ function Album(props) {
                 />
               ))}
             </div>
-        
-          <Typography
-            variant="h2"
-            style={{ marginTop: "8%", fontWeight: "700" }}
-          >
-            Avaliação
-          </Typography>
-          
-          </div>
+
+            <Typography
+              variant="h2"
+              style={{ marginTop: "8%", fontWeight: "700" }}
+            >
+              Avaliação
+            </Typography>
+
+          </Stack>
           <AvaliacaoBox>
             <div
               style={{
@@ -189,7 +173,7 @@ function Album(props) {
             </div>
           </AvaliacaoBox>
         </Sidebar>
-      </Stack>
+      </Stack >
       <Footer></Footer>
     </>
   );

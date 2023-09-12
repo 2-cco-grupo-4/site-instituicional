@@ -13,7 +13,6 @@ import Feed from "pages/Feed";
 import Preferences from "pages/Preferences";
 import Album from "pages/Album";
 import CustomLogin from "molecules/CustomLogin/CustomLogin";
-import { Modal } from "@mui/material";
 import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
 import Contrato from "molecules/Contrato/Contrato";
 
