@@ -33,8 +33,7 @@ export const AvaliacaoBox = styled("div")`
   flex-direction: column;
   margin-top: 10px;
   padding: 20px;
-  border-top:2px solid black ;
-
+  border-top: 0.5px solid rgba(0,0,0,0.3) ;
 `;
 
 export const StarIcon = styled("span")`
