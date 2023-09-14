@@ -16,32 +16,34 @@ export default makeStyles((theme) => ({
     borderRadius: '2vh',
     boxShadow: 24,
     p: 4,
+    minWidth: '460px',
+    maxWidth: '560px',
     backgroundImage: `url(${photo})`,
-    backgroundSize: 'auto 140%',
+    backgroundSize: '50%',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'left'
   },
 
 
   textContainer: {
-    
+
     width: '100%',
     height: '100%',
     alignItems: 'right',
     fontSize: '14px'
-  
+
   },
 
-  font:{
-    color: theme.palette.white.main, 
+  font: {
+    color: theme.palette.white.main,
     fontWeight: 700,
     // fontSize: '25px',
-    
-  }
-    
 
-  
   }
+
+
+
+}
 
 ))
 

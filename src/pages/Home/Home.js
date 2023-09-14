@@ -30,6 +30,8 @@ import CustomLogin from "molecules/CustomLogin/CustomLogin"
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import handleOpen from "molecules/CustomLogin/CustomLogin"
+import { useNavigate } from "../../../node_modules/react-router-dom/dist/index"
+import { ROUTES } from "utils/constants"
 
 const imageList = [
   {
@@ -89,12 +91,13 @@ const Separator = ({ title }) => {
 const Home = () => {
   const classes = useStyles()
   const theme = useTheme()
+  const navigate = useNavigate()
 
   const downSm = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <Stack sx={{ transition: '2s all ease' }}>
-      
+
       <Header type={1} />
       <Container
         alignItems="center"
@@ -109,7 +112,7 @@ const Home = () => {
           <Typography
             fontWeight="bold"
             color="white.main"
-            fontSize={{lg: '48px', md: '48px', sm: '32px', xs: '24px'}}
+            fontSize={{ lg: '48px', md: '48px', sm: '32px', xs: '24px' }}
           >
             Transforme sua paixão em sucesso
           </Typography>
@@ -126,15 +129,15 @@ const Home = () => {
           ))}
         </ImageList>
       </Container>
-      <Separator title="Quem somos?"/>
+      <Separator title="Quem somos?" />
       <Container
         id="quem-somos"
         alignItems="center"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Stack width={{lg: "50%", md: "50%", sm: "70%", xs: "90%"}}>
-          <Typography variant="title-small-bold" mb={4} fontSize={{md: '32px', sm: '28px', xs: '24px'}}>
+        <Stack width={{ lg: "50%", md: "50%", sm: "70%", xs: "90%" }}>
+          <Typography variant="title-small-bold" mb={4} fontSize={{ md: '32px', sm: '28px', xs: '24px' }}>
             Criamos conexões
           </Typography>
           <Typography>
@@ -148,7 +151,7 @@ const Home = () => {
         <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="right" hasTapes>
-              <img width={{lg: '50%', md: '70%'}} src={smartphone} alt="" />
+              <img width={{ lg: '50%', md: '70%' }} src={smartphone} alt="" />
             </PolaroidImage>
           </Box>
         </Box>
@@ -159,7 +162,7 @@ const Home = () => {
         justifyContent="space-between"
         className={classes.sectionInvertida}
       >
-        <Stack width={{lg: "50%", md: "50%", sm: "70%", xs: "90%"}}>
+        <Stack width={{ lg: "50%", md: "50%", sm: "70%", xs: "90%" }}>
           <Typography variant="title-small-bold" mb={4}>
             Apoiando os 2 lados
           </Typography>
@@ -184,7 +187,7 @@ const Home = () => {
         justifyContent="space-between"
         className={classes.section}
       >
-        <Stack width={{lg: "50%", md: "50%", sm: "70%", xs: "90%"}}>
+        <Stack width={{ lg: "50%", md: "50%", sm: "70%", xs: "90%" }}>
           <Typography variant="title-small-bold" mb={4}>
             Não Perca Tempo
           </Typography>
@@ -192,7 +195,7 @@ const Home = () => {
             Venha conhecer nossa plataforma e conhecer o trabalho de profissionais incriveis que estão
             totalmente ao seu alcance
           </Typography>
-          <CustomButton color="primary" variant="contained">Explorar</CustomButton>
+          <CustomButton color="primary" variant="contained" onClick={() => navigate(ROUTES.FEED)}>Explorar</CustomButton>
         </Stack>
         <Box className={classes.pastedPhoto}>
           <Box width="70%">
@@ -202,7 +205,7 @@ const Home = () => {
           </Box>
         </Box>
       </Container>
-      <Footer/>
+      <Footer />
     </Stack>
   )
 }

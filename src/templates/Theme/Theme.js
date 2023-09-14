@@ -40,6 +40,14 @@ const theme = createTheme({
       fontSize: 24,
       fontWeight: "bold",
     },
+    "paragraph-large-bold": {
+      fontSize: 20,
+      fontWeight: "bold",
+    },
+    "paragraph-large-regular": {
+      fontSize: 20,
+      fontWeight: "regular",
+    },
     "paragraph-medium-bold": {
       fontSize: 16,
       fontWeight: "bold",
@@ -67,7 +75,7 @@ const theme = createTheme({
 const Theme = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
-      {children}  
+      {children}
     </ThemeProvider>
   )
 }
