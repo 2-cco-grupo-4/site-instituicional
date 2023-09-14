@@ -2,7 +2,7 @@ import axios from "axios";
 
 const url =
   process.env.NODE_ENV == "production"
-    ? "http://52.45.6.243:8080"
+    ? "http://54.165.122.226:8080"
     : "http://localhost:8080";
 
 const api = axios.create({
