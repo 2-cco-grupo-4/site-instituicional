@@ -1,5 +1,6 @@
 import {
   Box,
+  Breadcrumbs,
   ImageList,
   ImageListItem,
   Rating,
@@ -7,6 +8,8 @@ import {
   Tab,
   Tabs,
   Typography,
+  Link,
+  useTheme,
 } from "@mui/material";
 import useStyles from "./PerfilFotografo.styles";
 import Container from "atoms/Container";
@@ -23,6 +26,9 @@ import noivaPraia from "assets/img/noivos-praia.png";
 import noivaSolitaria from "assets/img/noiva-solitaria.png";
 import { useState } from "react";
 import CardAvaliacao from "molecules/CardAvaliacao/CardAvaliacao";
+import { ROUTES } from "utils/constants";
+import Footer from "molecules/Footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 const imageList = [
   {
@@ -76,7 +82,7 @@ const avaliacaoList = [
     name: "Davi",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
-  
+
 ];
 
 const PerfilFotografo = () => {
@@ -112,17 +118,27 @@ const PerfilFotografo = () => {
     setColorBackAvaliacao("black");
   };
 
+  const theme = useTheme()
+  const navigate = useNavigate()
   const classes = useStyles();
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={2} />
       <Container className={classes.banner}></Container>
-      <Typography paddingLeft={"64px"} fontSize={"16px"} margin={"12px"}>
-        {"Home > Renata Fereira"}
-      </Typography>
-      <Stack className={classes.cabecalho}></Stack>
+      <Breadcrumbs separator=">" sx={{ cursor: 'pointer', marginLeft: theme.spacing(8), marginTop: theme.spacing(3) }}>
+        <Link color={theme.palette.secondary.main} underline="hover" href={ROUTES.FEED}>
+          Home
+        </Link>
+        <Link color={theme.palette.secondary.main} underline="hover" href={ROUTES.PERFIL}>
+          Renata Ferreira
+        </Link>
+        <Link color={theme.palette.secondary.main} underline="hover" href={ROUTES.ALBUM}>
+          Casamento Ana e Bruno
+        </Link>
+      </Breadcrumbs>
       <Stack className={classes.textoCabecalho}>
+        <Stack className={classes.cabecalho}></Stack>
         <Typography fontWeight={"bold"} fontSize={"24px"}>
           Renata Fereira
         </Typography>
@@ -130,24 +146,23 @@ const PerfilFotografo = () => {
           @referphots
         </Typography>
         <Typography width={"35%"} marginBottom={"15px"} paddingTop={"10px"}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore
+          Pessoas fazem fotos de qualquer coisa bonita. Fotógrafos fazem fotos bonitas de qualquer coisa.
         </Typography>
-        <CustomButton variant={"contained"}> Editar Perfil</CustomButton>
+        <CustomButton variant={"contained"}>Contratar</CustomButton>
       </Stack>
       <Container className={classes.section}>
         <Container
           className={classes.sectionOne}
           sx={{
-            backgroundColor: colorBackAlbum,
+            backgroundColor: colorBackAlbum, cursor: 'pointer'
           }}
+          onClick={aoClicarAlbum}
         >
           <Typography fontWeight={"bold"}>
             <a
               style={{ color: colorTextAlbum, textDecoration: "none" }}
               href="/perfil-fotografo"
               alt="Página do perfil do fotografo"
-              onClick={aoClicarAlbum}
             >
               Álbuns
             </a>
@@ -155,14 +170,14 @@ const PerfilFotografo = () => {
         </Container>
         <Container
           className={classes.sectionTwo}
-          sx={{ backgroundColor: colorBackAvaliacao }}
+          sx={{ backgroundColor: colorBackAvaliacao, cursor: 'pointer' }}
+          onClick={aoClicarAvaliacao}
         >
           <Typography fontWeight={"bold"}>
             <a
               style={{ color: colorTextAvaliacao, textDecoration: "none" }}
               href="/perfil-fotografo"
               alt="Página do perfil do fotografo"
-              onClick={aoClicarAvaliacao}
             >
               Avaliação
             </a>
@@ -175,7 +190,7 @@ const PerfilFotografo = () => {
       <Container sx={{ display: displayAlbum }} pb={2}>
         <ImageList variant="masonry" cols={4} gap={8}>
           {imageList.map(({ index, alt, src }) => (
-            <ImageListItem key={index}>
+            <ImageListItem key={index} sx={{ cursor: 'pointer' }} onClick={() => navigate(ROUTES.ALBUM)}>
               <img src={src} alt={alt} />
             </ImageListItem>
           ))}
@@ -192,6 +207,7 @@ const PerfilFotografo = () => {
           <CardAvaliacao name={name} text={text} />
         ))}
       </Container>
+      <Footer />
     </Stack>
   );
 };

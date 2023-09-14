@@ -8,6 +8,7 @@ import brinde from "assets/img/brinde.jpg"
 import buque from "assets/img/buque.jpg"
 import casal from "assets/img/casal.jpg"
 import criancaCasamento from "assets/img/crianca-casamento.jpg"
+import noivaFeliz from "assets/img/noiva-feliz1.png"
 import senhorAniversario from "assets/img/senhor-aniversario.jpg"
 import sobrinho from "assets/img/sobrinho.jpg"
 import tacas from "assets/img/tacas.jpg"
@@ -18,6 +19,10 @@ import { Masonry } from "@mui/lab"
 import { useState } from "react"
 
 const IMAGE_LIST = [
+  {
+    alt: "noiva-bw",
+    src: noivaFeliz,
+  },
   {
     alt: "senhor-aniversario",
     src: senhorAniversario,
@@ -119,7 +124,7 @@ const Feed = () => {
           <Stack alignItems="center" sx={{ width: "calc(100% + 24px)" }}>
             <Masonry columns={3} spacing={3} sx={{ width: '100%' }}>
               {IMAGE_LIST.map(({ index, alt, src }) => (
-                <FeedAlbum key={index} src={src} alt={alt} autor="Freddie" />
+                <FeedAlbum key={index} src={src} alt={alt} autor="Renata" />
               ))}
             </Masonry >
           </Stack>

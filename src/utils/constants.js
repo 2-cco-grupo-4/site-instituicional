@@ -9,6 +9,7 @@ export const ROUTES = {
     DASH_ADMIN: "/dash-admin",
     PREFERENCES: "/preferencias",
     ALBUM: "/album",
+    PERFIL: "/perfil-fotografo",
 }
 
 export const PROFILE_TYPES = {

@@ -5,7 +5,7 @@ export const ImageStack = styled("div")`
   flex: 1;
 `;
 
-export const UserArea = styled("div")`
+export const UserArea = styled(Stack)`
   display: flex;
   align-items: flex-start;
 `;
@@ -32,7 +32,7 @@ export const AvaliacaoBox = styled("div")`
   align-items: center;
   flex-direction: column;
   margin-top: 10px;
-  padding: 20px;
+  padding: 20px 0;
   border-top: 0.5px solid rgba(0,0,0,0.3) ;
 `;
 

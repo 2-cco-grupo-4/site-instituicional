@@ -21,7 +21,7 @@ export default makeStyles(() => ({
     backgroundRepeat: "no-repeat",
     borderRadius: "50%",
     position: "absolute",
-    top: "150px",
+    top: '-50%',
     alignSelf: "center",
   },
   textoCabecalho: {
@@ -30,6 +30,7 @@ export default makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     textAlign: "center",
+    position: "relative",
   },
   section: {
     maxWidth: "100%",
@@ -56,5 +57,6 @@ export default makeStyles(() => ({
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     gap: "36px",
+    paddingBottom: '64px',
   },
 }));
