@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Typography, Rating, Avatar, Chip, useTheme } from "@mui/material";
+import { Stack, Typography, Rating, Avatar, Chip, useTheme, Breadcrumbs, Link } from "@mui/material";
 import Header from "molecules/Header";
 import Footer from "molecules/Footer";
 import {
@@ -10,28 +10,45 @@ import {
   UserArea,
   AvaliacaoBox,
 } from "./Album.styles";
-import PersonIcon from "@mui/icons-material/Person";
-import CustomButton from "atoms/CustomButton/CustomButton";
+import imagemNoiva1 from "assets/img/noiva-feliz1.png"
+import imagemNoiva2 from "assets/img/noiva-feliz2.png"
+import imagemNoiva3 from "assets/img/noiva-feliz3.png"
+import PersonIcon from "@mui/icons-material/Person"
+import CustomButton from "atoms/CustomButton/CustomButton"
+import { ROUTES } from "utils/constants";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "contexts";
+import ModalLogin from "molecules/CustomLogin/CustomLogin";
+import Contrato from "molecules/Contrato/Contrato";
 
 const images = [
   {
     id: 1,
-    src: "https://cdn0.casamentos.com.br/article-vendor/8379/3_2/960/jpg/mari-leo-previas-49_13_178379-166013221645741.jpeg",
+    src: imagemNoiva1,
     title: "Imagem 1",
-    tags: "Natureza, Paisagem",
-
+    tags: "Casamento, Vintage",
   },
   {
     id: 2,
-    src: "https://img.freepik.com/premium-photo/wedding-photo-young-married-couple-having-fun-dancing-by-large-lake-selective-focus-high-quality-photo_597987-5743.jpg?w=2000",
+    src: imagemNoiva2,
     title: "Imagem 2",
-    tags: "Arquitetura, Urbano",
+    tags: "Evento",
+  },
+  {
+    id: 3,
+    src: imagemNoiva3,
+    title: "Imagem 3",
+    tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
 ];
 
 function Album() {
   const theme = useTheme()
+  const navigate = useNavigate()
+  const { autenticado } = useUserContext()
+  const [openContrato, setOpenContrato] = useState(false)
+  const [openLoginModal, setOpenLoginModal] = useState(false)
   const [tags, setTags] = useState([])
 
   useEffect(() => {
@@ -40,6 +57,14 @@ function Album() {
 
     setTags(v)
   }, [tags])
+
+  const handleContract = () => {
+    if (autenticado) {
+      setOpenContrato(true)
+    } else {
+      setOpenLoginModal(true)
+    }
+  }
 
   return (
     <>
@@ -57,10 +82,23 @@ function Album() {
           ))}
         </ImageStack>
         <Sidebar spacing={5}>
-          <UserArea>
+          <UserArea spacing={3}>
+            <Breadcrumbs separator=">" sx={{ cursor: 'pointer' }}>
+              <Link color="inherit" underline="hover" href={ROUTES.FEED}>
+                Home
+              </Link>
+              <Link color="inherit" underline="hover" href={ROUTES.PERFIL}>
+                Renata Ferreira
+              </Link>
+              <Link color="inherit" underline="hover" href={ROUTES.ALBUM}>
+                Casamento Ana e Bruno
+              </Link>
+            </Breadcrumbs>
             <Stack direction="row" alignItems="center" spacing={2}>
-
-              <Avatar style={{ width: theme.spacing(8), height: theme.spacing(8) }}>
+              <Avatar
+                style={{ width: theme.spacing(8), height: theme.spacing(8) }}
+                onClick={() => navigate("/perfil-fotografo")}
+              >
                 <PersonIcon style={{ fontSize: 24 }} />
               </Avatar>
 
@@ -72,6 +110,7 @@ function Album() {
                 <CustomButton
                   variant="contained"
                   color="primary"
+                  onClick={handleContract}
                 >
                   Contratar
                 </CustomButton>
@@ -144,7 +183,7 @@ function Album() {
                   <Rating
                     name="avaliação"
                     size="large"
-                    sx={{fontSize: theme.spacing(3)}}
+                    sx={{ fontSize: theme.spacing(4) }}
                     readOnly
                     value={5}
                   />
@@ -179,7 +218,13 @@ function Album() {
           </Stack>
         </Sidebar >
       </Stack >
-      <Footer></Footer>
+      <Footer />
+      {autenticado ? (
+        <Contrato open={openContrato} setOpen={setOpenContrato} />
+      ) : (
+        <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
+      )
+      }
     </>
   );
 }
