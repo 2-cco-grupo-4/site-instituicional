@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Typography, Rating, Avatar, Chip, useTheme } from "@mui/material";
+import { Stack, Typography, Rating, Avatar, Chip, useTheme, Breadcrumbs, Link } from "@mui/material";
 import Header from "molecules/Header";
 import Footer from "molecules/Footer";
 import {
@@ -12,6 +12,7 @@ import {
 } from "./Album.styles";
 import PersonIcon from "@mui/icons-material/Person";
 import CustomButton from "atoms/CustomButton/CustomButton";
+import ImagemCasamento from "assets/img/casamento-anel-flores.webp"
 
 const images = [
   {
@@ -23,7 +24,7 @@ const images = [
   },
   {
     id: 2,
-    src: "https://img.freepik.com/premium-photo/wedding-photo-young-married-couple-having-fun-dancing-by-large-lake-selective-focus-high-quality-photo_597987-5743.jpg?w=2000",
+    src: ImagemCasamento,
     title: "Imagem 2",
     tags: "Arquitetura, Urbano",
   },
@@ -59,7 +60,11 @@ function Album() {
         <Sidebar spacing={5}>
           <UserArea>
             <Stack direction="row" alignItems="center" spacing={2}>
-
+              <Breadcrumbs separator=">" >
+                <Link>Home</Link>
+                <Link>Renata Ferreira</Link>
+                <Link></Link>
+              </Breadcrumbs>
               <Avatar style={{ width: theme.spacing(8), height: theme.spacing(8) }}>
                 <PersonIcon style={{ fontSize: 24 }} />
               </Avatar>
@@ -144,7 +149,7 @@ function Album() {
                   <Rating
                     name="avaliação"
                     size="large"
-                    sx={{fontSize: theme.spacing(3)}}
+                    sx={{ fontSize: theme.spacing(3) }}
                     readOnly
                     value={5}
                   />

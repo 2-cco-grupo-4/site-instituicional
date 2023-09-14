@@ -8,6 +8,7 @@ export const ROUTES = {
     FEED: "/explorar",
     DASH_ADMIN: "/dash-admin",
     PREFERENCES: "/preferencias",
+    ALBUM: "/album",
 }
 
 export const PROFILE_TYPES = {
