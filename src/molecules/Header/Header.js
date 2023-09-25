@@ -66,8 +66,6 @@ const Header = ({ type }) => {
             />
           </Box>
         );
-      case 3:
-        return <></>;
     }
   };
 

@@ -8,6 +8,10 @@ import {
   ImageListItem,
   Stack,
   Typography,
+  Drawer,
+  Divider,
+  AppBar,
+  Grid,
 } from "@mui/material";
 import Container from "atoms/Container";
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi";
@@ -23,6 +27,13 @@ import axios from "axios";
 import { Await } from "react-router-dom";
 import { CLIENTE } from "service/user";
 import { useUserContext } from "contexts";
+import LogoPicme from "atoms/LogoPicme";
+
+import BarChartIcon from "@mui/icons-material/BarChart";
+import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 
 const DashAdmin = () => {
   const defaultValues = {
@@ -241,8 +252,85 @@ const DashAdmin = () => {
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
-      <Header type={2} />
-      <Container alignItems="center" flexDirection="column" py={4}>
+      <Box>
+        {/* <AppBar position="fixed"> */}
+        <Drawer
+          variant="permanent"
+          open={true}
+          PaperProps={{
+            sx: {
+              backgroundColor: "#1E1E1E !important",
+              width: "7.5%",
+              height: "100vh",
+              display: "flex",
+              flexDirection: "columns",
+              justifyContent: "space-around",
+              alignItems: "center",
+            },
+          }}
+        >
+          <Box>
+            <LogoPicme />
+          </Box>
+          <Divider />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box
+              p={1}
+              mb={5}
+              sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
+            >
+              <BarChartIcon
+                fontSize="large"
+                style={{ color: "#1E1E1E", fontSize: 40 }}
+              />
+            </Box>
+            <Box p={1} mb={5}>
+              <ContentPasteGoIcon
+                fontSize="large"
+                style={{ color: "#ffffff", fontSize: 40 }}
+              />
+            </Box>
+            <Box p={1} mb={5}>
+              <SettingsIcon
+                fontSize="large"
+                style={{ color: "#ffffff", fontSize: 40 }}
+              />
+            </Box>
+          </Box>
+          <Divider />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
+              <Typography sx={{ fontWeight: "bold", color: "#ffffff" }}>
+                Admin
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <LogoutIcon style={{ color: "#ffffff", fontSize: 30 }} />
+              <Typography sx={{ fontWeight: "bold", color: "#ffffff" }}>
+                Sair
+              </Typography>
+            </Box>
+          </Box>
+        </Drawer>
+        {/* </AppBar> */}
+      </Box>
+
+      <Box
+        alignItems="center"
+        flexDirection="column"
+        justifyContent="center"
+        // py={4}
+        sx={{ width: "92.5%", backgroundColor: "#EFEFEF" }}
+        ml="7.5%"
+      >
         <Container
           py={3}
           flexDirection="row"
@@ -302,68 +390,54 @@ const DashAdmin = () => {
           alignItems="center"
           flexDirection="row"
           justifyContent="space-between"
-          paddingLeft="0"
-          paddingRight="0"
-        >
-          <CaixaKpi
-            valorKpi={valorKpi1}
-            textoKpi="Usuários"
-            porcentagem={porcentagemKpi1}
-          ></CaixaKpi>
-
-          <CaixaKpi
-            valorKpi={valorKpi2}
-            textoKpi="Sessões Realizadas"
-            porcentagem={porcentagemKpi2}
-          ></CaixaKpi>
-
-          <CaixaKpi
-            valorKpi={valorKpi3}
-            textoKpi="Acessos"
-            porcentagem={porcentagemKpi3}
-          ></CaixaKpi>
-        </Container>
+          px={5}
+        ></Container>
         {metrica === "marketing" ? (
           <>
-            <Container
-              py={3}
-              flexDirection="row"
-              justifyContent="space-between"
-              paddingLeft="0"
-              paddingRight="0"
-            >
-              <CardChartPie
-                tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
-                data={dataClienteSemana}
-                width="40%"
-              ></CardChartPie>
+            <Grid container spacing={4}>
+              <Grid item xs={4}>
+                <CaixaKpi
+                  valorKpi={valorKpi1}
+                  textoKpi="Usuários"
+                  porcentagem={porcentagemKpi1}
+                ></CaixaKpi>
 
-              <CardBarChart
-                tituloPieChart="Temas com mais ‘contatos’ iniciados"
-                data={dataBar}
-                width="55%"
-              ></CardBarChart>
-            </Container>
+                <CaixaKpi
+                  valorKpi={valorKpi2}
+                  textoKpi="Sessões Realizadas"
+                  porcentagem={porcentagemKpi2}
+                ></CaixaKpi>
 
-            <Container
-              py={3}
-              flexDirection="row"
-              justifyContent="space-between"
-              paddingLeft="0"
-              paddingRight="0"
-            >
-              <CardBarChart
-                tituloPieChart="Faixa etária dos clientes"
-                data={dataBarFaixaEtaria}
-                width="40%"
-              />
-
-              <CardBarChart
-                tituloPieChart="Faixa etária dos clientes por tema"
-                data={dataBarFaixaEtariaTema}
-                width="55%"
-              />
-            </Container>
+                <CaixaKpi
+                  valorKpi={valorKpi3}
+                  textoKpi="Acessos"
+                  porcentagem={porcentagemKpi3}
+                ></CaixaKpi>
+              </Grid>
+              <Grid item xs={8}>
+                <CardBarChart
+                  tituloPieChart="Temas com mais ‘contatos’ iniciados"
+                  data={dataBar}
+                  width="100%"
+                ></CardBarChart>
+              </Grid>
+            </Grid>
+            <Grid container spacing={4}>
+              <Grid item xs={5}>
+                <CardBarChart
+                  tituloPieChart="Faixa etária dos clientes"
+                  data={dataBarFaixaEtaria}
+                  width="100%"
+                />
+              </Grid>
+              <Grid item xs={7}>
+                <CardChartPie
+                  tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                  data={dataClienteSemana}
+                  width="100%"
+                ></CardChartPie>
+              </Grid>
+            </Grid>
           </>
         ) : (
           <>
@@ -408,7 +482,7 @@ const DashAdmin = () => {
             </Container>
           </>
         )}
-      </Container>
+      </Box>
     </Stack>
   );
 };
