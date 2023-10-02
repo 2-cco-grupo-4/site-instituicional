@@ -16,23 +16,36 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem }) => {
       height="120px"
       flexDirection="row"
       alignItems="center"
-      justifyContent="center"
-      marginBottom="25px"
+      // justifyContent="center"
+      // marginBottom="25px"
     >
-      <Typography fontSize="16px" color="black" fontFamily="Inter">
-        <Box fontWeight="bold" component="span">
-          {valorKpi}
-        </Box>{" "}
-        {textoKpi}
-      </Typography>
-
-      <Container
+      <Box
         flexDirection="row"
         alignItems="center"
         justifyContent="center"
-        width="auto"
+        textAlign="center"
+        width="80%"
         height="auto"
         padding={0}
+      >
+        <Typography fontSize="18px" color="black" fontFamily="Inter">
+          <Box fontWeight="bold" component="span">
+            {valorKpi}
+          </Box>{" "}
+          <Box fontWeight="regular" component="span">
+            {textoKpi}
+          </Box>
+        </Typography>
+      </Box>
+
+      <Box
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="end"
+        width="20%"
+        height="auto"
+        padding={0}
+        mr={6}
       >
         <Stack
           direction="row"
@@ -46,11 +59,11 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem }) => {
             <ArrowDropDownIcon className={classes.negative}></ArrowDropDownIcon>
           )}
 
-          <Typography fontSize="12px" marginLeft={-1}>
+          <Typography fontSize="12px" fontWeight="bold" marginLeft={-1}>
             {porcentagem}%
           </Typography>
         </Stack>
-      </Container>
+      </Box>
     </BoxShadow>
   );
 };

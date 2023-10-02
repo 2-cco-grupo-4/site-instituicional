@@ -34,6 +34,7 @@ import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
+import CardStackedBarChart from "atoms/CardStackedBarChart";
 
 const DashAdmin = () => {
   const defaultValues = {
@@ -250,6 +251,46 @@ const DashAdmin = () => {
       });
   }, [metrica]);
 
+  const model = [
+    {
+      Mes: "Maio",
+      Agendaram: 5,
+      Total: 8,
+      "Nao Agendaram": 3,
+    },
+    {
+      Mes: "Junho",
+      Agendaram: 8,
+      Total: 22,
+      "Nao Agendaram": 14,
+    },
+    {
+      Mes: "Julho",
+      Agendaram: 16,
+      Total: 25,
+      "Nao Agendaram": 9,
+    },
+    {
+      Mes: "Agosto",
+      Agendaram: 5,
+      Total: 19,
+      "Nao Agendaram": 14,
+    },
+    {
+      Mes: "Setembro",
+      Agendaram: 19,
+      Total: 21,
+      "Nao Agendaram": 2,
+    },
+  ];
+
+  const jsonModelString = JSON.stringify(model[0]);
+  const jsonModel = JSON.parse(jsonModelString);
+
+  const keyName = Object.keys(jsonModel)[0];
+  const valueName1 = Object.keys(jsonModel)[1];
+  const valueName2 = Object.keys(jsonModel)[3];
+
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Box>
@@ -303,18 +344,37 @@ const DashAdmin = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
+              // justifyContent: "center",
             }}
           >
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
-              <Typography sx={{ fontWeight: "bold", color: "#ffffff" }}>
+              <Typography
+                fontSize="18px"
+                sx={{ fontWeight: "bold", color: "#ffffff" }}
+              >
                 Admin
               </Typography>
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <LogoutIcon style={{ color: "#ffffff", fontSize: 30 }} />
-              <Typography sx={{ fontWeight: "bold", color: "#ffffff" }}>
+              <Typography
+                fontSize="14px"
+                ml={2}
+                sx={{ fontWeight: "bold", color: "#ffffff" }}
+              >
                 Sair
               </Typography>
             </Box>
@@ -385,59 +445,142 @@ const DashAdmin = () => {
           </Container>
         </Container>
 
-        <Container
-          py={3}
-          alignItems="center"
-          flexDirection="row"
-          justifyContent="space-between"
-          px={5}
-        ></Container>
         {metrica === "marketing" ? (
           <>
-            <Grid container spacing={4}>
-              <Grid item xs={4}>
-                <CaixaKpi
-                  valorKpi={valorKpi1}
-                  textoKpi="Usuários"
-                  porcentagem={porcentagemKpi1}
-                ></CaixaKpi>
-
-                <CaixaKpi
-                  valorKpi={valorKpi2}
-                  textoKpi="Sessões Realizadas"
-                  porcentagem={porcentagemKpi2}
-                ></CaixaKpi>
-
-                <CaixaKpi
-                  valorKpi={valorKpi3}
-                  textoKpi="Acessos"
-                  porcentagem={porcentagemKpi3}
-                ></CaixaKpi>
+            <Box>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={3}
+                  lg={3}
+                  md={3}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <Grid
+                    container
+                    rowSpacing={4}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
+                      height: "100%",
+                    }}
+                  >
+                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                      <CaixaKpi
+                        valorKpi={valorKpi1}
+                        textoKpi="Usuários"
+                        porcentagem={porcentagemKpi1}
+                      ></CaixaKpi>
+                    </Grid>
+                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                      <CaixaKpi
+                        valorKpi={valorKpi2}
+                        textoKpi="Sessões Realizadas"
+                        porcentagem={porcentagemKpi2}
+                      ></CaixaKpi>
+                    </Grid>
+                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                      <CaixaKpi
+                        valorKpi={valorKpi3}
+                        textoKpi="Acessos"
+                        porcentagem={porcentagemKpi3}
+                      ></CaixaKpi>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  xl={8}
+                  lg={8}
+                  md={8}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardStackedBarChart
+                    tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                    width="100%"
+                    data={model}
+                  ></CardStackedBarChart>
+                  {/* <CardChartPie
+                    tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                    data={dataClienteSemana}
+                    width="100%"
+                  ></CardChartPie> */}
+                </Grid>
               </Grid>
-              <Grid item xs={8}>
-                <CardBarChart
-                  tituloPieChart="Temas com mais ‘contatos’ iniciados"
-                  data={dataBar}
-                  width="100%"
-                ></CardBarChart>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={5}
+                  lg={5}
+                  md={5}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardBarChart
+                    tituloPieChart="Faixa etária dos clientes"
+                    data={dataBarFaixaEtaria}
+                    width="100%"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardBarChart
+                    tituloPieChart="Temas com mais ‘contatos’ iniciados"
+                    data={dataBar}
+                    width="100%"
+                  ></CardBarChart>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={4}>
-              <Grid item xs={5}>
-                <CardBarChart
-                  tituloPieChart="Faixa etária dos clientes"
-                  data={dataBarFaixaEtaria}
-                  width="100%"
-                />
-              </Grid>
-              <Grid item xs={7}>
-                <CardChartPie
-                  tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
-                  data={dataClienteSemana}
-                  width="100%"
-                ></CardChartPie>
-              </Grid>
-            </Grid>
+            </Box>
           </>
         ) : (
           <>
