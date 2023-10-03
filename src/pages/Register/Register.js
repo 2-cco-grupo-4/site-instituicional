@@ -44,6 +44,7 @@ const Register = () => {
 
   const [profile, setProfile] = useState(profileType);
   const [btnLoading, setBtnLoading] = useState(false);
+  const [genericError, setGenericError] = useState(false)
 
   const {
     register,
@@ -64,6 +65,7 @@ const Register = () => {
 
   const onSubmitHandler = async (data) => {
     setBtnLoading(true);
+    setGenericError(false)
 
     data["dataNasc"] = data["dataNasc"].split("/").reverse().join("-");
     var perfil = data["profile"];
@@ -104,6 +106,7 @@ const Register = () => {
         })
         .catch((err) => {
           console.log(err);
+          setGenericError(true)
         })
         .finally(() => {
           setBtnLoading(false);
@@ -127,6 +130,7 @@ const Register = () => {
         })
         .catch((err) => {
           console.log(err);
+          setGenericError(true)
         })
         .finally(() => {
           setBtnLoading(false);
@@ -207,7 +211,7 @@ const Register = () => {
                 id="name-ipt"
                 name="nome"
                 {...register("nome")}
-                error={!!errors.nome}
+                error={!!errors.nome || genericError}
                 helperText={errors.nome?.message}
                 label="Nome"
                 width="100%"
@@ -226,7 +230,7 @@ const Register = () => {
                     label="E-mail"
                     {...register("email")}
                     onChange={handleChange}
-                    error={!!errors.email}
+                    error={!!errors.email || genericError}
                     helperText={errors.email?.message}
                     fullWidth
                   />
@@ -243,7 +247,7 @@ const Register = () => {
                         fullWidth
                         label="Data de nascimento"
                         placeholder="DD/MM/AAAA"
-                        error={!!errors.dataNasc}
+                        error={!!errors.dataNasc || genericError}
                         helperText={errors.dataNasc?.message}
                       />
                     )}
@@ -266,7 +270,7 @@ const Register = () => {
                         name="cpf"
                         label="CPF"
                         fullWidth
-                        error={!!errors.cpf}
+                        error={!!errors.cpf || genericError}
                         helperText={errors.cpf?.message}
                       />
                     )}
@@ -283,7 +287,7 @@ const Register = () => {
                         name="numCelular"
                         label="Telefone"
                         fullWidth
-                        error={!!errors.numCelular}
+                        error={!!errors.numCelular || genericError}
                         helperText={errors.numCelular?.message}
                       />
                     )}
@@ -303,7 +307,7 @@ const Register = () => {
                     fullWidth
                     {...register("senha")}
                     onChange={handleChange}
-                    error={!!errors.senha}
+                    error={!!errors.senha || genericError}
                     helperText={errors.senha?.message}
                   />
 
@@ -316,7 +320,7 @@ const Register = () => {
                     {...register("confirmarSenha")}
                     onChange={handleChange}
                     helperText={errors.confirmarSenha?.message}
-                    error={!!errors.confirmarSenha}
+                    error={!!errors.confirmarSenha || genericError}
                   />
                 </Stack>
               </Stack>

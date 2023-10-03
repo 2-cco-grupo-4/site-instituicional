@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 const UserContext = createContext()
 
 const defaultValues = {
-  autenticado: true,
+  autenticado: false,
   id: null,
   nome: null,
   tipoUsuario: null,
