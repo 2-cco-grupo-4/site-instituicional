@@ -13,6 +13,7 @@ import Feed from "pages/Feed";
 import Preferences from "pages/Preferences";
 import Album from "pages/Album";
 import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
+import InstaRedirect from "pages/InstaRedirect";
 
 const DefaultProviders = ({ children }) => (
   <UserProvider>{children}</UserProvider>
@@ -34,6 +35,11 @@ function App() {
             <Route exact path="/dash-admin" element={<DashAdmin />} />
             <Route exact path="/preferencias" element={<Preferences />} />
             <Route exact path="/album" element={<Album />}></Route>
+            <Route
+              exact
+              path="/insta-redirect/"
+              element={<InstaRedirect />}
+            ></Route>
             <Route
               exact
               path="/perfil-fotografo"
