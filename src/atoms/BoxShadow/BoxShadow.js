@@ -1,21 +1,22 @@
-import useStyles from "./BoxShadow.styles"
+import useStyles from "./BoxShadow.styles";
 
-import { Box } from "@mui/material"
+import { Box } from "@mui/material";
 
 const BoxShadow = ({ children, ...props }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
-    <Box className={classes.caixa}
-        display="flex"
-        alignItems="center"
-        flexDirection="column"
-        padding="5px"
-        {...props}
+    <Box
+      className={classes.caixa}
+      display="flex"
+      alignItems="center"
+      flexDirection="column"
+      padding="0px"
+      {...props}
     >
-        { children }
+      {children}
     </Box>
-  )
-}
+  );
+};
 
-export default BoxShadow
+export default BoxShadow;

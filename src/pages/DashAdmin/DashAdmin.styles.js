@@ -1,23 +1,26 @@
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from "@mui/styles";
 
 export default makeStyles(() => ({
   teste: {
-    backgroundColor: '#000',
-    color: '#fff',
+    backgroundColor: "#000",
+    color: "#fff",
   },
   iconFunil: {
-    position: 'relative',
+    position: "relative",
     right: 0,
-    fontSize: '30px'
+    fontSize: "30px",
   },
   popoupOption: {
-    cursor: 'pointer',
+    cursor: "pointer",
     paddingTop: 0,
     paddingBottom: 0,
   },
   linha: {
-    marginLeft: '12px',
-    marginRight: '12px',
-    color: '#000'
-  }
-}))
+    marginLeft: "12px",
+    marginRight: "12px",
+    color: "#000",
+  },
+  sideBar: {
+    backgroundColor: "#1E1E1E !important",
+  },
+}));
