@@ -4,18 +4,41 @@ import { INSTAGRAM } from "service/instagram";
 import { ROUTES } from "utils/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box } from "@mui/material";
+import { useState } from "react";
 import { CircularProgress } from "@mui/material";
+import axios from "axios";
 
 const InstaRedirect = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const code = new URLSearchParams(window.location.search).get("code");
 
+  const [param, setParam] = useState();
+
   const ChamadaApi = async () => {
     console.log("Código: " + code);
 
-    await INSTAGRAM.CODE_TO_TOKEN(code)
-      .then(async (response) => {
+    // const api = axios.create({
+    //   baseURL: "http://localhost:8080",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "*/*",
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Accept-Encoding": "gzip, deflate, br",
+    //   },
+    // });
+
+    // api
+    //   .post("http://localhost:8080/instagram", code)
+    //   .then((resposta) => {
+    //     alert(resposta.data);
+    //   })
+    //   .catch((error) => {
+    //     alert("aaaaa");
+    //   });
+
+    INSTAGRAM.CODE_TO_TOKEN({ codigo: code })
+      .then((response) => {
         if (response.status(200)) {
           navigate(ROUTES.FEED);
         } else {
