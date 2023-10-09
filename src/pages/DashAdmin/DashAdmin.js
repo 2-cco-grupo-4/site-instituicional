@@ -83,173 +83,112 @@ const DashAdmin = () => {
 
   const classes = useStyles();
 
-  //   getViewBarChartTemaContato
-  //             .then(function(response){
-  //                 console.log(response)
-  //             });
-
   useEffect(() => {
-    axios.create({
-      baseURL: "http://52.45.6.243:8080",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        "Access-Control-Allow-Origin": "*",
-        // 'Authorization': `Bearer ${token}`
-      },
+    ADMIN.CONTAGEM_TEMA_CONTATO(token).then((response) => {
+      console.log("Teste de Retorno: ", response.data);
+      setDataBar(response.data);
     });
 
-    // axios.defaults.headers.common['Content-Type'] = 'application/json';
-    // axios.defaults.headers.common['Content-Type'] = 'application/json';
-  });
+    ADMIN.CONTAGEM_CLIENTES_SEMANA(token).then((response) => {
+      console.log("Teste de Retorno: ", response.data);
+      setDataClienteSemana(response.data);
+    });
 
-  useEffect(() => {
-    axios
-      .get("http://52.45.6.243:8080/admin/contagem-tema-contato", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataBar(response.data);
-      });
+    ADMIN.FAIXA_ETARIA_CLIENTES(token).then((response) => {
+      console.log("Teste de Retorno: ", response.data);
+      setDataBarFaixaEtaria(response.data);
+    });
 
-    axios
-      .get("http://52.45.6.243:8080/admin/contagem-clientes-semana", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataClienteSemana(response.data);
-      });
+    ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
+      console.log("Teste de Retorno KPI 2: ", response.data);
+      setDataKpi2(response.data);
+    });
 
-    axios
-      .get("http://52.45.6.243:8080/admin/faixa-etaria-clientes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataBarFaixaEtaria(response.data);
-      });
+    ADMIN.KPI_TOTAL_ACESSOS(token).then((response) => {
+      console.log("Teste de Retorno KPI 3: ", response.data);
+      setDataKpi3(response.data);
+    });
 
-    axios
-      .get(
-        "http://52.45.6.243:8080/admin/faixa-etaria-clientes-tema/Casamentos",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then(function (response) {
-        setDataBarFaixaEtariaTema(response.data);
-      });
+    ADMIN.KPI_TOTAL_USUARIOS(token).then((response) => {
+      console.log("Teste de Retorno KPI 1: ", response.data);
+      setDataKpi1(response.data);
 
-    axios
-      .get("http://52.45.6.243:8080/admin/total-clientes-fotografos", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataClientesFotografos(response.data);
-      });
+      // var lista = response.data;
+      // if (lista[1].quantidade == 0) {
+      //   setPorcentagemKpi1(lista[1].quantidade * 100);
+      // } else if (lista[0].quantidade == 0) {
+      //   setPorcentagemKpi1(lista[1].quantidade * -100);
+      // } else {
+      //   setPorcentagemKpi1(
+      //     (lista[1].quantidade * 100) / lista[0].quantidade - 100
+      //   );
+      // }
+    });
+  }, []);
 
-    axios
-      .get("http://52.45.6.243:8080/admin/sessoes-finalizadas-canceladas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataContatosConvertidos(response.data);
-      });
+  //   axios
+  //     .get("http://52.45.6.243:8080/admin/kpi-total-usuarios", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then(function (response) {
+  //       setDataKpi1(response.data);
+  //       var lista = response.data;
+  //       if (lista[2].quantidade == 0) {
+  //         setPorcentagemKpi1(lista[1].quantidade * 100);
+  //       } else if (lista[1].quantidade == 0) {
+  //         setPorcentagemKpi1(lista[2].quantidade * -100);
+  //       } else {
+  //         setPorcentagemKpi1(
+  //           (lista[1].quantidade * 100) / lista[2].quantidade - 100
+  //         );
+  //       }
+  //       setValorKpi1(lista[0].quantidade);
+  //     });
 
-    axios
-      .get("http://52.45.6.243:8080/admin/progressao-usuarios-mes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataProgressaoUsuarios(response.data);
-      });
+  //   axios
+  //     .get("http://52.45.6.243:8080/admin/kpi-sessoes-realizadas", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then(function (response) {
+  //       setDataKpi2(response.data);
+  //       var lista = response.data;
+  //       if (lista[2].quantidade == 0) {
+  //         setPorcentagemKpi2(lista[1].quantidade * 100);
+  //       } else if (lista[1].quantidade == 0) {
+  //         setPorcentagemKpi2(lista[2].quantidade * -100);
+  //       } else {
+  //         setPorcentagemKpi2(
+  //           (lista[1].quantidade * 100) / lista[2].quantidade - 100
+  //         );
+  //       }
+  //       setValorKpi2(lista[0].quantidade);
+  //     });
 
-    axios
-      .get("http://52.45.6.243:8080/admin/progressao-relizacao-sessoes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataProgressaoSessoes(response.data);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/kpi-total-usuarios", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataKpi1(response.data);
-        var lista = response.data;
-        if (lista[2].quantidade == 0) {
-          setPorcentagemKpi1(lista[1].quantidade * 100);
-        } else if (lista[1].quantidade == 0) {
-          setPorcentagemKpi1(lista[2].quantidade * -100);
-        } else {
-          setPorcentagemKpi1(
-            (lista[1].quantidade * 100) / lista[2].quantidade - 100
-          );
-        }
-        setValorKpi1(lista[0].quantidade);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/kpi-sessoes-realizadas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataKpi2(response.data);
-        var lista = response.data;
-        if (lista[2].quantidade == 0) {
-          setPorcentagemKpi2(lista[1].quantidade * 100);
-        } else if (lista[1].quantidade == 0) {
-          setPorcentagemKpi2(lista[2].quantidade * -100);
-        } else {
-          setPorcentagemKpi2(
-            (lista[1].quantidade * 100) / lista[2].quantidade - 100
-          );
-        }
-        setValorKpi2(lista[0].quantidade);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/kpi-total-acessos", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataKpi3(response.data);
-        var lista = response.data;
-        if (lista[2].quantidade == 0) {
-          setPorcentagemKpi3(lista[1].quantidade * 100);
-        } else if (lista[1].quantidade == 0) {
-          setPorcentagemKpi3(lista[2].quantidade * -100);
-        } else {
-          setPorcentagemKpi3(
-            (lista[1].quantidade * 100) / lista[2].quantidade - 100
-          );
-        }
-        setValorKpi3(lista[0].quantidade);
-      });
-  }, [metrica]);
+  //   axios
+  //     .get("http://52.45.6.243:8080/admin/kpi-total-acessos", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then(function (response) {
+  //       setDataKpi3(response.data);
+  //       var lista = response.data;
+  //       if (lista[2].quantidade == 0) {
+  //         setPorcentagemKpi3(lista[1].quantidade * 100);
+  //       } else if (lista[1].quantidade == 0) {
+  //         setPorcentagemKpi3(lista[2].quantidade * -100);
+  //       } else {
+  //         setPorcentagemKpi3(
+  //           (lista[1].quantidade * 100) / lista[2].quantidade - 100
+  //         );
+  //       }
+  //       setValorKpi3(lista[0].quantidade);
+  //     });
+  // }, [metrica]);
 
   const model = [
     {
@@ -284,7 +223,7 @@ const DashAdmin = () => {
     },
   ];
 
-  const jsonModelString = JSON.stringify(model[0]);
+  const jsonModelString = JSON.stringify(dataClienteSemana[0]);
   const jsonModel = JSON.parse(jsonModelString);
 
   const keyName = Object.keys(jsonModel)[0];
@@ -521,7 +460,7 @@ const DashAdmin = () => {
                   <CardStackedBarChart
                     tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
                     width="100%"
-                    data={model}
+                    data={dataClienteSemana}
                   ></CardStackedBarChart>
                   {/* <CardChartPie
                     tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
