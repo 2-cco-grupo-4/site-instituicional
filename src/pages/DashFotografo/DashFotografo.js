@@ -29,7 +29,7 @@ import axios from "axios";
 import { Await } from "react-router-dom";
 import { CLIENTE } from "service/user";
 import { useUserContext } from "contexts";
-import logo from "../../assets/icons/logo-picme-reduzida-branca.svg";
+import LogoPicme from "atoms/LogoPicme";
 
 import BarChartIcon from "@mui/icons-material/BarChart";
 import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
@@ -74,33 +74,33 @@ const DashFotografo = () => {
   const model = [
     {
       Mes: "Maio",
-      Agendaram: 5,
+      Convertidos: 5,
       Total: 8,
-      "Nao Agendaram": 3,
+      "Interrompidos": 3,
     },
     {
       Mes: "Junho",
-      Agendaram: 8,
+      Convertidos: 8,
       Total: 22,
-      "Nao Agendaram": 14,
+      "Interrompidos": 14,
     },
     {
       Mes: "Julho",
-      Agendaram: 16,
+      Convertidos: 16,
       Total: 25,
-      "Nao Agendaram": 9,
+      "Interrompidos": 9,
     },
     {
       Mes: "Agosto",
-      Agendaram: 5,
+      Convertidos: 5,
       Total: 19,
-      "Nao Agendaram": 14,
+      "Interrompidos": 14,
     },
     {
       Mes: "Setembro",
-      Agendaram: 19,
+      Convertidos: 19,
       Total: 21,
-      "Nao Agendaram": 2,
+      "Interrompidos": 2,
     },
   ];
 
@@ -128,7 +128,7 @@ const DashFotografo = () => {
           }}
         >
           <Box>
-            <logo />
+            <LogoPicme />
           </Box>
           <Divider />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -136,6 +136,7 @@ const DashFotografo = () => {
               p={1}
               mb={5}
               sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
+
             >
               <BarChartIcon
                 fontSize="large"
@@ -186,13 +187,11 @@ const DashFotografo = () => {
                 alignItems: "center",
               }}
             >
-              <LogoutIcon style={{ color: "#ffffff", fontSize: 30 }} />
+              <LogoutIcon style={{ color: "#ffffff", fontSize: 35, paddingTop: '10px' }} />
               <Typography
                 fontSize="14px"
-                ml={2}
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
               >
-                Sair
               </Typography>
             </Box>
           </Box>
@@ -264,6 +263,7 @@ const DashFotografo = () => {
                 sx={{
                   paddingLeft: "0 !important",
                   // paddingTop: "0 !important",
+
                 }}
               >
                 <Grid
@@ -273,6 +273,7 @@ const DashFotografo = () => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-around",
+                    alignItems: "center",
                     height: "100%",
                   }}
                 >
@@ -299,7 +300,7 @@ const DashFotografo = () => {
                   </Grid>
                   <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
                     <CaixaKpi
-                      textoKpi="Variação lucro/mês"
+                      textoKpi="Variação lucro/mês:"
                       valorKpi={valorKpi4}
                       porcentagem={porcentagemKpi4}
                     ></CaixaKpi>
@@ -316,11 +317,14 @@ const DashFotografo = () => {
                 sx={{
                   paddingLeft: "0 !important",
                   // paddingTop: "0 !important",
+
+
                 }}
               >
                 <CardStackedBarChart
                   tituloPieChart="Lucro nos últimos meses"
                   width="100%"
+                  height="100%"
                   data={model}
                 ></CardStackedBarChart>
               </Grid>

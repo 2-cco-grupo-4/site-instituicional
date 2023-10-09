@@ -359,7 +359,7 @@ const DashAdmin = () => {
                 fontSize="18px"
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
               >
-                Admin
+
               </Typography>
             </Box>
             <Box
@@ -369,13 +369,12 @@ const DashAdmin = () => {
                 alignItems: "center",
               }}
             >
-              <LogoutIcon style={{ color: "#ffffff", fontSize: 30 }} />
+              <LogoutIcon style={{ color: "#ffffff", fontSize: 35, paddingTop: '10px' }} />
               <Typography
                 fontSize="14px"
-                ml={2}
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
               >
-                Sair
+
               </Typography>
             </Box>
           </Box>

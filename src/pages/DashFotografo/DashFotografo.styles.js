@@ -23,4 +23,5 @@ export default makeStyles(() => ({
   sideBar: {
     backgroundColor: "#1E1E1E !important",
   },
+
 }));
