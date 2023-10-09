@@ -13,6 +13,7 @@ import Feed from "pages/Feed";
 import PhotographerPreferences from "pages/PhotographerPreferences";
 import PreferencesRegister from "pages/PreferencesRegister";
 import Album from "pages/Album"; 
+import Calendario from "pages/Calendario"; 
 
 const DefaultProviders = ({children}) => (
   <UserProvider>
@@ -33,9 +34,10 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/explorar" element={<Feed />} />
             <Route exact path="/dash-admin" element={<DashAdmin />} />
-            <Route exact path="/preferencias-fotografo" element={<PhotographerPreferences />}></Route>
-            <Route exact path="/preferencias-cadastro" element={<PreferencesRegister />}></Route>
-            <Route exact path="/album" element={<Album />}></Route>
+            <Route exact path="/preferencias-fotografo" element={<PhotographerPreferences />}/>
+            <Route exact path="/preferencias-cadastro" element={<PreferencesRegister />}/>
+            <Route exact path="/album" element={<Album />}/>
+            <Route exact path="/calendario" element={<Calendario />}/>
           </Routes>
         </BrowserRouter>
       </DefaultProviders>
