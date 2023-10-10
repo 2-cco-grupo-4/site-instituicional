@@ -81,6 +81,17 @@ const DashAdmin = () => {
 
   const [conexao, setConexao] = useState();
 
+  function formatJsonClientesSemana(response) {
+    var jsonModel;
+    for (let i = 0; i < response.data.length; i++) {
+      jsonModel[i] = {
+        Agendaram: response.data[i].agendaram,
+        Total: response.data[i].total,
+        "Nao Agendaram": response.data[i].naoAgendaram,
+      };
+    }
+  }
+
   const classes = useStyles();
 
   useEffect(() => {
@@ -102,133 +113,52 @@ const DashAdmin = () => {
     ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
       console.log("Teste de Retorno KPI 2: ", response.data);
       setDataKpi2(response.data);
+      var lista = response.data;
+      if (lista[1].quantidade == 0) {
+        setPorcentagemKpi2(lista[0].quantidade * 100);
+      } else if (lista[0].quantidade == 0) {
+        setPorcentagemKpi2(lista[1].quantidade * -100);
+      } else {
+        setPorcentagemKpi2(
+          (lista[1].quantidade * 100) / lista[0].quantidade - 100
+        );
+      }
+      setValorKpi2(lista[0].quantidade);
     });
 
     ADMIN.KPI_TOTAL_ACESSOS(token).then((response) => {
       console.log("Teste de Retorno KPI 3: ", response.data);
       setDataKpi3(response.data);
+      var lista = response.data;
+      if (lista[1].quantidade == 0) {
+        setPorcentagemKpi3(lista[0].quantidade * 100);
+      } else if (lista[0].quantidade == 0) {
+        setPorcentagemKpi3(lista[1].quantidade * -100);
+      } else {
+        setPorcentagemKpi3(
+          (lista[1].quantidade * 100) / lista[0].quantidade - 100
+        );
+      }
+      setValorKpi3(lista[0].quantidade);
     });
 
     ADMIN.KPI_TOTAL_USUARIOS(token).then((response) => {
       console.log("Teste de Retorno KPI 1: ", response.data);
       setDataKpi1(response.data);
 
-      // var lista = response.data;
-      // if (lista[1].quantidade == 0) {
-      //   setPorcentagemKpi1(lista[1].quantidade * 100);
-      // } else if (lista[0].quantidade == 0) {
-      //   setPorcentagemKpi1(lista[1].quantidade * -100);
-      // } else {
-      //   setPorcentagemKpi1(
-      //     (lista[1].quantidade * 100) / lista[0].quantidade - 100
-      //   );
-      // }
+      var lista = response.data;
+      if (lista[1].quantidade == 0) {
+        setPorcentagemKpi1(lista[0].quantidade * 100);
+      } else if (lista[0].quantidade == 0) {
+        setPorcentagemKpi1(lista[1].quantidade * -100);
+      } else {
+        setPorcentagemKpi1(
+          (lista[1].quantidade * 100) / lista[0].quantidade - 100
+        );
+      }
+      setValorKpi1(lista[0].quantidade);
     });
   }, []);
-
-  //   axios
-  //     .get("http://52.45.6.243:8080/admin/kpi-total-usuarios", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then(function (response) {
-  //       setDataKpi1(response.data);
-  //       var lista = response.data;
-  //       if (lista[2].quantidade == 0) {
-  //         setPorcentagemKpi1(lista[1].quantidade * 100);
-  //       } else if (lista[1].quantidade == 0) {
-  //         setPorcentagemKpi1(lista[2].quantidade * -100);
-  //       } else {
-  //         setPorcentagemKpi1(
-  //           (lista[1].quantidade * 100) / lista[2].quantidade - 100
-  //         );
-  //       }
-  //       setValorKpi1(lista[0].quantidade);
-  //     });
-
-  //   axios
-  //     .get("http://52.45.6.243:8080/admin/kpi-sessoes-realizadas", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then(function (response) {
-  //       setDataKpi2(response.data);
-  //       var lista = response.data;
-  //       if (lista[2].quantidade == 0) {
-  //         setPorcentagemKpi2(lista[1].quantidade * 100);
-  //       } else if (lista[1].quantidade == 0) {
-  //         setPorcentagemKpi2(lista[2].quantidade * -100);
-  //       } else {
-  //         setPorcentagemKpi2(
-  //           (lista[1].quantidade * 100) / lista[2].quantidade - 100
-  //         );
-  //       }
-  //       setValorKpi2(lista[0].quantidade);
-  //     });
-
-  //   axios
-  //     .get("http://52.45.6.243:8080/admin/kpi-total-acessos", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then(function (response) {
-  //       setDataKpi3(response.data);
-  //       var lista = response.data;
-  //       if (lista[2].quantidade == 0) {
-  //         setPorcentagemKpi3(lista[1].quantidade * 100);
-  //       } else if (lista[1].quantidade == 0) {
-  //         setPorcentagemKpi3(lista[2].quantidade * -100);
-  //       } else {
-  //         setPorcentagemKpi3(
-  //           (lista[1].quantidade * 100) / lista[2].quantidade - 100
-  //         );
-  //       }
-  //       setValorKpi3(lista[0].quantidade);
-  //     });
-  // }, [metrica]);
-
-  const model = [
-    {
-      Mes: "Maio",
-      Agendaram: 5,
-      Total: 8,
-      "Nao Agendaram": 3,
-    },
-    {
-      Mes: "Junho",
-      Agendaram: 8,
-      Total: 22,
-      "Nao Agendaram": 14,
-    },
-    {
-      Mes: "Julho",
-      Agendaram: 16,
-      Total: 25,
-      "Nao Agendaram": 9,
-    },
-    {
-      Mes: "Agosto",
-      Agendaram: 5,
-      Total: 19,
-      "Nao Agendaram": 14,
-    },
-    {
-      Mes: "Setembro",
-      Agendaram: 19,
-      Total: 21,
-      "Nao Agendaram": 2,
-    },
-  ];
-
-  const jsonModelString = JSON.stringify(dataClienteSemana[0]);
-  const jsonModel = JSON.parse(jsonModelString);
-
-  const keyName = Object.keys(jsonModel)[0];
-  const valueName1 = Object.keys(jsonModel)[1];
-  const valueName2 = Object.keys(jsonModel)[3];
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
