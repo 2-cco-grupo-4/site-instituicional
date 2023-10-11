@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from "react";
-import firebase from "service/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import db from "service/firebase";
 
 const Chat = () => {
-  const database = firebase.firestore();
-  const collectionRef = database.collection("chats");
-
-  const [data, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-    collectionRef
-      .get()
-      .then((querySnapshot) => {
-        const newData = [];
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          collection(db, "chats")
+        );
+        const data = [];
         querySnapshot.forEach((doc) => {
-          const chatData = doc.data();
-          newData.push({ id: doc.id, data: chatData });
-          console.log("Dados do chat:", chatData);
+          console.log(doc.id, " => ", doc.data());
+          data.push({ id: doc.id, ...doc.data() });
         });
-        setData(newData);
-      })
-      .catch((error) => {
+        setUserData(data);
+      } catch (error) {
         console.error("Erro ao recuperar dados:", error);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div>
-      <h1>Chat</h1>
+      <h1>Mensagens</h1>
       <ul>
-        {data.map((item) => (
-          <li key={item.id}>{item.data.chat}</li>
+        {userData.map((chat) => (
+          <li key={chat.id}>{chat.nome_cliente}</li>
         ))}
       </ul>
     </div>
