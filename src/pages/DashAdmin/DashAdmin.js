@@ -109,6 +109,22 @@ const DashAdmin = () => {
       console.log("Teste de Retorno: ", response.data);
       setDataBarFaixaEtaria(response.data);
     });
+    ADMIN.BASE_USUARIOS_CADASTRADOS(token).then((response) => {
+      console.log("Teste de Retorno: ", response.data);
+      setDataClientesFotografos(response.data);
+    });
+    ADMIN.CONTATOS_CONVERTIDOS_SESSOES(token).then((response) => {
+      console.log("Teste de Retorno: ", response.data);
+      setDataContatosConvertidos(response.data);
+    });
+    ADMIN.PROGRESSAO_NOVOS_USUARIOS(token).then((response) => {
+      console.log("Teste de Retorno: ", response.data);
+      setDataProgressaoUsuarios(response.data);
+    });
+    ADMIN.PROGRESSAO_SESSOES_MES(token).then((response) => {
+      console.log("Teste de Retorno: ", response.data);
+      setDataProgressaoSessoes(response.data);
+    });
 
     ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
       console.log("Teste de Retorno KPI 2: ", response.data);
@@ -180,7 +196,7 @@ const DashAdmin = () => {
           }}
         >
           <Box>
-            <LogoPicme />
+            <LogoPicme dash={true} height={50} />
           </Box>
           <Divider />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -227,9 +243,7 @@ const DashAdmin = () => {
               <Typography
                 fontSize="18px"
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
-              >
-
-              </Typography>
+              ></Typography>
             </Box>
             <Box
               sx={{
@@ -238,13 +252,13 @@ const DashAdmin = () => {
                 alignItems: "center",
               }}
             >
-              <LogoutIcon style={{ color: "#ffffff", fontSize: 35, paddingTop: '10px' }} />
+              <LogoutIcon
+                style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
+              />
               <Typography
                 fontSize="14px"
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
-              >
-
-              </Typography>
+              ></Typography>
             </Box>
           </Box>
         </Drawer>
@@ -452,45 +466,108 @@ const DashAdmin = () => {
           </>
         ) : (
           <>
-            <Container
-              py={3}
-              flexDirection="row"
-              justifyContent="space-between"
-              paddingLeft="0"
-              paddingRight="0"
-            >
-              <CardChartPie
-                tituloPieChart="Base de usuários cadastrados"
-                data={dataClientesFotografos}
-                width="40%"
-              ></CardChartPie>
-
-              <CardBarLineChart
-                tituloPieChart="Progressão de novos usuários cadastrados"
-                data={dataProgressaoUsuarios}
-                width="55%"
-              ></CardBarLineChart>
-            </Container>
-
-            <Container
-              py={3}
-              flexDirection="row"
-              justifyContent="space-between"
-              paddingLeft="0"
-              paddingRight="0"
-            >
-              <CardChartPie
-                tituloPieChart="Contatos convertidos em sessões"
-                width="40%"
-                data={dataContatosConvertidos}
-              ></CardChartPie>
-
-              <CardBarLineChart
-                tituloPieChart="Progressão sessões de fotos realizadas"
-                data={dataProgressaoSessoes}
-                width="55%"
-              ></CardBarLineChart>
-            </Container>
+            <Box>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={5}
+                  lg={5}
+                  md={5}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardStackedBarChart
+                    tituloPieChart="Base de usuários cadastrados"
+                    width="100%"
+                    data={dataClientesFotografos}
+                  ></CardStackedBarChart>
+                </Grid>
+                <Grid
+                  item
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardBarLineChart
+                    tituloPieChart="Progressão de novos usuários cadastrados"
+                    data={dataProgressaoUsuarios}
+                    width="100%"
+                  ></CardBarLineChart>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={5}
+                  lg={5}
+                  md={5}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardStackedBarChart
+                    tituloPieChart="Contatos convertidos em sessões"
+                    width="100%"
+                    data={dataContatosConvertidos}
+                  ></CardStackedBarChart>
+                </Grid>
+                <Grid
+                  item
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardBarLineChart
+                    tituloPieChart="Progressão sessões de fotos realizadas"
+                    data={dataProgressaoSessoes}
+                    width="100%"
+                  ></CardBarLineChart>
+                </Grid>
+              </Grid>
+            </Box>
           </>
         )}
       </Box>

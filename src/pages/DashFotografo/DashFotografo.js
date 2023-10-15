@@ -1,4 +1,4 @@
-import useStyles from "./DashFotografo.styles"
+import useStyles from "./DashFotografo.styles";
 import {
   Drawer,
   Divider,
@@ -13,8 +13,8 @@ import {
   FormControl,
   Select,
   FormGroup,
-  Grid
-} from "@mui/material"
+  Grid,
+} from "@mui/material";
 import Container from "atoms/Container";
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi";
 import CardChartPie from "atoms/CardChartPie/CardChartPie";
@@ -24,7 +24,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useEffect, useState } from "react";
 import CustomPopover from "molecules/CustomPopover";
 import CustomPopoverDash from "atoms/CustomPopoverDash";
-import { ADMIN } from "service/dashboard";
+import { FOTOGRAFO } from "service/dashboard";
 import axios from "axios";
 import { Await } from "react-router-dom";
 import { CLIENTE } from "service/user";
@@ -38,9 +38,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import CardStackedBarChart from "atoms/CardStackedBarChart";
 
-
-
-
 const DashFotografo = () => {
   const defaultValues = {
     metrica: "fotografo",
@@ -53,7 +50,6 @@ const DashFotografo = () => {
   const [valorKpi2, setValorKpi2] = useState(0);
 
   const [valorKpi3, setValorKpi3] = useState(0);
-
 
   const [valorKpi4, setValorKpi4] = useState(0);
 
@@ -71,44 +67,21 @@ const DashFotografo = () => {
 
   const [dataClienteSemana, setDataClienteSemana] = useState([{}]);
 
-  const model = [
-    {
-      Mes: "Maio",
-      Convertidos: 5,
-      Total: 8,
-      "Interrompidos": 3,
-    },
-    {
-      Mes: "Junho",
-      Convertidos: 8,
-      Total: 22,
-      "Interrompidos": 14,
-    },
-    {
-      Mes: "Julho",
-      Convertidos: 16,
-      Total: 25,
-      "Interrompidos": 9,
-    },
-    {
-      Mes: "Agosto",
-      Convertidos: 5,
-      Total: 19,
-      "Interrompidos": 14,
-    },
-    {
-      Mes: "Setembro",
-      Convertidos: 19,
-      Total: 21,
-      "Interrompidos": 2,
-    },
-  ];
-
   const classes = useStyles();
 
+  const { token, id } = useUserContext();
+
+  console.log(`Teste do ID: ${id}`);
+
+  useEffect(() => {
+    FOTOGRAFO.KPI_VALOR_MEDIO_COBRADO(token, id).then((response) => {
+      alert(JSON.stringify(response.data));
+      // setValorKpi1(response.data.valorMedioCobrado);
+      // setPorcentagemKpi1(response.data.variacao);
+    });
+  }, []);
 
   return (
-
     <Stack sx={{ transition: "2s all ease" }}>
       <Box>
         {/* <AppBar position="fixed"> */}
@@ -128,7 +101,7 @@ const DashFotografo = () => {
           }}
         >
           <Box>
-            <LogoPicme />
+            <LogoPicme dash={true} height={50} />
           </Box>
           <Divider />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -136,7 +109,6 @@ const DashFotografo = () => {
               p={1}
               mb={5}
               sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
-
             >
               <BarChartIcon
                 fontSize="large"
@@ -176,9 +148,7 @@ const DashFotografo = () => {
               <Typography
                 fontSize="18px"
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
-              >
-
-              </Typography>
+              ></Typography>
             </Box>
             <Box
               sx={{
@@ -187,12 +157,13 @@ const DashFotografo = () => {
                 alignItems: "center",
               }}
             >
-              <LogoutIcon style={{ color: "#ffffff", fontSize: 35, paddingTop: '10px' }} />
+              <LogoutIcon
+                style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
+              />
               <Typography
                 fontSize="14px"
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
-              >
-              </Typography>
+              ></Typography>
             </Box>
           </Box>
         </Drawer>
@@ -229,7 +200,7 @@ const DashFotografo = () => {
               textAlign="center"
               flex={1}
             >
-              Seja bem-vindo, {" "}
+              Seja bem-vindo,{" "}
               <Box display="inline" fontWeight="bold">
                 {metrica}
               </Box>
@@ -263,7 +234,6 @@ const DashFotografo = () => {
                 sx={{
                   paddingLeft: "0 !important",
                   // paddingTop: "0 !important",
-
                 }}
               >
                 <Grid
@@ -317,16 +287,14 @@ const DashFotografo = () => {
                 sx={{
                   paddingLeft: "0 !important",
                   // paddingTop: "0 !important",
-
-
                 }}
               >
-                <CardStackedBarChart
+                {/* <CardStackedBarChart
                   tituloPieChart="Lucro nos últimos meses"
                   width="100%"
                   height="100%"
                   data={model}
-                ></CardStackedBarChart>
+                ></CardStackedBarChart> */}
               </Grid>
             </Grid>
 
@@ -373,11 +341,11 @@ const DashFotografo = () => {
                   // paddingTop: "0 !important",
                 }}
               >
-                <CardStackedBarChart
+                {/* <CardStackedBarChart
                   tituloPieChart="Contatos convertidos em sessões"
                   width="100%"
                   data={model}
-                />
+                /> */}
               </Grid>
               <Grid
                 item
@@ -390,18 +358,13 @@ const DashFotografo = () => {
                   paddingLeft: "0 !important",
                   // paddingTop: "0 !important",
                 }}
-              >
-              </Grid>
-
+              ></Grid>
             </Grid>
-
           </Box>
         </>
       </Box>
-    </Stack >
-
+    </Stack>
   );
-}
+};
 
-
-export default DashFotografo
+export default DashFotografo;
