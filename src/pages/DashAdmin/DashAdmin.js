@@ -388,7 +388,7 @@ const DashAdmin = () => {
                   }}
                 >
                   <CardStackedBarChart
-                    tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                    tituloPieChart="Clientes que agendaram sessões com 1 semana utilizando o sistema"
                     width="100%"
                     data={dataClienteSemana}
                   ></CardStackedBarChart>
