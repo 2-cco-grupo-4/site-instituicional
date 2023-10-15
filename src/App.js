@@ -9,10 +9,12 @@ import ChooseProfileType from "pages/ChooseProfileType";
 import Register from "pages/Register";
 import Login from "pages/Login";
 import DashAdmin from "pages/DashAdmin/DashAdmin";
+import DashFotografo from "pages/DashFotografo";
 import Feed from "pages/Feed";
 import Preferences from "pages/Preferences";
 import Album from "pages/Album";
 import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
+
 
 const DefaultProviders = ({ children }) => (
   <UserProvider>{children}</UserProvider>
@@ -32,6 +34,7 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/explorar" element={<Feed />} />
             <Route exact path="/dash-admin" element={<DashAdmin />} />
+            <Route exact path="/dash-fotografo" element={<DashFotografo />} />
             <Route exact path="/preferencias" element={<Preferences />} />
             <Route exact path="/album" element={<Album />}></Route>
             <Route

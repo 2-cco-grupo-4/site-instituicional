@@ -14,7 +14,7 @@ import {
   LabelList,
 } from "recharts";
 
-const CardStackedBarChart = ({ tituloPieChart, data, width }) => {
+const CardStackedBarChart = ({ tituloPieChart, data, width, height }) => {
   const classes = useStyles();
 
   const jsonModelString = JSON.stringify(data[0]);
@@ -45,7 +45,7 @@ const CardStackedBarChart = ({ tituloPieChart, data, width }) => {
   });
 
   return (
-    <BoxShadow width={width} height="auto">
+    <BoxShadow width={width} height={height || 'auto'}>
       <Typography
         fontSize="16px"
         color="black"
