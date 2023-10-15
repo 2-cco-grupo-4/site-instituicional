@@ -11,6 +11,7 @@ const api = axios.create({
     "Content-Type": "application/json",
     Accept: "*/*",
     "Access-Control-Allow-Origin": "*",
+    // "Accept-Encoding": "gzip, deflate, br",
   },
 });
 
