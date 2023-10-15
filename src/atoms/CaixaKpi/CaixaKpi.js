@@ -7,7 +7,7 @@ import { Box, Typography, Stack } from "@mui/material";
 import BoxShadow from "atoms/BoxShadow/BoxShadow";
 import { style } from "@mui/system";
 
-const CaixaKpi = ({ valorKpi, textoKpi, porcentagem }) => {
+const CaixaKpi = ({ valorKpi, textoKpi, porcentagem, direita }) => {
   const classes = useStyles();
 
   return (
@@ -29,41 +29,57 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem }) => {
         padding={0}
       >
         <Typography fontSize="18px" color="black" fontFamily="Inter">
-          <Box fontWeight="bold" component="span">
-            {valorKpi}
-          </Box>{" "}
-          <Box fontWeight="regular" component="span">
-            {textoKpi}
-          </Box>
+          {direita ? (
+            <>
+              <Box fontWeight="regular" component="span">
+                {textoKpi}
+              </Box>{" "}
+              <Box fontWeight="bold" component="span">
+                {valorKpi}
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box fontWeight="bold" component="span">
+                {valorKpi}
+              </Box>{" "}
+              <Box fontWeight="regular" component="span">
+                {textoKpi}
+              </Box>
+            </>
+          )}
         </Typography>
       </Box>
-
-      <Box
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="end"
-        width="20%"
-        height="auto"
-        padding={0}
-        mr={6}
-      >
-        <Stack
-          direction="row"
-          justifyContent="center"
+      {porcentagem ? (
+        <Box
+          flexDirection="row"
           alignItems="center"
-          sx={{ flexWrap: "wrap", gap: 0 }}
+          justifyContent="end"
+          width="20%"
+          height="auto"
+          padding={0}
+          mr={6}
         >
-          {porcentagem >= 0 ? (
-            <ArrowDropUpIcon className={classes.positive}></ArrowDropUpIcon>
-          ) : (
-            <ArrowDropDownIcon className={classes.negative}></ArrowDropDownIcon>
-          )}
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ flexWrap: "wrap", gap: 0 }}
+          >
+            {porcentagem >= 0 ? (
+              <ArrowDropUpIcon className={classes.positive}></ArrowDropUpIcon>
+            ) : (
+              <ArrowDropDownIcon
+                className={classes.negative}
+              ></ArrowDropDownIcon>
+            )}
 
-          <Typography fontSize="12px" fontWeight="bold" marginLeft={-1}>
-            {porcentagem}%
-          </Typography>
-        </Stack>
-      </Box>
+            <Typography fontSize="12px" fontWeight="bold" marginLeft={-1}>
+              {porcentagem}%
+            </Typography>
+          </Stack>
+        </Box>
+      ) : null}
     </BoxShadow>
   );
 };

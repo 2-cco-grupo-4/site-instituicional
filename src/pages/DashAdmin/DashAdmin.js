@@ -95,86 +95,95 @@ const DashAdmin = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    ADMIN.CONTAGEM_TEMA_CONTATO(token).then((response) => {
-      console.log("Teste de Retorno: ", response.data);
-      setDataBar(response.data);
-    });
+    const fetchData = async () => {
+      try {
+        ADMIN.CONTAGEM_TEMA_CONTATO(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataBar(response.data);
+        });
 
-    ADMIN.CONTAGEM_CLIENTES_SEMANA(token).then((response) => {
-      console.log("Teste de Retorno: ", response.data);
-      setDataClienteSemana(response.data);
-    });
+        ADMIN.CONTAGEM_CLIENTES_SEMANA(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataClienteSemana(response.data);
+        });
 
-    ADMIN.FAIXA_ETARIA_CLIENTES(token).then((response) => {
-      console.log("Teste de Retorno: ", response.data);
-      setDataBarFaixaEtaria(response.data);
-    });
-    ADMIN.BASE_USUARIOS_CADASTRADOS(token).then((response) => {
-      console.log("Teste de Retorno: ", response.data);
-      setDataClientesFotografos(response.data);
-    });
-    ADMIN.CONTATOS_CONVERTIDOS_SESSOES(token).then((response) => {
-      console.log("Teste de Retorno: ", response.data);
-      setDataContatosConvertidos(response.data);
-    });
-    ADMIN.PROGRESSAO_NOVOS_USUARIOS(token).then((response) => {
-      console.log("Teste de Retorno: ", response.data);
-      setDataProgressaoUsuarios(response.data);
-    });
-    ADMIN.PROGRESSAO_SESSOES_MES(token).then((response) => {
-      console.log("Teste de Retorno: ", response.data);
-      setDataProgressaoSessoes(response.data);
-    });
+        ADMIN.FAIXA_ETARIA_CLIENTES(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataBarFaixaEtaria(response.data);
+        });
+        ADMIN.BASE_USUARIOS_CADASTRADOS(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataClientesFotografos(response.data);
+        });
+        ADMIN.CONTATOS_CONVERTIDOS_SESSOES(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataContatosConvertidos(response.data);
+        });
+        ADMIN.PROGRESSAO_NOVOS_USUARIOS(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataProgressaoUsuarios(response.data);
+        });
+        ADMIN.PROGRESSAO_SESSOES_MES(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataProgressaoSessoes(response.data);
+        });
 
-    ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
-      console.log("Teste de Retorno KPI 2: ", response.data);
-      setDataKpi2(response.data);
-      var lista = response.data;
-      if (lista[1].quantidade == 0) {
-        setPorcentagemKpi2(lista[0].quantidade * 100);
-      } else if (lista[0].quantidade == 0) {
-        setPorcentagemKpi2(lista[1].quantidade * -100);
-      } else {
-        setPorcentagemKpi2(
-          (lista[1].quantidade * 100) / lista[0].quantidade - 100
-        );
+        ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
+          console.log("Teste de Retorno KPI 2: ", response.data);
+          setDataKpi2(response.data);
+          var lista = response.data;
+          if (lista[1].quantidade == 0) {
+            setPorcentagemKpi2(lista[0].quantidade * 100);
+          } else if (lista[0].quantidade == 0) {
+            setPorcentagemKpi2(lista[1].quantidade * -100);
+          } else {
+            setPorcentagemKpi2(
+              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+            );
+          }
+          setValorKpi2(lista[0].quantidade);
+        });
+
+        ADMIN.KPI_TOTAL_ACESSOS(token).then((response) => {
+          console.log("Teste de Retorno KPI 3: ", response.data);
+          setDataKpi3(response.data);
+          var lista = response.data;
+          if (lista[1].quantidade == 0) {
+            setPorcentagemKpi3(lista[0].quantidade * 100);
+          } else if (lista[0].quantidade == 0) {
+            setPorcentagemKpi3(lista[1].quantidade * -100);
+          } else {
+            setPorcentagemKpi3(
+              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+            );
+          }
+          setValorKpi3(lista[0].quantidade);
+        });
+
+        ADMIN.KPI_TOTAL_USUARIOS(token).then((response) => {
+          console.log("Teste de Retorno KPI 1: ", response.data);
+          setDataKpi1(response.data);
+
+          var lista = response.data;
+          if (lista[1].quantidade == 0) {
+            setPorcentagemKpi1(lista[0].quantidade * 100);
+          } else if (lista[0].quantidade == 0) {
+            setPorcentagemKpi1(lista[1].quantidade * -100);
+          } else {
+            setPorcentagemKpi1(
+              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+            );
+          }
+          setValorKpi1(lista[0].quantidade);
+        });
+      } catch (error) {
+        console.log(error);
       }
-      setValorKpi2(lista[0].quantidade);
-    });
-
-    ADMIN.KPI_TOTAL_ACESSOS(token).then((response) => {
-      console.log("Teste de Retorno KPI 3: ", response.data);
-      setDataKpi3(response.data);
-      var lista = response.data;
-      if (lista[1].quantidade == 0) {
-        setPorcentagemKpi3(lista[0].quantidade * 100);
-      } else if (lista[0].quantidade == 0) {
-        setPorcentagemKpi3(lista[1].quantidade * -100);
-      } else {
-        setPorcentagemKpi3(
-          (lista[1].quantidade * 100) / lista[0].quantidade - 100
-        );
-      }
-      setValorKpi3(lista[0].quantidade);
-    });
-
-    ADMIN.KPI_TOTAL_USUARIOS(token).then((response) => {
-      console.log("Teste de Retorno KPI 1: ", response.data);
-      setDataKpi1(response.data);
-
-      var lista = response.data;
-      if (lista[1].quantidade == 0) {
-        setPorcentagemKpi1(lista[0].quantidade * 100);
-      } else if (lista[0].quantidade == 0) {
-        setPorcentagemKpi1(lista[1].quantidade * -100);
-      } else {
-        setPorcentagemKpi1(
-          (lista[1].quantidade * 100) / lista[0].quantidade - 100
-        );
-      }
-      setValorKpi1(lista[0].quantidade);
-    });
-  }, []);
+    };
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>

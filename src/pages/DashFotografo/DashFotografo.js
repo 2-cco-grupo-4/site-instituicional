@@ -65,7 +65,7 @@ const DashFotografo = () => {
 
   const [dataBarFaixaEtaria, setDataBarFaixaEtaria] = useState([{}]);
 
-  const [dataClienteSemana, setDataClienteSemana] = useState([{}]);
+  const [dataSessoesConvertidas, setDataSessoesConvertidas] = useState([{}]);
 
   const classes = useStyles();
 
@@ -74,12 +74,48 @@ const DashFotografo = () => {
   console.log(`Teste do ID: ${id}`);
 
   useEffect(() => {
-    FOTOGRAFO.KPI_VALOR_MEDIO_COBRADO(token, id).then((response) => {
-      alert(JSON.stringify(response.data));
-      // setValorKpi1(response.data.valorMedioCobrado);
-      // setPorcentagemKpi1(response.data.variacao);
-    });
-  }, []);
+    const fetchData = async () => {
+      try {
+        FOTOGRAFO.KPI_VALOR_MEDIO_COBRADO(token, id).then((response) => {
+          let valor =
+            response.data.media == undefined ? 0 : response.data.media;
+
+          setValorKpi1(valor);
+        });
+        FOTOGRAFO.KPI_SESSOES_AGENDADAS_MES(token, id).then((response) => {
+          let valor =
+            response.data.total == undefined ? 0 : response.data.total;
+          setValorKpi2(valor);
+        });
+        FOTOGRAFO.KPI_PROPOSTAS_RECEBIDAS_MES(token, id).then((response) => {
+          let valor =
+            response.data.mesAtualTotal == undefined
+              ? 0
+              : response.data.mesAtualTotal;
+          setValorKpi3(valor);
+        });
+        FOTOGRAFO.KPI_VARIACAO_LUCRO_MENSAL(token, id).then((response) => {
+          let valor =
+            response.data.atual == undefined ? 0 : response.data.atual;
+          setValorKpi4(valor);
+        });
+        FOTOGRAFO.VARIACAO_LUCRO_ULTIMOS_MESES(token, id).then((response) => {
+          setDataBar(response.data);
+        });
+        FOTOGRAFO.CONTATOS_CONVERTIDOS_SESSOES(token, id).then((response) => {
+          setDataSessoesConvertidas(response.data);
+        });
+        FOTOGRAFO.AVALIACAO_MEDIA_TEMA(token, id).then((response) => {
+          setDataBarFaixaEtaria(response.data);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (token && id) {
+      fetchData();
+    }
+  }, [token, id]);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -251,14 +287,14 @@ const DashFotografo = () => {
                     <CaixaKpi
                       textoKpi="Valor médio cobrado: "
                       valorKpi={valorKpi1}
-                      porcentagem={porcentagemKpi1}
+                      direita={true}
                     ></CaixaKpi>
                   </Grid>
                   <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
                     <CaixaKpi
                       textoKpi="Sessões agendadas no mês:"
                       valorKpi={valorKpi2}
-                      porcentagem={porcentagemKpi2}
+                      direita={true}
                     ></CaixaKpi>
                   </Grid>
                   <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
@@ -266,6 +302,7 @@ const DashFotografo = () => {
                       textoKpi="Propostas recebidas:"
                       valorKpi={valorKpi3}
                       porcentagem={porcentagemKpi3}
+                      direita={true}
                     ></CaixaKpi>
                   </Grid>
                   <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
@@ -273,6 +310,7 @@ const DashFotografo = () => {
                       textoKpi="Variação lucro/mês:"
                       valorKpi={valorKpi4}
                       porcentagem={porcentagemKpi4}
+                      direita={true}
                     ></CaixaKpi>
                   </Grid>
                 </Grid>
@@ -286,15 +324,16 @@ const DashFotografo = () => {
                 xs={10}
                 sx={{
                   paddingLeft: "0 !important",
+                  height: "100%",
                   // paddingTop: "0 !important",
                 }}
               >
-                {/* <CardStackedBarChart
+                <CardBarLineChart
                   tituloPieChart="Lucro nos últimos meses"
                   width="100%"
-                  height="100%"
-                  data={model}
-                ></CardStackedBarChart> */}
+                  height={580}
+                  data={dataBar}
+                ></CardBarLineChart>
               </Grid>
             </Grid>
 
@@ -331,9 +370,9 @@ const DashFotografo = () => {
               </Grid>
               <Grid
                 item
-                xl={5}
-                lg={5}
-                md={5}
+                xl={6}
+                lg={6}
+                md={6}
                 sm={10}
                 xs={10}
                 sx={{
@@ -341,11 +380,11 @@ const DashFotografo = () => {
                   // paddingTop: "0 !important",
                 }}
               >
-                {/* <CardStackedBarChart
+                <CardStackedBarChart
                   tituloPieChart="Contatos convertidos em sessões"
                   width="100%"
-                  data={model}
-                /> */}
+                  data={dataSessoesConvertidas}
+                />
               </Grid>
               <Grid
                 item

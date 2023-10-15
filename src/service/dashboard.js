@@ -46,6 +46,7 @@ export const ADMIN = {
 
 export const FOTOGRAFO = {
   KPI_VALOR_MEDIO_COBRADO: (token, idFotografo) =>
+    // console.log(`Depurador PFFF: ID: ${idFotografo} | Token: ${token}`),
     api.get(`/dashboard/fotografo/valor-medio-cobrado`, {
       params: { idFotografo },
       headers: { Authorization: `Bearer ${token}` },
