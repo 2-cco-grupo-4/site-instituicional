@@ -16,7 +16,6 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem, direita }) => {
       height="120px"
       flexDirection="row"
       alignItems="center"
-      // justifyContent="center"
       // marginBottom="25px"
     >
       <Box

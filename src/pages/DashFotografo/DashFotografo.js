@@ -69,7 +69,7 @@ const DashFotografo = () => {
 
   const classes = useStyles();
 
-  const { token, id } = useUserContext();
+  const { token, id, nome } = useUserContext();
 
   console.log(`Teste do ID: ${id}`);
 
@@ -181,10 +181,9 @@ const DashFotografo = () => {
               }}
             >
               <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
-              <Typography
-                fontSize="18px"
-                sx={{ fontWeight: "bold", color: "#ffffff" }}
-              ></Typography>
+              <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
+                {nome}
+              </Typography>
             </Box>
             <Box
               sx={{
@@ -193,13 +192,19 @@ const DashFotografo = () => {
                 alignItems: "center",
               }}
             >
-              <LogoutIcon
-                style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
-              />
-              <Typography
-                fontSize="14px"
-                sx={{ fontWeight: "bold", color: "#ffffff" }}
-              ></Typography>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-around"
+              >
+                <LogoutIcon
+                  style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
+                />
+                <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
+                  Sair
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Drawer>
@@ -238,7 +243,7 @@ const DashFotografo = () => {
             >
               Seja bem-vindo,{" "}
               <Box display="inline" fontWeight="bold">
-                {metrica}
+                {nome}
               </Box>
               !
             </Typography>

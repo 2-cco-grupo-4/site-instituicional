@@ -1,8 +1,17 @@
 import api from "./api";
 
 export const INSTAGRAM = {
-  CODE_TO_TOKEN: (codigo) => api.post("/instagram", codigo),
-  LONG_TOKEN: (payload) => api.get("/instagram/long_access_token", payload),
-  REFRESH_TOKEN: (usuario) =>
-    api.get("/instagram/refresh_access_token", usuario),
+  CODE_TO_TOKEN: (token, codigo) =>
+    api.post("/instagram", {
+      params: { codigo: codigo },
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  LONG_TOKEN: (token, payload) =>
+    api.get("/instagram/long_access_token", payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  REFRESH_TOKEN: (token, usuario) =>
+    api.get("/instagram/refresh_access_token", usuario, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 };
