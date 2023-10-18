@@ -8,57 +8,41 @@ import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { useUserContext } from "contexts";
 import axios from "axios";
+import { FOTOGRAFO } from "service/user";
 
 const InstaRedirect = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const code = new URLSearchParams(window.location.search).get("code");
-  const { token, id, nome } = useUserContext();
 
+  const { token, id, nome } = useUserContext();
   const [param, setParam] = useState();
+  const [contextLoaded, setContextLoaded] = useState(false);
+
+  useEffect(() => {
+    setContextLoaded(true);
+  }, [token, nome, id]);
 
   useEffect(() => {
     const ChamadaApi = async () => {
-      console.log("Código: " + code);
-
-      // const api = axios.create({
-      //   baseURL: "http://localhost:8080",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Accept: "*/*",
-      //     "Access-Control-Allow-Origin": "*",
-      //     "Accept-Encoding": "gzip, deflate, br",
-      //   },
-      // });
-
-      // api
-      //   .post("http://localhost:8080/instagram", code)
-      //   .then((resposta) => {
-      //     alert(resposta.data);
+      // INSTAGRAM.CODIGO_PARA_TOKEN(token, code)
+      //   .then((response) => {
+      //     return INSTAGRAM.LONG_TOKEN(token, response.data.access_token);
+      //   })
+      //   .then((response) => {
+      //     console.log(`TOKEN LONGOOOO: ${response.data.access_token}`);
       //   })
       //   .catch((error) => {
-      //     alert("aaaaa");
+      //     console.error("Erro na chamada 2 da API:", error.toJSON());
       //   });
-
-      INSTAGRAM.CODE_TO_TOKEN(token, code)
-        .then((response) => {
-          if (response.status(200)) {
-            console.log(`Código retornado pelo Insta: ${response.data}`);
-            // navigate(ROUTES.FEED);
-          } else {
-            alert(response.status);
-          }
-        })
-        .catch((error) => {
-          console.error("Erro na chamada da API:", error);
-        });
-
-      // return alert(code);
+      FOTOGRAFO.ATUALIZAR_TOKEN_INSTAGRAM(id, code, token).then((response) => {
+        navigate(ROUTES.FEED);
+      });
     };
-    if (code) {
+    if (contextLoaded) {
       ChamadaApi();
     }
-  }, [code]);
+  }, [contextLoaded]);
 
   return (
     <Box
