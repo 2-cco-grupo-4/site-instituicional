@@ -81,215 +81,109 @@ const DashAdmin = () => {
 
   const [conexao, setConexao] = useState();
 
+  function formatJsonClientesSemana(response) {
+    var jsonModel;
+    for (let i = 0; i < response.data.length; i++) {
+      jsonModel[i] = {
+        Agendaram: response.data[i].agendaram,
+        Total: response.data[i].total,
+        "Nao Agendaram": response.data[i].naoAgendaram,
+      };
+    }
+  }
+
   const classes = useStyles();
 
-  //   getViewBarChartTemaContato
-  //             .then(function(response){
-  //                 console.log(response)
-  //             });
-
   useEffect(() => {
-    axios.create({
-      baseURL: "http://52.45.6.243:8080",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        "Access-Control-Allow-Origin": "*",
-        // 'Authorization': `Bearer ${token}`
-      },
-    });
+    const fetchData = async () => {
+      try {
+        ADMIN.CONTAGEM_TEMA_CONTATO(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataBar(response.data);
+        });
 
-    // axios.defaults.headers.common['Content-Type'] = 'application/json';
-    // axios.defaults.headers.common['Content-Type'] = 'application/json';
-  });
+        ADMIN.CONTAGEM_CLIENTES_SEMANA(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataClienteSemana(response.data);
+        });
 
-  useEffect(() => {
-    axios
-      .get("http://52.45.6.243:8080/admin/contagem-tema-contato", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataBar(response.data);
-      });
+        ADMIN.FAIXA_ETARIA_CLIENTES(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataBarFaixaEtaria(response.data);
+        });
+        ADMIN.BASE_USUARIOS_CADASTRADOS(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataClientesFotografos(response.data);
+        });
+        ADMIN.CONTATOS_CONVERTIDOS_SESSOES(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataContatosConvertidos(response.data);
+        });
+        ADMIN.PROGRESSAO_NOVOS_USUARIOS(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataProgressaoUsuarios(response.data);
+        });
+        ADMIN.PROGRESSAO_SESSOES_MES(token).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          setDataProgressaoSessoes(response.data);
+        });
 
-    axios
-      .get("http://52.45.6.243:8080/admin/contagem-clientes-semana", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataClienteSemana(response.data);
-      });
+        ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
+          console.log("Teste de Retorno KPI 2: ", response.data);
+          setDataKpi2(response.data);
+          var lista = response.data;
+          if (lista[1].quantidade == 0) {
+            setPorcentagemKpi2(lista[0].quantidade * 100);
+          } else if (lista[0].quantidade == 0) {
+            setPorcentagemKpi2(lista[1].quantidade * -100);
+          } else {
+            setPorcentagemKpi2(
+              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+            );
+          }
+          setValorKpi2(lista[0].quantidade);
+        });
 
-    axios
-      .get("http://52.45.6.243:8080/admin/faixa-etaria-clientes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataBarFaixaEtaria(response.data);
-      });
+        ADMIN.KPI_TOTAL_ACESSOS(token).then((response) => {
+          console.log("Teste de Retorno KPI 3: ", response.data);
+          setDataKpi3(response.data);
+          var lista = response.data;
+          if (lista[1].quantidade == 0) {
+            setPorcentagemKpi3(lista[0].quantidade * 100);
+          } else if (lista[0].quantidade == 0) {
+            setPorcentagemKpi3(lista[1].quantidade * -100);
+          } else {
+            setPorcentagemKpi3(
+              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+            );
+          }
+          setValorKpi3(lista[0].quantidade);
+        });
 
-    axios
-      .get(
-        "http://52.45.6.243:8080/admin/faixa-etaria-clientes-tema/Casamentos",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then(function (response) {
-        setDataBarFaixaEtariaTema(response.data);
-      });
+        ADMIN.KPI_TOTAL_USUARIOS(token).then((response) => {
+          console.log("Teste de Retorno KPI 1: ", response.data);
+          setDataKpi1(response.data);
 
-    axios
-      .get("http://52.45.6.243:8080/admin/total-clientes-fotografos", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataClientesFotografos(response.data);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/sessoes-finalizadas-canceladas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataContatosConvertidos(response.data);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/progressao-usuarios-mes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataProgressaoUsuarios(response.data);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/progressao-relizacao-sessoes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataProgressaoSessoes(response.data);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/kpi-total-usuarios", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataKpi1(response.data);
-        var lista = response.data;
-        if (lista[2].quantidade == 0) {
-          setPorcentagemKpi1(lista[1].quantidade * 100);
-        } else if (lista[1].quantidade == 0) {
-          setPorcentagemKpi1(lista[2].quantidade * -100);
-        } else {
-          setPorcentagemKpi1(
-            (lista[1].quantidade * 100) / lista[2].quantidade - 100
-          );
-        }
-        setValorKpi1(lista[0].quantidade);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/kpi-sessoes-realizadas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataKpi2(response.data);
-        var lista = response.data;
-        if (lista[2].quantidade == 0) {
-          setPorcentagemKpi2(lista[1].quantidade * 100);
-        } else if (lista[1].quantidade == 0) {
-          setPorcentagemKpi2(lista[2].quantidade * -100);
-        } else {
-          setPorcentagemKpi2(
-            (lista[1].quantidade * 100) / lista[2].quantidade - 100
-          );
-        }
-        setValorKpi2(lista[0].quantidade);
-      });
-
-    axios
-      .get("http://52.45.6.243:8080/admin/kpi-total-acessos", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setDataKpi3(response.data);
-        var lista = response.data;
-        if (lista[2].quantidade == 0) {
-          setPorcentagemKpi3(lista[1].quantidade * 100);
-        } else if (lista[1].quantidade == 0) {
-          setPorcentagemKpi3(lista[2].quantidade * -100);
-        } else {
-          setPorcentagemKpi3(
-            (lista[1].quantidade * 100) / lista[2].quantidade - 100
-          );
-        }
-        setValorKpi3(lista[0].quantidade);
-      });
-  }, [metrica]);
-
-  const model = [
-    {
-      Mes: "Maio",
-      Agendaram: 5,
-      Total: 8,
-      "Nao Agendaram": 3,
-    },
-    {
-      Mes: "Junho",
-      Agendaram: 8,
-      Total: 22,
-      "Nao Agendaram": 14,
-    },
-    {
-      Mes: "Julho",
-      Agendaram: 16,
-      Total: 25,
-      "Nao Agendaram": 9,
-    },
-    {
-      Mes: "Agosto",
-      Agendaram: 5,
-      Total: 19,
-      "Nao Agendaram": 14,
-    },
-    {
-      Mes: "Setembro",
-      Agendaram: 19,
-      Total: 21,
-      "Nao Agendaram": 2,
-    },
-  ];
-
-  const jsonModelString = JSON.stringify(model[0]);
-  const jsonModel = JSON.parse(jsonModelString);
-
-  const keyName = Object.keys(jsonModel)[0];
-  const valueName1 = Object.keys(jsonModel)[1];
-  const valueName2 = Object.keys(jsonModel)[3];
+          var lista = response.data;
+          if (lista[1].quantidade == 0) {
+            setPorcentagemKpi1(lista[0].quantidade * 100);
+          } else if (lista[0].quantidade == 0) {
+            setPorcentagemKpi1(lista[1].quantidade * -100);
+          } else {
+            setPorcentagemKpi1(
+              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+            );
+          }
+          setValorKpi1(lista[0].quantidade);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -311,7 +205,7 @@ const DashAdmin = () => {
           }}
         >
           <Box>
-            <LogoPicme />
+            <LogoPicme dash={true} height={50} />
           </Box>
           <Divider />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -358,9 +252,7 @@ const DashAdmin = () => {
               <Typography
                 fontSize="18px"
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
-              >
-                Admin
-              </Typography>
+              ></Typography>
             </Box>
             <Box
               sx={{
@@ -369,14 +261,13 @@ const DashAdmin = () => {
                 alignItems: "center",
               }}
             >
-              <LogoutIcon style={{ color: "#ffffff", fontSize: 30 }} />
+              <LogoutIcon
+                style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
+              />
               <Typography
                 fontSize="14px"
-                ml={2}
                 sx={{ fontWeight: "bold", color: "#ffffff" }}
-              >
-                Sair
-              </Typography>
+              ></Typography>
             </Box>
           </Box>
         </Drawer>
@@ -519,9 +410,9 @@ const DashAdmin = () => {
                   }}
                 >
                   <CardStackedBarChart
-                    tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                    tituloPieChart="Clientes que agendaram sessões com 1 semana utilizando o sistema"
                     width="100%"
-                    data={model}
+                    data={dataClienteSemana}
                   ></CardStackedBarChart>
                   {/* <CardChartPie
                     tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
@@ -584,45 +475,108 @@ const DashAdmin = () => {
           </>
         ) : (
           <>
-            <Container
-              py={3}
-              flexDirection="row"
-              justifyContent="space-between"
-              paddingLeft="0"
-              paddingRight="0"
-            >
-              <CardChartPie
-                tituloPieChart="Base de usuários cadastrados"
-                data={dataClientesFotografos}
-                width="40%"
-              ></CardChartPie>
-
-              <CardBarLineChart
-                tituloPieChart="Progressão de novos usuários cadastrados"
-                data={dataProgressaoUsuarios}
-                width="55%"
-              ></CardBarLineChart>
-            </Container>
-
-            <Container
-              py={3}
-              flexDirection="row"
-              justifyContent="space-between"
-              paddingLeft="0"
-              paddingRight="0"
-            >
-              <CardChartPie
-                tituloPieChart="Contatos convertidos em sessões"
-                width="40%"
-                data={dataContatosConvertidos}
-              ></CardChartPie>
-
-              <CardBarLineChart
-                tituloPieChart="Progressão sessões de fotos realizadas"
-                data={dataProgressaoSessoes}
-                width="55%"
-              ></CardBarLineChart>
-            </Container>
+            <Box>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={5}
+                  lg={5}
+                  md={5}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardStackedBarChart
+                    tituloPieChart="Base de usuários cadastrados"
+                    width="100%"
+                    data={dataClientesFotografos}
+                  ></CardStackedBarChart>
+                </Grid>
+                <Grid
+                  item
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardBarLineChart
+                    tituloPieChart="Progressão de novos usuários cadastrados"
+                    data={dataProgressaoUsuarios}
+                    width="100%"
+                  ></CardBarLineChart>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={5}
+                  lg={5}
+                  md={5}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardStackedBarChart
+                    tituloPieChart="Contatos convertidos em sessões"
+                    width="100%"
+                    data={dataContatosConvertidos}
+                  ></CardStackedBarChart>
+                </Grid>
+                <Grid
+                  item
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardBarLineChart
+                    tituloPieChart="Progressão sessões de fotos realizadas"
+                    data={dataProgressaoSessoes}
+                    width="100%"
+                  ></CardBarLineChart>
+                </Grid>
+              </Grid>
+            </Box>
           </>
         )}
       </Box>

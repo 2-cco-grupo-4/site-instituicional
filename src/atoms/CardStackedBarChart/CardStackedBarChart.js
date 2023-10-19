@@ -14,7 +14,7 @@ import {
   LabelList,
 } from "recharts";
 
-const CardStackedBarChart = ({ tituloPieChart, data, width }) => {
+const CardStackedBarChart = ({ tituloPieChart, data, width, height }) => {
   const classes = useStyles();
 
   const jsonModelString = JSON.stringify(data[0]);
@@ -27,7 +27,16 @@ const CardStackedBarChart = ({ tituloPieChart, data, width }) => {
   // Calcular as porcentagens totais e adicionar aos dados
   const dataWithPercentages = data.map((entry) => {
     const total = entry[valueName1] + entry[valueName2];
-    const percentage = ((entry[valueName1] / total) * 100).toFixed(1) + "%";
+    let percentage = ((entry[valueName1] / total) * 100).toFixed(1);
+
+    if (isNaN(percentage)) {
+      return {
+        ...entry,
+        percentage: "0%",
+      };
+    }
+
+    percentage += "%";
 
     return {
       ...entry,
@@ -36,7 +45,7 @@ const CardStackedBarChart = ({ tituloPieChart, data, width }) => {
   });
 
   return (
-    <BoxShadow width={width} height="auto">
+    <BoxShadow width={width} height={height || 'auto'}>
       <Typography
         fontSize="16px"
         color="black"
