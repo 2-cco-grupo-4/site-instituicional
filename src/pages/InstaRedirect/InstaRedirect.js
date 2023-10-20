@@ -25,16 +25,6 @@ const InstaRedirect = () => {
 
   useEffect(() => {
     const ChamadaApi = async () => {
-      // INSTAGRAM.CODIGO_PARA_TOKEN(token, code)
-      //   .then((response) => {
-      //     return INSTAGRAM.LONG_TOKEN(token, response.data.access_token);
-      //   })
-      //   .then((response) => {
-      //     console.log(`TOKEN LONGOOOO: ${response.data.access_token}`);
-      //   })
-      //   .catch((error) => {
-      //     console.error("Erro na chamada 2 da API:", error.toJSON());
-      //   });
       FOTOGRAFO.ATUALIZAR_TOKEN_INSTAGRAM(id, code, token).then((response) => {
         navigate(ROUTES.FEED);
       });
