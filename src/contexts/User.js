@@ -9,6 +9,7 @@ const defaultValues = {
   tipoUsuario: null,
   temas: [],
   token: null,
+  tokenSolicitacao: null,
 };
 
 export const UserProvider = ({ children }) => {
@@ -18,6 +19,7 @@ export const UserProvider = ({ children }) => {
   const [tipoUsuario, setTipoUsuario] = useState(defaultValues.tipoUsuario);
   const [temas, setTemas] = useState(defaultValues.temas);
   const [token, setToken] = useState(defaultValues.token);
+  const [tokenSolicitacao, setTokenSolicitacao] = useState(null);
 
   useEffect(() => {
     if (!!token) {
@@ -56,6 +58,42 @@ export const UserProvider = ({ children }) => {
     }
   });
 
+  useEffect(() => {
+    if (!!tipoUsuario) {
+      localStorage.setItem("tipoUsuario", tipoUsuario);
+    } else {
+      const tipoUsuarioStorage = localStorage.getItem("tipoUsuario");
+      if (!!tipoUsuarioStorage) {
+        localStorage.setItem("tipoUsuario", tipoUsuarioStorage);
+        setTipoUsuario(tipoUsuarioStorage);
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (!!temas) {
+      localStorage.setItem("temas", temas);
+    } else {
+      const temasStorage = localStorage.getItem("temas");
+      if (!!temasStorage) {
+        localStorage.setItem("temas", temasStorage);
+        setTemas(temasStorage);
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (!!tokenSolicitacao) {
+      localStorage.setItem("tokenSolicitacao", tokenSolicitacao);
+    } else {
+      const tokenSolicitacaoStorage = localStorage.getItem("tokenSolicitacao");
+      if (!!tokenSolicitacaoStorage) {
+        localStorage.setItem("tokenSolicitacao", tokenSolicitacaoStorage);
+        setTokenSolicitacao(tokenSolicitacaoStorage);
+      }
+    }
+  });
+
   return (
     <UserContext.Provider
       value={{
@@ -71,6 +109,8 @@ export const UserProvider = ({ children }) => {
         setTemas,
         token,
         setToken,
+        tokenSolicitacao,
+        setTokenSolicitacao,
       }}
     >
       {children}
