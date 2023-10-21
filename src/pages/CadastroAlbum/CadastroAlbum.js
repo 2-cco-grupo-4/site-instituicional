@@ -8,24 +8,41 @@ import {
   Checkbox,
   TextField,
   FormControlLabel,
+  Autocomplete,
 } from "@mui/material";
 import Container from "atoms/Container";
 import { Controller, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FOTOGRAFO } from "service/user";
 import CustomButton from "atoms/CustomButton";
+import { ROUTES } from "utils/constants";
 import { INSTAGRAM } from "service/instagram";
+import goBackArrow from "assets/icons/go-back-arrow-black.svg";
+import { TEMA } from "service/tema";
+import { ALBUM } from "service/album";
+import { IMAGEM } from "service/imagem";
 import { useUserContext } from "contexts";
 import { Masonry } from "@mui/lab";
 import iconCheck from "assets/icons/round-check.svg";
+import FeedAlbum from "molecules/FeedAlbum";
 
 const CadastroAlbum = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const { token, id, nome, tokenSolicitacao } = useUserContext();
+
   const [listImagensInsta, setListImagensInsta] = useState([{}]);
   const [btnLoading, setBtnLoading] = useState(false);
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control, setValue, reset } = useForm();
   const [listImagensSelecionadas, setListImagensSelecionadas] = useState([]);
+  const [listTemas, setListTemas] = useState([]);
+  const [idFotografo, setIdFotografo] = useState(null);
+
+  useEffect(() => {
+    setIdFotografo(id);
+    console.log("ALERTA: " + id);
+  }, [id]);
 
   useEffect(() => {
     const ChamadaApi = async () => {
@@ -58,13 +75,44 @@ const CadastroAlbum = () => {
   const onSubmitHandler = async (data) => {
     setBtnLoading(true);
 
-    console.log(data);
-    console.log(listImagensSelecionadas);
-    // await FOTOGRAFO.CADASTRAR_ALBUM(id, data, listImagensSelecionadas).then(
-    //   (response) => {
-    //     console.log(response);
-    //   }
-    // );
+    const payload = {
+      titulo: data.titulo,
+      descricao: data.descricao,
+      idTema: data.idTema,
+      idFotografo: idFotografo,
+    };
+
+    await ALBUM.CADASTRAR(payload, token).then((response) => {
+      listImagensSelecionadas.map((imagem) => {
+        const payload = {
+          mediaUrl: imagem.media_url,
+          permalink: imagem.permalink,
+          mediaType: imagem.media_type,
+          origemImagem: "INSTA",
+          updatedAt: new Date(Date.now()),
+          idAlbum: response.data.id,
+        };
+
+        IMAGEM.SALVAR(token, payload).then((response) => {
+          console.log(response);
+          setBtnLoading(false);
+          reset({ titulo: "", descricao: "", idTema: "" });
+          setListImagensSelecionadas([]);
+        });
+      });
+
+      console.log(response.data.id);
+    });
+  };
+
+  const listarTemas = (nome) => {
+    TEMA.PESQUISAR_TEMA(nome).then((response) => {
+      if (response.status === 200) {
+        setListTemas(response.data);
+      } else if (response.status === 204) {
+        setListTemas([]);
+      }
+    });
   };
 
   useEffect(() => {
@@ -91,74 +139,131 @@ const CadastroAlbum = () => {
         }}
       >
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12} margin={0}>
+          <Container py={4}>
+            <img
+              src={goBackArrow}
+              alt="go-back-arrow"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(ROUTES.PERFIL)}
+            />
+          </Container>
+          <Container sx={{ marginBottom: "50px" }}>
+            <Typography fontWeight="bold" fontSize={24}>
+              Cadastrar um novo álbum
+            </Typography>
+          </Container>
           <Container
             component="form"
             display="flex"
             flexDirection="row"
+            id="album-form"
             justifyContent="space-between"
+            padding={0}
             onSubmit={handleSubmit(onSubmitHandler)}
+            sx={{ paddingLeft: 0 }}
           >
-            <Stack width="30%">
-              <Controller
-                name="titulo"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="titulo-ipt"
-                    label="Título"
-                    width="100%"
-                  />
-                )}
-              />
-            </Stack>
-            <Stack width="30%">
-              <Controller
-                name="tema"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="tema-ipt"
-                    label="Tema"
-                    width="100%"
-                  />
-                )}
-              ></Controller>
-            </Stack>
-            <Stack width="30%">
-              <Controller
-                name="descricao"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="descricao-ipt"
-                    label="Descrição"
-                    width="100%"
-                  />
-                )}
-              ></Controller>
-            </Stack>
-            <Stack width="6%">
-              <CustomButton
-                loading={btnLoading}
-                variant="contained"
-                color="secondary"
-                type="submit"
-                fullWidth
+            <Grid container sx={{ display: "flex", flexDirection: "columns" }}>
+              <Grid
+                item
+                xl={12}
+                lg={12}
+                md={12}
+                sm={12}
+                xs={12}
+                margin={0}
+                display="flex"
+                justifyContent="space-between"
+                flexDirection="row"
+                mb={2}
               >
-                Cadastrar
-              </CustomButton>
-            </Stack>
+                <Stack width="48%">
+                  <Controller
+                    name="titulo"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="titulo-ipt"
+                        label="Título"
+                        width="100%"
+                      />
+                    )}
+                  />
+                </Stack>
+                <Stack width="48%">
+                  <Controller
+                    name="idTema"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Autocomplete
+                        freeSolo
+                        options={
+                          listTemas.length > 0
+                            ? listTemas.map((tema) => tema.nome)
+                            : []
+                        }
+                        getOptionLabel={(option) => option}
+                        onChange={(event, newValue) => {
+                          const selectedTema = listTemas.find(
+                            (tema) => tema.nome === newValue
+                          );
+                          if (selectedTema) {
+                            field.onChange(selectedTema.id);
+                          } else {
+                            field.onChange(null);
+                          }
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            {...field}
+                            id="tema-ipt"
+                            label="Tema"
+                            width="100%"
+                            onKeyDown={(e) => listarTemas(e.target.value)}
+                          />
+                        )}
+                      />
+                    )}
+                  ></Controller>
+                </Stack>
+              </Grid>
+              <Grid
+                item
+                xl={12}
+                lg={12}
+                md={12}
+                sm={12}
+                xs={12}
+                margin={0}
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+              >
+                <Stack width="100%">
+                  <Controller
+                    name="descricao"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="descricao-ipt"
+                        label="Descrição"
+                        width="100%"
+                      />
+                    )}
+                  ></Controller>
+                </Stack>
+              </Grid>
+            </Grid>
           </Container>
         </Grid>
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12} margin={0}>
           <Container>
-            <Typography>
+            <Typography fontWeight="bold">
               Selecione as imagens que você deseja adicionar nesse álbum:
             </Typography>
           </Container>
@@ -167,31 +272,56 @@ const CadastroAlbum = () => {
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
           <Container>
             <Grid container spacing={2}>
-              <Masonry columns={2} spacing={5} sx={{ width: "100%" }}>
-                {listImagensInsta.map((imagem) => (
-                  <Grid key={imagem.id} item md={4}>
-                    <Stack
-                      id={imagem.id}
-                      className={classes.content}
-                      onClick={() => handleClick(imagem)}
-                    >
-                      <img
+              <Container>
+                <Masonry columns={2} spacing={5} sx={{ width: "100%" }}>
+                  {listImagensInsta.map((imagem) => (
+                    <Grid key={imagem.id} item md={4}>
+                      <Stack
                         id={imagem.id}
-                        src={imagem.media_url}
-                        alt={imagem.permalink}
-                        style={{ height: "auto", cursor: "pointer" }}
-                        className={
-                          listImagensSelecionadas.includes(imagem.id)
-                            ? classes.checked
-                            : null
-                        }
-                      />
-                    </Stack>
-                  </Grid>
-                ))}
-              </Masonry>
+                        className={classes.content}
+                        onClick={() => handleClick(imagem)}
+                      >
+                        <img
+                          id={imagem.id}
+                          src={imagem.media_url}
+                          alt={imagem.permalink}
+                          style={{ height: "auto", cursor: "pointer" }}
+                          className={
+                            listImagensSelecionadas.includes(imagem)
+                              ? classes.checked
+                              : null
+                          }
+                        />
+                      </Stack>
+                    </Grid>
+                  ))}
+                </Masonry>
+              </Container>
             </Grid>
           </Container>
+        </Grid>
+
+        <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mb={5}>
+          <Grid container>
+            <Grid item xl={9} lg={9} md={9} sm={9} xs={9}></Grid>
+            <Grid item xl={3} lg={3} md={3} sm={3} xs={3}>
+              <Stack width="100%">
+                <Container>
+                  <CustomButton
+                    loading={btnLoading}
+                    variant="contained"
+                    color="secondary"
+                    height="100%"
+                    type="submit"
+                    form="album-form"
+                    fullWidth
+                  >
+                    Cadastrar
+                  </CustomButton>
+                </Container>
+              </Stack>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Stack>
