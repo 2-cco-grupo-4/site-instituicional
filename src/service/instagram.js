@@ -13,4 +13,8 @@ export const INSTAGRAM = {
     api.get("/instagram/refresh_access_token", usuario, {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  LISTAR_IMAGENS_INSTA: (token, accessToken) =>
+    api.get(`/instagram/listImagem?accessToken=${accessToken}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 };

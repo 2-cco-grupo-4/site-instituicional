@@ -15,6 +15,7 @@ import Preferences from "pages/Preferences";
 import Album from "pages/Album";
 import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
 import InstaRedirect from "pages/InstaRedirect";
+import CadastroAlbum from "pages/CadastroAlbum";
 
 import Chat from "pages/Chat";
 
@@ -40,6 +41,11 @@ function App() {
             <Route exact path="/preferencias" element={<Preferences />} />
             <Route exact path="/album" element={<Album />} />
             <Route exact path="/chat" element={<Chat />}></Route>
+            <Route
+              exact
+              path="/cadastro-album"
+              element={<CadastroAlbum />}
+            ></Route>
             <Route
               exact
               path="/insta-redirect/"
