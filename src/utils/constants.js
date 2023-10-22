@@ -11,6 +11,7 @@ export const ROUTES = {
   ALBUM: "/album",
   PERFIL: "/perfil-fotografo",
   NOVO_ALBUM: "/cadastro-album",
+  DASH_FOTOGRAFO: "/dash-fotografo",
 };
 
 export const PROFILE_TYPES = {

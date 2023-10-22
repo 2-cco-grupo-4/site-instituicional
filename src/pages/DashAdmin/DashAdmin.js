@@ -17,6 +17,7 @@ import Container from "atoms/Container";
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi";
 import CardChartPie from "atoms/CardChartPie/CardChartPie";
 import CardBarChart from "atoms/CardBarChart/CardBarChart";
+import CardDoubleBarChart from "atoms/CardDoubleBarChart";
 import CardBarLineChart from "atoms/CardBarLineChart/CardBarLineChart";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useEffect, useState } from "react";
@@ -24,7 +25,7 @@ import CustomPopover from "molecules/CustomPopover";
 import CustomPopoverDash from "atoms/CustomPopoverDash";
 import { ADMIN } from "service/dashboard";
 import axios from "axios";
-import { Await } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import { CLIENTE } from "service/user";
 import { useUserContext } from "contexts";
 import LogoPicme from "atoms/LogoPicme";
@@ -35,6 +36,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import CardStackedBarChart from "atoms/CardStackedBarChart";
+import { ROUTES } from "utils/constants";
 
 const DashAdmin = () => {
   const defaultValues = {
@@ -79,7 +81,7 @@ const DashAdmin = () => {
 
   const { token } = useUserContext();
 
-  const [conexao, setConexao] = useState();
+  const navigate = useNavigate();
 
   function formatJsonClientesSemana(response) {
     var jsonModel;
@@ -149,12 +151,14 @@ const DashAdmin = () => {
           setDataKpi3(response.data);
           var lista = response.data;
           if (lista[1].quantidade == 0) {
-            setPorcentagemKpi3(lista[0].quantidade * 100);
+            setPorcentagemKpi3(lista[0].quantidade * 100).toFixed(2);
           } else if (lista[0].quantidade == 0) {
-            setPorcentagemKpi3(lista[1].quantidade * -100);
+            setPorcentagemKpi3(lista[1].quantidade * -100).toFixed(2);
           } else {
             setPorcentagemKpi3(
-              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+              ((lista[1].quantidade * 100) / lista[0].quantidade - 100).toFixed(
+                2
+              )
             );
           }
           setValorKpi3(lista[0].quantidade);
@@ -166,12 +170,14 @@ const DashAdmin = () => {
 
           var lista = response.data;
           if (lista[1].quantidade == 0) {
-            setPorcentagemKpi1(lista[0].quantidade * 100);
+            setPorcentagemKpi1(lista[0].quantidade * 100).toFixed(2);
           } else if (lista[0].quantidade == 0) {
-            setPorcentagemKpi1(lista[1].quantidade * -100);
+            setPorcentagemKpi1(lista[1].quantidade * -100).toFixed(2);
           } else {
             setPorcentagemKpi1(
-              (lista[1].quantidade * 100) / lista[0].quantidade - 100
+              ((lista[1].quantidade * 100) / lista[0].quantidade - 100).toFixed(
+                2
+              )
             );
           }
           setValorKpi1(lista[0].quantidade);
@@ -205,7 +211,7 @@ const DashAdmin = () => {
           }}
         >
           <Box>
-            <LogoPicme dash={true} height={50} />
+            <LogoPicme dash={true} height={70} />
           </Box>
           <Divider />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -249,10 +255,9 @@ const DashAdmin = () => {
               }}
             >
               <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
-              <Typography
-                fontSize="18px"
-                sx={{ fontWeight: "bold", color: "#ffffff" }}
-              ></Typography>
+              <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
+                Admin
+              </Typography>
             </Box>
             <Box
               sx={{
@@ -261,13 +266,24 @@ const DashAdmin = () => {
                 alignItems: "center",
               }}
             >
-              <LogoutIcon
-                style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
-              />
-              <Typography
-                fontSize="14px"
-                sx={{ fontWeight: "bold", color: "#ffffff" }}
-              ></Typography>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-around"
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  localStorage.clear();
+                  navigate(ROUTES.HOME);
+                }}
+              >
+                <LogoutIcon
+                  style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
+                />
+                <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
+                  Sair
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Drawer>
@@ -384,7 +400,7 @@ const DashAdmin = () => {
                     <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
                       <CaixaKpi
                         valorKpi={valorKpi2}
-                        textoKpi="Sessões Realizadas"
+                        textoKpi="Sessões Previstas"
                         porcentagem={porcentagemKpi2}
                       ></CaixaKpi>
                     </Grid>
@@ -464,11 +480,11 @@ const DashAdmin = () => {
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <CardBarChart
-                    tituloPieChart="Temas com mais ‘contatos’ iniciados"
+                  <CardDoubleBarChart
+                    tituloPieChart="Valor médio gerado por tema"
                     data={dataBar}
                     width="100%"
-                  ></CardBarChart>
+                  ></CardDoubleBarChart>
                 </Grid>
               </Grid>
             </Box>
