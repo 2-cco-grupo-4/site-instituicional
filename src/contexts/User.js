@@ -56,6 +56,18 @@ export const UserProvider = ({ children }) => {
     }
   });
 
+  useEffect(() => {
+    if (!!tipoUsuario) {
+      localStorage.setItem("tipoUsuario", tipoUsuario);
+    } else {
+      const tipoUsuarioStorage = localStorage.getItem("tipoUsuario");
+      if (!!tipoUsuarioStorage) {
+        localStorage.setItem("tipoUsuario", tipoUsuarioStorage);
+        setTipoUsuario(tipoUsuarioStorage);
+      }
+    }
+  });
+
   return (
     <UserContext.Provider
       value={{

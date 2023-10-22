@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import db from "service/firebase";
 import { useUserContext } from "contexts";
+import { FOTOGRAFO } from "service/fotografos";
 
 const Chat = () => {
   const [userData, setUserData] = useState([]);
@@ -16,13 +17,21 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
 
-  const { id, nome } = useUserContext();
-  console.log("ID" + id + "Nome" + nome);
+  const { id, nome, tipoUsuario, token } = useUserContext();
+
+  const [listarFotografo, setListarFotografo] = useState([{}]);
+
+  const campoUser = tipoUsuario === 1 ? "id_cliente" : "id_fotografo";
 
   useEffect(() => {
     const loadChats = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "chats"));
+        const chatQuery = query(
+          collection(db, "chats"),
+          where(campoUser, "==", id),
+          orderBy("data_ultima_mensagem")
+        );
+        const querySnapshot = await getDocs(chatQuery);
         const data = [];
         querySnapshot.forEach((doc) => {
           data.push({ id: doc.id, ...doc.data() });
@@ -34,7 +43,7 @@ const Chat = () => {
     };
 
     loadChats();
-  }, []);
+  }, [id]);
 
   const loadMessages = async (chatId) => {
     try {
@@ -71,6 +80,7 @@ const Chat = () => {
         {
           mensagem: messageInput,
           horario_envio: new Date(),
+          id_usuario: id,
         }
       );
       console.log("Mensagem enviada com ID: ", docRef.id);
@@ -81,8 +91,32 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        FOTOGRAFO.LISTAR(token).then((response) => {
+          console.log("Teste listar fotografo", JSON.stringify(response.data));
+          setListarFotografo(response.data);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
+
   return (
     <div>
+      <h2>Fotógrafos:</h2>
+      <ul>
+        {listarFotografo.map((fotografo) => (
+          <li key={fotografo.id}>
+            <button>{fotografo.nome}</button>
+          </li>
+        ))}
+      </ul>
       <h1>Meu chat - PICME</h1>
       <ul>
         {userData.map((chat) => (

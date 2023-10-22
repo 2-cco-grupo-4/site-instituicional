@@ -27,6 +27,7 @@ const Login = () => {
   const { token, setToken } = useUserContext();
   const { nome, setNome } = useUserContext();
   const { id, setId } = useUserContext();
+  const { tipoUsuario, setTipoUsuario } = useUserContext();
   const [btnLoading, setBtnLoading] = useState(false);
 
   const {
@@ -47,6 +48,7 @@ const Login = () => {
         setToken(response.data.token);
         setNome(response.data.nome);
         setId(response.data.id);
+        setTipoUsuario(response.data.tipoUsuario)
         if (role === 0) {
           navigate(ROUTES.DASH_ADMIN);
         } else {
