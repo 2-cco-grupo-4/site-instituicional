@@ -1,558 +1,408 @@
-import useStyles from "./Contrato.styles";
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import CloseIcon from "@mui/icons-material/Close";
+import useStyles from "./Contrato.styles"
+import { useState } from "react"
 import {
-  Radio,
-  RadioGroup,
-  FormControlLabel,
   Grid,
-  Box,
   Stack,
   TextField,
   Typography,
   LinearProgress,
-  Select,
   MenuItem,
-  Checkbox,
-} from "@mui/material";
-import CustomButton from "atoms/CustomButton";
+  useTheme,
+  Avatar,
+} from "@mui/material"
+import CustomModal from "molecules/CustomModal"
+import { Controller, useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { contractSchema } from "./Contrato.schema"
+import { DatePicker } from "@mui/x-date-pickers/DatePicker"
+import { TimePicker } from "@mui/x-date-pickers/TimePicker"
+import InputMask from "react-input-mask"
+import { stringAvatar, toLocalDate } from "utils/helpers/string"
 
-export default function BasicModal({ open, setOpen }) {
-  const classes = useStyles();
+const Contract = ({ open, setOpen }) => {
+  const classes = useStyles()
+  const theme = useTheme()
 
-  const [step, setStep] = useState(0);
-  const [message, setMessage] = useState("");
-  const [progressValue, setProgressValue] = useState(0);
-  const [contractStatus, setContractStatus] = useState("Evento");
-  const [selectedOption, setSelectedOption] = useState("email");
+  const [step, setStep] = useState(0)
+  const [genericError, setGenericError] = useState(false)
+  const [contract, setContract] = useState({})
 
-  const [selectedTema, setSelectedTema] = useState("");
-  const [dataEvento, setDataEvento] = useState("");
-  const [horarioEvento, setHorarioEvento] = useState("");
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(contractSchema) })
 
-  const [cep, setCep] = useState("");
-  const [selectedEstado, setSelectedEstado] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [rua, setRua] = useState("");
-  const [numero, setNumero] = useState("");
-  const [complemento, setComplemento] = useState("");
-
-  const handleOpen = () => {
-    setStep(0);
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-
-  const handleStatusClick = (status, value) => {
-    setContractStatus(status);
-    setProgressValue(value);
-  };
-
-  const handleNext = () => {
-    if (step === 0) {
-      handleStatusClick("Mensagem", 50.0);
-      setStep(1);
-    } else if (step === 1) {
-      handleStatusClick("Confirmar", 100.0);
-      setStep(2);
-    } else if (step === 2) {
-      handleClose();
+  const onSubmit = (payload) => {
+    switch (step) {
+      case 0:
+        const data = payload?.data?.toISOString().substring(0, 10)
+        const horario = new Date(payload?.horario).toLocaleTimeString()
+        const contractInfo = {
+          ...payload,
+          data,
+          horario,
+        }
+        setContract((current) => ({
+          ...current,
+          ...contractInfo,
+        }))
+        setStep(1)
+        break
+      case 1:
+        setContract((current) => ({
+          ...current,
+          mensagem: payload?.mensagem,
+        }))
+        console.log(payload?.mensagem)
+        setStep(2)
+        break
+      case 3:
+        console.log(payload)
+        break
     }
-  };
+  }
 
-  const handlePrevious = () => {
-    if (step === 1) {
-      handleStatusClick("Evento", 0.0);
-      setStep(0);
-    } else if (step === 2) {
-      handleStatusClick("Mensagem", 50.0);
-      setStep(1);
-    }
-  };
+  const handleGoBack = () => {
+    setStep((current) => current - 1)
+  }
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  const ContractInfo = () => (
+    <Stack spacing={4}>
+      <Stack spacing={3}>
+        <Stack spacing={1}>
+          <Typography variant="subtitle-small-bold">
+            Informações Essenciais
+          </Typography>
+          <Typography>
+            Precisamos dessas informações para determinar o tipo de evento.
+          </Typography>
+        </Stack>
+        <Stack sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                name="tema"
+                select
+                label="Tema"
+                fullWidth
+                defaultValue="Tema 1"
+                {...register("tema")}
+                error={!!errors?.tema || genericError}
+                helperText={errors?.tema?.message}
+              >
+                <MenuItem value="Tema 1">Tema 1</MenuItem>
+                <MenuItem value="Tema 2">Tema 2</MenuItem>
+                <MenuItem value="Tema 3">Tema 3</MenuItem>
+              </TextField>
+            </Grid>
+            <Grid item xs={3}>
+              <Controller
+                control={control}
+                name="data"
+                render={({ field }) => {
+                  return (
+                    <DatePicker
+                      label="Data"
+                      format="DD/MM/YYYY"
+                      value={field?.value}
+                      inputRef={field?.ref}
+                      onChange={(currentDate) => {
+                        field?.onChange(currentDate)
+                      }}
+                      slotProps={{
+                        textField: {
+                          error: !!errors?.data || genericError,
+                          helperText: errors?.data?.message,
+                        },
+                      }}
+                      sx={{ width: "100%" }}
+                    />
+                  )
+                }}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Controller
+                control={control}
+                name="horario"
+                render={({ field }) => {
+                  return (
+                    <TimePicker
+                      label="Horário"
+                      format="HH:mm"
+                      ampm={false}
+                      value={field?.value}
+                      onChange={(currentTime) => {
+                        console.log(currentTime)
+                        field?.onChange(currentTime)
+                      }}
+                      sx={{ width: "100%" }}
+                      slotProps={{
+                        textField: {
+                          error: !!errors?.horario || genericError,
+                          helperText: errors?.horario?.message,
+                        },
+                      }}
+                    />
+                  )
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Stack>
+      </Stack>
+
+      <Stack spacing={3}>
+        <Stack spacing={1}>
+          <Typography variant="subtitle-small-bold">Endereço</Typography>
+          <Typography>Insira o endereço do seu evento</Typography>
+        </Stack>
+        <Stack sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={2}>
+              <InputMask mask="99999-999" {...register("cep")}>
+                {() => (
+                  <TextField
+                    name="cep"
+                    label="CEP"
+                    fullWidth
+                    error={!!errors?.cep || genericError}
+                    helperText={errors?.cep?.message}
+                  />
+                )}
+              </InputMask>
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                name="estado"
+                label="Estado"
+                fullWidth
+                {...register("estado")}
+                error={!!errors?.estado || genericError}
+                helperText={errors?.estado?.message}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                name="cidade"
+                label="Cidade"
+                fullWidth
+                {...register("cidade")}
+                error={!!errors?.cidade || genericError}
+                helperText={errors?.cidade?.message}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                name="bairro"
+                label="Bairro"
+                fullWidth
+                {...register("bairro")}
+                error={!!errors?.bairro || genericError}
+                helperText={errors?.bairro?.message}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                name="rua"
+                label="Rua"
+                fullWidth
+                {...register("rua")}
+                error={!!errors?.rua || genericError}
+                helperText={errors?.rua?.message}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                name="numero"
+                type="number"
+                label="Nº"
+                fullWidth
+                {...register("numero")}
+                error={!!errors?.numero || genericError}
+                helperText={errors?.numero?.message}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                name="complemento"
+                label="Complemento"
+                fullWidth
+                {...register("complemento")}
+                error={!!errors?.complemento || genericError}
+                helperText={errors?.complemento?.message}
+              />
+            </Grid>
+          </Grid>
+        </Stack>
+      </Stack>
+    </Stack>
+  )
+
+  const Message = () => (
+    <Stack spacing={4}>
+      <Stack spacing={3}>
+        <Stack spacing={1}>
+          <Typography variant="subtitle-small-bold">Mensagem</Typography>
+          <Typography>
+            Essa mensagem será enviada como proposta para o fotógrafo
+            selecionado.
+          </Typography>
+        </Stack>
+        <Stack spacing={1}>
+          <Stack
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={2}
+          >
+            <Typography variant="paragraph-medium-bold">Para:</Typography>
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
+            >
+              <Avatar
+                {...stringAvatar("Renata Ferreira")}
+                sx={{ width: theme.spacing(4), height: theme.spacing(4) }}
+              />
+              <Typography variant="paragraph-medium-regular">
+                Renata Ferreira
+              </Typography>
+            </Stack>
+          </Stack>
+        </Stack>
+        <TextField
+          label="Mensagem"
+          multiline
+          helperText={
+            errors?.mensagem?.message || 'Aperte "Enter" para quebrar a linha'
+          }
+          {...register("mensagem")}
+        />
+      </Stack>
+    </Stack>
+  )
+
+  const Confirm = () => (
+    <Stack spacing={4}>
+      <Stack spacing={3}>
+        <Stack spacing={1}>
+          <Typography variant="subtitle-small-bold">Confirmar</Typography>
+          <Typography>
+            Confirme as informações que você nos passou nesse formulário.
+          </Typography>
+        </Stack>
+      </Stack>
+      <Stack sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={5}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">
+                Fotógrafo(a):
+              </Typography>
+              <Typography>Renata Ferreira</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={4}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Tema:</Typography>
+              <Typography>Casamento</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Data:</Typography>
+              <Typography>{toLocalDate(contract?.data)}</Typography>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Stack>
+      <Stack spacing={1}>
+        <Typography
+          variant="paragraph-medium-bold"
+          className={classes.lineBelowTitle}
+        >
+          Proposta:
+        </Typography>
+        <Typography>{contract?.mensagem || "N/A"}</Typography>
+      </Stack>
+      <Stack spacing={1}>
+        <Typography
+          variant="paragraph-medium-bold"
+          className={classes.lineBelowTitle}
+        >
+          Endereço:
+        </Typography>
+        <Stack spacing={1} sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={3}>
+              <Stack direction="row" alignItems="center" columnGap={1}>
+                <Typography variant="paragraph-medium-bold">Estado:</Typography>
+                <Typography>{contract?.estado}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={3}>
+              <Stack direction="row" alignItems="center" columnGap={1}>
+                <Typography variant="paragraph-medium-bold">Cidade:</Typography>
+                <Typography>{contract?.cidade}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={3}>
+              <Stack direction="row" alignItems="center" columnGap={1}>
+                <Typography variant="paragraph-medium-bold">Bairro:</Typography>
+                <Typography>{contract?.bairro}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={3}>
+              <Stack direction="row" alignItems="center" columnGap={1}>
+                <Typography variant="paragraph-medium-bold">CEP:</Typography>
+                <Typography>{contract?.cep}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={3}>
+              <Stack direction="row" alignItems="center" columnGap={1}>
+                <Typography variant="paragraph-medium-bold">Rua:</Typography>
+                <Typography>{contract?.rua}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={3}>
+              <Stack direction="row" alignItems="center" columnGap={1}>
+                <Typography variant="paragraph-medium-bold">Nº:</Typography>
+                <Typography>{contract?.numero}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={3}>
+              <Stack direction="row" alignItems="center" columnGap={1}>
+                <Typography variant="paragraph-medium-bold">
+                  Complemento:
+                </Typography>
+                <Typography>{contract?.complemento || "N/A"}</Typography>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Stack>
+      </Stack>
+    </Stack>
+  )
+
+  const stepContents = [<ContractInfo />, <Message />, <Confirm />]
 
   return (
-    <Modal
+    <CustomModal
       open={open}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      setOpen={setOpen}
+      onSubmit={handleSubmit(onSubmit)}
+      leftButtonText={step !== 0 && "Voltar"}
+      leftButtonProps={{ onClick: () => handleGoBack() }}
+      rightButtonText="Avançar"
     >
-      <Box className={classes.modal}>
-        <Button
-          sx={{ color: "black", textDecoration: "none", fontSize: 30 }}
-          onClick={handleClose}
-        >
-          <CloseIcon />
-        </Button>
-        <div className={classes.textContainer}>
-          <Stack direction="column" alignItems="center" spacing={2}>
-            <LinearProgress
-              variant="determinate"
-              value={progressValue}
-              sx={{
-                width: "100%",
-                width: 600,
-                height: 6,
-                borderRadius: 3,
-                marginBottom: 10,
-              }}
-            />
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              sx={{ width: "100%", maxWidth: 600 }}
-            >
-              <Stack direction="column" alignItems="center">
-                <Typography
-                  sx={{ fontWeight: "bold" }}
-                  variant="body1"
-                  color={
-                    contractStatus === "Evento" ? "primary" : "inherit"
-                  }
-                  onClick={() => handleStatusClick("Evento", 0.0)}
-                >
-                  Evento
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: "bold" }}
-                  variant="body1"
-                  color={
-                    contractStatus === "Evento" ? "primary" : "inherit"
-                  }
-                >
-                  {step === 0}
-                </Typography>
-              </Stack>
-              <Stack direction="column" alignItems="center">
-                <Typography
-                  sx={{ fontWeight: "bold" }}
-                  variant="body1"
-                  color={
-                    contractStatus === "Mensagem" ? "primary" : "inherit"
-                  }
-                  onClick={() => handleStatusClick("Mensagem", 50.0)}
-                >
-                  Mensagem
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: "bold" }}
-                  variant="body1"
-                  color={
-                    contractStatus === "Mensagem" ? "primary" : "inherit"
-                  }
-                >
-                  {step === 1}
-                </Typography>
-              </Stack>
-              <Stack direction="column" alignItems="center">
-                <Typography
-                  sx={{ fontWeight: "bold" }}
-                  variant="body1"
-                  color={
-                    contractStatus === "Confirmar" ? "primary" : "inherit"
-                  }
-                  onClick={() => handleStatusClick("Confirmar", 100.0)}
-                >
-                  Confirmar
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: "bold" }}
-                  variant="body1"
-                  color={
-                    contractStatus === "Confirmar" ? "primary" : "inherit"
-                  }
-                >
-                  {step === 2}
-                </Typography>
-              </Stack>
-            </Stack>
-
-            {step === 0 && (
-              // Etapa 0 (Evento)
-              <>
-                <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  spacing={2}
-                  sx={{ width: "100%", maxWidth: 860, paddingY: 5 }}
-                >
-                  <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-                    INFORMAÇÕES ESSENCIAIS
-                  </Typography>
-                  <Typography variant="body1">
-                    Precisamos destas informações para determinar o tipo de
-                    evento
-                  </Typography>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    sx={{ width: "100%" }}
-                  >
-                    <Select
-                      label="Tema"
-                      variant="outlined"
-                      sx={{ width: "30%" }}
-                      value={selectedTema}
-                      onChange={(e) => setSelectedTema(e.target.value)}
-                    >
-                      <MenuItem value="" disabled>
-                        Tema
-                      </MenuItem>
-                      <MenuItem value="tema1">Tema 1</MenuItem>
-                      <MenuItem value="tema2">Tema 2</MenuItem>
-                    </Select>
-                    <TextField
-                      label="Data"
-                      variant="outlined"
-                      sx={{ width: "30%" }}
-                      value={dataEvento}
-                      onChange={(e) => setDataEvento(e.target.value)}
-                    />
-                    <TextField
-                      label="Horário"
-                      variant="outlined"
-                      sx={{ width: "30%" }}
-                      value={horarioEvento}
-                      onChange={(e) => setHorarioEvento(e.target.value)}
-                    />
-                  </Stack>
-                </Stack>
-                <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  spacing={2}
-                  sx={{ width: "100%", maxWidth: 860 }}
-                >
-                  <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-                    ENDEREÇO
-                  </Typography>
-                  <Typography variant="body1">
-                    Insira o endereço do seu evento
-                  </Typography>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    sx={{ width: "100%" }}
-                  >
-                    <TextField
-                      label="CEP"
-                      variant="outlined"
-                      sx={{ width: "30%" }}
-                      value={cep}
-                      onChange={(e) => setCep(e.target.value)}
-                    />
-                    <Select
-                      label="Estado"
-                      variant="outlined"
-                      sx={{ width: "30%" }}
-                      value={selectedEstado}
-                      onChange={(e) =>
-                        setSelectedEstado(e.target.value)
-                      }
-                    >
-                      <MenuItem value="" disabled>
-                        Estado
-                      </MenuItem>
-                      <MenuItem label="Estado" value="estado1">
-                        Estado 1
-                      </MenuItem>
-                      <MenuItem label="Estado" value="estado2">
-                        Estado 2
-                      </MenuItem>
-                    </Select>
-                    <TextField
-                      label="Cidade"
-                      variant="outlined"
-                      sx={{ width: "30%" }}
-                      value={cidade}
-                      onChange={(e) => setCidade(e.target.value)}
-                    />
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    sx={{ width: "100%" }}
-                  >
-                    <TextField
-                      label="Bairro"
-                      variant="outlined"
-                      sx={{ width: "23%" }}
-                      value={bairro}
-                      onChange={(e) => setBairro(e.target.value)}
-                    />
-                    <TextField
-                      label="Rua"
-                      variant="outlined"
-                      sx={{ width: "23%" }}
-                      value={rua}
-                      onChange={(e) => setRua(e.target.value)}
-                    />
-                    <TextField
-                      label="Nº"
-                      variant="outlined"
-                      sx={{ width: "23%" }}
-                      value={numero}
-                      onChange={(e) => setNumero(e.target.value)}
-                    />
-                    <TextField
-                      label="Complemento"
-                      variant="outlined"
-                      sx={{ width: "23%" }}
-                      value={complemento}
-                      onChange={(e) => setComplemento(e.target.value)}
-                    />
-                  </Stack>
-
-                </Stack>
-              </>
-            )}
-            {step === 1 && (
-              // Etapa 1 (Mensagem)
-              <>
-                <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  spacing={2}
-                  sx={{ width: "100%", maxWidth: 860, paddingY: 5 }}
-                >
-                  <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-                    MENSAGEM
-                  </Typography>
-                  <Typography variant="body1">
-                    Esta mensagem será enviada como proposta para o
-                    fotógrafo selecionado
-                  </Typography>
-                  <Grid container alignItems="center">
-                    <Grid item xs={6}>
-                      <Typography
-                        variant="body1"
-                        sx={{ fontWeight: "bold" }}
-                      >
-                        Para: (Icone) (Nome do fotógrafo)
-                      </Typography>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={6}
-                      container
-                      justifyContent="flex-end"
-                      alignItems="center"
-                    >
-                      <Typography
-                        sx={{ fontWeight: "bold", marginRight: "1rem" }}
-                      >
-                        Enviar mensagem por:
-                      </Typography>
-                      <RadioGroup
-                        row
-                        name="messageOption"
-                        value={selectedOption}
-                        onChange={handleOptionChange}
-                      >
-                        <FormControlLabel
-                          value="email"
-                          control={<Radio color="primary" />}
-                          label="Email"
-                        />
-                        <FormControlLabel
-                          value="phone"
-                          control={<Radio color="primary" />}
-                          label="Telefone"
-                        />
-                      </RadioGroup>
-                    </Grid>
-                  </Grid>
-                  <TextField
-                    label="Mensagem"
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    rows={11}
-                    minRows={11}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                </Stack>
-              </>
-            )}
-            {step === 2 && (
-              // Etapa 2 (Confirmar)
-              <>
-                <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  spacing={2}
-                  sx={{ width: "100%", maxWidth: 860, paddingY: 5 }}
-                >
-                  <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-                    Confirmar
-                  </Typography>
-                  <Typography variant="body1">
-                    Confirme as informações que você nos passou nesse
-                    formulário
-                  </Typography>
-                  <Grid container spacing={0}>
-                    <Grid item xs={5}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Fotógrafo(a) selecionado:{" "}
-                        <Typography variant="body1" component="span">
-                          Nome do Fotógrafo
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Tipo de evento:{" "}
-                        <Typography variant="body1" component="span">
-                          {selectedTema}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Data:{" "}
-                        <Typography variant="body1" component="span">
-                          {dataEvento}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                  </Grid>
-
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Proposta:
-                  </Typography>
-                  <Box
-                    sx={{
-                      borderBottom: "1px solid grey",
-                      marginBottom: 2,
-                      width: "100%",
-                    }}
-                  />
-                  <Typography variant="body1">{message}</Typography>
-
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Endereço:
-                  </Typography>
-                  <Box
-                    sx={{
-                      borderBottom: "1px solid grey",
-                      marginBottom: 2,
-                      width: "100%",
-                    }}
-                  />
-                  <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Estado:{" "}
-                        <Typography variant="body1" component="span">
-                          {selectedEstado}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Cidade:{" "}
-                        <Typography variant="body1" component="span">
-                          {cidade}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Bairro:{" "}
-                        <Typography variant="body1" component="span">
-                          {bairro}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        CEP:{" "}
-                        <Typography variant="body1" component="span">
-                          {cep}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Rua:{" "}
-                        <Typography variant="body1" component="span">
-                          {rua}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Nº:{" "}
-                        <Typography variant="body1" component="span">
-                          {numero}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                        Complemento:{" "}
-                        <Typography variant="body1" component="span">
-                          {complemento}
-                        </Typography>
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Contato:
-                  </Typography>
-                  <Box
-                    sx={{
-                      borderBottom: "1px solid grey",
-                      marginBottom: 0,
-                      width: "100%",
-                    }}
-                  />
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Forma de contato:{" "}
-                    <Typography variant="body1" component="span">
-                      {selectedOption === "email" ? "Email" : "Telefone"}
-                    </Typography>
-                  </Typography>
-                </Stack>
-              </>
-            )}
-
-            <Stack
-              direction="row"
-              justifyContent={step === 0 ? "flex-end" : "space-between"} // Ajustado para controlar a posição dos botões
-              sx={{ marginTop: 5, width: "100%", maxWidth: 896 }}
-            >
-              {(step === 1 || step === 2) && (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handlePrevious}
-                  sx={{ marginLeft: "2vh" }}
-                >
-                  Voltar
-                </Button>
-              )}
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ marginRight: "2vh" }}
-                onClick={handleNext}
-              >
-                {step === 2 ? "Enviar" : "Avançar"}
-              </Button>
-            </Stack>
-
-
-          </Stack>
-        </div>
-      </Box>
-    </Modal>
-  );
+      {stepContents[step]}
+    </CustomModal>
+  )
 }
+
+export default Contract

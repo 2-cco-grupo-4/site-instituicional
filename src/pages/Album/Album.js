@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Stack, Typography, Rating, Avatar, Chip, useTheme, Breadcrumbs, Link } from "@mui/material";
-import Header from "molecules/Header";
-import Footer from "molecules/Footer";
+import React, { useEffect, useState } from "react"
+import {
+  Stack,
+  Typography,
+  Rating,
+  Avatar,
+  Chip,
+  useTheme,
+  Breadcrumbs,
+  Link,
+} from "@mui/material"
+import Header from "molecules/Header"
+import Footer from "molecules/Footer"
 import {
   ImageStack,
   ImageContainer,
@@ -9,17 +18,17 @@ import {
   Sidebar,
   UserArea,
   AvaliacaoBox,
-} from "./Album.styles";
+} from "./Album.styles"
 import imagemNoiva1 from "assets/img/noiva-feliz1.png"
 import imagemNoiva2 from "assets/img/noiva-feliz2.png"
 import imagemNoiva3 from "assets/img/noiva-feliz3.png"
 import PersonIcon from "@mui/icons-material/Person"
 import CustomButton from "atoms/CustomButton/CustomButton"
-import { ROUTES } from "utils/constants";
-import { useNavigate } from "react-router-dom";
-import { useUserContext } from "contexts";
-import ModalLogin from "molecules/CustomLogin/CustomLogin";
-import Contrato from "molecules/Contrato/Contrato";
+import { ROUTES } from "utils/constants"
+import { useNavigate } from "react-router-dom"
+import { useUserContext } from "contexts"
+import ModalLogin from "molecules/CustomLogin/CustomLogin"
+import Contrato from "molecules/Contrato/Contrato"
 
 const images = [
   {
@@ -41,7 +50,7 @@ const images = [
     tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
-];
+]
 
 function Album() {
   const theme = useTheme()
@@ -53,10 +62,10 @@ function Album() {
 
   useEffect(() => {
     let v = []
-    images.forEach((obj) => obj.tags.split(', ').forEach((tag) => v.push(tag)))
+    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)))
 
     setTags(v)
-  }, [tags])
+  }, [])
 
   const handleContract = () => {
     if (autenticado) {
@@ -83,7 +92,7 @@ function Album() {
         </ImageStack>
         <Sidebar spacing={5}>
           <UserArea spacing={3}>
-            <Breadcrumbs separator=">" sx={{ cursor: 'pointer' }}>
+            <Breadcrumbs separator=">" sx={{ cursor: "pointer" }}>
               <Link color="inherit" underline="hover" href={ROUTES.FEED}>
                 Home
               </Link>
@@ -118,11 +127,7 @@ function Album() {
             </Stack>
           </UserArea>
           <Stack spacing={1}>
-            <Typography
-              variant="paragraph-large-bold"
-            >
-              Título
-            </Typography>
+            <Typography variant="paragraph-large-bold">Título</Typography>
             <Typography>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
               eget sem vel justo hendrerit laoreet. Morbi sed arcu nec libero
@@ -131,11 +136,7 @@ function Album() {
             </Typography>
           </Stack>
           <Stack spacing={1}>
-            <Typography
-              variant="paragraph-large-bold"
-            >
-              Tags
-            </Typography>
+            <Typography variant="paragraph-large-bold">Tags</Typography>
             <div>
               {tags.map((tag, index) => (
                 <Chip
@@ -152,11 +153,7 @@ function Album() {
             </div>
           </Stack>
           <Stack spacing={1}>
-            <Typography
-              variant="paragraph-large-bold"
-            >
-              Avaliação
-            </Typography>
+            <Typography variant="paragraph-large-bold">Avaliação</Typography>
             <AvaliacaoBox>
               <div
                 style={{
@@ -169,7 +166,9 @@ function Album() {
                   width: "100%",
                 }}
               >
-                <Avatar style={{ width: theme.spacing(8), height: theme.spacing(8) }}>
+                <Avatar
+                  style={{ width: theme.spacing(8), height: theme.spacing(8) }}
+                >
                   <PersonIcon style={{ fontSize: 24 }} />
                 </Avatar>
                 <div
@@ -209,24 +208,23 @@ function Album() {
               >
                 <Typography style={{ marginTop: "16px" }}>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                  eget sem vel justo hendrerit laoreet. Morbi sed arcu nec libero
-                  tristique placerat. Sed efficitur tristique mi, eu congue lorem
-                  auctor eget.
+                  eget sem vel justo hendrerit laoreet. Morbi sed arcu nec
+                  libero tristique placerat. Sed efficitur tristique mi, eu
+                  congue lorem auctor eget.
                 </Typography>
               </div>
             </AvaliacaoBox>
           </Stack>
-        </Sidebar >
-      </Stack >
+        </Sidebar>
+      </Stack>
       <Footer />
       {autenticado ? (
         <Contrato open={openContrato} setOpen={setOpenContrato} />
       ) : (
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
-      )
-      }
+      )}
     </>
-  );
+  )
 }
 
-export default Album;
+export default Album
