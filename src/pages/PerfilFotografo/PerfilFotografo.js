@@ -24,11 +24,14 @@ import noivosPorDoSol from "assets/img/noivos-por-do-sol.png";
 import noivaPai from "assets/img/noiva-e-pai.png";
 import noivaPraia from "assets/img/noivos-praia.png";
 import noivaSolitaria from "assets/img/noiva-solitaria.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CardAvaliacao from "molecules/CardAvaliacao/CardAvaliacao";
 import { ROUTES } from "utils/constants";
 import Footer from "molecules/Footer/Footer";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "contexts";
+import { ALBUM } from "service/album";
+import api from "service/api";
 
 const imageList = [
   {
@@ -121,6 +124,37 @@ const PerfilFotografo = () => {
   const theme = useTheme()
   const navigate = useNavigate()
   const classes = useStyles();
+
+  const [albums, setAlbums] = useState([]);
+
+  const [avaliacoes, setAvaliacoes] = useState([]);
+
+  const { token, id, nome, tokenSolicitacao } = useUserContext();
+
+  useEffect(() => {
+    const ChamadaApi = async () => {
+      ALBUM.LISTAR(id, token).then(
+        (response) => {
+          console.log(`RESPOSTA LISTAR ALBUNS: ${JSON.stringify(response.data)}`);
+          setAlbums(response.data);
+        }
+      );
+    };
+    ChamadaApi();
+  }, [id]);
+
+  useEffect(() => {
+    const ChamadaApi = async () => {
+      ALBUM.LISTAR_AVALIACOES(id, token).then(
+        (response) => {
+          console.log(`RESPOSTA LISTAR AVALIACOES: ${JSON.stringify(response.data)}`);
+          setAvaliacoes(response.data);
+        }
+      );
+    };
+    ChamadaApi();
+  }, [id]);
+
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
