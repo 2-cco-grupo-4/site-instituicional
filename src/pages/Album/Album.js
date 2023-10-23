@@ -31,6 +31,7 @@ import ModalLogin from "molecules/CustomLogin/CustomLogin";
 import Contrato from "molecules/Contrato/Contrato";
 import { ALBUM } from "service/album";
 import { AVALIACAO } from "service/avaliacao";
+import { set } from "react-hook-form";
 
 const images = [
   {
@@ -62,14 +63,18 @@ function Album() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [tags, setTags] = useState([]);
   const { token } = useUserContext();
-  const [album, setAlbum] = useState([{}]);
-  const [fotografo, setFotografo] = useState([{}]);
-  const [imagens, setImagens] = useState([{}]);
-  const [tema, setTemas] = useState([{}]);
-  const [avaliacoes, setAvaliacoes] = useState([{}]);
-  const [clientes, setClientes] = useState([{}]);
-  const [sessoes, setSessoes] = useState([{}]);
-  const teste = 39;
+  const [album, setAlbum] = useState([]);
+  const [fotografo, setFotografo] = useState([]);
+  const [imagens, setImagens] = useState([]);
+  const [tema, setTemas] = useState([]);
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const [clientes, setClientes] = useState([]);
+  const [sessoes, setSessoes] = useState([]);
+  const teste = 3;
+
+  let chamadas = 0;
+
+  let ready = false;
 
   useEffect(() => {
     let v = [];
@@ -86,54 +91,77 @@ function Album() {
     }
   };
 
-  useEffect(() => {
-    const buscarAlbum = async () => {
-      if (token != undefined) {
-        console.log(`VALIDANDO TOKEN: ${token}`);
-        try {
-          ALBUM.BUSCAR_ALBUM(teste, token).then((response) => {
-            setAlbum(response.data);
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
+  const buscarAlbum = async () => {
+    if (token != undefined) {
+      console.log(`VALIDANDO TOKEN: ${token}`);
+      try {
+        const jsonAlbuns = await ALBUM.BUSCAR_ALBUM(teste, token);
+        setAlbum(jsonAlbuns.data);
+        setFotografo(jsonAlbuns.data.fotografo);
+        setImagens(jsonAlbuns.data.imagems);
+        setTemas(jsonAlbuns.data.tema);
 
-    if (token != undefined) buscarAlbum();
+        console.log(`TESTE FOTOGRAFO ID: ${fotografo.id}`);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const buscarSessoes = async () => {
+    let listEventos = [];
+    avaliacoes.forEach((avaliacao) => {
+      listEventos.push(avaliacao.evento);
+    });
+    setSessoes(listEventos);
+    console.log(`TESTE LISTA EVENTOS: ${JSON.stringify(sessoes)}`);
+  };
+
+  const buscarClientes = async () => {
+    const listClientes = [];
+
+    sessoes.forEach((sessao) => {
+      listClientes.push(sessao.cliente);
+    });
+
+    setClientes(listClientes);
+
+    console.log(`TESTE LISTA CLIENTES: ${JSON.stringify(clientes)}`);
+  };
+
+  const buscarAvaliacoes = async () => {
+    const jsonAvaliacoes = await AVALIACAO.BUSCAR_AVALIACOES_FOTOGRAFO(
+      fotografo.id,
+      token
+    );
+
+    setAvaliacoes(jsonAvaliacoes.data);
+  };
+
+  useEffect(() => {
+    if (token !== undefined) {
+      buscarAlbum();
+      chamadas++;
+    }
   }, [token]);
 
   useEffect(() => {
-    const atualizarAlbum = async () => {
-      setFotografo(album.fotografo);
-      setImagens(album.imagems);
-      setTemas(album.tema);
-      console.log(JSON.stringify(album));
-    };
-    if (typeof album == "object") atualizarAlbum();
-  }, [album]);
+    if (fotografo !== undefined) {
+      buscarAvaliacoes();
+    }
+  }, [fotografo]);
 
   useEffect(() => {
-    const atualizarAvaliacoes = async () => {
-      console.log(JSON.stringify(avaliacoes));
-      console.log(JSON.stringify(avaliacoes.evento));
-      setSessoes(avaliacoes.evento);
-    };
-    if (typeof avaliacoes == "object") atualizarAvaliacoes();
+    if (avaliacoes !== undefined) {
+      buscarSessoes();
+    }
   }, [avaliacoes]);
 
   useEffect(() => {
-    const buscarAvaliacoes = async () => {
-      if (typeof fotografo == "object" && fotografo.id != undefined) {
-        AVALIACAO.BUSCAR_AVALIACOES_FOTOGRAFO(fotografo.id, token).then(
-          (response) => {
-            setAvaliacoes(response.data);
-          }
-        );
-      }
-    };
-    if (typeof fotografo == "object") buscarAvaliacoes();
-  }, [fotografo]);
+    if (sessoes !== undefined) {
+      buscarClientes();
+    }
+  }, [sessoes]);
 
   return (
     <>
@@ -217,7 +245,15 @@ function Album() {
           </Stack>
           <Stack spacing={1}>
             <Typography variant="paragraph-large-bold">Avaliação</Typography>
-            {avaliacoes.map((avaliacao) => (
+            {avaliacoes.length == 0 ? (
+              <Typography
+                variant="paragraph-medium-bold"
+                sx={{ textAlign: "center" }}
+              >
+                Não há avaliações para este fotógrafo.
+              </Typography>
+            ) : null}
+            {avaliacoes.map((avaliacao, indice) => (
               <AvaliacaoBox>
                 <div
                   style={{
@@ -251,7 +287,8 @@ function Album() {
                       size="large"
                       sx={{ fontSize: theme.spacing(4) }}
                       readOnly
-                      value={typeof avaliacao == "object" ? avaliacao.nota : 0}
+                      value={typeof avaliacao == "object" ? avaliacao.nota : 2}
+                      // value={3.5}
                     />
                     <Typography
                       variant="body1"
@@ -260,7 +297,11 @@ function Album() {
                         marginTop: "5px",
                       }}
                     >
-                      {typeof clientes == "object" ? clientes.nome : "Padrão"}
+                      {typeof clientes === "object" &&
+                      clientes[indice] &&
+                      clientes[indice].nome !== undefined
+                        ? clientes[indice].nome
+                        : "Padrão"}
                     </Typography>
                   </div>
                 </div>
@@ -274,10 +315,7 @@ function Album() {
                   }}
                 >
                   <Typography style={{ marginTop: "16px" }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nulla eget sem vel justo hendrerit laoreet. Morbi sed arcu
-                    nec libero tristique placerat. Sed efficitur tristique mi,
-                    eu congue lorem auctor eget.
+                    {typeof avaliacao == "object" ? avaliacao.descricao : ""}
                   </Typography>
                 </div>
               </AvaliacaoBox>
