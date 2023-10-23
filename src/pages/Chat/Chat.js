@@ -1,4 +1,12 @@
+import {Stack, Typography, Box } from "@mui/material";
+import Container from "atoms/Container";
 import React, { useState, useEffect } from "react";
+import Header from "molecules/Header";
+import useStyles from "./Chat.styles";
+import iconSort from "assets/icons/🦆 icon _Alternate Sort Amount Down_.png";
+import search from "assets/icons/Vector (1).png";
+
+
 import {
   collection,
   getDocs,
@@ -9,26 +17,27 @@ import {
 } from "firebase/firestore";
 import db from "service/firebase";
 import { useUserContext } from "contexts";
-import { FOTOGRAFO } from "service/fotografos";
 
 const Chat = () => {
-  const [userData, setUserData] = useState([]);
+  const [userChats, setUserChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
 
   const { id, nome, tipoUsuario, token } = useUserContext();
+  const userId = Number(id);
 
-  const [listarFotografo, setListarFotografo] = useState([{}]);
+  const campoUser = tipoUsuario === "1" ? "id_cliente" : "id_fotografo";
+  const campoUserOut = tipoUsuario === "1" ? "id_fotografo" : "id_cliente";
 
-  const campoUser = tipoUsuario === 1 ? "id_cliente" : "id_fotografo";
+  const classes = useStyles();
 
   useEffect(() => {
     const loadChats = async () => {
       try {
         const chatQuery = query(
           collection(db, "chats"),
-          where(campoUser, "==", id),
+          where(campoUser, "==", userId),
           orderBy("data_ultima_mensagem")
         );
         const querySnapshot = await getDocs(chatQuery);
@@ -36,12 +45,11 @@ const Chat = () => {
         querySnapshot.forEach((doc) => {
           data.push({ id: doc.id, ...doc.data() });
         });
-        setUserData(data);
+        setUserChats(data);
       } catch (error) {
         console.error("Erro ao recuperar dados:", error);
       }
     };
-
     loadChats();
   }, [id]);
 
@@ -91,60 +99,56 @@ const Chat = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        FOTOGRAFO.LISTAR(token).then((response) => {
-          console.log("Teste listar fotografo", JSON.stringify(response.data));
-          setListarFotografo(response.data);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (token) {
-      fetchData();
-    }
-  }, [token]);
-
   return (
-    <div>
-      <h2>Fotógrafos:</h2>
-      <ul>
-        {listarFotografo.map((fotografo) => (
-          <li key={fotografo.id}>
-            <button>{fotografo.nome}</button>
-          </li>
-        ))}
-      </ul>
-      <h1>Meu chat - PICME</h1>
-      <ul>
-        {userData.map((chat) => (
-          <li key={chat.id} onClick={() => handleChatClick(chat.id)}>
-            {chat.nome_cliente}
-          </li>
-        ))}
-      </ul>
-      {selectedChat && (
-        <div>
-          <h2>Mensagens:</h2>
-          <ul>
-            {messages.map((message) => (
-              <li key={message.id}>
-                {message.mensagem} - {message.horario_envio}
-              </li>
-            ))}
-          </ul>
-          <input
-            type="text"
-            placeholder="Digite sua mensagem"
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-          />
-          <button onClick={handleMessageSubmit}>Enviar</button>
-        </div>
-      )}
-    </div>
+    <Stack sx={{ transition: "2s all ease" }}>
+      <Header type={2} />
+      <Stack sx={{display: "flex", flexDirection: "row"}}>
+        <Stack sx={{maxWidth: "30%"}}>
+          <Container sx={{width: "300px"}} className={classes.conversation}>
+            <img src={iconSort} alt=""></img>
+            <Typography>Conversas</Typography>
+            <img src={search} alt=""></img>
+          </Container>
+
+          <Container className={classes.boxChat}>
+            <Stack className={classes.fotoPerfil}></Stack>
+          </Container>
+        </Stack>
+        <Container className={classes.sectionTwo}>
+
+        </Container>
+      </Stack>
+
+      {/* <div>
+        <h1>Meu chat - PICME</h1>
+        <ul>
+          {userChats.map((chat) => (
+            <li key={chat.id} onClick={() => handleChatClick(chat.id)}>
+              {chat.nome_cliente}
+            </li>
+          ))}
+        </ul>
+        {selectedChat && (
+          <div>
+            <h2>Mensagens:</h2>
+            <ul>
+              {messages.map((message) => (
+                <li key={message.id}>
+                  {message.mensagem} - {message.horario_envio}
+                </li>
+              ))}
+            </ul>
+            <input
+              type="text"
+              placeholder="Digite sua mensagem"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+            />
+            <button onClick={handleMessageSubmit}>Enviar</button>
+          </div>
+        )}
+      </div> */}
+    </Stack>
   );
 };
 

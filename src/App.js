@@ -17,6 +17,7 @@ import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
 import InstaRedirect from "pages/InstaRedirect";
 
 import Chat from "pages/Chat";
+import ListarFotografoTeste from "pages/ListarFotografoTeste";
 
 const DefaultProviders = ({ children }) => (
   <UserProvider>{children}</UserProvider>
@@ -40,6 +41,11 @@ function App() {
             <Route exact path="/preferencias" element={<Preferences />} />
             <Route exact path="/album" element={<Album />} />
             <Route exact path="/chat" element={<Chat />}></Route>
+            <Route
+              exact
+              path="/teste-listar"
+              element={<ListarFotografoTeste />}
+            />
             <Route
               exact
               path="/insta-redirect/"
