@@ -25,7 +25,7 @@ import imagemNoiva3 from "assets/img/noiva-feliz3.png";
 import PersonIcon from "@mui/icons-material/Person";
 import CustomButton from "atoms/CustomButton/CustomButton";
 import { ROUTES } from "utils/constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "contexts";
 import ModalLogin from "molecules/CustomLogin/CustomLogin";
 import Contrato from "molecules/Contrato/Contrato";
@@ -68,9 +68,10 @@ function Album() {
   const [imagens, setImagens] = useState([]);
   const [tema, setTemas] = useState([]);
   const [avaliacoes, setAvaliacoes] = useState([]);
+  const { idAlbum } = useParams();
+
   const [clientes, setClientes] = useState([]);
   const [sessoes, setSessoes] = useState([]);
-  const teste = 3;
 
   let chamadas = 0;
 
@@ -95,7 +96,7 @@ function Album() {
     if (token != undefined) {
       console.log(`VALIDANDO TOKEN: ${token}`);
       try {
-        const jsonAlbuns = await ALBUM.BUSCAR_ALBUM(teste, token);
+        const jsonAlbuns = await ALBUM.BUSCAR_ALBUM(idAlbum, token);
         setAlbum(jsonAlbuns.data);
         setFotografo(jsonAlbuns.data.fotografo);
         setImagens(jsonAlbuns.data.imagems);

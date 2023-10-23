@@ -39,7 +39,7 @@ function App() {
             <Route exact path="/dash-admin" element={<DashAdmin />} />
             <Route exact path="/dash-fotografo" element={<DashFotografo />} />
             <Route exact path="/preferencias" element={<Preferences />} />
-            <Route exact path="/album" element={<Album />} />
+            <Route exact path="/album/:idAlbum" element={<Album />} />
             <Route exact path="/chat" element={<Chat />}></Route>
             <Route
               exact
