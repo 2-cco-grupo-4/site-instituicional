@@ -9,12 +9,17 @@ import ChooseProfileType from "pages/ChooseProfileType"
 import Register from "pages/Register"
 import Login from "pages/Login"
 import DashAdmin from "pages/DashAdmin/DashAdmin"
+import DashFotografo from "pages/DashFotografo"
 import Feed from "pages/Feed"
 import Preferences from "pages/Preferences"
 import Album from "pages/Album"
 import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import InstaRedirect from "pages/InstaRedirect"
+import CadastroAlbum from "pages/CadastroAlbum"
+
+import Chat from "pages/Chat"
 
 const DefaultProviders = ({ children }) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -36,8 +41,20 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/explorar" element={<Feed />} />
             <Route exact path="/dash-admin" element={<DashAdmin />} />
+            <Route exact path="/dash-fotografo" element={<DashFotografo />} />
             <Route exact path="/preferencias" element={<Preferences />} />
-            <Route exact path="/album" element={<Album />}></Route>
+            <Route exact path="/album" element={<Album />} />
+            <Route exact path="/chat" element={<Chat />}></Route>
+            <Route
+              exact
+              path="/cadastro-album"
+              element={<CadastroAlbum />}
+            ></Route>
+            <Route
+              exact
+              path="/insta-redirect/"
+              element={<InstaRedirect />}
+            ></Route>
             <Route
               exact
               path="/perfil-fotografo"
