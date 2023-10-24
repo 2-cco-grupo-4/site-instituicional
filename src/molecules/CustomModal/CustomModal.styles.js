@@ -6,9 +6,8 @@ export default makeStyles((theme) => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    maxWidth: "50vw",
-    width: "50vw",
-    maxHeight: "75vh",
+    maxWidth: "60vw",
+    width: "60vw",
     height: "fit-content",
     backgroundColor: theme.palette.white.main,
     border: "0px solid #000",
@@ -39,14 +38,11 @@ export default makeStyles((theme) => ({
 
   textContainer: {
     width: "100%",
-    padding: theme.spacing(0.5, 0),
-    margin: theme.spacing(0, 5),
+    minHeight: theme.spacing(4),
+    padding: theme.spacing(0, 5),
+    boxSizing: "border-box",
+    display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  lineBelowTitle: {
-    borderBottom: "0.5px solid rgba(0,0,0,0.50)",
-    paddingBottom: theme.spacing(1),
   },
 }))

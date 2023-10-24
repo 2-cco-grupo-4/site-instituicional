@@ -1,6 +1,6 @@
-import useStyles from "./Header.styles";
-import OptionNav from "atoms/OptionNav";
-import CustomButton from "atoms/CustomButton/CustomButton";
+import useStyles from "./Header.styles"
+import OptionNav from "atoms/OptionNav"
+import CustomButton from "atoms/CustomButton/CustomButton"
 import {
   Box,
   Typography,
@@ -12,38 +12,38 @@ import {
   Drawer,
   Menu,
   Grid,
-} from "@mui/material";
-import { HEADER_HEIGHT, ROUTES } from "utils/constants";
-import Container from "atoms/Container";
-import { useUserContext } from "contexts";
-import { useNavigate } from "react-router-dom";
-import CustomPopover from "molecules/CustomPopover";
-import LogoPicme from "atoms/LogoPicme";
-import iconSearch from "assets/icons/search.svg";
-import { useState } from "react";
+} from "@mui/material"
+import { HEADER_HEIGHT, ROUTES } from "utils/constants"
+import Container from "atoms/Container"
+import { useUserContext } from "contexts"
+import { useNavigate } from "react-router-dom"
+import CustomPopover from "molecules/CustomPopover"
+import LogoPicme from "atoms/LogoPicme"
+import iconSearch from "assets/icons/search.svg"
+import { useState } from "react"
 
-import MenuIcon from "@mui/icons-material/Menu";
+import MenuIcon from "@mui/icons-material/Menu"
 
 const Header = ({ type }) => {
-  const classes = useStyles();
-  const navigate = useNavigate();
-  const { autenticado } = useUserContext();
-  const [open, setState] = useState(false);
+  const classes = useStyles()
+  const navigate = useNavigate()
+  const { autenticado } = useUserContext()
+  const [open, setState] = useState(false)
 
   const handleNavigation = (route) => {
-    navigate(route);
-  };
+    navigate(route)
+  }
 
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
     ) {
-      return;
+      return
     }
     //changes the function state according to the value of open
-    setState(open);
-  };
+    setState(open)
+  }
 
   const Content = (props) => {
     switch (type) {
@@ -55,19 +55,20 @@ const Header = ({ type }) => {
             <OptionNav title="Produto" navigation="#produto" />
             <OptionNav title="Explorar" navigation="#explorar" />
           </Box>
-        );
+        )
       case 2:
         return (
           <Box className={classes.search}>
             <img src={iconSearch} alt="search-icon" />
             <InputBase
+              name="pesquisa"
               placeholder="Pesquise imagens do seu interesse"
               inputProps={{ "aria-label": "search" }}
             />
           </Box>
-        );
+        )
     }
-  };
+  }
 
   return (
     <Container
@@ -194,7 +195,7 @@ const Header = ({ type }) => {
         </Toolbar>
       </AppBar>
     </Container>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

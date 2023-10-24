@@ -1,27 +1,31 @@
-import Theme from "templates/Theme/Theme";
-import VLibras from "@djpfs/react-vlibras";
-import { UserProvider } from "contexts";
-import { BrowserRouter, Route } from "react-router-dom";
-import { Routes } from "react-router-dom";
-import Pedido from "pages/Pedido";
-import Home from "pages/Home";
-import ChooseProfileType from "pages/ChooseProfileType";
-import Register from "pages/Register";
-import Login from "pages/Login";
-import DashAdmin from "pages/DashAdmin/DashAdmin";
-import DashFotografo from "pages/DashFotografo";
-import Feed from "pages/Feed";
-import Preferences from "pages/Preferences";
-import Album from "pages/Album";
-import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo";
-import InstaRedirect from "pages/InstaRedirect";
-import CadastroAlbum from "pages/CadastroAlbum";
+import Theme from "templates/Theme/Theme"
+import VLibras from "@djpfs/react-vlibras"
+import { UserProvider } from "contexts"
+import { BrowserRouter, Route } from "react-router-dom"
+import { Routes } from "react-router-dom"
+import Pedido from "pages/Pedido"
+import Home from "pages/Home"
+import ChooseProfileType from "pages/ChooseProfileType"
+import Register from "pages/Register"
+import Login from "pages/Login"
+import DashAdmin from "pages/DashAdmin/DashAdmin"
+import DashFotografo from "pages/DashFotografo"
+import Feed from "pages/Feed"
+import Preferences from "pages/Preferences"
+import Album from "pages/Album"
+import PerfilFotografo from "pages/PerfilFotografo/PerfilFotografo"
+import { LocalizationProvider } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import InstaRedirect from "pages/InstaRedirect"
+import CadastroAlbum from "pages/CadastroAlbum"
 
-import Chat from "pages/Chat";
+import Chat from "pages/Chat"
 
 const DefaultProviders = ({ children }) => (
-  <UserProvider>{children}</UserProvider>
-);
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <UserProvider>{children}</UserProvider>
+  </LocalizationProvider>
+)
 
 function App() {
   return (
@@ -60,7 +64,7 @@ function App() {
         </BrowserRouter>
       </DefaultProviders>
     </Theme>
-  );
+  )
 }
 
-export default App;
+export default App
