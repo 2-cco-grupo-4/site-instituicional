@@ -114,8 +114,6 @@ const Chat = () => {
     }
   }, [messages]);
 
-  console.log("mensagens: " + JSON.stringify(messages));
-
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={2} />
@@ -217,9 +215,7 @@ const Chat = () => {
                               {message.mensagem}
                             </span>
                             <span className={styles.messageData}>
-                              {new Date(
-                                message.horario_envio.seconds * 1000
-                              ).toLocaleDateString("pt-BR")}
+                              {message.horario_envio}
                             </span>
                           </div>
                         </div>
