@@ -79,7 +79,7 @@ const DashAdmin = () => {
 
   const [porcentagemKpi3, setPorcentagemKpi3] = useState(0);
 
-  const { token } = useUserContext();
+  const { nome, token } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -218,20 +218,30 @@ const DashAdmin = () => {
             <Box
               p={1}
               mb={5}
-              sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
+              sx={{
+                backgroundColor: "#ffffff",
+                borderRadius: 5,
+                cursor: "pointer",
+              }}
+              onClick={() => navigate(ROUTES.DASH_ADMIN)}
             >
               <BarChartIcon
                 fontSize="large"
                 style={{ color: "#1E1E1E", fontSize: 40 }}
               />
             </Box>
-            <Box p={1} mb={5}>
+            <Box
+              p={1}
+              mb={5}
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(ROUTES.ARQUIVOS_ADMIN)}
+            >
               <ContentPasteGoIcon
                 fontSize="large"
                 style={{ color: "#ffffff", fontSize: 40 }}
               />
             </Box>
-            <Box p={1} mb={5}>
+            <Box p={1} mb={5} sx={{ cursor: "pointer" }}>
               <SettingsIcon
                 fontSize="large"
                 style={{ color: "#ffffff", fontSize: 40 }}
@@ -256,7 +266,7 @@ const DashAdmin = () => {
             >
               <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
               <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
-                Admin
+                {nome}
               </Typography>
             </Box>
             <Box

@@ -173,20 +173,30 @@ const DashFotografo = () => {
             <Box
               p={1}
               mb={5}
-              sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
+              sx={{
+                backgroundColor: "#ffffff",
+                borderRadius: 5,
+                cursor: "pointer",
+              }}
+              onClick={() => navigate(ROUTES.DASH_FOTOGRAFO)}
             >
               <BarChartIcon
                 fontSize="large"
                 style={{ color: "#1E1E1E", fontSize: 40 }}
               />
             </Box>
-            <Box p={1} mb={5}>
+            <Box
+              p={1}
+              mb={5}
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(ROUTES.ARQUIVOS_FOTOGRAFO)}
+            >
               <ContentPasteGoIcon
                 fontSize="large"
                 style={{ color: "#ffffff", fontSize: 40 }}
               />
             </Box>
-            <Box p={1} mb={5}>
+            <Box p={1} mb={5} sx={{ cursor: "pointer" }}>
               <SettingsIcon
                 fontSize="large"
                 style={{ color: "#ffffff", fontSize: 40 }}

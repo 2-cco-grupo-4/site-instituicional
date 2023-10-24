@@ -18,6 +18,8 @@ import InstaRedirect from "pages/InstaRedirect";
 import CadastroAlbum from "pages/CadastroAlbum";
 
 import Chat from "pages/Chat";
+import ArquivosAdmin from "pages/ArquivosAdmin";
+import ArquivosFotografo from "pages/ArquivosFotografo";
 
 const DefaultProviders = ({ children }) => (
   <UserProvider>{children}</UserProvider>
@@ -55,6 +57,16 @@ function App() {
               exact
               path="/perfil-fotografo"
               element={<PerfilFotografo />}
+            ></Route>
+            <Route
+              exact
+              path="/dash-admin/arquivos"
+              element={<ArquivosAdmin />}
+            ></Route>
+            <Route
+              exact
+              path="/dash-fotografo/arquivos"
+              element={<ArquivosFotografo />}
             ></Route>
           </Routes>
         </BrowserRouter>
