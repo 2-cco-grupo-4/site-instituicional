@@ -6,14 +6,14 @@ import {
   ImageList,
 } from "@mui/material";
 import Container from "atoms/Container";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "molecules/Header";
-import useStyles from "./Chat.styles";
 import iconSort from "assets/icons/🦆 icon _Alternate Sort Amount Down_.png";
 import search from "assets/icons/Vector (1).png";
 import backgroundPerfil from "assets/img/foto-perfil-fotografo.png";
 import styles from "./Chat.module.css";
 import chatIcon from "assets/icons/chat_FILL0_wght400_GRAD0_opsz24.svg";
+import enviar from "assets/icons/enviar-mensagem.png";
 
 import {
   collection,
@@ -31,14 +31,11 @@ const Chat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
+  const [userOutName, setUserOutName] = useState("");
 
   const { id, nome, tipoUsuario, token } = useUserContext();
   const userId = Number(id);
   const campoUser = tipoUsuario === "1" ? "id_cliente" : "id_fotografo";
-
-  const chatDefault = selectedChat === null ? "block" : "none";
-
-  const classes = useStyles();
 
   useEffect(() => {
     const loadChats = async () => {
@@ -82,8 +79,9 @@ const Chat = () => {
     }
   };
 
-  const handleChatClick = (chatId) => {
+  const handleChatClick = (chatId, userOutName) => {
     setSelectedChat(chatId);
+    setUserOutName(userOutName);
     loadMessages(chatId);
   };
 
@@ -96,7 +94,7 @@ const Chat = () => {
         {
           mensagem: messageInput,
           horario_envio: new Date(),
-          id_usuario: id,
+          id_usuario: userId,
         }
       );
       console.log("Mensagem enviada com ID: ", docRef.id);
@@ -107,7 +105,16 @@ const Chat = () => {
     }
   };
 
-  console.log(userChats);
+  const refBody = useRef("");
+
+  useEffect(() => {
+    if (refBody.current.scrollHeight > refBody.current.offsetHeight) {
+      refBody.current.scrollTop =
+        refBody.current.scrollHeight - refBody.currentoffsetHeight;
+    }
+  }, [messages]);
+
+  console.log("mensagens: " + JSON.stringify(messages));
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -129,7 +136,14 @@ const Chat = () => {
             {userChats.map((chat) => (
               <div
                 key={chat.id}
-                onClick={() => handleChatClick(chat.id)}
+                onClick={() =>
+                  handleChatClick(
+                    chat.id,
+                    tipoUsuario === "1"
+                      ? chat.nome_fotografo
+                      : chat.nome_cliente
+                  )
+                }
                 className={styles.chatContainer}
               >
                 <img src={backgroundPerfil} alt=""></img>
@@ -164,9 +178,7 @@ const Chat = () => {
               <div className={styles.messageHeader}>
                 <div className={styles.perfil}>
                   <img src={backgroundPerfil} alt=""></img>
-                  <span className={styles.nome}>
-                    Nome da pessoa
-                  </span>
+                  <span className={styles.nome}>{userOutName}</span>
                 </div>
                 <div className={styles.sessaoName}>
                   <span>Aqui fica o nome do Evento</span>
@@ -180,18 +192,67 @@ const Chat = () => {
                   <div>
                     <div className={styles.chatMensagens}>
                       {messages.map((message) => (
-                        <span key={message.id}>
-                          {message.mensagem} - {message.horario_envio}
-                        </span>
+                        <div
+                          className={
+                            message.id_usuario === userId
+                              ? styles.lineMe
+                              : styles.lineOut
+                          }
+                        >
+                          <div
+                            className={
+                              message.id_usuario === userId
+                                ? styles.contentMe
+                                : styles.contentOut
+                            }
+                          >
+                            <span
+                              key={message.id}
+                              className={
+                                message.id_usuario === userId
+                                  ? styles.messageMe
+                                  : styles.contentOut
+                              }
+                            >
+                              {message.mensagem}
+                            </span>
+                            <span className={styles.messageData}>
+                              {new Date(
+                                message.horario_envio.seconds * 1000
+                              ).toLocaleDateString("pt-BR")}
+                            </span>
+                          </div>
+                        </div>
+                        // <span key={message.id}>
+                        //   {message.mensagem} - {message.horario_envio}
+                        // </span>
                       ))}
                     </div>
-                    <input
+                    <div className={styles.containerFooter}>
+                      <form className={styles.form}>
+                        <input
+                          className={styles.inputFooter}
+                          type="text"
+                          placeholder="Digite sua mensagem"
+                          value={messageInput}
+                          onChange={(e) => setMessageInput(e.target.value)}
+                        />
+                        <img
+                          className={styles.imgFooter}
+                          src={enviar}
+                          alt=""
+                          onClick={handleMessageSubmit}
+                        ></img>
+                      </form>
+                    </div>
+
+                    {/* <input
                       type="text"
                       placeholder="Digite sua mensagem"
                       value={messageInput}
                       onChange={(e) => setMessageInput(e.target.value)}
                     />
-                    <button onClick={handleMessageSubmit}>Enviar</button>
+                    <button onClick={handleMessageSubmit}>Enviar</button> */}
                   </div>
                 )}
               </div>
@@ -207,36 +268,6 @@ const Chat = () => {
           )}
         </Stack>
       </Stack>
-
-      {/* <div>
-        <h1>Meu chat - PICME</h1>
-        <ul>
-          {userChats.map((chat) => (
-            <li key={chat.id} onClick={() => handleChatClick(chat.id)}>
-              {chat.nome_cliente}
-            </li>
-          ))}
-        </ul>
-        {selectedChat && (
-          <div>
-            <h2>Mensagens:</h2>
-            <ul>
-              {messages.map((message) => (
-                <li key={message.id}>
-                  {message.mensagem} - {message.horario_envio}
-                </li>
-              ))}
-            </ul>
-            <input
-              type="text"
-              placeholder="Digite sua mensagem"
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-            />
-            <button onClick={handleMessageSubmit}>Enviar</button>
-          </div>
-        )}
-      </div> */}
     </Stack>
   );
 };
