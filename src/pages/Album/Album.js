@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   Stack,
   Typography,
@@ -8,9 +8,9 @@ import {
   useTheme,
   Breadcrumbs,
   Link,
-} from "@mui/material";
-import Header from "molecules/Header";
-import Footer from "molecules/Footer";
+} from "@mui/material"
+import Header from "molecules/Header"
+import Footer from "molecules/Footer"
 import {
   ImageStack,
   ImageContainer,
@@ -53,7 +53,7 @@ const images = [
     tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
-];
+]
 
 function Album() {
   const theme = useTheme();
@@ -78,15 +78,15 @@ function Album() {
   let ready = false;
 
   useEffect(() => {
-    let v = [];
-    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)));
+    let v = []
+    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)))
 
     setTags(v);
   }, []);
 
   const handleContract = () => {
     if (autenticado) {
-      setOpenContrato(true);
+      setOpenContrato(true)
     } else {
       setOpenLoginModal(true);
     }
@@ -171,14 +171,14 @@ function Album() {
         <ImageStack>
           {imagens
             ? imagens.map((image) => (
-                <ImageContainer key={image.id} className="image">
-                  <ImageElement
-                    src={image.path}
-                    alt={image.descricao}
-                    style={{ width: "100%" }}
-                  />
-                </ImageContainer>
-              ))
+              <ImageContainer key={image.id} className="image">
+                <ImageElement
+                  src={image.path}
+                  alt={image.descricao}
+                  style={{ width: "100%" }}
+                />
+              </ImageContainer>
+            ))
             : console.log("Carregando...")}
         </ImageStack>
         <Sidebar spacing={5}>
@@ -289,7 +289,7 @@ function Album() {
                       sx={{ fontSize: theme.spacing(4) }}
                       readOnly
                       value={typeof avaliacao == "object" ? avaliacao.nota : 2}
-                      // value={3.5}
+                    // value={3.5}
                     />
                     <Typography
                       variant="body1"
@@ -299,8 +299,8 @@ function Album() {
                       }}
                     >
                       {typeof clientes === "object" &&
-                      clientes[indice] &&
-                      clientes[indice].nome !== undefined
+                        clientes[indice] &&
+                        clientes[indice].nome !== undefined
                         ? clientes[indice].nome
                         : "Padrão"}
                     </Typography>
@@ -331,7 +331,7 @@ function Album() {
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
       )}
     </>
-  );
+  )
 }
 
-export default Album;
+export default Album

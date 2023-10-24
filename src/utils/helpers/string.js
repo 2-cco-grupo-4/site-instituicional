@@ -1,10 +1,11 @@
 export const toTitleCase = (str) => {
-  return str.replace(
-    /\w\S*/g,
-    function(txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    }
-  );
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  })
+}
+
+export const toLocalDate = (date) => {
+  return new Date(date.split("-")).toLocaleDateString()
 }
 
 export const stringToColor = (string) => {
@@ -15,7 +16,7 @@ export const stringToColor = (string) => {
     hash = string.charCodeAt(i) + ((hash << 5) - hash)
   }
 
-  let color = '#'
+  let color = "#"
 
   for (i = 0; i < 3; i += 1) {
     const value = (hash >> (i * 8)) & 0xff
@@ -26,10 +27,10 @@ export const stringToColor = (string) => {
 }
 
 export const stringAvatar = (name) => {
-  return ({
+  return {
     sx: {
       bgcolor: stringToColor(name),
     },
     children: `${name[0].toUpperCase()}`,
-  })
+  }
 }
