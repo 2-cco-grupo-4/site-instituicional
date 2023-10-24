@@ -1,4 +1,4 @@
-import { Button, Modal, Stack, useTheme } from "@mui/material"
+import { Button, LinearProgress, Modal, Stack, useTheme } from "@mui/material"
 import useStyles from "./CustomModal.styles"
 
 import CloseIcon from "@mui/icons-material/Close"
@@ -43,20 +43,6 @@ const CustomModal = ({
           <Stack className={classes.textContainer}>{header}</Stack>
         </Stack>
         <Stack mb={10}>{children}</Stack>
-        {leftButtonText && (
-          <CustomButton
-            variant="outlined"
-            color="secondary"
-            sx={{
-              position: "absolute",
-              bottom: theme.spacing(2),
-              left: theme.spacing(4),
-            }}
-            {...leftButtonProps}
-          >
-            {leftButtonText}
-          </CustomButton>
-        )}
         {rightButtonText && (
           <CustomButton
             variant="contained"
@@ -70,6 +56,20 @@ const CustomModal = ({
             {...rightButtonProps}
           >
             {rightButtonText}
+          </CustomButton>
+        )}
+        {leftButtonText && (
+          <CustomButton
+            variant="outlined"
+            color="secondary"
+            sx={{
+              position: "absolute",
+              bottom: theme.spacing(2),
+              left: theme.spacing(4),
+            }}
+            {...leftButtonProps}
+          >
+            {leftButtonText}
           </CustomButton>
         )}
       </Stack>

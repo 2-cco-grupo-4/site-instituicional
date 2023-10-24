@@ -18,12 +18,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import { TimePicker } from "@mui/x-date-pickers/TimePicker"
 import InputMask from "react-input-mask"
 import { stringAvatar, toLocalDate } from "utils/helpers/string"
+import CustomButton from "atoms/CustomButton"
+import { useNavigate } from "react-router"
+import { ROUTES } from "utils/constants"
 
 const Contract = ({ open, setOpen }) => {
   const classes = useStyles()
   const theme = useTheme()
+  const navigate = useNavigate()
 
   const [step, setStep] = useState(0)
+  const [progressBar, setProgressBar] = useState(0)
   const [genericError, setGenericError] = useState(false)
   const [contract, setContract] = useState({})
 
@@ -49,6 +54,7 @@ const Contract = ({ open, setOpen }) => {
           ...contractInfo,
         }))
         setStep(1)
+        setProgressBar(50)
         break
       case 1:
         setContract((current) => ({
@@ -57,9 +63,11 @@ const Contract = ({ open, setOpen }) => {
         }))
         console.log(payload?.mensagem)
         setStep(2)
+        setProgressBar(100)
         break
-      case 3:
+      case 2:
         console.log(payload)
+        setStep(3)
         break
     }
   }
@@ -310,7 +318,7 @@ const Contract = ({ open, setOpen }) => {
           <Grid item xs={4}>
             <Stack direction="row" alignItems="center" columnGap={1}>
               <Typography variant="paragraph-medium-bold">Tema:</Typography>
-              <Typography>Casamento</Typography>
+              <Typography>{contract?.tema}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={3}>
@@ -330,75 +338,111 @@ const Contract = ({ open, setOpen }) => {
         </Typography>
         <Typography>{contract?.mensagem || "N/A"}</Typography>
       </Stack>
-      <Stack spacing={1}>
+      <Stack sx={{ flexGrow: 1 }}>
         <Typography
+          mb={1}
           variant="paragraph-medium-bold"
           className={classes.lineBelowTitle}
         >
           Endereço:
         </Typography>
-        <Stack spacing={1} sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={3}>
-              <Stack direction="row" alignItems="center" columnGap={1}>
-                <Typography variant="paragraph-medium-bold">Estado:</Typography>
-                <Typography>{contract?.estado}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={3}>
-              <Stack direction="row" alignItems="center" columnGap={1}>
-                <Typography variant="paragraph-medium-bold">Cidade:</Typography>
-                <Typography>{contract?.cidade}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={3}>
-              <Stack direction="row" alignItems="center" columnGap={1}>
-                <Typography variant="paragraph-medium-bold">Bairro:</Typography>
-                <Typography>{contract?.bairro}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={3}>
-              <Stack direction="row" alignItems="center" columnGap={1}>
-                <Typography variant="paragraph-medium-bold">CEP:</Typography>
-                <Typography>{contract?.cep}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={3}>
-              <Stack direction="row" alignItems="center" columnGap={1}>
-                <Typography variant="paragraph-medium-bold">Rua:</Typography>
-                <Typography>{contract?.rua}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={3}>
-              <Stack direction="row" alignItems="center" columnGap={1}>
-                <Typography variant="paragraph-medium-bold">Nº:</Typography>
-                <Typography>{contract?.numero}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={3}>
-              <Stack direction="row" alignItems="center" columnGap={1}>
-                <Typography variant="paragraph-medium-bold">
-                  Complemento:
-                </Typography>
-                <Typography>{contract?.complemento || "N/A"}</Typography>
-              </Stack>
-            </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Estado:</Typography>
+              <Typography>{contract?.estado}</Typography>
+            </Stack>
           </Grid>
-        </Stack>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Cidade:</Typography>
+              <Typography>{contract?.cidade}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Bairro:</Typography>
+              <Typography>{contract?.bairro}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">CEP:</Typography>
+              <Typography>{contract?.cep}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Rua:</Typography>
+              <Typography>{contract?.rua}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Nº:</Typography>
+              <Typography>{contract?.numero}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack
+              width="100%"
+              direction="row"
+              alignItems="center"
+              columnGap={1}
+            >
+              <Typography variant="paragraph-medium-bold">
+                Complemento:
+              </Typography>
+              <Typography>{contract?.complemento || "N/A"}</Typography>
+            </Stack>
+          </Grid>
+        </Grid>
       </Stack>
     </Stack>
   )
 
-  const stepContents = [<ContractInfo />, <Message />, <Confirm />]
+  const Final = () => (
+    <Stack justifyContent="center" alignItems="center" rowGap={3}>
+      <Typography variant="subtitle-small-bold">
+        Proposta enviada! 🎉
+      </Typography>
+      <Typography textAlign="center">
+        Você acaba de contactar um de nossos fotógrafos! Para encontrar mais
+        fotógrafos, você pode voltar ao nosso feed clicando no botão abaixo.
+      </Typography>
+      <CustomButton
+        color="secondary"
+        variant="contained"
+        onClick={() => navigate(ROUTES.FEED)}
+      >
+        Voltar ao Feed
+      </CustomButton>
+    </Stack>
+  )
+
+  const ContractProgress = () => (
+    <LinearProgress
+      value={progressBar}
+      variant="determinate"
+      sx={{
+        width: "80%",
+        height: 6,
+        borderRadius: 3,
+      }}
+    />
+  )
+
+  const stepContents = [<ContractInfo />, <Message />, <Confirm />, <Final />]
 
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
       onSubmit={handleSubmit(onSubmit)}
-      leftButtonText={step !== 0 && "Voltar"}
+      leftButtonText={step !== 0 && step !== 3 && "Voltar"}
       leftButtonProps={{ onClick: () => handleGoBack() }}
-      rightButtonText="Avançar"
+      rightButtonText={step !== 3 && "Avançar"}
+      header={step === 3 || <ContractProgress />}
     >
       {stepContents[step]}
     </CustomModal>

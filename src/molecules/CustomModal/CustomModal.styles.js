@@ -38,8 +38,10 @@ export default makeStyles((theme) => ({
 
   textContainer: {
     width: "100%",
-    padding: theme.spacing(0.5, 0),
-    margin: theme.spacing(0, 5),
+    minHeight: theme.spacing(4),
+    padding: theme.spacing(0, 5),
+    boxSizing: "border-box",
+    display: "flex",
     alignItems: "center",
     justifyContent: "center",
   },
