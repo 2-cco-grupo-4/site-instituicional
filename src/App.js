@@ -18,7 +18,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import InstaRedirect from "pages/InstaRedirect"
 import CadastroAlbum from "pages/CadastroAlbum"
-
 import Chat from "pages/Chat"
 
 const DefaultProviders = ({ children }) => (
