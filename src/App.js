@@ -22,6 +22,7 @@ import CadastroAlbum from "pages/CadastroAlbum"
 import Chat from "pages/Chat";
 import ArquivosAdmin from "pages/ArquivosAdmin";
 import ArquivosFotografo from "pages/ArquivosFotografo";
+import ListarFotografoTeste from "pages/ListarFotografoTeste";
 
 const DefaultProviders = ({ children }) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -47,6 +48,11 @@ function App() {
             <Route exact path="/preferencias" element={<Preferences />} />
             <Route exact path="/album/:idAlbum" element={<Album />} />
             <Route exact path="/chat" element={<Chat />}></Route>
+            <Route
+              exact
+              path="/teste-listar"
+              element={<ListarFotografoTeste />}
+            />
             <Route
               exact
               path="/cadastro-album"
