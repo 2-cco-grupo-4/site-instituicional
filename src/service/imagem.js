@@ -5,4 +5,8 @@ export const IMAGEM = {
     api.post("/imagens", paylod, {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  VISUALIZAR: (token) =>
+    api.get("/imagens/paths", {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 };
