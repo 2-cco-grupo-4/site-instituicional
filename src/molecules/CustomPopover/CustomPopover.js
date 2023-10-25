@@ -5,6 +5,7 @@ import { useState } from "react";
 import useStyles from "./CustomPopover.styles";
 
 import arrow from "assets/icons/popover-arrow.svg";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ROUTES } from "utils/constants";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
@@ -74,18 +75,32 @@ const CustomPopover = ({ ...props }) => {
           <Typography paddingLeft={1}>Logoff</Typography>
         </Stack>
         {tipoUsuario == 2 && (
-          <Stack
-            onClick={() => {
-              navigate(ROUTES.NOVO_ALBUM);
-            }}
-            direction="row"
-            alignItems="center"
-            sx={{ cursor: "pointer" }}
-            p={2}
-          >
-            <AddAPhotoIcon></AddAPhotoIcon>
-            <Typography paddingLeft={1}>Novo Álbum</Typography>
-          </Stack>
+          <>
+            <Stack
+              onClick={() => {
+                navigate(ROUTES.NOVO_ALBUM);
+              }}
+              direction="row"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
+              p={2}
+            >
+              <AddAPhotoIcon></AddAPhotoIcon>
+              <Typography paddingLeft={1}>Novo Álbum</Typography>
+            </Stack>
+            <Stack
+              onClick={() => {
+                navigate(ROUTES.DASH_FOTOGRAFO);
+              }}
+              direction="row"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
+              p={2}
+            >
+              <LeaderboardIcon></LeaderboardIcon>
+              <Typography paddingLeft={1}>Dashboard</Typography>
+            </Stack>
+          </>
         )}
       </Popover>
     </>

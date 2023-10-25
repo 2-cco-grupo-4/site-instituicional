@@ -20,6 +20,8 @@ import InstaRedirect from "pages/InstaRedirect"
 import CadastroAlbum from "pages/CadastroAlbum"
 
 import Chat from "pages/Chat";
+import ArquivosAdmin from "pages/ArquivosAdmin";
+import ArquivosFotografo from "pages/ArquivosFotografo";
 import ListarFotografoTeste from "pages/ListarFotografoTeste";
 
 const DefaultProviders = ({ children }) => (
@@ -44,7 +46,7 @@ function App() {
             <Route exact path="/dash-admin" element={<DashAdmin />} />
             <Route exact path="/dash-fotografo" element={<DashFotografo />} />
             <Route exact path="/preferencias" element={<Preferences />} />
-            <Route exact path="/album" element={<Album />} />
+            <Route exact path="/album/:idAlbum" element={<Album />} />
             <Route exact path="/chat" element={<Chat />}></Route>
             <Route
               exact
@@ -65,6 +67,16 @@ function App() {
               exact
               path="/perfil-fotografo"
               element={<PerfilFotografo />}
+            ></Route>
+            <Route
+              exact
+              path="/dash-admin/arquivos"
+              element={<ArquivosAdmin />}
+            ></Route>
+            <Route
+              exact
+              path="/dash-fotografo/arquivos"
+              element={<ArquivosFotografo />}
             ></Route>
           </Routes>
         </BrowserRouter>

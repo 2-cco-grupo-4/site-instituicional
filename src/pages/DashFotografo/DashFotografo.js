@@ -26,7 +26,7 @@ import CustomPopover from "molecules/CustomPopover";
 import CustomPopoverDash from "atoms/CustomPopoverDash";
 import { FOTOGRAFO } from "service/dashboard";
 import axios from "axios";
-import { Await } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import { CLIENTE } from "service/user";
 import { useUserContext } from "contexts";
 import LogoPicme from "atoms/LogoPicme";
@@ -37,6 +37,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import CardStackedBarChart from "atoms/CardStackedBarChart";
+import { ROUTES } from "utils/constants";
 
 const DashFotografo = () => {
   const defaultValues = {
@@ -63,13 +64,15 @@ const DashFotografo = () => {
 
   const [dataBar, setDataBar] = useState([{}]);
 
-  const [dataBarFaixaEtaria, setDataBarFaixaEtaria] = useState([{}]);
+  const [dataBarAvaliacaoTema, setDataBarAvaliacaoTema] = useState([{}]);
 
   const [dataSessoesConvertidas, setDataSessoesConvertidas] = useState([{}]);
 
   const classes = useStyles();
 
   const { token, id, nome } = useUserContext();
+
+  const navigate = useNavigate();
 
   console.log(`Teste do ID: ${id}`);
 
@@ -78,26 +81,51 @@ const DashFotografo = () => {
       try {
         FOTOGRAFO.KPI_VALOR_MEDIO_COBRADO(token, id).then((response) => {
           let valor =
-            response.data.media == undefined ? 0 : response.data.media;
+            response.data[0].media == undefined ? 0 : response.data[0].media;
 
-          setValorKpi1(valor);
+          // console.log(`VALIDAÇÕES DO VALOR: ${response.data[0].media}`);
+
+          setValorKpi1(`R$ ${valor.toFixed(2)}`);
         });
         FOTOGRAFO.KPI_SESSOES_AGENDADAS_MES(token, id).then((response) => {
           let valor =
-            response.data.total == undefined ? 0 : response.data.total;
+            response.data[0].total == undefined ? 0 : response.data[0].total;
           setValorKpi2(valor);
         });
         FOTOGRAFO.KPI_PROPOSTAS_RECEBIDAS_MES(token, id).then((response) => {
           let valor =
-            response.data.mesAtualTotal == undefined
+            response.data[0].mesAtualTotal == undefined
               ? 0
-              : response.data.mesAtualTotal;
+              : response.data[0].mesAtualTotal;
           setValorKpi3(valor);
+          let valorPorcentagem =
+            response.data[0].mesAnteriorTotal == undefined
+              ? 0
+              : response.data[0].mesAnteriorTotal;
+          if (valorPorcentagem == 0) {
+            setPorcentagemKpi3(valor * 100);
+          } else if (valor == 0) {
+            setPorcentagemKpi3(valorPorcentagem * -100);
+          } else {
+            setPorcentagemKpi3((valorPorcentagem * 100) / valor - 100);
+          }
+          // setPorcentagemKpi3((valor * 100) / valorPorcentagem);
         });
         FOTOGRAFO.KPI_VARIACAO_LUCRO_MENSAL(token, id).then((response) => {
           let valor =
-            response.data.atual == undefined ? 0 : response.data.atual;
-          setValorKpi4(valor);
+            response.data[0].atual == undefined ? 0 : response.data[0].atual;
+          setValorKpi4(`R$ ${valor.toFixed(2)}`);
+          let valorPorcentagem =
+            response.data[0].passado == undefined
+              ? 0
+              : response.data[0].passado;
+          if (valorPorcentagem == 0) {
+            setPorcentagemKpi4(valor * 100);
+          } else if (valor == 0) {
+            setPorcentagemKpi4(valorPorcentagem * -100);
+          } else {
+            setPorcentagemKpi4((valorPorcentagem * 100) / valor - 100);
+          }
         });
         FOTOGRAFO.VARIACAO_LUCRO_ULTIMOS_MESES(token, id).then((response) => {
           setDataBar(response.data);
@@ -106,7 +134,8 @@ const DashFotografo = () => {
           setDataSessoesConvertidas(response.data);
         });
         FOTOGRAFO.AVALIACAO_MEDIA_TEMA(token, id).then((response) => {
-          setDataBarFaixaEtaria(response.data);
+          setDataBarAvaliacaoTema(response.data);
+          console.log(`VALIACAO MEDIA TEMA: ${JSON.stringify(response.data)}`);
         });
       } catch (error) {
         console.error(error);
@@ -137,27 +166,37 @@ const DashFotografo = () => {
           }}
         >
           <Box>
-            <LogoPicme dash={true} height={50} />
+            <LogoPicme dash={true} height={70} />
           </Box>
           <Divider />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Box
               p={1}
               mb={5}
-              sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
+              sx={{
+                backgroundColor: "#ffffff",
+                borderRadius: 5,
+                cursor: "pointer",
+              }}
+              onClick={() => navigate(ROUTES.DASH_FOTOGRAFO)}
             >
               <BarChartIcon
                 fontSize="large"
                 style={{ color: "#1E1E1E", fontSize: 40 }}
               />
             </Box>
-            <Box p={1} mb={5}>
+            <Box
+              p={1}
+              mb={5}
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(ROUTES.ARQUIVOS_FOTOGRAFO)}
+            >
               <ContentPasteGoIcon
                 fontSize="large"
                 style={{ color: "#ffffff", fontSize: 40 }}
               />
             </Box>
-            <Box p={1} mb={5}>
+            <Box p={1} mb={5} sx={{ cursor: "pointer" }}>
               <SettingsIcon
                 fontSize="large"
                 style={{ color: "#ffffff", fontSize: 40 }}
@@ -197,6 +236,11 @@ const DashFotografo = () => {
                 flexDirection="row"
                 alignItems="center"
                 justifyContent="space-around"
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  localStorage.clear();
+                  navigate(ROUTES.HOME);
+                }}
               >
                 <LogoutIcon
                   style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
@@ -357,9 +401,9 @@ const DashFotografo = () => {
             >
               <Grid
                 item
-                xl={5}
-                lg={5}
-                md={5}
+                xl={3}
+                lg={3}
+                md={3}
                 sm={10}
                 xs={10}
                 sx={{
@@ -369,15 +413,15 @@ const DashFotografo = () => {
               >
                 <CardBarChart
                   tituloPieChart="Avaliação média por tema"
-                  data={dataBarFaixaEtaria}
+                  data={dataBarAvaliacaoTema}
                   width="100%"
                 />
               </Grid>
               <Grid
                 item
-                xl={6}
-                lg={6}
-                md={6}
+                xl={8}
+                lg={8}
+                md={8}
                 sm={10}
                 xs={10}
                 sx={{

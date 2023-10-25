@@ -1,4 +1,4 @@
-import useStyles from "./CardBarChart.styles";
+import useStyles from "./CardDoubleBarChart.styles";
 import { Box, Typography } from "@mui/material";
 import BoxShadow from "atoms/BoxShadow/BoxShadow";
 import {
@@ -15,14 +15,15 @@ import {
 
 const colors = ["#249ACF"];
 
-const CardBarChart = ({ tituloPieChart, data, width }) => {
+const CardDoubleBarChart = ({ tituloPieChart, data, width }) => {
   const classes = useStyles();
 
   const jsonModelString = JSON.stringify(data[0] ? data[0] : [{}]);
   const jsonModel = JSON.parse(jsonModelString);
 
   const keyName = Object.keys(jsonModel)[0];
-  const valueName = Object.keys(jsonModel)[1];
+  const valueName1 = Object.keys(jsonModel)[1];
+  const valueName2 = Object.keys(jsonModel)[2];
 
   return (
     <BoxShadow width={width} height="auto">
@@ -49,9 +50,15 @@ const CardBarChart = ({ tituloPieChart, data, width }) => {
           <XAxis dataKey={keyName} />
           <Tooltip />
           <Legend />
+          {/* <Bar
+            radius={[5, 5, 0, 0]}
+            dataKey={valueName1}
+            fill={colors[0]}
+            label={{ position: "top" }}
+          /> */}
           <Bar
             radius={[5, 5, 0, 0]}
-            dataKey={valueName}
+            dataKey={valueName2}
             fill={colors[0]}
             label={{ position: "top" }}
           />
@@ -61,4 +68,4 @@ const CardBarChart = ({ tituloPieChart, data, width }) => {
   );
 };
 
-export default CardBarChart;
+export default CardDoubleBarChart;

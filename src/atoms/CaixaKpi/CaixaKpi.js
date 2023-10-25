@@ -27,7 +27,7 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem, direita }) => {
         height="auto"
         padding={0}
       >
-        <Typography fontSize="18px" color="black" fontFamily="Inter">
+        <Typography fontSize="16px" color="black" fontFamily="Inter">
           {direita ? (
             <>
               <Box fontWeight="regular" component="span">
