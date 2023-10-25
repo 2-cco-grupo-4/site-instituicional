@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   Stack,
   Typography,
@@ -8,9 +8,9 @@ import {
   useTheme,
   Breadcrumbs,
   Link,
-} from "@mui/material";
-import Header from "molecules/Header";
-import Footer from "molecules/Footer";
+} from "@mui/material"
+import Header from "molecules/Header"
+import Footer from "molecules/Footer"
 import {
   ImageStack,
   ImageContainer,
@@ -18,17 +18,17 @@ import {
   Sidebar,
   UserArea,
   AvaliacaoBox,
-} from "./Album.styles";
-import imagemNoiva1 from "assets/img/noiva-feliz1.png";
-import imagemNoiva2 from "assets/img/noiva-feliz2.png";
-import imagemNoiva3 from "assets/img/noiva-feliz3.png";
-import PersonIcon from "@mui/icons-material/Person";
-import CustomButton from "atoms/CustomButton/CustomButton";
-import { ROUTES } from "utils/constants";
-import { useNavigate } from "react-router-dom";
-import { useUserContext } from "contexts";
-import ModalLogin from "molecules/CustomLogin/CustomLogin";
-import Contrato from "molecules/Contrato/Contrato";
+} from "./Album.styles"
+import imagemNoiva1 from "assets/img/noiva-feliz1.png"
+import imagemNoiva2 from "assets/img/noiva-feliz2.png"
+import imagemNoiva3 from "assets/img/noiva-feliz3.png"
+import PersonIcon from "@mui/icons-material/Person"
+import CustomButton from "atoms/CustomButton/CustomButton"
+import { ROUTES } from "utils/constants"
+import { useNavigate } from "react-router-dom"
+import { useUserContext } from "contexts"
+import ModalLogin from "molecules/CustomLogin/CustomLogin"
+import Contrato from "molecules/Contrato/Contrato"
 
 const images = [
   {
@@ -50,30 +50,30 @@ const images = [
     tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
-];
+]
 
 function Album() {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const { autenticado } = useUserContext();
-  const [openContrato, setOpenContrato] = useState(false);
-  const [openLoginModal, setOpenLoginModal] = useState(false);
-  const [tags, setTags] = useState([]);
+  const theme = useTheme()
+  const navigate = useNavigate()
+  const { autenticado } = useUserContext()
+  const [openContrato, setOpenContrato] = useState(false)
+  const [openLoginModal, setOpenLoginModal] = useState(false)
+  const [tags, setTags] = useState([])
 
   useEffect(() => {
-    let v = [];
-    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)));
+    let v = []
+    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)))
 
-    setTags(v);
-  }, [tags]);
+    setTags(v)
+  }, [])
 
   const handleContract = () => {
     if (autenticado) {
-      setOpenContrato(true);
+      setOpenContrato(true)
     } else {
-      setOpenLoginModal(true);
+      setOpenLoginModal(true)
     }
-  };
+  }
 
   return (
     <>
@@ -224,7 +224,7 @@ function Album() {
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
       )}
     </>
-  );
+  )
 }
 
-export default Album;
+export default Album
