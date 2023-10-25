@@ -67,6 +67,8 @@ const Header = ({ type }) => {
             />
           </Box>
         )
+      default:
+        return <></>
     }
   }
 
