@@ -64,7 +64,7 @@ const CardBarLineChart = ({ tituloPieChart, data, width, height }) => {
           <Bar
             xAxisId={1}
             radius={[10, 10, 0, 0]}
-            dataKey={valueName ? valueName : 0}
+            dataKey={valueName == null ? 0 : valueName}
             fill={colors[0]}
             label={{ position: "top" }}
           />

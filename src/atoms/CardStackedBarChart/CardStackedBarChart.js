@@ -45,7 +45,7 @@ const CardStackedBarChart = ({ tituloPieChart, data, width, height }) => {
   });
 
   return (
-    <BoxShadow width={width} height={height || 'auto'}>
+    <BoxShadow width={width} height={height || "auto"}>
       <Typography
         fontSize="16px"
         color="black"
@@ -56,7 +56,7 @@ const CardStackedBarChart = ({ tituloPieChart, data, width, height }) => {
         {tituloPieChart}
       </Typography>
 
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={400} paddingBottom="40px">
         <BarChart
           width="80%"
           height={500}
@@ -98,7 +98,7 @@ const CardStackedBarChart = ({ tituloPieChart, data, width, height }) => {
               dataKey="percentage"
             ></LabelList>
           </Bar>
-          <Legend layout="vetical" verticalAlign="top" align="right" />
+          <Legend layout="horizontal" verticalAlign="bottom" align="center" />
         </BarChart>
       </ResponsiveContainer>
     </BoxShadow>
