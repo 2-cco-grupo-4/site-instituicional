@@ -4,6 +4,6 @@ export default makeStyles(() => ({
   logo: {
     width: 'auto',
     padding: '8px 0px',
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
 }))

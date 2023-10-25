@@ -1,18 +1,13 @@
 import { styled } from "@mui/system";
-import { Typography } from "@mui/material";
+import { Typography, Stack } from "@mui/material";
 
 export const ImageStack = styled("div")`
   flex: 1;
 `;
 
-export const UserArea = styled("div")`
+export const UserArea = styled(Stack)`
   display: flex;
   align-items: flex-start;
-`;
-
-export const UserNameTypography = styled(Typography)`
-  font-size: 24px;
-  font-weight: bold;
 `;
 
 export const ImageContainer = styled("div")``;
@@ -25,11 +20,11 @@ export const Title = styled("h2")``;
 
 export const Tag = styled("p")``;
 
-export const Sidebar = styled("div")`
+export const Sidebar = styled(Stack)`
   width: 39.65277%;
   max-height: calc(100vh - 64px);
-  overflow-y: auto;
-  padding: 20px;
+  // overflow-y: auto;
+  padding: 24px;
 `;
 
 export const AvaliacaoBox = styled("div")`
@@ -37,9 +32,8 @@ export const AvaliacaoBox = styled("div")`
   align-items: center;
   flex-direction: column;
   margin-top: 10px;
-  padding: 20px;
-  border-top:2px solid black ;
-
+  padding: 20px 0;
+  border-top: 0.5px solid rgba(0,0,0,0.3) ;
 `;
 
 export const StarIcon = styled("span")`

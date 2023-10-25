@@ -1,18 +1,23 @@
-export const HEADER_HEIGHT = '56px'
+export const HEADER_HEIGHT = "56px";
 
 export const ROUTES = {
-    HOME: "/",
-    REGISTER: profile => (`/cadastro/${profile}`),
-    LOGIN: "/login",
-    CHOOSE_PROFILE: "/persona",
-    FEED: "/explorar",
-    DASH_ADMIN: "/dash-admin",
-    PHOTOGRAPHER_PREFERENCES: "/preferencias-fotografo",
-    PREFERENCES_REGISTER: "/preferencias-cadastro"
-}
+  HOME: "/",
+  REGISTER: (profile) => `/cadastro/${profile}`,
+  LOGIN: "/login",
+  CHOOSE_PROFILE: "/persona",
+  FEED: "/explorar",
+  DASH_ADMIN: "/dash-admin",
+  PREFERENCES: "/preferencias",
+  ALBUM: "/album",
+  PERFIL: "/perfil-fotografo",
+  NOVO_ALBUM: "/cadastro-album",
+  DASH_FOTOGRAFO: "/dash-fotografo",
+  ARQUIVOS_ADMIN: "/dash-admin/arquivos",
+  ARQUIVOS_FOTOGRAFO: "/dash-fotografo/arquivos",
+};
 
 export const PROFILE_TYPES = {
-    0: "admin",
-    1: "cliente",
-    2: "fotógrafo",
-}
+  0: "admin",
+  1: "cliente",
+  2: "fotógrafo",
+};

@@ -76,18 +76,7 @@ function Calendario(props) {
   const { id, nome, token } = useUserContext();
   const [open, setOpen] = useState(false);
 
-  /* private String cliente;
-    private String telefone;
-    private LocalDateTime dataRealizacao;
-    private String endereco;
-    private String cidade;
-    private String bairro;
-    private String estado;
-    private String complemento;
-    private String statusSessao;
-    private String cep;
-    private Long idFotografo;
-  */
+
 
   // FOTOGRAFO.LISTAR_EVENTOS(1, token).then((response) => {
   //   console.log(response.data);
@@ -125,6 +114,7 @@ function Calendario(props) {
         info.event.extendedProps.endereco = info.endereco;
         info.event.extendedProps.cliente = info.cliente;
         info.event.extendedProps.status = info.status;
+
       }
     }
     boxModal.innerHTMl = "";

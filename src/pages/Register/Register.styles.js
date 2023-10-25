@@ -18,5 +18,12 @@ export default makeStyles((theme) => ({
     zIndex: 100,
     right: 0,
     top: 0,
+  },
+  spacingInput: {
+    marginTop: 0,
+    [theme.breakpoints.down('md')]: {
+      top: '16px',
+      paddingBottom: '16px !important'
+    }
   }
 }))
