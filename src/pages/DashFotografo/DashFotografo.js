@@ -40,6 +40,7 @@ import CardStackedBarChart from "atoms/CardStackedBarChart";
 import { ROUTES } from "utils/constants";
 
 const DashFotografo = () => {
+  const theme = useTheme()
   const defaultValues = {
     metrica: "fotografo",
   };
@@ -166,7 +167,7 @@ const DashFotografo = () => {
           }}
         >
           <Box>
-            <LogoPicme dash={true} height={70} />
+            <LogoPicme dash={true} height={theme.spacing(4)} />
           </Box>
           <Divider />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -175,14 +176,14 @@ const DashFotografo = () => {
               mb={5}
               sx={{
                 backgroundColor: "#ffffff",
-                borderRadius: 5,
+                borderRadius: theme.shape.borderRadius,
                 cursor: "pointer",
               }}
               onClick={() => navigate(ROUTES.DASH_FOTOGRAFO)}
             >
               <BarChartIcon
                 fontSize="large"
-                style={{ color: "#1E1E1E", fontSize: 40 }}
+                style={{ color: "#1E1E1E", fontSize: theme.spacing(4) }}
               />
             </Box>
             <Box
@@ -193,13 +194,13 @@ const DashFotografo = () => {
             >
               <ContentPasteGoIcon
                 fontSize="large"
-                style={{ color: "#ffffff", fontSize: 40 }}
+                style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
             <Box p={1} mb={5} sx={{ cursor: "pointer" }}>
               <SettingsIcon
                 fontSize="large"
-                style={{ color: "#ffffff", fontSize: 40 }}
+                style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
           </Box>

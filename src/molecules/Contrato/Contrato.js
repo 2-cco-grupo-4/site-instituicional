@@ -66,7 +66,7 @@ const Contract = ({ open, setOpen }) => {
         setProgressBar(100)
         break
       case 2:
-        console.log(payload)
+        console.log(contract)
         setStep(3)
         break
     }

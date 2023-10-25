@@ -7,6 +7,8 @@ import { Masonry } from "@mui/lab"
 import { useState, useEffect } from "react"
 import { useUserContext } from "contexts"
 import { IMAGEM } from "service/imagem";
+import { ROUTES } from "utils/constants"
+import { useNavigate } from "react-router-dom"
 
 const CATEGORIES = [
   'Casamento',
@@ -26,6 +28,7 @@ const loadingDuration = 2000;
 const Feed = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const navigate = useNavigate()
   const [category, setCategory] = useState();
   const [isInfoOpen, setIsInfoOpen] = useState(true);
   const { token } = useUserContext();
@@ -34,7 +37,7 @@ const Feed = () => {
   const [numImagesToShow, setNumImagesToShow] = useState(20);
 
   useEffect(() => {
-    loadImages();
+    if (token) loadImages();
   }, [token]);
 
   const loadImages = () => {
@@ -70,7 +73,7 @@ const Feed = () => {
   };
 
   const handleImageClick = (idAlbum) => {
-    console.log("Clicou na imagem com idAlbum:", idAlbum);
+    navigate(ROUTES.ALBUM(idAlbum))
   };
 
   useEffect(() => {
@@ -123,8 +126,7 @@ const Feed = () => {
                   key={index}
                   src={image.path}
                   autor={image.fotografo}
-                  idAlbum={image.albumId}
-                  onImageClick={handleImageClick}
+                  onClick={() => handleImageClick(image.albumId)}
                 />
               ))}
             </Masonry>

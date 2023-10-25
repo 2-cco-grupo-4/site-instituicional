@@ -8,7 +8,7 @@ export const ROUTES = {
   FEED: "/explorar",
   DASH_ADMIN: "/dash-admin",
   PREFERENCES: "/preferencias",
-  ALBUM: "/album",
+  ALBUM: (albumId) => `/album/${albumId}`,
   PERFIL: "/perfil-fotografo",
   NOVO_ALBUM: "/cadastro-album",
   DASH_FOTOGRAFO: "/dash-fotografo",
