@@ -76,13 +76,6 @@ function Calendario(props) {
   const { id, nome, token } = useUserContext();
   const [open, setOpen] = useState(false);
 
-
-
-  // FOTOGRAFO.LISTAR_EVENTOS(1, token).then((response) => {
-  //   console.log(response.data);
-  //   setEvents(response.data);
-  // });
-
   events.forEach((event) => {
     event.title = event.tema + " " + event.cliente;
   });
@@ -95,6 +88,17 @@ function Calendario(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const listarFotografo = async () => {
+    FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
+      console.log(response.data);
+      setEvents(response.data);
+    });
+  };
+
+  useEffect(() => {
+    listarFotografo();
+  }, [token]);
 
   function validateJsonIsCalendarType(event) {
     return event == undefined;
@@ -114,7 +118,6 @@ function Calendario(props) {
         info.event.extendedProps.endereco = info.endereco;
         info.event.extendedProps.cliente = info.cliente;
         info.event.extendedProps.status = info.status;
-
       }
     }
     boxModal.innerHTMl = "";
@@ -165,6 +168,7 @@ function Calendario(props) {
     <>
       <Header type={3} />
       <Content>
+        <div>{id}</div>
         <Card>
           <CardTitle>
             <Typography variant="h2">Agendamentos</Typography>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url =
-  process.env.NODE_ENV == "production"
+  process.env.NODE_ENV === "production"
     ? "http://54.165.122.226:8080"
     : "http://localhost:8080";
 
