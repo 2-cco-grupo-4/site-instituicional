@@ -21,9 +21,8 @@
 
 .box-modal {
   background-color: #fff;
-  border: 2px solid rgb(147, 147, 147) ;
+  border: 2px solid rgb(147, 147, 147);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-
   border-radius: 10px;
   width: 30%;
   position: absolute;
@@ -34,4 +33,28 @@
   justify-content: center;
 }
 
+.box-title {
+  text-align: center;
+  font-size: 20px;
+  padding: 20px;
+  
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
 
+.box-endereco, .box-cliente, .box-status {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  text-align: center;
+}
+
+.box-endereco h3, .box-cliente h3, .box-status h3 {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.box-endereco p, .box-cliente p, .box-status p {
+  margin: 0;
+  color: #555;
+}

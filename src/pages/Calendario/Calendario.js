@@ -2,8 +2,10 @@ import React from "react";
 import { Stack, Typography, Button, Avatar, Chip } from "@mui/material";
 import Header from "molecules/Header";
 import Footer from "molecules/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./Calendario.css";
+import ResponsiveDialog from "./Modal";
 import {
   CalendarioDiv,
   Content,
@@ -19,44 +21,152 @@ import {
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import { FOTOGRAFO } from "service/calendario";
+import { useUserContext } from "contexts";
 
 function Calendario(props) {
-  const events = [
+  const [events, setEvents] = useState([
     {
-      tema: "Festa",
-      cliente: "Rebeca Silva",
-      endereco: "Avenida Paulista, Rua Haddock Lobo 851",
-      date: "2023-10-01",
-      horario: "10:00",
-      status: "Ok",
-    },
-    {
+      id: 1,
       tema: "Casamento",
-      cliente: "Jorge Dias",
-      endereco:
-        "São Paulo, São Paulo, Vila Mariana, Rua dos Patinhos feios, 52 ",
-      date: "2023-10-07",
-      horario: "12:00",
-      status: "Wait",
+      cliente: "João",
+      telefone: "123456789",
+      start: "2023-10-10",
+      endereco: "Rua 1",
+      cidade: "São Paulo",
+      bairro: "Centro",
+      estado: "SP",
+      complemento: "Casa",
+      statusSessao: "Realizada",
+      cep: "12345678",
+      idFotografo: 1,
     },
     {
-      tema: "Churrasco",
-      cliente: "João Matheus",
-      endereco:
-        "São Paulo, Guaianazes, Jardim São Paulo (Leste), Rua Dr José de Queiroz Aranha, 52",
-      date: "2023-10-23",
-      horario: "10:00",
-      status: "Ok",
+      id: 2,
+      tema: "Casamento",
+      cliente: "Lilian",
+      telefone: "123456789",
+      start: "2023-10-23",
+      endereco: "Rua 2",
+      cidade: "São Paulo",
+      bairro: "Centro",
+      estado: "SP",
+      complemento: "Casa",
+      statusSessao: "Realizada",
+      cep: "12345678",
+      idFotografo: 1,
     },
-  ];
+    {
+      id: 2,
+      tema: "Festa",
+      cliente: "Maria",
+      telefone: "123456789",
+      start: "2023-10-03",
+      endereco: "Rua 23",
+      cidade: "São Paulo",
+      bairro: "Centro",
+      estado: "SP",
+      complemento: "Casa",
+      statusSessao: "Realizada",
+      cep: "12345678",
+      idFotografo: 1,
+    },
+  ]);
+
+  const { id, nome, token } = useUserContext();
+  const [open, setOpen] = useState(false);
+
+  /* private String cliente;
+    private String telefone;
+    private LocalDateTime dataRealizacao;
+    private String endereco;
+    private String cidade;
+    private String bairro;
+    private String estado;
+    private String complemento;
+    private String statusSessao;
+    private String cep;
+    private Long idFotografo;
+  */
+
+  // FOTOGRAFO.LISTAR_EVENTOS(1, token).then((response) => {
+  //   console.log(response.data);
+  //   setEvents(response.data);
+  // });
+
   events.forEach((event) => {
     event.title = event.tema + " " + event.cliente;
   });
 
+  const handleOpen = () => {
+    console.log("Add evento");
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function validateJsonIsCalendarType(event) {
+    return event == undefined;
+  }
+
+  function openModal(info) {
+    const pophover = document.createElement("div");
+    const modal = document.getElementById("modal");
+    const boxModal = document.createElement("div");
+
+    {
+      if (validateJsonIsCalendarType(info.event)) {
+        info.event = info;
+        info.event.extendedProps = {};
+        info.event.start = info.date;
+        info.event.extendedProps.title = info.title;
+        info.event.extendedProps.endereco = info.endereco;
+        info.event.extendedProps.cliente = info.cliente;
+        info.event.extendedProps.status = info.status;
+      }
+    }
+    boxModal.innerHTMl = "";
+    boxModal.classList.add("box-modal");
+    boxModal.innerHTML = `
+       
+  
+ 
+      <div class="box-title">
+        <h2>${info.event.title}</h2>
+        <p>${info.event.start.toLocaleDateString()}</p>
+      </div>
+      <div class="box-info">
+        <div class="box-endereco">
+          <h3>Endereço</h3>
+          <p>${info.event.extendedProps.endereco}</p>
+        </div>
+        <div class="box-cliente">
+          <h3>Cliente</h3>
+          <p>${info.event.extendedProps.cliente}</p>
+        </div>
+        <div class="box-status">
+          <h3>Status</h3>
+          <p>${info.event.extendedProps.statusSessao}</p>
+        </div>
+      </div>
+  
+  
+   
+    `;
+
+    pophover.appendChild(boxModal);
+    modal.appendChild(pophover);
+
+    pophover.addEventListener("click", function () {
+      modal.removeChild(pophover);
+    });
+  }
   const customButtons = {
     customButton: {
       text: "Adicionar evento +",
-      click: function () {},
+      click: handleOpen,
     },
   };
   const header = { left: "title prev next", right: "customButton" };
@@ -67,15 +177,19 @@ function Calendario(props) {
       <Content>
         <Card>
           <CardTitle>
-            <Typography variant="h5">Agendamentos</Typography>
+            <Typography variant="h2">Agendamentos</Typography>
           </CardTitle>
           <CardBody>
             {events.map((event) => {
               return (
-                <Agendamento>
+                <Agendamento
+                  onClick={() => {
+                    openModal(event);
+                  }}
+                >
                   <Icon></Icon>
                   <Dados>
-                    <Typography variant="h5">{event.title}</Typography>
+                    <Typography variant="h4">{event.title}</Typography>
                     <Typography variant="subtitle1">{event.date}</Typography>
                   </Dados>
                 </Agendamento>
@@ -94,46 +208,12 @@ function Calendario(props) {
             aspectRatio={1.35}
             dayMaxEventRows={true}
             eventDidMount={function (info) {
-              console.log(info.el);
               info.el.addEventListener("click", function () {
-                const pophover = document.createElement("div");
-                const modal = document.getElementById("modal");
-
-
-                const boxModal = document.createElement("div");
-                boxModal.innerHTMl = "";
-                boxModal.classList.add("box-modal")
-                boxModal.innerHTML = `
-                   
-                  <div class="box-title"> 
-                    <h2> ${info.event.title} </h2>
-                    <p> ${info.event.start.toLocaleDateString()} </p>  
-                  </div> 
-                  <div class="box-endereco"> 
-                    <h3> Endereço </h3>
-                    <p> ${info.event.extendedProps.endereco} </p>
-                  </div>
-                  <div class="box-cliente">
-                    <h3> Cliente </h3>
-                    <p> ${info.event.extendedProps.cliente} </p>
-                  </div>
-                  <div class="box-status"> 
-                    <h3> Status </h3>
-                    <p> ${info.event.extendedProps.status} </p>
-                  </div>
-               
-                `;
-              
-
-                pophover.appendChild(boxModal);
-                modal.appendChild(pophover);
-
-                pophover.addEventListener("click", function () {
-                  modal.removeChild(pophover);
-                });
+                openModal(info);
               });
             }}
           />
+          <ResponsiveDialog open={open} handleClose={handleClose} />
         </CalendarioDiv>
       </Content>
     </>

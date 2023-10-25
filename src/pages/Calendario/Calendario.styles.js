@@ -2,7 +2,7 @@ import { styled } from "@mui/system";
 import { Typography } from "@mui/material";
 
 export const CalendarioDiv = styled("div")`
-  width:45%;
+  width:55%;
   height:100%;
 `;
 
@@ -14,7 +14,9 @@ export const Content = styled("div")`
   justify-items:center;
   align-items:center;
   margin-top: 20px;
-  border:2px solid black ; 
+  padding-right:2%;
+  padding-bottom: 4%; 
+
 `; 
 
 export const Card = styled("div")`
@@ -24,7 +26,7 @@ export const Card = styled("div")`
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 10px;
-  width: 20%;
+  width: 25%;
 `;
 
 export const CardTitle = styled("div")`
