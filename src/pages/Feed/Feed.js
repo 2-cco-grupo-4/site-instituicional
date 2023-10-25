@@ -55,7 +55,6 @@ const Feed = () => {
       });
   };
 
-
   const handleTabChange = (_, newCategory) => {
     console.log(newCategory)
     setCategory(newCategory);
@@ -68,6 +67,10 @@ const Feed = () => {
     ) {
       loadImages();
     }
+  };
+
+  const handleImageClick = (idAlbum) => {
+    console.log("Clicou na imagem com idAlbum:", idAlbum);
   };
 
   useEffect(() => {
@@ -116,7 +119,13 @@ const Feed = () => {
           <Stack alignItems="center" sx={{ width: "calc(100% + 24px)" }}>
             <Masonry columns={3} spacing={3} sx={{ width: '100%' }}>
               {images.map((image, index) => (
-                <FeedAlbum key={index} src={image.path} alt={image.alt} autor="Renata" />
+                <FeedAlbum
+                  key={index}
+                  src={image.path}
+                  autor={image.fotografo}
+                  idAlbum={image.albumId}
+                  onImageClick={handleImageClick}
+                />
               ))}
             </Masonry>
           </Stack>
