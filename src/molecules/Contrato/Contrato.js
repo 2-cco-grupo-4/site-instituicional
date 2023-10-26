@@ -1,5 +1,5 @@
 import useStyles from "./Contrato.styles"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Grid,
   Stack,
@@ -21,16 +21,27 @@ import { stringAvatar, toLocalDate } from "utils/helpers/string"
 import CustomButton from "atoms/CustomButton"
 import { useNavigate } from "react-router"
 import { ROUTES } from "utils/constants"
+import {
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import db from "service/firebase";
+import { useUserContext } from "contexts"
 
-const Contract = ({ open, setOpen }) => {
+const Contract = ({ open, setOpen, fotografo }) => {
   const classes = useStyles()
   const theme = useTheme()
   const navigate = useNavigate()
+
+  const { id, nome } = useUserContext()
 
   const [step, setStep] = useState(0)
   const [progressBar, setProgressBar] = useState(0)
   const [genericError, setGenericError] = useState(false)
   const [contract, setContract] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const {
     control,
@@ -38,6 +49,43 @@ const Contract = ({ open, setOpen }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(contractSchema) })
+
+  const createChat = async ({ callback, onError }) => {
+    const idCliente = Number(id)
+    setLoading(true)
+    try {
+      const chatRef = await addDoc(collection(db, "chats"), {
+        id_cliente: idCliente,
+        id_fotografo: fotografo.id,
+        nome_cliente: nome,
+        nome_fotografo: fotografo.nome,
+        data_ultima_mensagem: new Date(),
+      });
+
+      console.log(chatRef)
+
+      const chatId = chatRef.id;
+
+      await addDoc(collection(db, "chats", chatId, "mensagens"), {
+        mensagem: contract?.mensagem || "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+        horario_envio: new Date(),
+        id_usuario: idCliente,
+      });
+
+      const chatDoc = doc(db, 'chats', chatId);
+      await updateDoc(chatDoc, {
+        ultima_mensagem: contract?.mensagem || "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+      });
+
+      callback()
+
+    } catch (err) {
+      console.log(err)
+      onError()
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const onSubmit = (payload) => {
     switch (step) {
@@ -67,7 +115,7 @@ const Contract = ({ open, setOpen }) => {
         break
       case 2:
         console.log(contract)
-        setStep(3)
+        createChat({ callback: () => setStep(3), onError: () => console.log("erro") })
         break
     }
   }
@@ -75,6 +123,10 @@ const Contract = ({ open, setOpen }) => {
   const handleGoBack = () => {
     setStep((current) => current - 1)
   }
+
+  useEffect(() => {
+    console.log(fotografo)
+  }, [fotografo])
 
   const ContractInfo = () => (
     <Stack spacing={4}>
@@ -413,9 +465,9 @@ const Contract = ({ open, setOpen }) => {
       <CustomButton
         color="secondary"
         variant="contained"
-        onClick={() => navigate(ROUTES.FEED)}
+        onClick={() => navigate(ROUTES.CHAT)}
       >
-        Voltar ao Feed
+        Ir para chat com fotógrafo
       </CustomButton>
     </Stack>
   )
@@ -442,6 +494,7 @@ const Contract = ({ open, setOpen }) => {
       leftButtonText={step !== 0 && step !== 3 && "Voltar"}
       leftButtonProps={{ onClick: () => handleGoBack() }}
       rightButtonText={step !== 3 && "Avançar"}
+      rightButtonProps={{ loading }}
       header={step === 3 || <ContractProgress />}
     >
       {stepContents[step]}
