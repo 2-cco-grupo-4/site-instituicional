@@ -9,6 +9,7 @@ import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ROUTES } from "utils/constants";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const CustomPopover = ({ ...props }) => {
   const classes = useStyles();
@@ -87,6 +88,18 @@ const CustomPopover = ({ ...props }) => {
             >
               <AddAPhotoIcon></AddAPhotoIcon>
               <Typography paddingLeft={1}>Novo Álbum</Typography>
+            </Stack>
+            <Stack
+              onClick={() => {
+                navigate(ROUTES.CALENDARIO);
+              }}
+              direction="row"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
+              p={2}
+              >
+                <CalendarMonthIcon></CalendarMonthIcon>
+                <Typography paddingLeft={1}>Calendário</Typography>
             </Stack>
             <Stack
               onClick={() => {

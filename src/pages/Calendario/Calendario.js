@@ -89,16 +89,16 @@ function Calendario(props) {
     setOpen(false);
   };
 
-  const listarFotografo = async () => {
-    FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
-      console.log(response.data);
-      setEvents(response.data);
-    });
-  };
+  // const listarFotografo = async () => {
+  //   FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
+  //     console.log(`TESTE RAFAEL ${response.data}`);
+  //     setEvents(response.data);
+  //   });
+  // };
 
-  useEffect(() => {
-    listarFotografo();
-  }, [token]);
+  // useEffect(() => {
+  //   listarFotografo();
+  // }, [token]);
 
   function validateJsonIsCalendarType(event) {
     return event == undefined;
@@ -168,7 +168,6 @@ function Calendario(props) {
     <>
       <Header type={3} />
       <Content>
-        <div>{id}</div>
         <Card>
           <CardTitle>
             <Typography variant="h2">Agendamentos</Typography>
