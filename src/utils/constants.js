@@ -4,6 +4,7 @@ export const ROUTES = {
   HOME: "/",
   REGISTER: (profile) => `/cadastro/${profile}`,
   LOGIN: "/login",
+  CHAT: "/chat",
   CHOOSE_PROFILE: "/persona",
   FEED: "/explorar",
   DASH_ADMIN: "/dash-admin",

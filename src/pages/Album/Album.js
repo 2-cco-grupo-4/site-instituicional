@@ -326,7 +326,7 @@ function Album() {
       </Stack>
       <Footer />
       {autenticado ? (
-        <Contrato open={openContrato} setOpen={setOpenContrato} />
+        <Contrato open={openContrato} setOpen={setOpenContrato} fotografo={fotografo} />
       ) : (
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
       )}
