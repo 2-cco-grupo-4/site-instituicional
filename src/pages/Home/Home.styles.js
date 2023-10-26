@@ -1,4 +1,4 @@
-import background from "assets/img/banner-fotografo.jpg";
+import background from "assets/img/banner-cliente2.jpg";
 import { HEADER_HEIGHT } from "utils/constants";
 import { makeStyles } from "@mui/styles";
 // import useMediaQuery from '@mui/material/useMediaQuery'
