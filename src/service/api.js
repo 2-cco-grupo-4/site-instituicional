@@ -2,8 +2,8 @@ import axios from "axios";
 
 const url =
   process.env.NODE_ENV === "production"
-    ? "https://picme-api.ddns.net"
-    : "http://localhost:8080";
+    ? "http://localhost:8080"
+    : "https://picme-api.ddns.net";
 
 const api = axios.create({
   baseURL: url,
