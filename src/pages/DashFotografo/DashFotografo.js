@@ -14,6 +14,7 @@ import {
   Select,
   FormGroup,
   Grid,
+  Avatar,
 } from "@mui/material";
 import Container from "atoms/Container";
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi";
@@ -38,6 +39,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import CardStackedBarChart from "atoms/CardStackedBarChart";
 import { ROUTES } from "utils/constants";
+import { stringAvatar } from "utils/helpers/string";
 
 const DashFotografo = () => {
   const theme = useTheme()
@@ -169,8 +171,8 @@ const DashFotografo = () => {
           <Box>
             <LogoPicme dash={true} height={theme.spacing(4)} />
           </Box>
-          <Divider />
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <Box
               p={1}
               mb={5}
@@ -197,20 +199,20 @@ const DashFotografo = () => {
                 style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
-            <Box p={1} mb={5} sx={{ cursor: "pointer" }}>
+            <Box p={1} sx={{ cursor: "pointer" }}>
               <SettingsIcon
                 fontSize="large"
                 style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
           </Box>
-          <Divider />
+          <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              // justifyContent: "center",
+              justifyContent: "center",
             }}
           >
             <Box
@@ -220,10 +222,8 @@ const DashFotografo = () => {
                 alignItems: "center",
               }}
             >
-              <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
-              <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
-                {nome}
-              </Typography>
+              <Avatar {...stringAvatar(nome ? (nome) : ("Teste"))}>
+              </Avatar>
             </Box>
             <Box
               sx={{
@@ -244,11 +244,8 @@ const DashFotografo = () => {
                 }}
               >
                 <LogoutIcon
-                  style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
+                  style={{ color: "#ffffff", fontSize: 25, paddingTop: "10px" }}
                 />
-                <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
-                  Sair
-                </Typography>
               </Box>
             </Box>
           </Box>
@@ -402,9 +399,9 @@ const DashFotografo = () => {
             >
               <Grid
                 item
-                xl={3}
-                lg={3}
-                md={3}
+                xl={4}
+                lg={4}
+                md={4}
                 sm={10}
                 xs={10}
                 sx={{
@@ -420,9 +417,9 @@ const DashFotografo = () => {
               </Grid>
               <Grid
                 item
-                xl={8}
-                lg={8}
-                md={8}
+                xl={7}
+                lg={7}
+                md={7}
                 sm={10}
                 xs={10}
                 sx={{

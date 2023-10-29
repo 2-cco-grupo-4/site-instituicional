@@ -12,6 +12,8 @@ import {
   Divider,
   AppBar,
   Grid,
+  useTheme,
+  Avatar,
 } from "@mui/material";
 import Container from "atoms/Container";
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi";
@@ -37,11 +39,15 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import CardStackedBarChart from "atoms/CardStackedBarChart";
 import { ROUTES } from "utils/constants";
+import { stringAvatar } from "utils/helpers/string";
 
 const DashAdmin = () => {
   const defaultValues = {
     metrica: "marketing",
   };
+
+  const theme = useTheme()
+
 
   const [metrica, setMetrica] = useState(defaultValues.metrica);
 
@@ -211,23 +217,23 @@ const DashAdmin = () => {
           }}
         >
           <Box>
-            <LogoPicme dash={true} height={70} />
+            <LogoPicme dash={true} height={theme.spacing(4)} />
           </Box>
-          <Divider />
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <Box
               p={1}
               mb={5}
               sx={{
                 backgroundColor: "#ffffff",
-                borderRadius: 5,
+                borderRadius: theme.shape.borderRadius,
                 cursor: "pointer",
               }}
               onClick={() => navigate(ROUTES.DASH_ADMIN)}
             >
               <BarChartIcon
                 fontSize="large"
-                style={{ color: "#1E1E1E", fontSize: 40 }}
+                style={{ color: "#1E1E1E", fontSize: theme.spacing(4) }}
               />
             </Box>
             <Box
@@ -238,23 +244,23 @@ const DashAdmin = () => {
             >
               <ContentPasteGoIcon
                 fontSize="large"
-                style={{ color: "#ffffff", fontSize: 40 }}
+                style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
-            <Box p={1} mb={5} sx={{ cursor: "pointer" }}>
+            <Box p={1} sx={{ cursor: "pointer" }}>
               <SettingsIcon
                 fontSize="large"
-                style={{ color: "#ffffff", fontSize: 40 }}
+                style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
           </Box>
-          <Divider />
+          <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              // justifyContent: "center",
+              justifyContent: "center",
             }}
           >
             <Box
@@ -264,10 +270,8 @@ const DashAdmin = () => {
                 alignItems: "center",
               }}
             >
-              <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
-              <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
-                {nome}
-              </Typography>
+              <Avatar {...stringAvatar(nome ? (nome) : ("Teste"))}>
+              </Avatar>
             </Box>
             <Box
               sx={{
@@ -288,11 +292,8 @@ const DashAdmin = () => {
                 }}
               >
                 <LogoutIcon
-                  style={{ color: "#ffffff", fontSize: 35, paddingTop: "10px" }}
+                  style={{ color: "#ffffff", fontSize: 25, paddingTop: "10px" }}
                 />
-                <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
-                  Sair
-                </Typography>
               </Box>
             </Box>
           </Box>

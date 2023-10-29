@@ -167,15 +167,15 @@ function Album() {
   return (
     <>
       <Header type={2} />
-      <Stack direction="row" sx={{ width: "100%" }}>
-        <ImageStack>
+      <Stack direction="row" sx={{ width: "100%", alignItems: "center", justifyContent: "center"}}>
+        <ImageStack sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
           {imagens
             ? imagens.map((image) => (
               <ImageContainer key={image.id} className="image">
                 <ImageElement
                   src={image.path}
                   alt={image.descricao}
-                  style={{ width: "100%" }}
+                  style={{ width: "auto", height: "auto" }}
                 />
               </ImageContainer>
             ))
