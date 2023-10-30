@@ -136,7 +136,7 @@ const Feed = () => {
                   key={index}
                   src={image.path}
                   autor={image.fotografo}
-                  onClick={() => handleImageClick(image.album.id)}
+                  onClick={() => handleImageClick(image.albumId)}
                 />
               ))}
             </Masonry>
@@ -147,7 +147,6 @@ const Feed = () => {
         <Typography
           variant="h6"
           style={{
-            filter: "blur(3px)",
             transition: `filter ${loadingDuration}ms`,
           }}
         >

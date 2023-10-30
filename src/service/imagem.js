@@ -6,7 +6,7 @@ export const IMAGEM = {
       headers: { Authorization: `Bearer ${token}` },
     }),
   VISUALIZAR: (token) =>
-    api.get("/imagens", {
+    api.get("/imagens/paths", {
       headers: { Authorization: `Bearer ${token}` },
     }),
 };
