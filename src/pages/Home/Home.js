@@ -123,7 +123,7 @@ const Home = () => {
         autoPlay
         infiniteLoop
         emulateTouch
-        width="calc(99vw - (100vw - 100%))"
+        width="98.5dvw"
         interval={5000}
       >
         <Banner
