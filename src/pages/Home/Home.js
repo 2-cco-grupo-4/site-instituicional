@@ -5,33 +5,30 @@ import {
   Stack,
   Typography,
   useMediaQuery,
-} from "@mui/material";
-import Container from "atoms/Container";
-import CustomButton from "atoms/CustomButton";
-import Header from "molecules/Header";
-import PolaroidImage from "atoms/PolaroidImage";
-import useStyles from "./Home.styles";
-import { useTheme } from "@mui/styles";
+} from "@mui/material"
+import Container from "atoms/Container"
+import CustomButton from "atoms/CustomButton"
+import Header from "molecules/Header"
+import PolaroidImage from "atoms/PolaroidImage"
+import useStyles from "./Home.styles"
+import { useTheme } from "@mui/styles"
 
-import aniversario from "assets/img/aniversario.jpg";
-import baloes from "assets/img/baloes.jpg";
-import bolo from "assets/img/bolo.jpg";
-import brinde from "assets/img/brinde.jpg";
-import buque from "assets/img/buque.jpg";
-import casal from "assets/img/casal.jpg";
-import criancaCasamento from "assets/img/crianca-casamento.jpg";
-import fotografo from "assets/img/fotografo.jpg";
-import senhorAniversario from "assets/img/senhor-aniversario.jpg";
-import smartphone from "assets/img/usuario-smartphone.jpg";
-import sobrinho from "assets/img/sobrinho.jpg";
-import tacas from "assets/img/tacas.jpg";
-import Footer from "molecules/Footer";
-import CustomLogin from "molecules/CustomLogin/CustomLogin";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import handleOpen from "molecules/CustomLogin/CustomLogin";
-import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
-import { ROUTES } from "utils/constants";
+import aniversario from "assets/img/aniversario.jpg"
+import baloes from "assets/img/baloes.jpg"
+import bolo from "assets/img/bolo.jpg"
+import brinde from "assets/img/brinde.jpg"
+import buque from "assets/img/buque.jpg"
+import casal from "assets/img/casal.jpg"
+import criancaCasamento from "assets/img/crianca-casamento.jpg"
+import fotografo from "assets/img/fotografo.jpg"
+import senhorAniversario from "assets/img/senhor-aniversario.jpg"
+import smartphone from "assets/img/usuario-smartphone.jpg"
+import sobrinho from "assets/img/sobrinho.jpg"
+import tacas from "assets/img/tacas.jpg"
+import Footer from "molecules/Footer"
+import { Carousel } from "react-responsive-carousel"
+import { useNavigate } from "../../../node_modules/react-router-dom/dist/index"
+import { ROUTES } from "utils/constants"
 
 const imageList = [
   {
@@ -70,12 +67,16 @@ const imageList = [
     alt: "crianca-casamento",
     src: criancaCasamento,
   },
-];
+]
 
-const Separator = ({ title }) => {
-  const classes = useStyles();
+const Home = () => {
+  const classes = useStyles()
+  const theme = useTheme()
+  const navigate = useNavigate()
 
-  return (
+  const downSm = useMediaQuery(theme.breakpoints.down("sm"))
+
+  const Separator = ({ title }) => (
     <Box className={classes.separator} mb={3}>
       <Container alignItems="center" flexDirection="column" py={2}>
         <Typography id="galeria" variant="subtitle-small-bold">
@@ -84,36 +85,56 @@ const Separator = ({ title }) => {
       </Container>
       <div className={classes.pointer} />
     </Box>
-  );
-};
+  )
 
-const Home = () => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const navigate = useNavigate();
-
-  const downSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const Banner = ({ bannerImageClass, text }) => (
+    <Container
+      alignItems="center"
+      className={[classes.banner, bannerImageClass].join(" ")}
+    >
+      <Stack
+        spacing={2}
+        flexDirection="column"
+        alignItems="flex-start"
+        width="35%"
+      >
+        <Typography
+          fontWeight="bold"
+          color="white.main"
+          align="left"
+          fontSize={{ lg: "48px", md: "48px", sm: "32px", xs: "24px" }}
+        >
+          {text}
+        </Typography>
+        <CustomButton
+          variant="contained"
+          onClick={() => navigate(ROUTES.CHOOSE_PROFILE)}
+        >
+          Começar!
+        </CustomButton>
+      </Stack>
+    </Container>
+  )
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={1} />
-      <Container alignItems="center" className={classes.banner}>
-        <Stack spacing={2} flexDirection="column" alignItems="left" width="35%">
-          <Typography
-            fontWeight="bold"
-            color="white.main"
-            fontSize={{ lg: "48px", md: "48px", sm: "32px", xs: "24px" }}
-          >
-            Transforme sua paixão em sucesso
-          </Typography>
-          <CustomButton
-            variant="contained"
-            onClick={() => navigate(ROUTES.FEED)}
-          >
-            Começar!
-          </CustomButton>
-        </Stack>
-      </Container>
+      <Carousel
+        autoPlay
+        infiniteLoop
+        emulateTouch
+        width="calc(99vw - (100vw - 100%))"
+        interval={5000}
+      >
+        <Banner
+          text="Transforme sua paixão em sucesso!"
+          bannerImageClass={classes.bannerPhotographer}
+        />
+        <Banner
+          text="Registre momentos marcantes da sua vida para sempre!"
+          bannerImageClass={classes.bannerCustomer}
+        />
+      </Carousel>
       <Separator title="Galeria" id="galeria" />
       <Container pb={2}>
         <ImageList variant="masonry" cols={downSm ? 1 : 3} gap={8}>
@@ -215,7 +236,7 @@ const Home = () => {
       </Container>
       <Footer />
     </Stack>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

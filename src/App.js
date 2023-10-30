@@ -1,5 +1,6 @@
 import Theme from "templates/Theme/Theme";
 import VLibras from "@djpfs/react-vlibras";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { UserProvider } from "contexts";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
