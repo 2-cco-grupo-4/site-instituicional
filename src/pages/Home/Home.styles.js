@@ -1,4 +1,5 @@
-import background from "assets/img/banner-fotografo.jpg";
+import backgroundPhotographer from "assets/img/banner-fotografo.jpg";
+import backgroundCustomer from "assets/img/banner-cliente2.jpg";
 import { HEADER_HEIGHT } from "utils/constants";
 import { makeStyles } from "@mui/styles";
 // import useMediaQuery from '@mui/material/useMediaQuery'
@@ -7,7 +8,6 @@ export default makeStyles((theme) => ({
   banner: {
     height: `calc(100vh - ${HEADER_HEIGHT})`,
     width: "100%",
-    backgroundImage: `url(${background})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -19,6 +19,12 @@ export default makeStyles((theme) => ({
       backgroundSize: "cover",
       height: `calc(50vh - ${HEADER_HEIGHT})`,
     },
+  },
+  bannerPhotographer: {
+    backgroundImage: `url(${backgroundPhotographer})`,
+  },
+  bannerCustomer: {
+    backgroundImage: `url(${backgroundCustomer})`,
   },
   separator: {
     backgroundColor: theme.palette.secondary.main,
