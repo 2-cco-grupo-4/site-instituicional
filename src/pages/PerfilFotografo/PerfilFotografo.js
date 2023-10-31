@@ -85,7 +85,6 @@ const avaliacaoList = [
     name: "Davi",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
-
 ];
 
 const PerfilFotografo = () => {
@@ -121,8 +120,8 @@ const PerfilFotografo = () => {
     setColorBackAvaliacao("black");
   };
 
-  const theme = useTheme()
-  const navigate = useNavigate()
+  const theme = useTheme();
+  const navigate = useNavigate();
   const classes = useStyles();
 
   const [albums, setAlbums] = useState([]);
@@ -160,14 +159,33 @@ const PerfilFotografo = () => {
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={2} />
       <Container className={classes.banner}></Container>
-      <Breadcrumbs separator=">" sx={{ cursor: 'pointer', marginLeft: theme.spacing(8), marginTop: theme.spacing(3) }}>
-        <Link color={theme.palette.secondary.main} underline="hover" href={ROUTES.FEED}>
+      <Breadcrumbs
+        separator=">"
+        sx={{
+          cursor: "pointer",
+          marginLeft: theme.spacing(8),
+          marginTop: theme.spacing(3),
+        }}
+      >
+        <Link
+          color={theme.palette.secondary.main}
+          underline="hover"
+          href={ROUTES.FEED}
+        >
           Home
         </Link>
-        <Link color={theme.palette.secondary.main} underline="hover" href={ROUTES.PERFIL}>
+        <Link
+          color={theme.palette.secondary.main}
+          underline="hover"
+          href={ROUTES.PERFIL}
+        >
           Renata Ferreira
         </Link>
-        <Link color={theme.palette.secondary.main} underline="hover" href={ROUTES.ALBUM}>
+        <Link
+          color={theme.palette.secondary.main}
+          underline="hover"
+          href={ROUTES.ALBUM}
+        >
           Casamento Ana e Bruno
         </Link>
       </Breadcrumbs>
@@ -180,7 +198,8 @@ const PerfilFotografo = () => {
           @referphots
         </Typography>
         <Typography width={"35%"} marginBottom={"15px"} paddingTop={"10px"}>
-          Pessoas fazem fotos de qualquer coisa bonita. Fotógrafos fazem fotos bonitas de qualquer coisa.
+          Pessoas fazem fotos de qualquer coisa bonita. Fotógrafos fazem fotos
+          bonitas de qualquer coisa.
         </Typography>
         <CustomButton variant={"contained"}>Contratar</CustomButton>
       </Stack>
@@ -188,7 +207,8 @@ const PerfilFotografo = () => {
         <Container
           className={classes.sectionOne}
           sx={{
-            backgroundColor: colorBackAlbum, cursor: 'pointer'
+            backgroundColor: colorBackAlbum,
+            cursor: "pointer",
           }}
           onClick={aoClicarAlbum}
         >
@@ -204,7 +224,7 @@ const PerfilFotografo = () => {
         </Container>
         <Container
           className={classes.sectionTwo}
-          sx={{ backgroundColor: colorBackAvaliacao, cursor: 'pointer' }}
+          sx={{ backgroundColor: colorBackAvaliacao, cursor: "pointer" }}
           onClick={aoClicarAvaliacao}
         >
           <Typography fontWeight={"bold"}>
@@ -224,7 +244,11 @@ const PerfilFotografo = () => {
       <Container sx={{ display: displayAlbum }} pb={2}>
         <ImageList variant="masonry" cols={4} gap={8}>
           {imageList.map(({ index, alt, src }) => (
-            <ImageListItem key={index} sx={{ cursor: 'pointer' }} onClick={() => navigate(ROUTES.ALBUM)}>
+            <ImageListItem
+              key={index}
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(ROUTES.ALBUM)}
+            >
               <img src={src} alt={alt} />
             </ImageListItem>
           ))}

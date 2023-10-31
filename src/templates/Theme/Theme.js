@@ -12,29 +12,32 @@ const theme = createTheme({
       main: "#FFFFFF",
     },
     gray: {
-      main: "rgba(208, 208, 208, 0.5)"
+      main: "rgba(208, 208, 208, 0.5)",
     },
     stroke: {
       main: "rgba(0,0,0,1)",
     },
     stroke50: {
       main: "rgba(0,0,0,0.5)",
-    }
+    },
+    stroke25: {
+      main: "rgba(0,0,0,0.25)",
+    },
   },
   typography: {
-    fontFamily: 'Inter, sans-serif',
-    fontSize: '16px',
+    fontFamily: "Inter, sans-serif",
+    fontSize: "16px",
     "title-medium-bold": {
       fontSize: 36,
-      fontWeight: 'bold',
+      fontWeight: "bold",
     },
     "title-small-bold": {
       fontSize: 32,
-      fontWeight: 'bold',
+      fontWeight: "bold",
     },
     "subtitle-small-semibold": {
       fontSize: 24,
-      fontWeight: '600',
+      fontWeight: "600",
     },
     "subtitle-small-bold": {
       fontSize: 24,
@@ -73,11 +76,7 @@ const theme = createTheme({
 })
 
 const Theme = ({ children }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      {children}
-    </ThemeProvider>
-  )
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
 }
 
 export default Theme

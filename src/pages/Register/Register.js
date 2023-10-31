@@ -1,5 +1,5 @@
-import useStyles from "./Register.styles";
-import Container from "atoms/Container";
+import useStyles from "./Register.styles"
+import Container from "atoms/Container"
 import {
   FormControlLabel,
   Stack,
@@ -7,22 +7,22 @@ import {
   RadioGroup,
   TextField,
   Typography,
-} from "@mui/material";
-import LogoPicme from "atoms/LogoPicme";
-import { useNavigate, useParams } from "react-router-dom";
-import CustomButton from "atoms/CustomButton";
-import InputMask from "react-input-mask";
-import { useState } from "react";
-import goBackArrow from "assets/icons/go-back-arrow.svg";
-import { ROUTES } from "utils/constants";
-import { toTitleCase } from "utils/helpers/string";
-import { userDataSchema } from "./Register.schema";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useTheme } from "@mui/styles";
-import { useAsyncState } from "hooks/useAsyncState";
-import { CLIENTE, FOTOGRAFO, LOGIN } from "service/user";
-import { useUserContext } from "contexts";
+} from "@mui/material"
+import LogoPicme from "atoms/LogoPicme"
+import { useNavigate, useParams } from "react-router-dom"
+import CustomButton from "atoms/CustomButton"
+import InputMask from "react-input-mask"
+import { useState } from "react"
+import goBackArrow from "assets/icons/go-back-arrow.svg"
+import { ROUTES } from "utils/constants"
+import { toTitleCase } from "utils/helpers/string"
+import { userDataSchema } from "./Register.schema"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useTheme } from "@mui/styles"
+import { useAsyncState } from "hooks/useAsyncState"
+import { CLIENTE, FOTOGRAFO, LOGIN } from "service/user"
+import { useUserContext } from "contexts"
 
 const defaultValue = {
   nome: "",
@@ -32,113 +32,114 @@ const defaultValue = {
   numCelular: "",
   senha: "",
   profile: "",
-};
+}
 
 const Register = () => {
-  const theme = useTheme();
-  const classes = useStyles();
-  const navigate = useNavigate();
-  const { profileType } = useParams();
+  const theme = useTheme()
+  const classes = useStyles()
+  const navigate = useNavigate()
+  const { profileType } = useParams()
   const { setId, setNome, setTipoUsuario, setTemas, setToken } =
-    useUserContext();
+    useUserContext()
 
-  const [profile, setProfile] = useState(profileType);
-  const [btnLoading, setBtnLoading] = useState(false);
+  const [profile, setProfile] = useState(profileType)
+  const [btnLoading, setBtnLoading] = useState(false)
   const [genericError, setGenericError] = useState(false)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(userDataSchema) });
+  } = useForm({ resolver: yupResolver(userDataSchema) })
 
   const handleChange = (e) => {
     if (e.target.name === "nome") {
-      e.target.value = toTitleCase(e.target.value);
+      e.target.value = toTitleCase(e.target.value)
     }
-  };
+  }
 
   const handleProfileChange = (e) => {
-    setProfile(e.target.value);
-    navigate(ROUTES.REGISTER(e.target.value));
-  };
+    setProfile(e.target.value)
+    navigate(ROUTES.REGISTER(e.target.value))
+  }
 
   const onSubmitHandler = async (data) => {
-    setBtnLoading(true);
+    setBtnLoading(true)
     setGenericError(false)
 
-    data["dataNasc"] = data["dataNasc"].split("/").reverse().join("-");
-    var perfil = data["profile"];
+    data["dataNasc"] = data["dataNasc"].split("/").reverse().join("-")
+    var perfil = data["profile"]
 
     if (perfil === "fotografo") {
-      data["profile"] = 2;
+      data["profile"] = 2
     } else if (perfil === "cliente") {
-      data["profile"] = 1;
-    } else {
-      alert("Perfil inválido!");
+      data["profile"] = 1
     }
 
-    const payload = { ...data };
-    delete payload["confirmarSenha"];
+    const payload = { ...data }
+    delete payload["confirmarSenha"]
 
-    const login = { email: payload.email, senha: payload.senha };
+    const login = { email: payload.email, senha: payload.senha }
 
-    const dadosValidarNovoUsuario = { email: payload.email, cpf: payload.cpf };
+    const dadosValidarNovoUsuario = { email: payload.email, cpf: payload.cpf }
 
-    var novoUsuario = true;
+    var novoUsuario = true
 
     if (payload.profile === 1 && novoUsuario) {
       await CLIENTE.CADASTRAR(payload)
         .then(async (response) => {
-          console.log(response.data);
-          setId(response.data.id);
-          setNome(response.data.nome);
-          setTipoUsuario(response.data.tipoUsuario);
-          setTemas(response.data.temas);
+          console.log(response.data)
+          setId(response.data.id)
+          setNome(response.data.nome)
+          setTipoUsuario(response.data.tipoUsuario)
+          setTemas(response.data.temas)
 
           await LOGIN(login)
-            .then(() => {
-              navigate(ROUTES.PREFERENCES);
+            .then((responseLogin) => {
+              console.log(responseLogin.data.token)
+              setToken(responseLogin.data.token)
+              navigate(ROUTES.PREFERENCES)
             })
             .catch((err) => {
-              console.log(err);
-            });
+              console.log(err)
+            })
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           setGenericError(true)
         })
         .finally(() => {
-          setBtnLoading(false);
-        });
+          setBtnLoading(false)
+        })
     } else if (payload.profile === 2 && novoUsuario) {
       await FOTOGRAFO.CADASTRAR(payload)
         .then(async (response) => {
-          console.log(response.data);
-          setId(response.data.id);
-          setNome(response.data.nome);
-          setTipoUsuario(response.data.tipoUsuario);
-          setTemas(response.data.temas);
+          console.log(response.data)
+          setId(response.data.id)
+          setNome(response.data.nome)
+          setTipoUsuario(response.data.tipoUsuario)
+          setTemas(response.data.temas)
 
           await LOGIN(login)
-            .then(() => {
-              navigate(ROUTES.PREFERENCES);
+            .then((responseLogin) => {
+              setToken(responseLogin.data.token)
+              navigate(ROUTES.PREFERENCES)
             })
             .catch((err) => {
-              console.log(err);
-            });
+              console.log(err)
+            })
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           setGenericError(true)
         })
         .finally(() => {
-          setBtnLoading(false);
-        });
+          setBtnLoading(false)
+        })
     }
 
-    setBtnLoading(false);
-  };
+    setBtnLoading(false)
+  }
 
   return (
     <Stack direction="row" alignItems="top">
@@ -184,6 +185,7 @@ const Register = () => {
                 defaultValue={profileType}
               >
                 <FormControlLabel
+                  name="cliente"
                   value="cliente"
                   {...register("profile")}
                   control={<Radio />}
@@ -195,6 +197,7 @@ const Register = () => {
                 />
 
                 <FormControlLabel
+                  name="fotografo"
                   value="fotografo"
                   {...register("profile")}
                   control={<Radio />}
@@ -348,7 +351,7 @@ const Register = () => {
         </Container>
       </Stack>
     </Stack>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

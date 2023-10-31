@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   Stack,
   Typography,
@@ -8,9 +8,9 @@ import {
   useTheme,
   Breadcrumbs,
   Link,
-} from "@mui/material";
-import Header from "molecules/Header";
-import Footer from "molecules/Footer";
+} from "@mui/material"
+import Header from "molecules/Header"
+import Footer from "molecules/Footer"
 import {
   ImageStack,
   ImageContainer,
@@ -25,10 +25,13 @@ import imagemNoiva3 from "assets/img/noiva-feliz3.png";
 import PersonIcon from "@mui/icons-material/Person";
 import CustomButton from "atoms/CustomButton/CustomButton";
 import { ROUTES } from "utils/constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "contexts";
 import ModalLogin from "molecules/CustomLogin/CustomLogin";
 import Contrato from "molecules/Contrato/Contrato";
+import { ALBUM } from "service/album";
+import { AVALIACAO } from "service/avaliacao";
+import { set } from "react-hook-form";
 
 const images = [
   {
@@ -50,7 +53,7 @@ const images = [
     tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
-];
+]
 
 function Album() {
   const theme = useTheme();
@@ -59,36 +62,124 @@ function Album() {
   const [openContrato, setOpenContrato] = useState(false);
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [tags, setTags] = useState([]);
+  const { token } = useUserContext();
+  const [album, setAlbum] = useState([]);
+  const [fotografo, setFotografo] = useState([]);
+  const [imagens, setImagens] = useState([]);
+  const [tema, setTemas] = useState([]);
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const { idAlbum } = useParams();
+
+  const [clientes, setClientes] = useState([]);
+  const [sessoes, setSessoes] = useState([]);
+
+  let chamadas = 0;
+
+  let ready = false;
 
   useEffect(() => {
-    let v = [];
-    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)));
+    let v = []
+    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)))
 
     setTags(v);
-  }, [tags]);
+  }, []);
 
   const handleContract = () => {
     if (autenticado) {
-      setOpenContrato(true);
+      setOpenContrato(true)
     } else {
       setOpenLoginModal(true);
     }
   };
 
+  const buscarAlbum = async () => {
+    if (token != undefined) {
+      console.log(`VALIDANDO TOKEN: ${token}`);
+      try {
+        const jsonAlbuns = await ALBUM.BUSCAR_ALBUM(idAlbum, token);
+        setAlbum(jsonAlbuns.data);
+        setFotografo(jsonAlbuns.data.fotografo);
+        setImagens(jsonAlbuns.data.imagems);
+        setTemas(jsonAlbuns.data.tema);
+
+        console.log(`TESTE FOTOGRAFO ID: ${fotografo.id}`);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const buscarSessoes = async () => {
+    let listEventos = [];
+    avaliacoes.forEach((avaliacao) => {
+      listEventos.push(avaliacao.evento);
+    });
+    setSessoes(listEventos);
+    console.log(`TESTE LISTA EVENTOS: ${JSON.stringify(sessoes)}`);
+  };
+
+  const buscarClientes = async () => {
+    const listClientes = [];
+
+    sessoes.forEach((sessao) => {
+      listClientes.push(sessao.cliente);
+    });
+
+    setClientes(listClientes);
+
+    console.log(`TESTE LISTA CLIENTES: ${JSON.stringify(clientes)}`);
+  };
+
+  const buscarAvaliacoes = async () => {
+    const jsonAvaliacoes = await AVALIACAO.BUSCAR_AVALIACOES_FOTOGRAFO(
+      fotografo.id,
+      token
+    );
+
+    setAvaliacoes(jsonAvaliacoes.data);
+  };
+
+  useEffect(() => {
+    if (token !== undefined) {
+      buscarAlbum();
+      chamadas++;
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (fotografo !== undefined) {
+      buscarAvaliacoes();
+    }
+  }, [fotografo]);
+
+  useEffect(() => {
+    if (avaliacoes !== undefined) {
+      buscarSessoes();
+    }
+  }, [avaliacoes]);
+
+  useEffect(() => {
+    if (sessoes !== undefined) {
+      buscarClientes();
+    }
+  }, [sessoes]);
+
   return (
     <>
       <Header type={2} />
-      <Stack direction="row" sx={{ width: "100%" }}>
-        <ImageStack>
-          {images.map((image) => (
-            <ImageContainer key={image.id} className="image">
-              <ImageElement
-                src={image.src}
-                alt={image.title}
-                style={{ width: "100%" }}
-              />
-            </ImageContainer>
-          ))}
+      <Stack direction="row" sx={{ width: "100%", alignItems: "center", justifyContent: "center"}}>
+        <ImageStack sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+          {imagens
+            ? imagens.map((image) => (
+              <ImageContainer key={image.id} className="image">
+                <ImageElement
+                  src={image.path}
+                  alt={image.descricao}
+                  style={{ width: "auto", height: "auto" }}
+                />
+              </ImageContainer>
+            ))
+            : console.log("Carregando...")}
         </ImageStack>
         <Sidebar spacing={5}>
           <UserArea spacing={3}>
@@ -97,10 +188,12 @@ function Album() {
                 Home
               </Link>
               <Link color="inherit" underline="hover" href={ROUTES.PERFIL}>
-                Renata Ferreira
+                {typeof fotografo == "object"
+                  ? fotografo.nome
+                  : console.log(typeof fotografo)}
               </Link>
               <Link color="inherit" underline="hover" href={ROUTES.ALBUM}>
-                Casamento Ana e Bruno
+                {album ? album.titulo : "Padrão"}
               </Link>
             </Breadcrumbs>
             <Stack direction="row" alignItems="center" spacing={2}>
@@ -113,7 +206,9 @@ function Album() {
 
               <Stack spacing={0.5}>
                 <Typography variant="paragraph-medium-bold">
-                  Renata Ferreira
+                  {typeof fotografo == "object"
+                    ? fotografo.nome
+                    : console.log(typeof fotografo)}
                 </Typography>
                 <Typography>São Paulo - SP</Typography>
                 <CustomButton
@@ -127,13 +222,10 @@ function Album() {
             </Stack>
           </UserArea>
           <Stack spacing={1}>
-            <Typography variant="paragraph-large-bold">Título</Typography>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              eget sem vel justo hendrerit laoreet. Morbi sed arcu nec libero
-              tristique placerat. Sed efficitur tristique mi, eu congue lorem
-              auctor eget.
+            <Typography variant="paragraph-large-bold">
+              {album ? album.titulo : "Padrão"}
             </Typography>
+            <Typography>{tema ? tema.nome : "Padrão"}</Typography>
           </Stack>
           <Stack spacing={1}>
             <Typography variant="paragraph-large-bold">Tags</Typography>
@@ -154,77 +246,92 @@ function Album() {
           </Stack>
           <Stack spacing={1}>
             <Typography variant="paragraph-large-bold">Avaliação</Typography>
-            <AvaliacaoBox>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                  flex: 1,
-                  height: "100%",
-                  width: "100%",
-                }}
+            {avaliacoes.length == 0 ? (
+              <Typography
+                variant="paragraph-medium-bold"
+                sx={{ textAlign: "center" }}
               >
-                <Avatar
-                  style={{ width: theme.spacing(8), height: theme.spacing(8) }}
-                >
-                  <PersonIcon style={{ fontSize: 24 }} />
-                </Avatar>
+                Não há avaliações para este fotógrafo.
+              </Typography>
+            ) : null}
+            {avaliacoes.map((avaliacao, indice) => (
+              <AvaliacaoBox>
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    marginLeft: theme.spacing(2),
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    flex: 1,
+                    height: "100%",
+                    width: "100%",
                   }}
                 >
-                  <Rating
-                    name="avaliação"
-                    size="large"
-                    sx={{ fontSize: theme.spacing(4) }}
-                    readOnly
-                    value={5}
-                  />
-                  <Typography
-                    variant="body1"
+                  <Avatar
                     style={{
-                      fontWeight: "bold",
-                      marginTop: "5px",
+                      width: theme.spacing(8),
+                      height: theme.spacing(8),
                     }}
                   >
-                    Nome usuário avaliador
+                    <PersonIcon style={{ fontSize: 24 }} />
+                  </Avatar>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                      marginLeft: theme.spacing(2),
+                    }}
+                  >
+                    <Rating
+                      name="avaliação"
+                      size="large"
+                      sx={{ fontSize: theme.spacing(4) }}
+                      readOnly
+                      value={typeof avaliacao == "object" ? avaliacao.nota : 2}
+                    // value={3.5}
+                    />
+                    <Typography
+                      variant="body1"
+                      style={{
+                        fontWeight: "bold",
+                        marginTop: "5px",
+                      }}
+                    >
+                      {typeof clientes === "object" &&
+                        clientes[indice] &&
+                        clientes[indice].nome !== undefined
+                        ? clientes[indice].nome
+                        : "Padrão"}
+                    </Typography>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    flex: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    marginLeft: "10px",
+                    height: "100%",
+                  }}
+                >
+                  <Typography style={{ marginTop: "16px" }}>
+                    {typeof avaliacao == "object" ? avaliacao.descricao : ""}
                   </Typography>
                 </div>
-              </div>
-              <div
-                style={{
-                  flex: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  marginLeft: "10px",
-                  height: "100%",
-                }}
-              >
-                <Typography style={{ marginTop: "16px" }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                  eget sem vel justo hendrerit laoreet. Morbi sed arcu nec
-                  libero tristique placerat. Sed efficitur tristique mi, eu
-                  congue lorem auctor eget.
-                </Typography>
-              </div>
-            </AvaliacaoBox>
+              </AvaliacaoBox>
+            ))}
           </Stack>
         </Sidebar>
       </Stack>
       <Footer />
       {autenticado ? (
-        <Contrato open={openContrato} setOpen={setOpenContrato} />
+        <Contrato open={openContrato} setOpen={setOpenContrato} fotografo={fotografo} />
       ) : (
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
       )}
     </>
-  );
+  )
 }
 
-export default Album;
+export default Album

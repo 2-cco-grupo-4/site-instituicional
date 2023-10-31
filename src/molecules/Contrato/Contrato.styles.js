@@ -1,51 +1,52 @@
-import { makeStyles } from '@mui/styles'
-
+import { makeStyles } from "@mui/styles"
 
 export default makeStyles((theme) => ({
-
   modal: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50vw',
-    height: '75vh',
-    backgroundColor: 'white',
-    border: '0px solid #000',
-    borderRadius: '2vh',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    maxWidth: "50vw",
+    width: "50vw",
+    maxHeight: "75vh",
+    height: "fit-content",
+    backgroundColor: theme.palette.white.main,
+    border: "0px solid #000",
+    borderRadius: "2vh",
     boxShadow: 24,
-    p: 4,
-    backgroundSize: 'auto 140%',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'left'
+    padding: theme.spacing(2, 4),
   },
 
-  customModal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "80vh", // Ajuste a altura conforme necessário
+  modalHeader: {
+    position: "relative",
+    flexDirection: "row",
+    minHeight: theme.spacing(4),
   },
 
+  closeButton: {
+    left: 0,
+    top: 0,
+    position: "absolute !important",
+    fontSize: theme.spacing(3) + " !important",
+    color: theme.palette.stroke.main + " !important",
+    borderRadius: theme.shape.borderRadius * 2 + " !important",
+    padding: theme.spacing(0.5) + " !important",
+    border: "1.5px solid #000 !important",
+    maxWidth: "fit-content !important",
+    minWidth: "0 !important",
+    maxHeight: "fit-content !important",
+  },
 
   textContainer: {
-
-    width: '100%',
-    height: '100%',
-    alignItems: 'right',
-    fontSize: '14px'
-
+    width: "100%",
+    padding: theme.spacing(0.5, 0),
+    margin: theme.spacing(0, 5),
+    alignItems: "center",
+    justifyContent: "center",
   },
 
-  font: {
-    color: theme.palette.white.main,
-    fontWeight: 700,
-    // fontSize: '25px',
-
-  }
-
-
-
-}
-
-))
+  lineBelowTitle: {
+    borderBottom: "0.5px solid rgba(0,0,0,0.50)",
+    paddingBottom: theme.spacing(1),
+  },
+}))

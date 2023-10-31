@@ -4,7 +4,7 @@ import {
   ImageListItem,
   Stack,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material"
 import Container from "atoms/Container"
 import CustomButton from "atoms/CustomButton"
@@ -13,7 +13,7 @@ import PolaroidImage from "atoms/PolaroidImage"
 import useStyles from "./Home.styles"
 import { useTheme } from "@mui/styles"
 
-import aniversario from 'assets/img/aniversario.jpg'
+import aniversario from "assets/img/aniversario.jpg"
 import baloes from "assets/img/baloes.jpg"
 import bolo from "assets/img/bolo.jpg"
 import brinde from "assets/img/brinde.jpg"
@@ -26,10 +26,7 @@ import smartphone from "assets/img/usuario-smartphone.jpg"
 import sobrinho from "assets/img/sobrinho.jpg"
 import tacas from "assets/img/tacas.jpg"
 import Footer from "molecules/Footer"
-import CustomLogin from "molecules/CustomLogin/CustomLogin"
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import handleOpen from "molecules/CustomLogin/CustomLogin"
+import { Carousel } from "react-responsive-carousel"
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index"
 import { ROUTES } from "utils/constants"
 
@@ -72,53 +69,72 @@ const imageList = [
   },
 ]
 
-
-
-const Separator = ({ title }) => {
-  const classes = useStyles()
-
-  return (
-    <Box className={classes.separator} mb={3}>
-      <Container alignItems="center" flexDirection="column" py={2}>
-        <Typography id="galeria" variant="subtitle-small-bold" >
-          {title}
-        </Typography>
-      </Container>
-      <div className={classes.pointer} />
-    </Box>)
-}
-
 const Home = () => {
   const classes = useStyles()
   const theme = useTheme()
   const navigate = useNavigate()
 
-  const downSm = useMediaQuery(theme.breakpoints.down('sm'))
+  const downSm = useMediaQuery(theme.breakpoints.down("sm"))
+
+  const Separator = ({ title }) => (
+    <Box className={classes.separator} mb={3}>
+      <Container alignItems="center" flexDirection="column" py={2}>
+        <Typography id="galeria" variant="subtitle-small-bold">
+          {title}
+        </Typography>
+      </Container>
+      <div className={classes.pointer} />
+    </Box>
+  )
+
+  const Banner = ({ bannerImageClass, text }) => (
+    <Container
+      alignItems="center"
+      className={[classes.banner, bannerImageClass].join(" ")}
+    >
+      <Stack
+        spacing={2}
+        flexDirection="column"
+        alignItems="flex-start"
+        width="35%"
+      >
+        <Typography
+          fontWeight="bold"
+          color="white.main"
+          align="left"
+          fontSize={{ lg: "48px", md: "48px", sm: "32px", xs: "24px" }}
+        >
+          {text}
+        </Typography>
+        <CustomButton
+          variant="contained"
+          onClick={() => navigate(ROUTES.CHOOSE_PROFILE)}
+        >
+          Começar!
+        </CustomButton>
+      </Stack>
+    </Container>
+  )
 
   return (
-    <Stack sx={{ transition: '2s all ease' }}>
-
+    <Stack sx={{ transition: "2s all ease" }}>
       <Header type={1} />
-      <Container
-        alignItems="center"
-        className={classes.banner}
+      <Carousel
+        autoPlay
+        infiniteLoop
+        emulateTouch
+        width="98.5dvw"
+        interval={5000}
       >
-        <Stack
-          spacing={2}
-          flexDirection='column'
-          alignItems="left"
-          width="35%"
-        >
-          <Typography
-            fontWeight="bold"
-            color="white.main"
-            fontSize={{ lg: '48px', md: '48px', sm: '32px', xs: '24px' }}
-          >
-            Transforme sua paixão em sucesso
-          </Typography>
-          <CustomButton variant="contained">Começar!</CustomButton>
-        </Stack>
-      </Container>
+        <Banner
+          text="Transforme sua paixão em sucesso!"
+          bannerImageClass={classes.bannerPhotographer}
+        />
+        <Banner
+          text="Registre momentos marcantes da sua vida para sempre!"
+          bannerImageClass={classes.bannerCustomer}
+        />
+      </Carousel>
       <Separator title="Galeria" id="galeria" />
       <Container pb={2}>
         <ImageList variant="masonry" cols={downSm ? 1 : 3} gap={8}>
@@ -137,21 +153,27 @@ const Home = () => {
         className={classes.section}
       >
         <Stack width={{ lg: "50%", md: "50%", sm: "70%", xs: "90%" }}>
-          <Typography variant="title-small-bold" mb={4} fontSize={{ md: '32px', sm: '28px', xs: '24px' }}>
+          <Typography
+            variant="title-small-bold"
+            mb={4}
+            fontSize={{ md: "32px", sm: "28px", xs: "24px" }}
+          >
             Criamos conexões
           </Typography>
           <Typography>
-            Nossa empresa nasceu com a ideia de conectar as pessoas com aquilo que elas procuravam, e após
-            identificarmos uma necessidade de exisitir uma simplificação no processo de encontrar fotógrafos
-            nós decidimos criar a Picme, um produto que busca colocar o trabalho do fotógrafo em evidência
-            para o mundo, de forma que possíveis clientes possam encontrar seu trabalho em nossa plataforma
-            e entrar em contato de forma imediata em busca de seu trabalho.
+            Nossa empresa nasceu com a ideia de conectar as pessoas com aquilo
+            que elas procuravam, e após identificarmos uma necessidade de
+            exisitir uma simplificação no processo de encontrar fotógrafos nós
+            decidimos criar a Picme, um produto que busca colocar o trabalho do
+            fotógrafo em evidência para o mundo, de forma que possíveis clientes
+            possam encontrar seu trabalho em nossa plataforma e entrar em
+            contato de forma imediata em busca de seu trabalho.
           </Typography>
         </Stack>
         <Box className={classes.pastedPhoto}>
           <Box width="70%">
             <PolaroidImage tilt="right" hasTapes>
-              <img width={{ lg: '50%', md: '70%' }} src={smartphone} alt="" />
+              <img width={{ lg: "50%", md: "70%" }} src={smartphone} alt="" />
             </PolaroidImage>
           </Box>
         </Box>
@@ -167,10 +189,11 @@ const Home = () => {
             Apoiando os 2 lados
           </Typography>
           <Typography>
-            Nosso produto serve como a plataforma definitiva para um fotógrafo encontrar novos clientes e
-            publicar seu trabalho, e também para pessoas interessadas encontrem fotógrafos para suas
-            necessidades, com um sistema de busca por tags, o cliente consegue encontrar o fotógrafo ideal
-            para seu evento.
+            Nosso produto serve como a plataforma definitiva para um fotógrafo
+            encontrar novos clientes e publicar seu trabalho, e também para
+            pessoas interessadas encontrem fotógrafos para suas necessidades,
+            com um sistema de busca por tags, o cliente consegue encontrar o
+            fotógrafo ideal para seu evento.
           </Typography>
         </Stack>
         <Box className={classes.pastedPhoto}>
@@ -192,10 +215,16 @@ const Home = () => {
             Não Perca Tempo
           </Typography>
           <Typography mb={4}>
-            Venha conhecer nossa plataforma e conhecer o trabalho de profissionais incriveis que estão
-            totalmente ao seu alcance
+            Venha conhecer nossa plataforma e conhecer o trabalho de
+            profissionais incriveis que estão totalmente ao seu alcance
           </Typography>
-          <CustomButton color="primary" variant="contained" onClick={() => navigate(ROUTES.FEED)}>Explorar</CustomButton>
+          <CustomButton
+            color="primary"
+            variant="contained"
+            onClick={() => navigate(ROUTES.FEED)}
+          >
+            Explorar
+          </CustomButton>
         </Stack>
         <Box className={classes.pastedPhoto}>
           <Box width="70%">
@@ -210,4 +239,4 @@ const Home = () => {
   )
 }
 
-export default Home 
+export default Home

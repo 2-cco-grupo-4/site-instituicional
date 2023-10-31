@@ -5,6 +5,10 @@ export const ALBUM = {
     api.post("/albums", payload, {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  BUSCAR_ALBUM: (idAlbum, token) =>
+    api.get(`/albums/album?idAlbum=${idAlbum}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 
   LISTAR: (id, token) =>
     api.get(`/albums?idFotografo=${id}`, {

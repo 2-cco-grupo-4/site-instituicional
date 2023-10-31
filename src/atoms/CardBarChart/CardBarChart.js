@@ -18,7 +18,7 @@ const colors = ["#249ACF"];
 const CardBarChart = ({ tituloPieChart, data, width }) => {
   const classes = useStyles();
 
-  const jsonModelString = JSON.stringify(data[0]);
+  const jsonModelString = JSON.stringify(data[0] ? data[0] : [{}]);
   const jsonModel = JSON.parse(jsonModelString);
 
   const keyName = Object.keys(jsonModel)[0];

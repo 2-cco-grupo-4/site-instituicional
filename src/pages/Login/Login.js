@@ -146,7 +146,7 @@ const Login = () => {
               </Typography>
               <Typography
                 color="primary"
-                onClick={() => navigate(ROUTES.REGISTER("cliente"))}
+                onClick={() => navigate(ROUTES.CHOOSE_PROFILE)}
                 sx={{ fontWeight: "bold", cursor: "pointer" }}
               >
                 Cadastre-se

@@ -5,9 +5,12 @@ import { useState } from "react";
 import useStyles from "./CustomPopover.styles";
 
 import arrow from "assets/icons/popover-arrow.svg";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ChatIcon from "@mui/icons-material/Chat";
 import { ROUTES } from "utils/constants";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const CustomPopover = ({ ...props }) => {
   const classes = useStyles();
@@ -60,6 +63,59 @@ const CustomPopover = ({ ...props }) => {
       >
         <Stack
           onClick={() => {
+            handleNavigation(ROUTES.CHAT)
+          }
+          }
+          direction="row"
+          alignItems="center"
+          sx={{ cursor: "pointer" }}
+          p={2}
+        >
+          <ChatIcon />
+          <Typography paddingLeft={1}>Chat</Typography>
+        </Stack>
+        {tipoUsuario == 2 && (
+          <>
+            <Stack
+              onClick={() => {
+                navigate(ROUTES.NOVO_ALBUM);
+              }}
+              direction="row"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
+              p={2}
+            >
+              <AddAPhotoIcon></AddAPhotoIcon>
+              <Typography paddingLeft={1}>Novo Álbum</Typography>
+            </Stack>
+            <Stack
+              onClick={() => {
+                navigate(ROUTES.CALENDARIO);
+              }}
+              direction="row"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
+              p={2}
+            >
+              <CalendarMonthIcon></CalendarMonthIcon>
+              <Typography paddingLeft={1}>Calendário</Typography>
+            </Stack>
+            <Stack
+              onClick={() => {
+                navigate(ROUTES.DASH_FOTOGRAFO);
+              }}
+              direction="row"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
+              p={2}
+            >
+              <LeaderboardIcon></LeaderboardIcon>
+              <Typography paddingLeft={1}>Dashboard</Typography>
+            </Stack>
+          </>
+        )}
+        <Stack
+          onClick={() => {
             localStorage.removeItem("token");
             localStorage.removeItem("nome");
             handleNavigation("/");
@@ -73,21 +129,7 @@ const CustomPopover = ({ ...props }) => {
           <LogoutIcon></LogoutIcon>
           <Typography paddingLeft={1}>Logoff</Typography>
         </Stack>
-        {tipoUsuario == 2 && (
-          <Stack
-            onClick={() => {
-              navigate(ROUTES.NOVO_ALBUM);
-            }}
-            direction="row"
-            alignItems="center"
-            sx={{ cursor: "pointer" }}
-            p={2}
-          >
-            <AddAPhotoIcon></AddAPhotoIcon>
-            <Typography paddingLeft={1}>Novo Álbum</Typography>
-          </Stack>
-        )}
-      </Popover>
+      </Popover >
     </>
   );
 };
