@@ -167,7 +167,7 @@ function Album() {
   return (
     <>
       <Header type={2} />
-      <Stack direction="row" sx={{ width: "100%", alignItems: "center", justifyContent: "center"}}>
+      <Stack direction="row" sx={{ width: "100%", alignItems: "top", justifyContent: "center"}}>
         <ImageStack sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
           {imagens
             ? imagens.map((image) => (
@@ -248,13 +248,14 @@ function Album() {
             <Typography variant="paragraph-large-bold">Avaliação</Typography>
             {avaliacoes.length == 0 ? (
               <Typography
-                variant="paragraph-medium-bold"
-                sx={{ textAlign: "center" }}
+                variant="paragraph-small-regular"
+                color="secondary.main"
+                sx={{ textAlign: "left" }}
               >
                 Não há avaliações para este fotógrafo.
               </Typography>
-            ) : null}
-            {avaliacoes.map((avaliacao, indice) => (
+            ) : 
+            avaliacoes.map((avaliacao, indice) => (
               <AvaliacaoBox>
                 <div
                   style={{
