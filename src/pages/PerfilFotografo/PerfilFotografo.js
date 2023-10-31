@@ -124,39 +124,10 @@ const PerfilFotografo = () => {
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={2} />
-      <Container className={classes.banner}></Container>
-      <Breadcrumbs
-        separator=">"
-        sx={{
-          cursor: "pointer",
-          marginLeft: theme.spacing(8),
-          marginTop: theme.spacing(3),
-        }}
-      >
-        <Link
-          color={theme.palette.secondary.main}
-          underline="hover"
-          href={ROUTES.FEED}
-        >
-          Home
-        </Link>
-        <Link
-          color={theme.palette.secondary.main}
-          underline="hover"
-          href={ROUTES.PERFIL}
-        >
-          Renata Ferreira
-        </Link>
-        <Link
-          color={theme.palette.secondary.main}
-          underline="hover"
-          href={ROUTES.ALBUM}
-        >
-          Casamento Ana e Bruno
-        </Link>
-      </Breadcrumbs>
+      <Container className={classes.banner}>
+        <Stack className={classes.fotoPerfil}></Stack>
+      </Container>
       <Stack className={classes.textoCabecalho}>
-        <Stack className={classes.cabecalho}></Stack>
         <Typography fontWeight={"bold"} fontSize={"24px"}>
           Renata Fereira
         </Typography>
