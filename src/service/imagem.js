@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./api"
 
 export const IMAGEM = {
   SALVAR: (token, paylod) =>
@@ -9,4 +9,4 @@ export const IMAGEM = {
     api.get("/imagens/paths", {
       headers: { Authorization: `Bearer ${token}` },
     }),
-};
+}
