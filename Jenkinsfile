@@ -6,6 +6,7 @@ pipeline {
         EC2_INSTANCE_IP = '34.228.14.4'
         DOCKER_USERNAME = 'picmeproject'
         DOCKER_PASSWORD = 'Ventania12#'
+        DOCKER_RM_SCRIPT = 'sudo docker rm -f $(docker ps -aq)'
     }
 
     stages {
@@ -29,7 +30,7 @@ pipeline {
         stage('Remove Docker on EC2 FrontEnd') {
             steps {
                 script {
-                    sh "ssh -i /home/jenkins/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP 'sudo docker rm -f $(docker ps -a)'"
+                    sh "ssh -i /home/jenkins/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_SCRIPT'"
                 }
             }
         }
