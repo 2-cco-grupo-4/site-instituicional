@@ -1,5 +1,5 @@
 pipeline {
-    agent 3
+    agent any
 
     environment {
         DOCKER_IMAGE_NAME = 'picmeproject/picme_site'
