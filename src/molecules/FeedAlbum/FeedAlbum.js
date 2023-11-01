@@ -21,7 +21,7 @@ const FeedAlbum = ({ src, alt, autor, fotoPerfil, altPerfil, onClick }) => {
         {fotoPerfil ? (
           <Avatar src={fotoPerfil} alt={altPerfil} />
         ) : (
-          <Avatar {...stringAvatar("Rafaela")} />
+          <Avatar {...stringAvatar(autor)} />
         )}
         <Stack>
           <Typography variant="paragraph-medium-bold">{autor}</Typography>
