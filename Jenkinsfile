@@ -34,6 +34,7 @@ pipeline {
           sh "$DOCKER_RM_IMAGES"
         }
       }
+      
     }
 
     // stage('Remove Docker on EC2 FrontEnd') {
