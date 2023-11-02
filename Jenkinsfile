@@ -5,7 +5,7 @@ pipeline {
     REGISTRY = 'picmeproject/picme_site'
     EC2_INSTANCE_IP = '34.228.14.4'
     DOCKER_RM_IMAGES = 'docker rmi -f $(docker images -aq)'
-    DOCKER_RM_CONTAINERS = 'docker rm $(docker ps -aq) --force'
+    DOCKER_RM_CONTAINERS = 'docker rm $(docker ps -aq)'
     DOCKER_RUN = 'docker run -d -p 3000:3000 --name picme_site picmeproject/picme_site'
   }
 
@@ -29,7 +29,7 @@ pipeline {
       }
     }
 
-    stage('Remove images and containers') {
+    stage('Remove images and containers before push') {
       steps {
         script {
           sh "$DOCKER_RM_IMAGES"
