@@ -29,11 +29,10 @@ pipeline {
       }
     }
 
-    stage('Remove images and containers before push') {
+    stage('Remove images before push') {
       steps {
         script {
           sh "$DOCKER_RM_IMAGES"
-          sh "$DOCKER_RM_CONTAINERS"
         }
       }
     }
