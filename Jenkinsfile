@@ -24,9 +24,9 @@ pipeline {
       steps {
         script {
           // Instalação do Docker no ambiente do Jenkins
-          sh 'curl -fsSL https://get.docker.com -o get-docker.sh'
-          sh 'sh get-docker.sh'
-          sh 'docker --version'
+          sh 'sudo yum update -y'
+          sh 'sudo yum install -y docker'
+          sh 'sudo service docker start'
         }
       }
     }
