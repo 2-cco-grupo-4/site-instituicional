@@ -11,6 +11,16 @@ pipeline {
   }
 
   stages {
+    stage('Login Docker Hub') {
+      steps {
+        script {
+          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+          sh "docker build -t $REGISTRY ."
+          sh "docker push $REGISTRY"
+        }
+      }
+    }
+
     stage('Build and Push Docker Image') {
       steps {
         script {
