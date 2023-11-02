@@ -20,6 +20,18 @@ pipeline {
     //   }
     // }
 
+    stages {
+      stage('Install Docker') {
+        steps {
+          script {
+            // Instalação do Docker no ambiente do Jenkins
+            sh 'curl -fsSL https://get.docker.com -o get-docker.sh'
+            sh 'sh get-docker.sh'
+            sh 'docker --version'
+          }
+        }
+      }
+
     stage('Load Build Number') {
       steps {
         script {
@@ -60,5 +72,5 @@ pipeline {
       }
     }
   }
-  
+
 }
