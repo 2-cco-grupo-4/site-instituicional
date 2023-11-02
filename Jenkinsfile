@@ -14,8 +14,8 @@ pipeline {
     stage('Build and Push Docker Image') {
       steps {
         script {
-          sh "docker build -t $REGISTRY ."
-          sh "docker push $REGISTRY"
+          sh "sudo docker build -t $REGISTRY ."
+          sh "sudo docker push $REGISTRY"
         }
       }
     }
