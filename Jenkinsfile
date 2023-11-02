@@ -8,38 +8,23 @@ pipeline {
     DOCKER_PASSWORD = 'Ventania12#'
     DOCKER_RM_SCRIPT = 'sudo docker rm -f $(docker ps -aq)'
     BUILD_NUMBER_FILE = 'build_number.txt'
+    DOCKER_IMAGE = ''
   }
 
   stages {
-    stage('Docker install and login') {
-      steps {
-        script {
-          sh "apt-get install docker.io"
-          // sh "sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-        }
-      }
-    }
-
-    stage('Load Build Number') {
-      steps {
-        script {
-          if (fileExists(BUILD_NUMBER_FILE)) {
-            currentBuildNumber = readFile(BUILD_NUMBER_FILE).toInteger()
-            currentBuildNumber++
-            } else {
-              currentBuildNumber = 1
-            }
-              writeFile file: BUILD_NUMBER_FILE, text: currentBuildNumber.toString()
-        }
-      }
-    }
+    // stage('Docker install and login') {
+    //   steps {
+    //     script {
+    //       sh "apt-get install docker.io"
+    //       // sh "sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+    //     }
+    //   }
+    // }
 
     stage('Build and Push Docker Image') {
       steps {
         script {
-          def dockerImageTag = "${REGISTRY}:v${currentBuildNumber}"
-          sh "docker build -t $dockerImageTag ."
-          sh "docker push $dockerImageTag"
+          DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
         }
       }
     }
