@@ -40,12 +40,15 @@ pipeline {
     stage('Remove Docker on EC2 FrontEnd') {
       steps {
         script {
-          withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
-            sh "cp \$key-picme-project.pem ~/.ssh/key-picme-project.pem"
-            sh "chmod 600 ~/.ssh/key-picme-project.pem"
+
+          withCredentials([sshUserPrivateKey(credentialsId: '10.0.0.50', keyFileVariable: 'key-picme-project.pem')]) {
             sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_CONTAINERS'"
             sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_IMAGES'"
           }
+          // withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
+          //   sh "cp \$key-picme-project.pem ~/.ssh/key-picme-project.pem"
+          //   sh "chmod 600 ~/.ssh/key-picme-project.pem"
+          // }
         }
       }
     }
