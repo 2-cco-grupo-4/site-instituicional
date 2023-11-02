@@ -51,10 +51,11 @@ pipeline {
       }
     }
 
-  stage('deploy Docker Container on EC2 FrontEnd') {
-    steps {
-      script {
-        sh "sudo docker run -d -p 3000:3000 --name picme_site $REGISTRY"
+    stage('deploy Docker Container on EC2 FrontEnd') {
+      steps {
+        script {
+          sh "sudo docker run -d -p 3000:3000 --name picme_site $REGISTRY"
+        }
       }
     }
   }
