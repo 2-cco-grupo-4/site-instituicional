@@ -4,17 +4,18 @@ pipeline {
   environment {
     REGISTRY = 'picmeproject/picme_site'
     EC2_INSTANCE_IP = '34.228.14.4'
-    DOCKER_USERNAME = 'picmeproject'
-    DOCKER_PASSWORD = 'Ventania12#'
-    DOCKER_RM_IMAGES = 'docker rmi $(docker images -aq)'
-    BUILD_NUMBER_FILE = 'build_number.txt'
+    DOCKER_RM_IMAGES = 'docker rmi -f $(docker images -aq)'
+    DOCKER_RM_CONTAINERS = 'docker rm $(docker ps -aq) --force'
+    DOCKER_RUN = 'docker run -d -p 3000:3000 --name picme_site picmeproject/picme_site'
   }
 
   stages {
     stage('Login Docker Hub') {
       steps {
         script {
-          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+          withCredentials([string(credentialsId: 'dockerpwd', variable: 'dockerpwd')]) {
+            sh "docker login -u picmeproject -p ${dockerpwd}"
+          }
         }
       }
     }
@@ -28,29 +29,34 @@ pipeline {
       }
     }
 
-    stage('Remove image') {
+    stage('Remove images and containers') {
       steps {
         script {
           sh "$DOCKER_RM_IMAGES"
+          sh "$DOCKER_RM_CONTAINERS"
         }
       }
-      
     }
 
-    // stage('Remove Docker on EC2 FrontEnd') {
-    //   steps {
-    //     script {
-    //       sh "ssh -i /home/jenkins/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_SCRIPT'"
-    //     }
-    //   }
-    // }
+    stage('Remove Docker on EC2 FrontEnd') {
+      steps {
+        script {
+          withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
+            sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_CONTAINERS'"
+            sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_IMAGES'"
+          }
+        }
+      }
+    }
 
-    // stage('deploy Docker Container on EC2 FrontEnd') {
-    //   steps {
-    //     script {
-    //       sh "sudo docker run -d -p 3000:3000 --name picme_site $REGISTRY"
-    //     }
-    //   }
-    // }
+    stage('Run image on FrontEnd') {
+      steps {
+        script {
+          withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
+            sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
+          }
+        }
+      }
+    }
   }
 }
