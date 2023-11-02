@@ -6,7 +6,7 @@ pipeline {
     EC2_INSTANCE_IP = '34.228.14.4'
     DOCKER_USERNAME = 'picmeproject'
     DOCKER_PASSWORD = 'Ventania12#'
-    DOCKER_RM_SCRIPT = 'sudo docker rm -f $(docker ps -aq)'
+    DOCKER_RM_IMAGES = 'docker rmi $(docker images -aq)'
     BUILD_NUMBER_FILE = 'build_number.txt'
   }
 
@@ -24,6 +24,14 @@ pipeline {
         script {
           sh "docker build -t $REGISTRY ."
           sh "docker push $REGISTRY"
+        }
+      }
+    }
+
+    stage('Remove image') {
+      steps {
+        script {
+          sh "$DOCKER_RM_IMAGES"
         }
       }
     }
