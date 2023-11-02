@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     REGISTRY = 'picmeproject/picme_site'
-    EC2_INSTANCE_IP = '34.228.14.4'
+    EC2_INSTANCE_IP = '10.0.0.50'
     DOCKER_RM_IMAGES = 'docker rmi -f $(docker images -aq)'
     DOCKER_RM_CONTAINERS = 'docker rm $(docker ps -aq)'
     DOCKER_RUN = 'docker run -d -p 3000:3000 --name picme_site picmeproject/picme_site'
