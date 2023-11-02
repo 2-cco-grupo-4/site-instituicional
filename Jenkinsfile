@@ -37,8 +37,8 @@ pipeline {
       steps {
         script {
           def dockerImageTag = "${REGISTRY}:v${currentBuildNumber}"
-          sh "sudo docker build -t $dockerImageTag ."
-          sh "sudo docker push $dockerImageTag"
+          sh "docker build -t $dockerImageTag ."
+          sh "docker push $dockerImageTag"
         }
       }
     }
