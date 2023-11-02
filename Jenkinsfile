@@ -11,13 +11,14 @@ pipeline {
   }
 
   stages {
-    // stage('Docker Login') {
-    //  steps {
-    //      script {
-    //             sh "sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-    //      }
-    //    }
-    //}
+    stage('Docker install and login') {
+      steps {
+        script {
+          sh "apt-get install docker.io"
+          // sh "sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+        }
+      }
+    }
 
     stage('Load Build Number') {
       steps {
