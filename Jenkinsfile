@@ -20,29 +20,30 @@ pipeline {
       }
     }
 
-    stage('Build and Push Docker Image') {
-      steps {
-        script {
-          sh "docker build -t $REGISTRY ."
-          sh "docker push $REGISTRY"
-        }
-      }
-    }
+    // stage('Build and Push Docker Image') {
+    //   steps {
+    //     script {
+    //       sh "docker build -t $REGISTRY ."
+    //       sh "docker push $REGISTRY"
+    //     }
+    //   }
+    // }
 
-    stage('Remove images before push') {
-      steps {
-        script {
-          sh "$DOCKER_RM_IMAGES"
-        }
-      }
-    }
+    // stage('Remove images before push') {
+    //   steps {
+    //     script {
+    //       sh "$DOCKER_RM_IMAGES"
+    //     }
+    //   }
+    // }
 
     stage('Remove Docker on EC2 FrontEnd') {
       steps {
         script {
           withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
-            sh "ssh -i \$key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_CONTAINERS'"
-            sh "ssh -i \$key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_IMAGES'"
+            sh "cat ${key-picme-project.pem}"
+            // sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_CONTAINERS'"
+            // sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_IMAGES'"
           }
         }
       }
