@@ -45,6 +45,7 @@ pipeline {
           sh "ssh -i /home/ec2-user/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_IMAGES'"
         }
       }
+      
     }
 
     // stage('Run image on FrontEnd') {
