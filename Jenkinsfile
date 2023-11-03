@@ -7,7 +7,7 @@ pipeline {
     DOCKER_RM_IMAGES = 'docker rmi -f $(docker images -aq)'
     DOCKER_RM_CONTAINERS = 'docker rm $(docker ps -aq)'
     DOCKER_RUN = 'docker run -d -p 3000:3000 --name picme_site picmeproject/picme_site'
-    CHAVE_AWS = 'key-picme-project.pem'
+    CHAVE_AWS = '/home/ec2-user/key-picme-project.pem'
   }
 
   stages {
