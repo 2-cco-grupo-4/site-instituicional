@@ -40,22 +40,20 @@ pipeline {
     stage('Remove Docker on EC2 FrontEnd') {
       steps {
         script {
-          withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
-            sh "ssh -i chave-aws ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_CONTAINERS'"
-            sh "ssh -i chave-aws ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_IMAGES'"
-          }
+          sh "ssh -i /home/ec2-user/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_CONTAINERS'"
+          sh "ssh -i /home/ec2-user/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RM_IMAGES'"
         }
       }
     }
 
-    stage('Run image on FrontEnd') {
-      steps {
-        script {
-          withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
-            sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
-          }
-        }
-      }
-    }
+    // stage('Run image on FrontEnd') {
+    //   steps {
+    //     script {
+    //       withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
+    //         sh "ssh -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
