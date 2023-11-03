@@ -7,6 +7,7 @@ pipeline {
     DOCKER_RM_IMAGES = 'docker rmi -f $(docker images -aq)'
     DOCKER_RM_CONTAINERS = 'docker rm $(docker ps -aq)'
     DOCKER_RUN = 'docker run -d -p 3000:3000 --name picme_site picmeproject/picme_site'
+    CHAVE_AWS = 'key-picme-project.pem'
   }
 
   stages {
@@ -41,7 +42,7 @@ pipeline {
       steps {
         script {
           withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
-            sh "cp \$key-picme-project.pem /chave/key-picme-project.pem"
+            sh "cp $CHAVE_AWS /chave/key-picme-project.pem"
             sh "chmod 600 /chave/key-picme-project.pem"
             sh "ssh -i /chave/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
           }
