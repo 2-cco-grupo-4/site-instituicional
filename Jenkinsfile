@@ -46,6 +46,7 @@ pipeline {
           }
         }
       }
+      
     }
 
     // stage('Run image on FrontEnd') {
