@@ -42,9 +42,7 @@ pipeline {
       steps {
         script {
           withCredentials([file(credentialsId: 'chave-aws', variable: 'key-picme-project.pem')]) {
-            sh "cp $CHAVE_AWS /chave/key-picme-project.pem"
-            sh "chmod 600 /chave/key-picme-project.pem"
-            sh "ssh -i /chave/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
+            sh "ssh ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
           }
         }
       }
