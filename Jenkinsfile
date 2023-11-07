@@ -55,14 +55,14 @@ pipeline {
       }
     }
 
-    stage('Remove Docker on EC2 FrontEnd 02') {
-      steps {
-        script {
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_CONTAINERS'"
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_IMAGES'"   
-        }
-      }
-    }
+    // stage('Remove Docker on EC2 FrontEnd 02') {
+    //   steps {
+    //     script {
+    //       sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_CONTAINERS'"
+    //       sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_IMAGES'"   
+    //     }
+    //   }
+    // }
 
     stage('Run image on FrontEnd 02') {
       steps {
