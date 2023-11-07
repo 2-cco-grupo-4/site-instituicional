@@ -40,7 +40,7 @@ pipeline {
     stage('Remove Docker on EC2 FrontEnd') {
       steps {
         script {
-          sh "ssh -vvv -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
+          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP '$DOCKER_RUN'"
         }
       }
     }
