@@ -21,14 +21,14 @@ pipeline {
       }
     }
 
-    stage('Build and Push Docker Image') {
-      steps {
-        script {
-          sh "docker build -t $REGISTRY ."
-          sh "docker push $REGISTRY"
-        }
-      }
-    }
+    // stage('Build and Push Docker Image') {
+    //   steps {
+    //     script {
+    //       sh "docker build -t $REGISTRY ."
+    //       sh "docker push $REGISTRY"
+    //     }
+    //   }
+    // }
 
     stage('Remove images before push') {
       steps {
