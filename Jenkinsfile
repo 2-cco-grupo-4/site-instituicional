@@ -9,7 +9,7 @@ pipeline {
     DOCKER_RM_CONTAINERS = 'docker rm -f $(docker ps -aq)'
     DOCKER_RUN = 'docker run -d -p 3000:3000 --name picme_site picmeproject/picme_site'
   }
-
+y
   stages {
     stage('Login Docker Hub') {
       steps {
