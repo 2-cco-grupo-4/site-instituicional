@@ -21,22 +21,22 @@ pipeline {
       }
     }
 
-    // stage('Build and Push Docker Image') {
-    //   steps {
-    //     script {
-    //       sh "docker build -t $REGISTRY ."
-    //       sh "docker push $REGISTRY"
-    //     }
-    //   }
-    // }
+    stage('Build and Push Docker Image') {
+      steps {
+        script {
+          sh "docker build -t $REGISTRY ."
+          sh "docker push $REGISTRY"
+        }
+      }
+    }
 
-    // stage('Remove images before push') {
-    //   steps {
-    //     script {
-    //       sh "$DOCKER_RM_IMAGES"
-    //     }
-    //   }
-    // }
+    stage('Remove images before push') {
+      steps {
+        script {
+          sh "$DOCKER_RM_IMAGES"
+        }
+      }
+    }
 
     stage('Remove Docker on EC2 FrontEnd 01') {
       steps {
