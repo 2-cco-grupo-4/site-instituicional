@@ -30,13 +30,13 @@ pipeline {
     //   }
     // }
 
-    stage('Remove images before push') {
-      steps {
-        script {
-          sh "$DOCKER_RM_IMAGES"
-        }
-      }
-    }
+    // stage('Remove images before push') {
+    //   steps {
+    //     script {
+    //       sh "$DOCKER_RM_IMAGES"
+    //     }
+    //   }
+    // }
 
     stage('Remove Docker on EC2 FrontEnd 01') {
       steps {
