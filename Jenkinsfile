@@ -6,7 +6,7 @@ pipeline {
     EC2_INSTANCE_IP_FRONT1 = '10.0.0.50'
     EC2_INSTANCE_IP_FRONT2 = '10.0.1.135'
     DOCKER_RM_IMAGES = 'docker rmi -f $(docker images -aq)'
-    DOCKER_RM_CONTAINERS = 'docker rm $(docker ps -aq)'
+    DOCKER_RM_CONTAINERS = 'docker rm -f $(docker ps -aq)'
     DOCKER_RUN = 'docker run -d -p 3000:3000 --name picme_site picmeproject/picme_site'
   }
 
