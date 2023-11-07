@@ -9,4 +9,8 @@ export const IMAGEM = {
     api.get("/imagens/paths", {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  VISUALIZAR_FOTOGRAFO: (token, idFotografo) =>
+    api.get(`/imagens/albumFotografo?idFotografo=${idFotografo}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 };

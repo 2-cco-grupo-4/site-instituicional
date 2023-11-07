@@ -14,6 +14,7 @@ export default makeStyles(() => ({
     cursor: "pointer",
     paddingTop: 0,
     paddingBottom: 0,
+    textAlign: "center",
   },
   linha: {
     marginLeft: "12px",

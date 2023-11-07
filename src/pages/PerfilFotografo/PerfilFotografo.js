@@ -28,10 +28,11 @@ import { useState, useEffect } from "react";
 import CardAvaliacao from "molecules/CardAvaliacao/CardAvaliacao";
 import { ROUTES } from "utils/constants";
 import Footer from "molecules/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "contexts";
 import { ALBUM } from "service/album";
 import api from "service/api";
+import { IMAGEM } from "service/imagem";
 
 const imageList = [
   {
@@ -129,10 +130,12 @@ const PerfilFotografo = () => {
   const [avaliacoes, setAvaliacoes] = useState([]);
 
   const { token, id, nome, tokenSolicitacao } = useUserContext();
+  const { idFotografo } = useParams();
+
 
   useEffect(() => {
     const ChamadaApi = async () => {
-      ALBUM.LISTAR(id, token).then(
+      IMAGEM.VISUALIZAR_FOTOGRAFO(token, idFotografo).then(
         (response) => {
           console.log(`RESPOSTA LISTAR ALBUNS: ${JSON.stringify(response.data)}`);
           setAlbums(response.data);
@@ -140,11 +143,11 @@ const PerfilFotografo = () => {
       );
     };
     ChamadaApi();
-  }, [id]);
+  }, [idFotografo]);
 
   useEffect(() => {
     const ChamadaApi = async () => {
-      ALBUM.LISTAR_AVALIACOES(id, token).then(
+      ALBUM.LISTAR_AVALIACOES(idFotografo, token).then(
         (response) => {
           console.log(`RESPOSTA LISTAR AVALIACOES: ${JSON.stringify(response.data)}`);
           setAvaliacoes(response.data);
@@ -152,7 +155,7 @@ const PerfilFotografo = () => {
       );
     };
     ChamadaApi();
-  }, [id]);
+  }, [idFotografo]);
 
 
   return (

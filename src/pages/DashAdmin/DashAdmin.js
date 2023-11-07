@@ -340,7 +340,17 @@ const DashAdmin = () => {
             <CustomPopoverDash>
               <Stack
                 p={2}
-                paddingBottom={1}
+                pb={1}
+                paddingLeft={8}
+                paddingRight={8}
+                className={classes.popoupOption}
+                onClick={() => setMetrica("renda")}
+              >
+                Renda
+              </Stack>
+              <hr className={classes.linha}></hr>
+              <Stack
+                p={1}
                 paddingLeft={8}
                 paddingRight={8}
                 className={classes.popoupOption}
@@ -351,7 +361,7 @@ const DashAdmin = () => {
               <hr className={classes.linha}></hr>
               <Stack
                 p={2}
-                paddingTop={1}
+                pt={1}
                 paddingLeft={8}
                 paddingRight={8}
                 className={classes.popoupOption}
@@ -362,6 +372,145 @@ const DashAdmin = () => {
             </CustomPopoverDash>
           </Container>
         </Container>
+
+        {metrica === "renda" ? ( 
+          <>
+          <Box>
+            <Grid
+              container
+              columnSpacing={4}
+              rowSpacing={4}
+              sx={{
+                width: "100%",
+                margin: "0",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              <Grid
+                item
+                xl={3}
+                lg={3}
+                md={3}
+                sm={10}
+                xs={10}
+                sx={{
+                  paddingLeft: "0 !important",
+                  // paddingTop: "0 !important",
+                }}
+              >
+                <Grid
+                  container
+                  rowSpacing={4}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    height: "100%",
+                  }}
+                >
+                  <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                    <CaixaKpi
+                      valorKpi={valorKpi1}
+                      textoKpi="Usuários"
+                      porcentagem={porcentagemKpi1}
+                    ></CaixaKpi>
+                  </Grid>
+                  <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                    <CaixaKpi
+                      valorKpi={valorKpi2}
+                      textoKpi="Sessões Previstas"
+                      porcentagem={porcentagemKpi2}
+                    ></CaixaKpi>
+                  </Grid>
+                  <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                    <CaixaKpi
+                      valorKpi={valorKpi3}
+                      textoKpi="Acessos"
+                      porcentagem={porcentagemKpi3}
+                    ></CaixaKpi>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                xl={8}
+                lg={8}
+                md={8}
+                sm={10}
+                xs={10}
+                sx={{
+                  paddingLeft: "0 !important",
+                  // paddingTop: "0 !important",
+                }}
+              >
+                <CardStackedBarChart
+                  tituloPieChart="Variação de renda dos últimos meses"
+                  width="100%"
+                  data={dataClienteSemana}
+                ></CardStackedBarChart>
+                {/* <CardChartPie
+                  tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
+                  data={dataClienteSemana}
+                  width="100%"
+                ></CardChartPie> */}
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              columnSpacing={4}
+              rowSpacing={4}
+              sx={{
+                width: "100%",
+                margin: "0",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              <Grid
+                item
+                xl={5}
+                lg={5}
+                md={5}
+                sm={10}
+                xs={10}
+                sx={{
+                  paddingLeft: "0 !important",
+                  // paddingTop: "0 !important",
+                }}
+              >
+                <CardBarChart
+                  tituloPieChart="Formas de pagamento mais utilizadas"
+                  data={dataBarFaixaEtaria}
+                  width="100%"
+                />
+              </Grid>
+              <Grid
+                item
+                xl={6}
+                lg={6}
+                md={6}
+                sm={10}
+                xs={10}
+                sx={{
+                  paddingLeft: "0 !important",
+                  // paddingTop: "0 !important",
+                }}
+              >
+                <CardDoubleBarChart
+                  tituloPieChart="Valor médio gerado por tema"
+                  data={dataBar}
+                  width="100%"
+                ></CardDoubleBarChart>
+              </Grid>
+            </Grid>
+          </Box>
+        </>
+         ) : null }
 
         {metrica === "marketing" ? (
           <>
