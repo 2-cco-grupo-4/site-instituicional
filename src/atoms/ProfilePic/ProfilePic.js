@@ -1,14 +1,22 @@
 import { Avatar } from "@mui/material"
-import useStyles from "./ProfilePic.styles"
 import { stringAvatar } from "utils/helpers/string"
 
-const ProfilePic = ({ altPerfil, fotoPerfil, nome }) => {
-  const classes = useStyles()
-
-  return fotoPerfil ? (
-    <Avatar src={fotoPerfil} alt={altPerfil} />
-  ) : (
-    <Avatar {...stringAvatar(nome)} />
+const ProfilePic = ({ src, alt, autor, ...props }) => {
+  const noPicAvatar = {
+    ...stringAvatar(autor),
+    sx: {
+      ...stringAvatar(autor).sx,
+      ...props?.sx,
+    },
+  }
+  return (
+    <>
+      {src ? (
+        <Avatar src={src} alt={alt} {...props} />
+      ) : (
+        <Avatar {...noPicAvatar} />
+      )}
+    </>
   )
 }
 

@@ -4,7 +4,10 @@ import {
   Box,
   ImageListItem,
   ImageList,
+  useTheme,
   Grid,
+  OutlinedInput,
+  Button,
 } from "@mui/material"
 import Container from "atoms/Container"
 import React, { useState, useEffect, useRef } from "react"
@@ -15,6 +18,7 @@ import backgroundPerfil from "assets/img/foto-perfil-fotografo.png"
 import styles from "./Chat.module.css"
 import chatIcon from "assets/icons/chat_FILL0_wght400_GRAD0_opsz24.svg"
 import enviar from "assets/icons/enviar-mensagem.png"
+import IconSend from "@mui/icons-material/Send"
 
 import {
   collection,
@@ -26,8 +30,12 @@ import {
 } from "firebase/firestore"
 import db from "service/firebase"
 import { useUserContext } from "contexts"
+import useStyles from "./Chat.styles"
+import ProfilePic from "atoms/ProfilePic"
 
 const Chat = () => {
+  const classes = useStyles()
+  const theme = useTheme()
   const [userChats, setUserChats] = useState([])
   const [selectedChat, setSelectedChat] = useState(null)
   const [messages, setMessages] = useState([])
@@ -119,156 +127,148 @@ const Chat = () => {
 
   return (
     <Stack height="100dvh" sx={{ flexGrow: 1 }}>
-      <Grid container minHeight="100%">
-        <Grid item xs={3}>
-          <Stack
-            sx={{
-              minWidth: "100%",
-              height: "100%",
-              boxShadow: "0px 0px 6px 1px rgba(208, 208, 208, 2)",
-            }}
-          >
-            <div className={styles.conversation}>
-              <img src={iconSort} alt=""></img>
-              <h3>Conversas</h3>
-              <img src={search} alt=""></img>
-            </div>
-
-            <div className={styles.scroll}>
-              {userChats.map((chat) => (
-                <div
-                  key={chat.id}
-                  onClick={() =>
-                    handleChatClick(
-                      chat.id,
-                      tipoUsuario === "1"
-                        ? chat.nome_fotografo
-                        : chat.nome_cliente
-                    )
-                  }
-                  className={styles.chatContainer}
-                >
-                  <img src={backgroundPerfil} alt=""></img>
-                  <div>
-                    <span className={styles.name}>
-                      {tipoUsuario === "1"
-                        ? chat.nome_fotografo
-                        : chat.nome_cliente}
-                    </span>
-                    <span className={styles.message}>
-                      {chat.ultima_mensagem.length > 80
-                        ? chat.ultima_mensagem.substring?.(0, 50) + "..."
-                        : chat.ultima_mensagem}
-                    </span>
-                    <span className={styles.horario}>
-                      {new Date(
-                        chat.data_ultima_mensagem.seconds * 1000
-                      ).toLocaleDateString("pt-BR")}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <Grid container height="100%" position="relative">
+        <Grid item xs={4} className={classes.sidebar}>
+          <Stack direction="column">
+            <Stack columnGap={2} className={classes.chatItem}>
+              <ProfilePic
+                autor="Ryan Miyazato"
+                alt="Ryan Miyazato"
+                sx={{ width: theme.spacing(5), height: theme.spacing(5) }}
+              />
+              <Stack rowGap={1} className={classes.chatItemText}>
+                <Typography noWrap variant="paragraph-medium-bold">
+                  Ryan Miyazato
+                </Typography>
+                <Typography noWrap variant="paragraph-small-regular">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </Typography>
+              </Stack>
+            </Stack>
+            <Stack columnGap={2} className={classes.chatItem}>
+              <ProfilePic
+                autor="Danylo Dias"
+                alt="Danylo Dias"
+                sx={{ width: theme.spacing(6), height: theme.spacing(6) }}
+              />
+              <Stack rowGap={1} className={classes.chatItemText}>
+                <Typography noWrap variant="paragraph-medium-bold">
+                  Danylo Dias
+                </Typography>
+                <Typography noWrap variant="paragraph-small-regular">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </Typography>
+              </Stack>
+            </Stack>
           </Stack>
         </Grid>
-        <Grid item xs={9}>
-          <Stack
-            sx={{
-              width: "100%",
-            }}
+        <Grid item xs={8} className={classes.chatTextArea}>
+          <Container
+            pb={2}
+            minHeight="100%"
+            flexDirection="column"
+            justifyContent="flex-end"
           >
-            {selectedChat !== null ? (
-              <div className={styles.messageContainer}>
-                <div className={styles.messageHeader}>
-                  <div className={styles.perfil}>
-                    <img src={backgroundPerfil} alt=""></img>
-                    <span className={styles.nome}>{userOutName}</span>
-                  </div>
-                  <div className={styles.sessaoName}>
-                    <span>Aqui fica o nome do Evento</span>
-                  </div>
-                  <div className={styles.detalhes}>
-                    <span>Detalhes</span>
-                  </div>
-                </div>
-                <div className={styles.campoMensage}>
-                  {selectedChat && (
-                    <div>
-                      <div className={styles.chatMensagens}>
-                        {messages.map((message) => (
-                          <div
-                            className={
-                              message.id_usuario === userId
-                                ? styles.lineMe
-                                : styles.lineOut
-                            }
-                          >
-                            <div
-                              className={
-                                message.id_usuario === userId
-                                  ? styles.contentMe
-                                  : styles.contentOut
-                              }
-                            >
-                              <span
-                                key={message.id}
-                                className={
-                                  message.id_usuario === userId
-                                    ? styles.messageMe
-                                    : styles.contentOut
-                                }
-                              >
-                                {message.mensagem}
-                              </span>
-                              <span className={styles.messageData}>
-                                {message.horario_envio}
-                              </span>
-                            </div>
-                          </div>
-                          // <span key={message.id}>
-                          //   {message.mensagem} - {message.horario_envio}
-                          // </span>
-                        ))}
-                      </div>
-                      <div className={styles.containerFooter}>
-                        <form className={styles.form}>
-                          <input
-                            className={styles.inputFooter}
-                            type="text"
-                            placeholder="Digite sua mensagem"
-                            value={messageInput}
-                            onChange={(e) => setMessageInput(e.target.value)}
-                          />
-                          <img
-                            className={styles.imgFooter}
-                            src={enviar}
-                            alt=""
-                            onClick={handleMessageSubmit}
-                          ></img>
-                        </form>
-                      </div>
-
-                      {/* <input
-                      type="text"
-                      placeholder="Digite sua mensagem"
-                      value={messageInput}
-                      onChange={(e) => setMessageInput(e.target.value)}
-                    />
-                    <button onClick={handleMessageSubmit}>Enviar</button> */}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className={styles.messageDefault}>
-                <img src={chatIcon} alt=""></img>
-                <span className={styles.titleChat}>Picme - Chat</span>
-                <span className={styles.titleChat}>
-                  Selecione um chat para aparecer as mensagens
-                </span>
-              </div>
-            )}
-          </Stack>
+            <Stack
+              pb={4}
+              height="100%"
+              flexDirection="column"
+              justifyContent="flex-end"
+              rowGap={3}
+            >
+              <Stack
+                direction="row"
+                width="100%"
+                justifyContent="flex-end"
+                alignItems="flex-end"
+                columnGap={1}
+              >
+                <Typography
+                  sx={{
+                    width: "fit-content",
+                    maxWidth: "60%",
+                    color: theme.palette.white.main,
+                    bgcolor: theme.palette.primary.main,
+                    borderRadius: theme.shape.borderRadius,
+                    borderBottomRightRadius: 1,
+                    padding: theme.spacing(1, 2),
+                  }}
+                >
+                  Olá, podemos agendar uma reunião para as 14:00? Assim, podemos
+                  combinar melhor como faremos no dia do casamento.
+                </Typography>
+                <ProfilePic
+                  autor="Ryan Miyazato"
+                  sx={{
+                    width: theme.spacing(4),
+                    height: theme.spacing(4),
+                    fontSize: theme.spacing(2),
+                  }}
+                />
+              </Stack>
+              <Stack
+                direction="row-reverse"
+                width="100%"
+                justifyContent="flex-end"
+                alignItems="flex-end"
+                columnGap={1}
+              >
+                <Typography
+                  sx={{
+                    width: "fit-content",
+                    maxWidth: "60%",
+                    bgcolor: theme.palette.white.main,
+                    borderRadius: theme.shape.borderRadius,
+                    borderBottomLeftRadius: 1,
+                    padding: theme.spacing(1, 2),
+                  }}
+                >
+                  Claro! Te ligo pelo WhatsApp!
+                </Typography>
+                <ProfilePic
+                  autor="Ryan Miyazato"
+                  sx={{
+                    width: theme.spacing(4),
+                    height: theme.spacing(4),
+                    fontSize: theme.spacing(2),
+                  }}
+                />
+              </Stack>
+            </Stack>
+            <OutlinedInput
+              multiline
+              placeholder="Digite uma mensagem..."
+              fullWidth
+              sx={{ bgcolor: theme.palette.white.main }}
+              endAdornment={
+                <Button
+                  sx={{
+                    fontSize: theme.spacing(2),
+                    minWidth: 0,
+                    padding: theme.spacing(1),
+                    alignSelf: "flex-start",
+                  }}
+                  variant="contained"
+                >
+                  <IconSend />
+                </Button>
+              }
+            />
+          </Container>
         </Grid>
       </Grid>
     </Stack>

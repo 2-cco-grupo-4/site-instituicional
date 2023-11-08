@@ -19,11 +19,7 @@ const FeedAlbum = ({ src, alt, autor, fotoPerfil, altPerfil, onClick }) => {
         alignItems="center"
         columnGap={1}
       >
-        <ProfilePic
-          fotoPerfil={fotoPerfil}
-          altPerfil={altPerfil}
-          nome={autor}
-        />
+        <ProfilePic src={fotoPerfil} alt={altPerfil} autor={autor} />
         <Stack>
           <Typography variant="paragraph-medium-bold">{autor}</Typography>
           <Rating
