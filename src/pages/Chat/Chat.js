@@ -12,12 +12,6 @@ import {
 import Container from "atoms/Container"
 import React, { useState, useEffect, useRef } from "react"
 import Header from "molecules/Header"
-import iconSort from "assets/icons/🦆 icon _Alternate Sort Amount Down_.png"
-import search from "assets/icons/Vector (1).png"
-import backgroundPerfil from "assets/img/foto-perfil-fotografo.png"
-import styles from "./Chat.module.css"
-import chatIcon from "assets/icons/chat_FILL0_wght400_GRAD0_opsz24.svg"
-import enviar from "assets/icons/enviar-mensagem.png"
 import IconSend from "@mui/icons-material/Send"
 
 import {
@@ -130,38 +124,19 @@ const Chat = () => {
       <Grid container height="100%" position="relative">
         <Grid item xs={4} className={classes.sidebar}>
           <Stack direction="column">
-            <Stack columnGap={2} className={classes.chatItem}>
+            <Stack columnGap={2} flexDirection="row" alignItems="center" className={classes.chatItem}>
               <ProfilePic
                 autor="Ryan Miyazato"
                 alt="Ryan Miyazato"
                 sx={{ width: theme.spacing(5), height: theme.spacing(5) }}
               />
               <Stack rowGap={1} className={classes.chatItemText}>
-                <Typography noWrap variant="paragraph-medium-bold">
-                  Ryan Miyazato
-                </Typography>
-                <Typography noWrap variant="paragraph-small-regular">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack columnGap={2} className={classes.chatItem}>
-              <ProfilePic
-                autor="Danylo Dias"
-                alt="Danylo Dias"
-                sx={{ width: theme.spacing(6), height: theme.spacing(6) }}
-              />
-              <Stack rowGap={1} className={classes.chatItemText}>
-                <Typography noWrap variant="paragraph-medium-bold">
-                  Danylo Dias
-                </Typography>
+                <Stack columnGap={1} flexDirection="row" alignItems="center" justifyContent="space-between">
+                  <Typography noWrap variant="paragraph-medium-bold">
+                    Ryan Miyazato
+                  </Typography>
+                  <Typography variant="paragraph-xsmall-regular" align="right">19:00</Typography>
+                </Stack>
                 <Typography noWrap variant="paragraph-small-regular">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -231,7 +206,7 @@ const Chat = () => {
                   sx={{
                     width: "fit-content",
                     maxWidth: "60%",
-                    bgcolor: theme.palette.white.main,
+                    bgcolor: theme.palette.whiteSoft.main,
                     borderRadius: theme.shape.borderRadius,
                     borderBottomLeftRadius: 1,
                     padding: theme.spacing(1, 2),

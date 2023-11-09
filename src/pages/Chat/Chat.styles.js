@@ -14,7 +14,6 @@ export default makeStyles((theme) => ({
   },
 
   chatItem: {
-    flexDirection: "row",
     padding: theme.spacing(3),
     borderBottom: "0.5px solid rgba(0,0,0,0.1)",
     "&:hover": {
@@ -30,10 +29,11 @@ export default makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     maxWidth: "100%",
+    '&::-webkit-line-clamp': 2,
   },
 
   chatTextArea: {
-    backgroundColor: "rgba(0,0,0,0.05)",
+    // backgroundColor: "rgba(0,0,0,0.1)",
     position: "fixed",
     height: "100%",
     width: "100%",
