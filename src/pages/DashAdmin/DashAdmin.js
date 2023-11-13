@@ -14,6 +14,10 @@ import {
   Grid,
   useTheme,
   Avatar,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl,
 } from "@mui/material";
 import Container from "atoms/Container";
 import CaixaKpi from "atoms/CaixaKpi/CaixaKpi";
@@ -40,6 +44,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import CardStackedBarChart from "atoms/CardStackedBarChart";
 import { ROUTES } from "utils/constants";
 import { stringAvatar } from "utils/helpers/string";
+import CardSanekyChartStyles from "atoms/CardSankeyChart/CardSanekyChart.styles";
+import CardSankeyChart from "atoms/CardSankeyChart/CardSankeyChart";
+import CardTreeMapChart from "atoms/CardTreeMapChart/CardTreeMapChart";
 
 const DashAdmin = () => {
   const defaultValues = {
@@ -50,6 +57,10 @@ const DashAdmin = () => {
 
 
   const [metrica, setMetrica] = useState(defaultValues.metrica);
+
+  const [mesReferencia, setMesReferencia] = useState("novembro");
+
+  const [anoReferencia, setAnoReferencia] = useState(2023);
 
   const [dataBar, setDataBar] = useState([{}]);
 
@@ -66,6 +77,10 @@ const DashAdmin = () => {
   const [dataProgressaoUsuarios, setDataProgressaoUsuarios] = useState([{}]);
 
   const [dataProgressaoSessoes, setDataProgressaoSessoes] = useState([{}]);
+
+  const [dataFluxoConversaoSessoes, setDataFluxoConversaoSessoes] = useState([{}]);
+
+  const [dataFormasPagamentos, setDataFormasPagamentos] = useState([{}]);
 
   const [dataKpi1, setDataKpi1] = useState([{}]);
 
@@ -102,42 +117,132 @@ const DashAdmin = () => {
 
   const classes = useStyles();
 
+  const dataTreeMap = 
+  [
+    {
+      name: "Categoria 1",
+      value: 10
+    },
+    {
+      name: "Categoria 2",
+      value: 10
+    },
+    {
+      name: "Categoria 3",
+      value: 10
+    },
+    {
+      name: "Categoria 4",
+      value: 10
+    },
+    {
+      name: "Categoria 5",
+      value: 10
+    },
+    {
+      name: "Categoria 6",
+      value: 10
+    },
+    {
+      name: "Categoria 7",
+      value: 10
+    },
+    {
+      name: "Categoria 8",
+      value: 10
+    }
+  ]
+
+  const dataTeste = {
+    "nodes": [
+      {
+        "name": "Proposta"
+      },
+      {
+        "name": "Aceita"
+      },
+      {
+        "name": "Em Negociação"
+      },
+      {
+        "name": "Agendada"
+      },
+      {
+        "name": "Realizada"
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "value": 4210
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "value": 3210
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "value": 1310
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "value": 780
+      }
+    ]
+  };
+     
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        ADMIN.CONTAGEM_TEMA_CONTATO(token).then((response) => {
+        ADMIN.CONTAGEM_TEMA_CONTATO(token, mesReferencia, anoReferencia).then((response) => {
           console.log("Teste de Retorno: ", response.data);
           setDataBar(response.data);
         });
 
-        ADMIN.CONTAGEM_CLIENTES_SEMANA(token).then((response) => {
+        ADMIN.FLUXO_CONVERSAO_SESSOES(token, mesReferencia, anoReferencia).then((response) => {
           console.log("Teste de Retorno: ", response.data);
+          setDataFluxoConversaoSessoes(response.data);
+        });
+
+        ADMIN.PAGAMENTS_MAIS_UTILIZADOS(token, mesReferencia, anoReferencia).then((response) => {
+          console.log("Teste de Retorno: ", response.data);
+          console.log("Teste de Query: ", `MES: ${mesReferencia} | ANO: ${anoReferencia} | TIPO DE ANO: ${typeof anoReferencia}`);
+          setDataFormasPagamentos(response.data);
+        });
+
+        ADMIN.CONTAGEM_CLIENTES_SEMANA(token).then((response) => {
+          // console.log("Teste de Retorno: ", response.data);
           setDataClienteSemana(response.data);
         });
 
         ADMIN.FAIXA_ETARIA_CLIENTES(token).then((response) => {
-          console.log("Teste de Retorno: ", response.data);
+          // console.log("Teste de Retorno: ", response.data);
           setDataBarFaixaEtaria(response.data);
         });
         ADMIN.BASE_USUARIOS_CADASTRADOS(token).then((response) => {
-          console.log("Teste de Retorno: ", response.data);
+          // console.log("Teste de Retorno: ", response.data);
           setDataClientesFotografos(response.data);
         });
         ADMIN.CONTATOS_CONVERTIDOS_SESSOES(token).then((response) => {
-          console.log("Teste de Retorno: ", response.data);
+          // console.log("Teste de Retorno: ", response.data);
           setDataContatosConvertidos(response.data);
         });
         ADMIN.PROGRESSAO_NOVOS_USUARIOS(token).then((response) => {
-          console.log("Teste de Retorno: ", response.data);
+          // console.log("Teste de Retorno: ", response.data);
           setDataProgressaoUsuarios(response.data);
         });
         ADMIN.PROGRESSAO_SESSOES_MES(token).then((response) => {
-          console.log("Teste de Retorno: ", response.data);
+          // console.log("Teste de Retorno: ", response.data);
           setDataProgressaoSessoes(response.data);
         });
 
         ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
-          console.log("Teste de Retorno KPI 2: ", response.data);
+          // console.log("Teste de Retorno KPI 2: ", response.data);
           setDataKpi2(response.data);
           var lista = response.data;
           if (lista[1].quantidade == 0) {
@@ -153,7 +258,7 @@ const DashAdmin = () => {
         });
 
         ADMIN.KPI_TOTAL_ACESSOS(token).then((response) => {
-          console.log("Teste de Retorno KPI 3: ", response.data);
+          // console.log("Teste de Retorno KPI 3: ", response.data);
           setDataKpi3(response.data);
           var lista = response.data;
           if (lista[1].quantidade == 0) {
@@ -171,7 +276,7 @@ const DashAdmin = () => {
         });
 
         ADMIN.KPI_TOTAL_USUARIOS(token).then((response) => {
-          console.log("Teste de Retorno KPI 1: ", response.data);
+          // console.log("Teste de Retorno KPI 1: ", response.data);
           setDataKpi1(response.data);
 
           var lista = response.data;
@@ -195,7 +300,7 @@ const DashAdmin = () => {
     if (token) {
       fetchData();
     }
-  }, [token]);
+  }, [token, mesReferencia, anoReferencia]);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -328,19 +433,70 @@ const DashAdmin = () => {
             <Typography
               fontSize="16px"
               color="black"
-              textAlign="center"
+              // textAlign="center"
               flex={1}
             >
               Você está acessando as métricas de{" "}
               <Box display="inline" fontWeight="bold">
                 {metrica}
               </Box>
+              <Box display="flex" fontWeight="bold" width="30%" mt={3}>
+                <FormControl fullWidth>
+                  <InputLabel id="mes-referencia">Mês</InputLabel>
+                  <Select
+                    labelId="mes-referencia"
+                    id="mes-referencia"
+                    label="Mês"
+                    value={mesReferencia}
+                    onChange={(e) => setMesReferencia(e.target.value)}
+                  >
+                    <MenuItem value={"january"}>Janeiro</MenuItem>
+                    <MenuItem value={"february"}>Fevereiro</MenuItem>
+                    <MenuItem value={"march"}>Março</MenuItem>
+                    <MenuItem value={"april"}>Abril</MenuItem>
+                    <MenuItem value={"may"}>Maio</MenuItem>
+                    <MenuItem value={"june"}>Junho</MenuItem>
+                    <MenuItem value={"july"}>Julho</MenuItem>
+                    <MenuItem value={"august"}>Agosto</MenuItem>
+                    <MenuItem value={"september"}>Setembro</MenuItem>
+                    <MenuItem value={"october"}>Outubro</MenuItem>
+                    <MenuItem value={"november"}>Novembro</MenuItem>
+                    <MenuItem value={"december"}>Dezembro</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="ano-referencia">Ano</InputLabel>
+                  <Select
+                    labelId="ano-referencia"
+                    id="ano-referencia"
+                    label="Ano"
+                    value={anoReferencia}
+                    onChange={(e) => setAnoReferencia(e.target.value)}
+                  >
+                    <MenuItem value={2023}>2023</MenuItem>
+                    <MenuItem value={2022}>2022</MenuItem>
+                    <MenuItem value={2021}>2021</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+              
             </Typography>
 
             <CustomPopoverDash>
+            <Stack
+                p={2}
+                paddingLeft={8}
+                paddingRight={8}
+                className={classes.popoupOption}
+                onClick={() => setMetrica("renda")}
+                textAlign="center"
+              >
+                Renda
+              </Stack>
+              <hr className={classes.linha}></hr>
               <Stack
                 p={2}
-                paddingBottom={1}
+                paddingTop={1}
                 paddingLeft={8}
                 paddingRight={8}
                 className={classes.popoupOption}
@@ -351,17 +507,148 @@ const DashAdmin = () => {
               <hr className={classes.linha}></hr>
               <Stack
                 p={2}
-                paddingTop={1}
                 paddingLeft={8}
                 paddingRight={8}
                 className={classes.popoupOption}
-                onClick={() => setMetrica("usuários")}
+                onClick={() => setMetrica("histórico")}
               >
-                Usuários
+                Histórico
               </Stack>
             </CustomPopoverDash>
           </Container>
         </Container>
+
+        {metrica === "renda" ? (
+          <>
+            <Box>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={3}
+                  lg={3}
+                  md={3}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <Grid
+                    container
+                    rowSpacing={4}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
+                      height: "100%",
+                    }}
+                  >
+                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                      <CaixaKpi
+                        valorKpi={valorKpi1}
+                        textoKpi="Usuários"
+                        porcentagem={porcentagemKpi1}
+                      ></CaixaKpi>
+                    </Grid>
+                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                      <CaixaKpi
+                        valorKpi={valorKpi2}
+                        textoKpi="Sessões Previstas"
+                        porcentagem={porcentagemKpi2}
+                      ></CaixaKpi>
+                    </Grid>
+                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                      <CaixaKpi
+                        valorKpi={valorKpi3}
+                        textoKpi="Acessos"
+                        porcentagem={porcentagemKpi3}
+                      ></CaixaKpi>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  xl={8}
+                  lg={8}
+                  md={8}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardBarChart
+                    tituloPieChart={"Formas de pagamento mais utilizadas"}
+                    width="100%"
+                    data={dataFormasPagamentos}>
+                  </CardBarChart>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                columnSpacing={4}
+                rowSpacing={4}
+                sx={{
+                  width: "100%",
+                  margin: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Grid
+                  item
+                  xl={5}
+                  lg={5}
+                  md={5}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardSankeyChart tituloPieChart="Conversão de sessões" data={dataFluxoConversaoSessoes} width={"100%"}>
+
+                  </CardSankeyChart>
+                </Grid>
+                <Grid
+                  item
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={10}
+                  xs={10}
+                  sx={{
+                    paddingLeft: "0 !important",
+                    // paddingTop: "0 !important",
+                  }}
+                >
+                  <CardDoubleBarChart
+                    tituloPieChart="Valor médio gerado por tema"
+                    data={dataBar}
+                    width="100%"
+                  ></CardDoubleBarChart>
+                </Grid>
+              </Grid>
+            </Box>
+          </>
+        ) : null}
 
         {metrica === "marketing" ? (
           <>
@@ -473,11 +760,8 @@ const DashAdmin = () => {
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <CardBarChart
-                    tituloPieChart="Faixa etária dos clientes"
-                    data={dataBarFaixaEtaria}
-                    width="100%"
-                  />
+                  <CardTreeMapChart tituloPieChart={"Temas em destaque"} data={dataTreeMap} width={"100%"}>
+                  </CardTreeMapChart>
                 </Grid>
                 <Grid
                   item
@@ -492,7 +776,7 @@ const DashAdmin = () => {
                   }}
                 >
                   <CardDoubleBarChart
-                    tituloPieChart="Valor médio gerado por tema"
+                    tituloPieChart="Estados com mais sessões"
                     data={dataBar}
                     width="100%"
                   ></CardDoubleBarChart>
@@ -502,6 +786,7 @@ const DashAdmin = () => {
           </>
         ) : (
           <>
+          {metrica === "histórico" ? (
             <Box>
               <Grid
                 container
@@ -604,6 +889,7 @@ const DashAdmin = () => {
                 </Grid>
               </Grid>
             </Box>
+            ) : null}
           </>
         )}
       </Box>
