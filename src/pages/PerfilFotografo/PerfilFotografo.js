@@ -239,30 +239,26 @@ const PerfilFotografo = () => {
         </Container>
       </Container>
 
-      {/* Parte album */}
-
       <Container sx={{ display: displayAlbum }} pb={2}>
         <ImageList variant="masonry" cols={4} gap={8}>
-          {imageList.map(({ index, alt, src }) => (
+          {albums.map((album, index) => (
             <ImageListItem
               key={index}
               sx={{ cursor: "pointer" }}
               onClick={() => navigate(ROUTES.ALBUM)}
             >
-              <img src={src} alt={alt} />
+              <img src={album.coverImage} alt={album.name} />
             </ImageListItem>
           ))}
         </ImageList>
       </Container>
 
+
       {/* Parte Avaliação */}
 
-      <Container
-        sx={{ display: displayAvaliacao }}
-        className={classes.avaliacoes}
-      >
-        {avaliacaoList.map(({ name, text }) => (
-          <CardAvaliacao name={name} text={text} />
+      <Container sx={{ display: displayAvaliacao }} className={classes.avaliacoes}>
+        {avaliacoes.map((avaliacao, index) => (
+          <CardAvaliacao key={index} name={avaliacao.name} text={avaliacao.text} />
         ))}
       </Container>
       <Footer />
