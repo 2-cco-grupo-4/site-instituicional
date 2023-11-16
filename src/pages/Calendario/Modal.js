@@ -218,6 +218,9 @@ export default function ResponsiveDialog({ open, handleClose }) {
               <strong>Complemento:</strong> {formData.comp}
             </p>
 
+                <p>
+                {formData}
+                  </p>
           </div>
         </DialogContent>
 

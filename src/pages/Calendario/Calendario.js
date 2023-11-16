@@ -25,60 +25,11 @@ import { FOTOGRAFO } from "service/calendario";
 import { useUserContext } from "contexts";
 
 function Calendario(props) {
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      tema: "Casamento",
-      cliente: "João",
-      telefone: "123456789",
-      start: "2023-10-10",
-      endereco: "Rua 1",
-      cidade: "São Paulo",
-      bairro: "Centro",
-      estado: "SP",
-      complemento: "Casa",
-      statusSessao: "Realizada",
-      cep: "12345678",
-      idFotografo: 1,
-    },
-    {
-      id: 2,
-      tema: "Casamento",
-      cliente: "Lilian",
-      telefone: "123456789",
-      start: "2023-10-23",
-      endereco: "Rua 2",
-      cidade: "São Paulo",
-      bairro: "Centro",
-      estado: "SP",
-      complemento: "Casa",
-      statusSessao: "Realizada",
-      cep: "12345678",
-      idFotografo: 1,
-    },
-    {
-      id: 2,
-      tema: "Festa",
-      cliente: "Maria",
-      telefone: "123456789",
-      start: "2023-10-03",
-      endereco: "Rua 23",
-      cidade: "São Paulo",
-      bairro: "Centro",
-      estado: "SP",
-      complemento: "Casa",
-      statusSessao: "Realizada",
-      cep: "12345678",
-      idFotografo: 1,
-    },
-  ]);
+  const [events, setEvents] = useState([]);
 
   const { id, nome, token } = useUserContext();
   const [open, setOpen] = useState(false);
 
-  events.forEach((event) => {
-    event.title = event.tema + " " + event.cliente;
-  });
 
   const handleOpen = () => {
     console.log("Add evento");
@@ -91,11 +42,34 @@ function Calendario(props) {
 
   const listarFotografo = async () => {
     FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
-      console.log(response.data);
-      setEvents(response.data);
+  
+      const updatedEvents = response.data.map((event) => {
+   
+
+        return {
+          id: event.id,
+          idCliente:event.cliente.id, 
+          idFotografo: event.fotografo.id,
+          title: event.cliente.nome + " Evento",
+          cliente: event.cliente.nome,
+          start: event.dataRealizacao,
+          endereco:`${event.endereco.estado}, ${event.endereco.cidade}, ${event.endereco.bairro}, ${event.endereco.rua}, ${event.endereco.numero} ${event.endereco.complemento == null ? "" : ","+event.endereco.complemento}`,
+          cidade: event.endereco.cidade,
+          bairro: event.endereco.bairro,
+          estado: event.endereco.estado,
+          complemento: event.endereco.complemento,
+          numero: event.endereco.numero,
+          statusSessao: event.statusSessao,
+          cep: event.cep,
+
+        };
+      });
+  
+      setEvents(updatedEvents);
+      console.log(updatedEvents);
     });
   };
-
+  
   useEffect(() => {
     listarFotografo();
   }, [token]);
@@ -115,13 +89,14 @@ function Calendario(props) {
         info.event.extendedProps = {};
         info.event.start = info.date;
         info.event.extendedProps.title = info.title;
-        info.event.extendedProps.endereco = info.endereco;
+        info.event.extendedProps.endereco = `${info.estado}, ${info.cidade}, ${info.bairro}, ${info.rua}, ${info.numero}, ${info.complemento}` ;
         info.event.extendedProps.cliente = info.cliente;
         info.event.extendedProps.status = info.status;
       }
     }
     boxModal.innerHTMl = "";
     boxModal.classList.add("box-modal");
+    console.log(info.event.extendedProps)
     boxModal.innerHTML = `
        
   
@@ -168,7 +143,7 @@ function Calendario(props) {
     <>
       <Header type={3} />
       <Content>
-        <div>{id}</div>
+     
         <Card>
           <CardTitle>
             <Typography variant="h2">Agendamentos</Typography>
@@ -183,7 +158,7 @@ function Calendario(props) {
                 >
                   <Icon></Icon>
                   <Dados>
-                    <Typography variant="h4">{event.title}</Typography>
+                    <Typography variant="h4">Evento de {event.cliente}</Typography>
                     <Typography variant="subtitle1">{event.date}</Typography>
                   </Dados>
                 </Agendamento>
