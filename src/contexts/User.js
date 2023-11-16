@@ -44,7 +44,7 @@ export const UserProvider = ({ children }) => {
         setNome(nomeStorage);
       }
     }
-  });
+  }, [nome]);
 
   useEffect(() => {
     if (!!id) {
@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
         setId(idStorage);
       }
     }
-  });
+  }, [id]);
 
   useEffect(() => {
     if (!!tipoUsuario) {
@@ -68,7 +68,7 @@ export const UserProvider = ({ children }) => {
         setTipoUsuario(tipoUsuarioStorage);
       }
     }
-  });
+  }, [tipoUsuario]);
 
   useEffect(() => {
     if (!!temas) {
@@ -80,7 +80,7 @@ export const UserProvider = ({ children }) => {
         setTemas(temasStorage);
       }
     }
-  });
+  }, [temas]);
 
   useEffect(() => {
     if (!!tokenSolicitacao) {
@@ -92,7 +92,7 @@ export const UserProvider = ({ children }) => {
         setTokenSolicitacao(tokenSolicitacaoStorage);
       }
     }
-  });
+  }, [tokenSolicitacao]);
 
   return (
     <UserContext.Provider

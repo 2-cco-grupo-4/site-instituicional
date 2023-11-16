@@ -35,13 +35,40 @@ const Chat = () => {
   const [selectedChat, setSelectedChat] = useState(null)
   const [messages, setMessages] = useState([])
   const [messageInput, setMessageInput] = useState("")
-  const [userOutName, setUserOutName] = useState("")
+  const [userChatName, setUserChatName] = useState("")
 
   const { id, nome, tipoUsuario, token } = useUserContext()
   const [userId] = useState(Number(id))
   const [campoUser] = useState(
-    tipoUsuario === "1" ? "id_cliente" : "id_fotografo"
+    tipoUsuario == 1 ? "id_cliente" : "id_fotografo"
   )
+
+  const formatDatesChat = (data) => {
+    const newChats = data
+    newChats.forEach((chat) => {
+      const dataMensagem = new Date(chat.data_ultima_mensagem.seconds * 1000)
+      const dataAtual = new Date()
+      const dataOntem = new Date(dataAtual)
+      dataOntem.setDate(dataOntem.getDate() - 1)
+
+      const dataSemanaPassada = new Date(dataAtual)
+      dataSemanaPassada.setDate(dataSemanaPassada.getDate() - 7)
+
+
+      if (dataMensagem.getDate() === dataAtual.getDate()) {
+        chat.data_ultima_mensagem = dataMensagem.toLocaleTimeString().slice(0, 5)
+      } else if (dataMensagem.getDate() === dataOntem.getDate()){
+        chat.data_ultima_mensagem = "ontem"
+      } else if (dataMensagem.getDate() < dataOntem.getDate() && dataMensagem.getDate() > dataSemanaPassada.getDate()) {
+        const daysOfWeek = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
+        chat.data_ultima_mensagem = daysOfWeek[dataMensagem.getDay()]
+      }else{
+        chat.data_ultima_mensagem = dataMensagem.toLocaleDateString()
+      }
+    })
+
+    return newChats
+  }
 
   const loadChats = async () => {
     try {
@@ -58,37 +85,39 @@ const Chat = () => {
         data.push({ id: doc.id, ...doc.data() })
       })
 
-      setUserChats(data)
+      setUserChats(formatDatesChat(data))
     } catch (error) {
       console.error("Erro ao recuperar dados:", error)
     }
   }
 
-  // const loadMessages = async (chatId) => {
-  //   try {
-  //     const messagesQuery = query(
-  //       collection(db, "chats", chatId, "mensagens"),
-  //       orderBy("horario_envio")
-  //     )
-  //     const messagesSnapshot = await getDocs(messagesQuery)
-  //     const messagesData = []
-  //     messagesSnapshot.forEach((doc) => {
-  //       const messageData = { id: doc.id, ...doc.data() }
-  //       messageData.horario_envio = new Date(
-  //         messageData.horario_envio.seconds * 1000
-  //       ).toLocaleString()
-  //       messagesData.push(messageData)
-  //     })
-  //     setMessages(messagesData)
-  //   } catch (error) {
-  //     console.error("Erro ao carregar mensagens:", error)
-  //   }
-  // }
+  const loadMessages = async (chatId) => {
+    try {
+      const messagesQuery = query(
+        collection(db, "chats", chatId, "mensagens"),
+        orderBy("horario_envio")
+      )
+      const messagesSnapshot = await getDocs(messagesQuery)
+      const messagesData = []
+      messagesSnapshot.forEach((doc) => {
+        const messageData = { id: doc.id, ...doc.data() }
+        messageData.horario_envio = new Date(
+          messageData.horario_envio.seconds * 1000
+        ).toLocaleString()
+        messagesData.push(messageData)
+      })
 
-  const handleChatClick = (chatId, userOutName) => {
+      console.log(messagesData)
+      setMessages(messagesData)
+    } catch (error) {
+      console.error("Erro ao carregar mensagens:", error)
+    }
+  }
+
+  const handleChatClick = (chatId, userName) => {
     setSelectedChat(chatId)
-    setUserOutName(userOutName)
-    // loadMessages(chatId)
+    setUserChatName(userName)
+    loadMessages(chatId)
   }
 
   // const handleMessageSubmit = async () => {
@@ -121,29 +150,17 @@ const Chat = () => {
   // }, [messages])
 
   useEffect(() => {
-    loadChats()
+    setTimeout(() => {
+      loadChats()
+    }, 100)
   }, [id])
 
-  useEffect(() => {
-    console.log(userChats)
-
-    userChats.forEach((chat) => {
-      const dataMensagem = new Date(chat.data_ultima_mensagem.seconds * 1000)
-      const dataAtual = new Date()
-
-      if (dataMensagem.getDate() == dataAtual.getDate()) {
-        console.log(dataMensagem.toLocaleTimeString())
-      } else {
-        console.log(dataMensagem.toLocaleDateString())
-      }
-    })
-  }, [userChats])
 
   return (
     <Stack height="100dvh" sx={{ flexGrow: 1 }}>
       <Grid container height="100%" position="relative">
         <Grid item xs={4} className={classes.sidebar}>
-          <Stack direction="column">
+          <Stack direction="column-reverse">
             {userChats.map((chat) => (
               <Stack
                 key={chat.id}
@@ -173,7 +190,7 @@ const Chat = () => {
                       variant="paragraph-xsmall-regular"
                       align="right"
                     >
-                      19:00
+                      {chat.data_ultima_mensagem}
                     </Typography>
                   </Stack>
                   <Typography noWrap variant="paragraph-small-regular">
@@ -199,37 +216,39 @@ const Chat = () => {
                 justifyContent="flex-end"
                 rowGap={3}
               >
-                <Stack
-                  direction="row"
-                  width="100%"
-                  justifyContent="flex-end"
-                  alignItems="flex-end"
-                  columnGap={1}
-                >
-                  <Typography
-                    sx={{
-                      width: "fit-content",
-                      maxWidth: "60%",
-                      color: theme.palette.white.main,
-                      bgcolor: theme.palette.primary.main,
-                      borderRadius: theme.shape.borderRadius,
-                      borderBottomRightRadius: 1,
-                      padding: theme.spacing(1, 2),
-                    }}
+                {messages.map((content, index) => (
+                  <Stack
+                    key={index}
+                    direction="row"
+                    width="100%"
+                    justifyContent="flex-end"
+                    alignItems="flex-end"
+                    columnGap={1}
                   >
-                    Olá, podemos agendar uma reunião para as 14:00? Assim,
-                    podemos combinar melhor como faremos no dia do casamento.
-                  </Typography>
-                  <ProfilePic
-                    autor="Ryan Miyazato"
-                    sx={{
-                      width: theme.spacing(4),
-                      height: theme.spacing(4),
-                      fontSize: theme.spacing(2),
-                    }}
-                  />
-                </Stack>
-                <Stack
+                    <Typography
+                      sx={{
+                        width: "fit-content",
+                        maxWidth: "60%",
+                        color: theme.palette.white.main,
+                        bgcolor: theme.palette.primary.main,
+                        borderRadius: theme.shape.borderRadius,
+                        borderBottomRightRadius: 1,
+                        padding: theme.spacing(1, 2),
+                      }}
+                    >
+                      {content.mensagem}
+                    </Typography>
+                    <ProfilePic
+                      autor={id == content.id_usuario ? nome : userChatName }
+                      sx={{
+                        width: theme.spacing(4),
+                        height: theme.spacing(4),
+                        fontSize: theme.spacing(2),
+                      }}
+                    />
+                  </Stack>
+                ))}
+                {/* <Stack
                   direction="row-reverse"
                   width="100%"
                   justifyContent="flex-end"
@@ -256,10 +275,11 @@ const Chat = () => {
                       fontSize: theme.spacing(2),
                     }}
                   />
-                </Stack>
+                </Stack> */}
               </Stack>
               <OutlinedInput
                 multiline
+                maxRows={5}
                 placeholder="Digite uma mensagem..."
                 fullWidth
                 sx={{ bgcolor: theme.palette.white.main }}
