@@ -38,6 +38,10 @@ export const ADMIN = {
     api.get(`/dashboard/admin/fluxo-conversao-contatos?mes=${mes}&ano=${ano}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  ESTADOS_MAIS_SESSOES: (token, mes, ano) =>
+    api.get(`/dashboard/admin/estados-mais-sessoes-agendadas?mes=${mes}&ano=${ano}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
   KPI_TOTAL_USUARIOS: (token) =>
     api.get("/dashboard/admin/kpi-total-usuarios", {
       headers: { Authorization: `Bearer ${token}` },

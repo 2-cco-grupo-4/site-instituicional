@@ -50,11 +50,10 @@ import CardTreeMapChart from "atoms/CardTreeMapChart/CardTreeMapChart";
 
 const DashAdmin = () => {
   const defaultValues = {
-    metrica: "marketing",
+    metrica: "renda",
   };
 
-  const theme = useTheme()
-
+  const theme = useTheme();
 
   const [metrica, setMetrica] = useState(defaultValues.metrica);
 
@@ -78,9 +77,13 @@ const DashAdmin = () => {
 
   const [dataProgressaoSessoes, setDataProgressaoSessoes] = useState([{}]);
 
-  const [dataFluxoConversaoSessoes, setDataFluxoConversaoSessoes] = useState([{}]);
+  const [dataFluxoConversaoSessoes, setDataFluxoConversaoSessoes] = useState([
+    {},
+  ]);
 
   const [dataFormasPagamentos, setDataFormasPagamentos] = useState([{}]);
+
+  const [dataEstadosMaisSessoes, setDataEstadosMaisSessoes] = useState([{}]);
 
   const [dataKpi1, setDataKpi1] = useState([{}]);
 
@@ -117,101 +120,110 @@ const DashAdmin = () => {
 
   const classes = useStyles();
 
-  const dataTreeMap = 
-  [
+  const dataTreeMap = [
     {
       name: "Categoria 1",
-      value: 10
+      value: 10,
     },
     {
       name: "Categoria 2",
-      value: 10
+      value: 10,
     },
     {
       name: "Categoria 3",
-      value: 10
+      value: 10,
     },
     {
       name: "Categoria 4",
-      value: 10
+      value: 10,
     },
     {
       name: "Categoria 5",
-      value: 10
+      value: 10,
     },
     {
       name: "Categoria 6",
-      value: 10
+      value: 10,
     },
     {
       name: "Categoria 7",
-      value: 10
+      value: 10,
     },
     {
       name: "Categoria 8",
-      value: 10
-    }
-  ]
+      value: 10,
+    },
+  ];
 
   const dataTeste = {
-    "nodes": [
+    nodes: [
       {
-        "name": "Proposta"
+        name: "Proposta",
       },
       {
-        "name": "Aceita"
+        name: "Aceita",
       },
       {
-        "name": "Em Negociação"
+        name: "Em Negociação",
       },
       {
-        "name": "Agendada"
+        name: "Agendada",
       },
       {
-        "name": "Realizada"
-      }
+        name: "Realizada",
+      },
     ],
-    "links": [
+    links: [
       {
-        "source": 0,
-        "target": 1,
-        "value": 4210
+        source: 0,
+        target: 1,
+        value: 4210,
       },
       {
-        "source": 1,
-        "target": 2,
-        "value": 3210
+        source: 1,
+        target: 2,
+        value: 3210,
       },
       {
-        "source": 2,
-        "target": 3,
-        "value": 1310
+        source: 2,
+        target: 3,
+        value: 1310,
       },
       {
-        "source": 3,
-        "target": 4,
-        "value": 780
-      }
-    ]
+        source: 3,
+        target: 4,
+        value: 780,
+      },
+    ],
   };
-     
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        ADMIN.CONTAGEM_TEMA_CONTATO(token, mesReferencia, anoReferencia).then((response) => {
-          console.log("Teste de Retorno: ", response.data);
-          setDataBar(response.data);
-        });
+        ADMIN.CONTAGEM_TEMA_CONTATO(token, mesReferencia, anoReferencia).then(
+          (response) => {
+            console.log("Teste de Retorno temaaaaa: ", response.data);
+            setDataBar(response.data);
+          }
+        );
 
-        ADMIN.FLUXO_CONVERSAO_SESSOES(token, mesReferencia, anoReferencia).then((response) => {
-          console.log("Teste de Retorno: ", response.data);
-          setDataFluxoConversaoSessoes(response.data);
-        });
+        ADMIN.FLUXO_CONVERSAO_SESSOES(token, mesReferencia, anoReferencia).then(
+          (response) => {
+            console.log("Teste de Retorno: ", response.data);
+            setDataFluxoConversaoSessoes(response.data);
+          }
+        );
 
-        ADMIN.PAGAMENTS_MAIS_UTILIZADOS(token, mesReferencia, anoReferencia).then((response) => {
+        ADMIN.PAGAMENTS_MAIS_UTILIZADOS(
+          token,
+          mesReferencia,
+          anoReferencia
+        ).then((response) => {
           console.log("Teste de Retorno: ", response.data);
-          console.log("Teste de Query: ", `MES: ${mesReferencia} | ANO: ${anoReferencia} | TIPO DE ANO: ${typeof anoReferencia}`);
+          console.log(
+            "Teste de Query: ",
+            `MES: ${mesReferencia} | ANO: ${anoReferencia} | TIPO DE ANO: ${typeof anoReferencia}`
+          );
           setDataFormasPagamentos(response.data);
         });
 
@@ -240,11 +252,18 @@ const DashAdmin = () => {
           // console.log("Teste de Retorno: ", response.data);
           setDataProgressaoSessoes(response.data);
         });
+        ADMIN.ESTADOS_MAIS_SESSOES(token, mesReferencia, anoReferencia).then(
+          (response) => {
+            // console.log("Teste de Retorno: ", response.data);
+            setDataEstadosMaisSessoes(response.data);
+          }
+        );
 
         ADMIN.KPI_SESSOES_REALIZADAS(token).then((response) => {
           // console.log("Teste de Retorno KPI 2: ", response.data);
           setDataKpi2(response.data);
           var lista = response.data;
+
           if (lista[1].quantidade == 0) {
             setPorcentagemKpi2(lista[0].quantidade * 100);
           } else if (lista[0].quantidade == 0) {
@@ -325,7 +344,14 @@ const DashAdmin = () => {
             <LogoPicme dash={true} height={theme.spacing(4)} />
           </Box>
           <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Box
               p={1}
               mb={5}
@@ -375,8 +401,7 @@ const DashAdmin = () => {
                 alignItems: "center",
               }}
             >
-              <Avatar {...stringAvatar(nome ? (nome) : ("Teste"))}>
-              </Avatar>
+              <Avatar {...stringAvatar(nome ? nome : "Teste")}></Avatar>
             </Box>
             <Box
               sx={{
@@ -415,20 +440,66 @@ const DashAdmin = () => {
         ml="7.5%"
       >
         <Container
-          py={3}
-          flexDirection="row"
+          flexDirection="column"
           justifyContent="center"
-          paddingLeft="0"
-          paddingRight="0"
+          paddingLeft="0 !important"
+          paddingRight="0 !important"
           width="100%"
         >
-          <Container
+          <Box
+            mt={4}
+            display="flex"
             flexDirection="row"
             justifyContent="end"
             alignItems="center"
             paddingLeft="0"
             paddingRight="0"
             width="100%"
+          >
+            <Grid
+              container
+              rowSpacing={4}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-around",
+                height: "100%",
+              }}
+            >
+              <Grid item md={3} sx={{ paddingLeft: "0 !important" }}>
+                <CaixaKpi
+                  valorKpi={valorKpi1}
+                  textoKpi="Novos Usuários:"
+                  porcentagem={porcentagemKpi1}
+                  direita={true}
+                ></CaixaKpi>
+              </Grid>
+              <Grid item md={3} sx={{ paddingLeft: "0 !important" }}>
+                <CaixaKpi
+                  valorKpi={valorKpi2}
+                  textoKpi="Sessões Previstas:"
+                  porcentagem={porcentagemKpi2}
+                  direita={true}
+                ></CaixaKpi>
+              </Grid>
+              <Grid item md={3} sx={{ paddingLeft: "0 !important" }}>
+                <CaixaKpi
+                  valorKpi={valorKpi3}
+                  textoKpi="Acessos:"
+                  porcentagem={porcentagemKpi3}
+                  direita={true}
+                ></CaixaKpi>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="end"
+            alignItems="center"
+            pl={6}
+            mt={6}
+            width="95%"
           >
             <Typography
               fontSize="16px"
@@ -479,11 +550,10 @@ const DashAdmin = () => {
                   </Select>
                 </FormControl>
               </Box>
-              
             </Typography>
 
             <CustomPopoverDash>
-            <Stack
+              <Stack
                 p={2}
                 paddingLeft={8}
                 paddingRight={8}
@@ -515,7 +585,7 @@ const DashAdmin = () => {
                 Histórico
               </Stack>
             </CustomPopoverDash>
-          </Container>
+          </Box>
         </Container>
 
         {metrica === "renda" ? (
@@ -536,66 +606,25 @@ const DashAdmin = () => {
               >
                 <Grid
                   item
-                  xl={3}
-                  lg={3}
-                  md={3}
+                  xl={12}
+                  lg={12}
+                  md={12}
                   sm={10}
                   xs={10}
                   sx={{
                     paddingLeft: "0 !important",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <Grid
-                    container
-                    rowSpacing={4}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-around",
-                      height: "100%",
-                    }}
-                  >
-                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
-                      <CaixaKpi
-                        valorKpi={valorKpi1}
-                        textoKpi="Usuários"
-                        porcentagem={porcentagemKpi1}
-                      ></CaixaKpi>
-                    </Grid>
-                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
-                      <CaixaKpi
-                        valorKpi={valorKpi2}
-                        textoKpi="Sessões Previstas"
-                        porcentagem={porcentagemKpi2}
-                      ></CaixaKpi>
-                    </Grid>
-                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
-                      <CaixaKpi
-                        valorKpi={valorKpi3}
-                        textoKpi="Acessos"
-                        porcentagem={porcentagemKpi3}
-                      ></CaixaKpi>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  xl={8}
-                  lg={8}
-                  md={8}
-                  sm={10}
-                  xs={10}
-                  sx={{
-                    paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
-                  }}
-                >
-                  <CardBarChart
-                    tituloPieChart={"Formas de pagamento mais utilizadas"}
-                    width="100%"
-                    data={dataFormasPagamentos}>
-                  </CardBarChart>
+                  <CardSankeyChart
+                    tituloPieChart="Conversão de sessões"
+                    data={dataFluxoConversaoSessoes}
+                    width={"95%"}
+                  ></CardSankeyChart>
                 </Grid>
               </Grid>
               <Grid
@@ -623,9 +652,11 @@ const DashAdmin = () => {
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <CardSankeyChart tituloPieChart="Conversão de sessões" data={dataFluxoConversaoSessoes} width={"100%"}>
-
-                  </CardSankeyChart>
+                  <CardBarChart
+                    tituloPieChart={"Formas de pagamento mais utilizadas"}
+                    width="100%"
+                    data={dataFormasPagamentos}
+                  ></CardBarChart>
                 </Grid>
                 <Grid
                   item
@@ -668,64 +699,23 @@ const DashAdmin = () => {
               >
                 <Grid
                   item
-                  xl={3}
-                  lg={3}
-                  md={3}
+                  xl={12}
+                  lg={12}
+                  md={12}
                   sm={10}
                   xs={10}
                   sx={{
                     paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
-                  }}
-                >
-                  <Grid
-                    container
-                    rowSpacing={4}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-around",
-                      height: "100%",
-                    }}
-                  >
-                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
-                      <CaixaKpi
-                        valorKpi={valorKpi1}
-                        textoKpi="Usuários"
-                        porcentagem={porcentagemKpi1}
-                      ></CaixaKpi>
-                    </Grid>
-                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
-                      <CaixaKpi
-                        valorKpi={valorKpi2}
-                        textoKpi="Sessões Previstas"
-                        porcentagem={porcentagemKpi2}
-                      ></CaixaKpi>
-                    </Grid>
-                    <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
-                      <CaixaKpi
-                        valorKpi={valorKpi3}
-                        textoKpi="Acessos"
-                        porcentagem={porcentagemKpi3}
-                      ></CaixaKpi>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  xl={8}
-                  lg={8}
-                  md={8}
-                  sm={10}
-                  xs={10}
-                  sx={{
-                    paddingLeft: "0 !important",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
                     // paddingTop: "0 !important",
                   }}
                 >
                   <CardStackedBarChart
                     tituloPieChart="Clientes que agendaram sessões com 1 semana utilizando o sistema"
-                    width="100%"
+                    width="95%"
                     data={dataClienteSemana}
                   ></CardStackedBarChart>
                   {/* <CardChartPie
@@ -760,8 +750,11 @@ const DashAdmin = () => {
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <CardTreeMapChart tituloPieChart={"Temas em destaque"} data={dataTreeMap} width={"100%"}>
-                  </CardTreeMapChart>
+                  <CardTreeMapChart
+                    tituloPieChart={"Temas em destaque"}
+                    data={dataTreeMap}
+                    width={"100%"}
+                  ></CardTreeMapChart>
                 </Grid>
                 <Grid
                   item
@@ -775,120 +768,120 @@ const DashAdmin = () => {
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <CardDoubleBarChart
+                  <CardBarChart
                     tituloPieChart="Estados com mais sessões"
-                    data={dataBar}
+                    data={dataEstadosMaisSessoes}
                     width="100%"
-                  ></CardDoubleBarChart>
+                  ></CardBarChart>
                 </Grid>
               </Grid>
             </Box>
           </>
         ) : (
           <>
-          {metrica === "histórico" ? (
-            <Box>
-              <Grid
-                container
-                columnSpacing={4}
-                rowSpacing={4}
-                sx={{
-                  width: "100%",
-                  margin: "0",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                }}
-              >
+            {metrica === "histórico" ? (
+              <Box>
                 <Grid
-                  item
-                  xl={5}
-                  lg={5}
-                  md={5}
-                  sm={10}
-                  xs={10}
+                  container
+                  columnSpacing={4}
+                  rowSpacing={4}
                   sx={{
-                    paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
+                    width: "100%",
+                    margin: "0",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
                   }}
                 >
-                  <CardStackedBarChart
-                    tituloPieChart="Base de usuários cadastrados"
-                    width="100%"
-                    data={dataClientesFotografos}
-                  ></CardStackedBarChart>
+                  <Grid
+                    item
+                    xl={11}
+                    lg={11}
+                    md={11}
+                    sm={10}
+                    xs={10}
+                    sx={{
+                      paddingLeft: "0 !important",
+                      // paddingTop: "0 !important",
+                    }}
+                  >
+                    <CardStackedBarChart
+                      tituloPieChart="Base de usuários cadastrados"
+                      width="100%"
+                      data={dataClientesFotografos}
+                    ></CardStackedBarChart>
+                  </Grid>
+                  <Grid
+                    item
+                    xl={11}
+                    lg={11}
+                    md={11}
+                    sm={10}
+                    xs={10}
+                    sx={{
+                      paddingLeft: "0 !important",
+                      // paddingTop: "0 !important",
+                    }}
+                  >
+                    <CardBarLineChart
+                      tituloPieChart="Progressão de novos usuários cadastrados"
+                      data={dataProgressaoUsuarios}
+                      width="100%"
+                    ></CardBarLineChart>
+                  </Grid>
                 </Grid>
                 <Grid
-                  item
-                  xl={6}
-                  lg={6}
-                  md={6}
-                  sm={10}
-                  xs={10}
+                  container
+                  columnSpacing={4}
+                  rowSpacing={4}
                   sx={{
-                    paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
+                    width: "100%",
+                    margin: "0",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
                   }}
                 >
-                  <CardBarLineChart
-                    tituloPieChart="Progressão de novos usuários cadastrados"
-                    data={dataProgressaoUsuarios}
-                    width="100%"
-                  ></CardBarLineChart>
+                  <Grid
+                    item
+                    xl={11}
+                    lg={11}
+                    md={11}
+                    sm={10}
+                    xs={10}
+                    sx={{
+                      paddingLeft: "0 !important",
+                      // paddingTop: "0 !important",
+                    }}
+                  >
+                    <CardStackedBarChart
+                      tituloPieChart="Contatos convertidos em sessões"
+                      width="100%"
+                      data={dataContatosConvertidos}
+                    ></CardStackedBarChart>
+                  </Grid>
+                  <Grid
+                    item
+                    xl={11}
+                    lg={11}
+                    md={11}
+                    sm={10}
+                    xs={10}
+                    sx={{
+                      paddingLeft: "0 !important",
+                      // paddingTop: "0 !important",
+                    }}
+                  >
+                    <CardBarLineChart
+                      tituloPieChart="Progressão sessões de fotos realizadas"
+                      data={dataProgressaoSessoes}
+                      width="100%"
+                    ></CardBarLineChart>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid
-                container
-                columnSpacing={4}
-                rowSpacing={4}
-                sx={{
-                  width: "100%",
-                  margin: "0",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                }}
-              >
-                <Grid
-                  item
-                  xl={5}
-                  lg={5}
-                  md={5}
-                  sm={10}
-                  xs={10}
-                  sx={{
-                    paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
-                  }}
-                >
-                  <CardStackedBarChart
-                    tituloPieChart="Contatos convertidos em sessões"
-                    width="100%"
-                    data={dataContatosConvertidos}
-                  ></CardStackedBarChart>
-                </Grid>
-                <Grid
-                  item
-                  xl={6}
-                  lg={6}
-                  md={6}
-                  sm={10}
-                  xs={10}
-                  sx={{
-                    paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
-                  }}
-                >
-                  <CardBarLineChart
-                    tituloPieChart="Progressão sessões de fotos realizadas"
-                    data={dataProgressaoSessoes}
-                    width="100%"
-                  ></CardBarLineChart>
-                </Grid>
-              </Grid>
-            </Box>
+              </Box>
             ) : null}
           </>
         )}
