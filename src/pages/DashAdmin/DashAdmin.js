@@ -47,6 +47,7 @@ import { stringAvatar } from "utils/helpers/string";
 import CardSanekyChartStyles from "atoms/CardSankeyChart/CardSanekyChart.styles";
 import CardSankeyChart from "atoms/CardSankeyChart/CardSankeyChart";
 import CardTreeMapChart from "atoms/CardTreeMapChart/CardTreeMapChart";
+import CardFunnelChart from "atoms/CardFunnelChart/CardFunnelChart";
 
 const DashAdmin = () => {
   const defaultValues = {
@@ -196,6 +197,34 @@ const DashAdmin = () => {
       },
     ],
   };
+
+  const dataFunil = [
+    {
+      value: 100,
+      name: "Long label 1",
+      fill: "#8884d8"
+    },
+    {
+      value: 80,
+      name: "Long label 2",
+      fill: "#83a6ed"
+    },
+    {
+      value: 50,
+      name: "Long label 3",
+      fill: "#8dd1e1"
+    },
+    {
+      value: 40,
+      name: "Long label 4",
+      fill: "#82ca9d"
+    },
+    {
+      value: 26,
+      name: "Long label 5",
+      fill: "#a4de6c"
+    }
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -620,11 +649,18 @@ const DashAdmin = () => {
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <CardSankeyChart
+                  <CardFunnelChart
+                    tituloPieChart="Conversão de sessões"
+                    data={dataFunil}
+                    width={"95%"}
+                  >
+
+                  </CardFunnelChart>
+                  {/* <CardSankeyChart
                     tituloPieChart="Conversão de sessões"
                     data={dataFluxoConversaoSessoes}
                     width={"95%"}
-                  ></CardSankeyChart>
+                  ></CardSankeyChart> */}
                 </Grid>
               </Grid>
               <Grid
