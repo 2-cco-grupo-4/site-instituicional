@@ -42,18 +42,18 @@ function Calendario(props) {
 
   const listarFotografo = async () => {
     FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
-  
+
       const updatedEvents = response.data.map((event) => {
-   
+
 
         return {
           id: event.id,
-          idCliente:event.cliente.id, 
+          idCliente: event.cliente.id,
           idFotografo: event.fotografo.id,
           title: event.cliente.nome + " Evento",
           cliente: event.cliente.nome,
           start: event.dataRealizacao,
-          endereco:`${event.endereco.estado}, ${event.endereco.cidade}, ${event.endereco.bairro}, ${event.endereco.rua}, ${event.endereco.numero} ${event.endereco.complemento == null ? "" : ","+event.endereco.complemento}`,
+          endereco: `${event.endereco.estado}, ${event.endereco.cidade}, ${event.endereco.bairro}, ${event.endereco.rua}, ${event.endereco.numero} ${event.endereco.complemento == null ? "" : "," + event.endereco.complemento}`,
           cidade: event.endereco.cidade,
           bairro: event.endereco.bairro,
           estado: event.endereco.estado,
@@ -64,12 +64,12 @@ function Calendario(props) {
 
         };
       });
-  
+
       setEvents(updatedEvents);
       console.log(updatedEvents);
     });
   };
-  
+
   useEffect(() => {
     listarFotografo();
   }, [token]);
@@ -78,58 +78,74 @@ function Calendario(props) {
     return event == undefined;
   }
 
-  function openModal(info) {
+  let currentModal = null;
+
+  function openModal(info, isAppointment) {
+    // Close the current modal if it exists
+    if (currentModal) {
+      closeModal(currentModal);
+    }
+
+    console.log(info)
     const pophover = document.createElement("div");
     const modal = document.getElementById("modal");
     const boxModal = document.createElement("div");
 
-    {
-      if (validateJsonIsCalendarType(info.event)) {
-        info.event = info;
-        info.event.extendedProps = {};
-        info.event.start = info.date;
-        info.event.extendedProps.title = info.title;
-        info.event.extendedProps.endereco = `${info.estado}, ${info.cidade}, ${info.bairro}, ${info.rua}, ${info.numero}, ${info.complemento}` ;
-        info.event.extendedProps.cliente = info.cliente;
-        info.event.extendedProps.status = info.status;
-      }
-    }
     boxModal.innerHTMl = "";
     boxModal.classList.add("box-modal");
-    console.log(info.event.extendedProps)
+
+    let title, date, endereco, cliente, status;
+
+    if (isAppointment) {
+      title = info.title;
+      date = new Date(info.start).toLocaleDateString();
+      endereco = info.endereco;
+      cliente = info.cliente;
+      status = info.statusSessao;
+    } else {
+      title = `${info.event._def.extendedProps.cliente} Evento`;
+      date = new Date(info.event._def.extendedProps.start).toLocaleTimeString();
+      endereco = `${info.event._def.extendedProps.estado}, ${info.event._def.extendedProps.cidade}, ${info.event._def.extendedProps.bairro}, ${info.event._def.extendedProps.rua}, ${info.event._def.extendedProps.numero}, ${info.event._def.extendedProps.complemento}`;
+      cliente = info.event._def.extendedProps.cliente;
+      status = info.event._def.extendedProps.statusSessao;
+    }
+
     boxModal.innerHTML = `
-       
-  
- 
       <div class="box-title">
-        <h2>${info.event.title}</h2>
-        <p>${info.event.start.toLocaleDateString()}</p>
+        <h2>${title}</h2>
+        <p>${date}</p>
       </div>
       <div class="box-info">
         <div class="box-endereco">
           <h3>Endereço</h3>
-          <p>${info.event.extendedProps.endereco}</p>
+          <p>${endereco}</p>
         </div>
         <div class="box-cliente">
           <h3>Cliente</h3>
-          <p>${info.event.extendedProps.cliente}</p>
+          <p>${cliente}</p>
         </div>
         <div class="box-status">
           <h3>Status</h3>
-          <p>${info.event.extendedProps.statusSessao}</p>
+          <p>${status}</p>
         </div>
       </div>
-  
-  
-   
     `;
 
     pophover.appendChild(boxModal);
     modal.appendChild(pophover);
 
     pophover.addEventListener("click", function () {
-      modal.removeChild(pophover);
+      closeModal(pophover);
     });
+
+
+    currentModal = pophover;
+  }
+
+  function closeModal(modal) {
+    const parentModal = modal.parentNode;
+    parentModal.removeChild(modal);
+    currentModal = null;
   }
   const customButtons = {
     customButton: {
@@ -143,7 +159,7 @@ function Calendario(props) {
     <>
       <Header type={3} />
       <Content>
-     
+
         <Card>
           <CardTitle>
             <Typography variant="h2">Agendamentos</Typography>
@@ -153,7 +169,7 @@ function Calendario(props) {
               return (
                 <Agendamento
                   onClick={() => {
-                    openModal(event);
+                    openModal(event, true);
                   }}
                 >
                   <Icon></Icon>
@@ -178,7 +194,7 @@ function Calendario(props) {
             dayMaxEventRows={true}
             eventDidMount={function (info) {
               info.el.addEventListener("click", function () {
-                openModal(info);
+                openModal(info, false);
               });
             }}
           />
