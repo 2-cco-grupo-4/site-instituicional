@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   Typography,
@@ -8,9 +8,9 @@ import {
   useTheme,
   Breadcrumbs,
   Link,
-} from "@mui/material"
-import Header from "molecules/Header"
-import Footer from "molecules/Footer"
+} from "@mui/material";
+import Header from "molecules/Header";
+import Footer from "molecules/Footer";
 import {
   ImageStack,
   ImageContainer,
@@ -53,7 +53,7 @@ const images = [
     tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
-]
+];
 
 function Album() {
   const theme = useTheme();
@@ -78,15 +78,15 @@ function Album() {
   let ready = false;
 
   useEffect(() => {
-    let v = []
-    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)))
+    let v = [];
+    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)));
 
     setTags(v);
   }, []);
 
   const handleContract = () => {
     if (autenticado) {
-      setOpenContrato(true)
+      setOpenContrato(true);
     } else {
       setOpenLoginModal(true);
     }
@@ -167,18 +167,28 @@ function Album() {
   return (
     <>
       <Header type={2} />
-      <Stack direction="row" sx={{ width: "100%", alignItems: "center", justifyContent: "center"}}>
-        <ImageStack sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+      <Stack
+        direction="row"
+        sx={{ width: "100%", alignItems: "center", justifyContent: "center" }}
+      >
+        <ImageStack
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {imagens
             ? imagens.map((image) => (
-              <ImageContainer key={image.id} className="image">
-                <ImageElement
-                  src={image.path}
-                  alt={image.descricao}
-                  style={{ width: "auto", height: "auto" }}
-                />
-              </ImageContainer>
-            ))
+                <ImageContainer key={image.id} className="image">
+                  <ImageElement
+                    src={image.path}
+                    alt={image.descricao}
+                    style={{ width: "auto", height: "auto" }}
+                  />
+                </ImageContainer>
+              ))
             : console.log("Carregando...")}
         </ImageStack>
         <Sidebar spacing={5}>
@@ -187,7 +197,11 @@ function Album() {
               <Link color="inherit" underline="hover" href={ROUTES.FEED}>
                 Home
               </Link>
-              <Link color="inherit" underline="hover" href={ROUTES.PERFIL}>
+              <Link
+                color="inherit"
+                underline="hover"
+                href={ROUTES.PERFIL(fotografo.id)}
+              >
                 {typeof fotografo == "object"
                   ? fotografo.nome
                   : console.log(typeof fotografo)}
@@ -199,7 +213,9 @@ function Album() {
             <Stack direction="row" alignItems="center" spacing={2}>
               <Avatar
                 style={{ width: theme.spacing(8), height: theme.spacing(8) }}
-                onClick={() => navigate("/perfil-fotografo")}
+                onClick={() => {
+                  navigate(ROUTES.PERFIL(fotografo.id));
+                }}
               >
                 <PersonIcon style={{ fontSize: 24 }} />
               </Avatar>
@@ -289,7 +305,7 @@ function Album() {
                       sx={{ fontSize: theme.spacing(4) }}
                       readOnly
                       value={typeof avaliacao == "object" ? avaliacao.nota : 2}
-                    // value={3.5}
+                      // value={3.5}
                     />
                     <Typography
                       variant="body1"
@@ -299,8 +315,8 @@ function Album() {
                       }}
                     >
                       {typeof clientes === "object" &&
-                        clientes[indice] &&
-                        clientes[indice].nome !== undefined
+                      clientes[indice] &&
+                      clientes[indice].nome !== undefined
                         ? clientes[indice].nome
                         : "Padrão"}
                     </Typography>
@@ -326,12 +342,16 @@ function Album() {
       </Stack>
       <Footer />
       {autenticado ? (
-        <Contrato open={openContrato} setOpen={setOpenContrato} fotografo={fotografo} />
+        <Contrato
+          open={openContrato}
+          setOpen={setOpenContrato}
+          fotografo={fotografo}
+        />
       ) : (
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
       )}
     </>
-  )
+  );
 }
 
-export default Album
+export default Album;

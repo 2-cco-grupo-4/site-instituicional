@@ -28,7 +28,7 @@ import { useState, useEffect } from "react";
 import CardAvaliacao from "molecules/CardAvaliacao/CardAvaliacao";
 import { ROUTES } from "utils/constants";
 import Footer from "molecules/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "contexts";
 import { ALBUM } from "service/album";
 import api from "service/api";
@@ -126,34 +126,43 @@ const PerfilFotografo = () => {
 
   const [albums, setAlbums] = useState([]);
 
+  const [capaAlbum, setCapaAlbum] = useState([]);
+
   const [avaliacoes, setAvaliacoes] = useState([]);
 
-  const { token, id, nome, tokenSolicitacao } = useUserContext();
+  const { token, nome, tokenSolicitacao } = useUserContext();
+
+  const { idFotografo } = useParams();
 
   useEffect(() => {
     const ChamadaApi = async () => {
-      ALBUM.LISTAR(id, token).then(
-        (response) => {
-          console.log(`RESPOSTA LISTAR ALBUNS: ${JSON.stringify(response.data)}`);
-          setAlbums(response.data);
-        }
-      );
+      ALBUM.BUSCAR_CAPAS_ALBUM(idFotografo, token).then((response) => {
+        console.log(`RESPOSTA LISTAR ALBUNS: ${JSON.stringify(response.data)}`);
+        setAlbums(response.data);
+      });
     };
     ChamadaApi();
-  }, [id]);
+  }, [idFotografo, token]);
 
   useEffect(() => {
     const ChamadaApi = async () => {
-      ALBUM.LISTAR_AVALIACOES(id, token).then(
-        (response) => {
-          console.log(`RESPOSTA LISTAR AVALIACOES: ${JSON.stringify(response.data)}`);
-          setAvaliacoes(response.data);
-        }
-      );
+      ALBUM.LISTAR_AVALIACOES(idFotografo, token).then((response) => {
+        console.log(
+          `RESPOSTA LISTAR AVALIACOES: ${JSON.stringify(response.data)}`
+        );
+        setAvaliacoes(response.data);
+      });
     };
     ChamadaApi();
-  }, [id]);
+  }, [idFotografo, token]);
 
+  useEffect(() => {
+    let capa = albums.map((album, index) => ({
+      alt: album.idAlbum,
+      src: album.pathCapa,
+    }));
+    setCapaAlbum(capa);
+  }, [albums]);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -241,24 +250,30 @@ const PerfilFotografo = () => {
 
       <Container sx={{ display: displayAlbum }} pb={2}>
         <ImageList variant="masonry" cols={4} gap={8}>
-          {albums.map((album, index) => (
+          {capaAlbum.map((album, index) => (
             <ImageListItem
-              key={index}
+              key={album.alt}
               sx={{ cursor: "pointer" }}
-              onClick={() => navigate(ROUTES.ALBUM)}
+              onClick={() => navigate(ROUTES.ALBUM(album.alt))}
             >
-              <img src={album.coverImage} alt={album.name} />
+              <img src={album.src} alt={album.alt} />
             </ImageListItem>
           ))}
         </ImageList>
       </Container>
 
-
       {/* Parte Avaliação */}
 
-      <Container sx={{ display: displayAvaliacao }} className={classes.avaliacoes}>
+      <Container
+        sx={{ display: displayAvaliacao }}
+        className={classes.avaliacoes}
+      >
         {avaliacoes.map((avaliacao, index) => (
-          <CardAvaliacao key={index} name={avaliacao.name} text={avaliacao.text} />
+          <CardAvaliacao
+            key={index}
+            name={avaliacao.name}
+            text={avaliacao.text}
+          />
         ))}
       </Container>
       <Footer />
