@@ -25,6 +25,12 @@ const CardDoubleBarChart = ({ tituloPieChart, data, width }) => {
   const valueName1 = Object.keys(jsonModel)[1];
   const valueName2 = Object.keys(jsonModel)[2];
 
+  data = data.slice(0, 5).map((item) => ({
+    [keyName]: item[keyName],
+    [valueName1]: item[valueName1],
+    [valueName2]: item[valueName2],
+  }));
+
   return (
     <BoxShadow width={width} height="auto">
       <Typography

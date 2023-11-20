@@ -60,6 +60,8 @@ const DashAdmin = () => {
 
   const [mesReferencia, setMesReferencia] = useState("novembro");
 
+  const [mesReferenciaLegenda, setMesReferenciaLegenda] = useState("Novembro");
+
   const [anoReferencia, setAnoReferencia] = useState(2023);
 
   const [dataBar, setDataBar] = useState([{}]);
@@ -108,6 +110,34 @@ const DashAdmin = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (mesReferencia === "january") {
+      setMesReferenciaLegenda("Janeiro");
+    } else if (mesReferencia === "february") {
+      setMesReferenciaLegenda("Fevereiro");
+    } else if (mesReferencia === "march") {
+      setMesReferenciaLegenda("Março");
+    } else if (mesReferencia === "april") {
+      setMesReferenciaLegenda("Abril");
+    } else if (mesReferencia === "may") {
+      setMesReferenciaLegenda("Maio");
+    } else if (mesReferencia === "june") {
+      setMesReferenciaLegenda("Junho");
+    } else if (mesReferencia === "july") {
+      setMesReferenciaLegenda("Julho");
+    } else if (mesReferencia === "august") {
+      setMesReferenciaLegenda("Agosto");
+    } else if (mesReferencia === "september") {
+      setMesReferenciaLegenda("Setembro");
+    } else if (mesReferencia === "october") {
+      setMesReferenciaLegenda("Outubro");
+    } else if (mesReferencia === "november") {
+      setMesReferenciaLegenda("Novembro");
+    } else if (mesReferencia === "december") {
+      setMesReferenciaLegenda("Dezembro");
+    }
+  }, [mesReferencia]);
+
   function formatJsonClientesSemana(response) {
     var jsonModel;
     for (let i = 0; i < response.data.length; i++) {
@@ -124,15 +154,15 @@ const DashAdmin = () => {
   const dataTreeMap = [
     {
       name: "Categoria 1",
-      value: 10,
+      value: 35,
     },
     {
       name: "Categoria 2",
-      value: 10,
+      value: 50,
     },
     {
       name: "Categoria 3",
-      value: 10,
+      value: 5,
     },
     {
       name: "Categoria 4",
@@ -140,19 +170,19 @@ const DashAdmin = () => {
     },
     {
       name: "Categoria 5",
-      value: 10,
+      value: 20,
     },
     {
       name: "Categoria 6",
-      value: 10,
+      value: 20,
     },
     {
       name: "Categoria 7",
-      value: 10,
+      value: 7,
     },
     {
       name: "Categoria 8",
-      value: 10,
+      value: 9,
     },
   ];
 
@@ -197,34 +227,6 @@ const DashAdmin = () => {
       },
     ],
   };
-
-  const dataFunil = [
-    {
-      value: 100,
-      name: "Long label 1",
-      fill: "#8884d8"
-    },
-    {
-      value: 80,
-      name: "Long label 2",
-      fill: "#83a6ed"
-    },
-    {
-      value: 50,
-      name: "Long label 3",
-      fill: "#8dd1e1"
-    },
-    {
-      value: 40,
-      name: "Long label 4",
-      fill: "#82ca9d"
-    },
-    {
-      value: 26,
-      name: "Long label 5",
-      fill: "#a4de6c"
-    }
-  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -528,7 +530,7 @@ const DashAdmin = () => {
             alignItems="center"
             pl={6}
             mt={6}
-            width="95%"
+            width="90%"
           >
             <Typography
               fontSize="16px"
@@ -541,7 +543,7 @@ const DashAdmin = () => {
                 {metrica}
               </Box>
               <Box display="flex" fontWeight="bold" width="30%" mt={3}>
-                <FormControl fullWidth>
+                <FormControl fullWidth style={{ marginRight: "30px" }}>
                   <InputLabel id="mes-referencia">Mês</InputLabel>
                   <Select
                     labelId="mes-referencia"
@@ -595,17 +597,6 @@ const DashAdmin = () => {
               <hr className={classes.linha}></hr>
               <Stack
                 p={2}
-                paddingTop={1}
-                paddingLeft={8}
-                paddingRight={8}
-                className={classes.popoupOption}
-                onClick={() => setMetrica("marketing")}
-              >
-                Marketing
-              </Stack>
-              <hr className={classes.linha}></hr>
-              <Stack
-                p={2}
                 paddingLeft={8}
                 paddingRight={8}
                 className={classes.popoupOption}
@@ -650,12 +641,10 @@ const DashAdmin = () => {
                   }}
                 >
                   <CardFunnelChart
-                    tituloPieChart="Conversão de sessões"
-                    data={dataFunil}
+                    tituloPieChart={`Conversão de sessões - ${mesReferenciaLegenda} de ${anoReferencia}`}
+                    data={dataFluxoConversaoSessoes}
                     width={"95%"}
-                  >
-
-                  </CardFunnelChart>
+                  ></CardFunnelChart>
                   {/* <CardSankeyChart
                     tituloPieChart="Conversão de sessões"
                     data={dataFluxoConversaoSessoes}
@@ -689,7 +678,7 @@ const DashAdmin = () => {
                   }}
                 >
                   <CardBarChart
-                    tituloPieChart={"Formas de pagamento mais utilizadas"}
+                    tituloPieChart={`Formas de pagamento mais utilizadas - ${mesReferenciaLegenda} de ${anoReferencia}`}
                     width="100%"
                     data={dataFormasPagamentos}
                   ></CardBarChart>
@@ -707,19 +696,12 @@ const DashAdmin = () => {
                   }}
                 >
                   <CardDoubleBarChart
-                    tituloPieChart="Valor médio gerado por tema"
+                    tituloPieChart={`Valor médio gerado por tema - ${mesReferenciaLegenda} de ${anoReferencia}`}
                     data={dataBar}
                     width="100%"
                   ></CardDoubleBarChart>
                 </Grid>
               </Grid>
-            </Box>
-          </>
-        ) : null}
-
-        {metrica === "marketing" ? (
-          <>
-            <Box>
               <Grid
                 container
                 columnSpacing={4}
@@ -749,70 +731,19 @@ const DashAdmin = () => {
                     // paddingTop: "0 !important",
                   }}
                 >
-                  <CardStackedBarChart
-                    tituloPieChart="Clientes que agendaram sessões com 1 semana utilizando o sistema"
-                    width="95%"
-                    data={dataClienteSemana}
-                  ></CardStackedBarChart>
-                  {/* <CardChartPie
-                    tituloPieChart="Clientes que fecharam sessões com 1 semana utilizando o sistema"
-                    data={dataClienteSemana}
-                    width="100%"
-                  ></CardChartPie> */}
-                </Grid>
-              </Grid>
-              <Grid
-                container
-                columnSpacing={4}
-                rowSpacing={4}
-                sx={{
-                  width: "100%",
-                  margin: "0",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                }}
-              >
-                <Grid
-                  item
-                  xl={5}
-                  lg={5}
-                  md={5}
-                  sm={10}
-                  xs={10}
-                  sx={{
-                    paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
-                  }}
-                >
                   <CardTreeMapChart
-                    tituloPieChart={"Temas em destaque"}
-                    data={dataTreeMap}
-                    width={"100%"}
+                    tituloPieChart={`Temas em destaque - ${mesReferenciaLegenda} de ${anoReferencia}`}
+                    data={dataBar}
+                    width={"95%"}
                   ></CardTreeMapChart>
-                </Grid>
-                <Grid
-                  item
-                  xl={6}
-                  lg={6}
-                  md={6}
-                  sm={10}
-                  xs={10}
-                  sx={{
-                    paddingLeft: "0 !important",
-                    // paddingTop: "0 !important",
-                  }}
-                >
-                  <CardBarChart
-                    tituloPieChart="Estados com mais sessões"
-                    data={dataEstadosMaisSessoes}
-                    width="100%"
-                  ></CardBarChart>
                 </Grid>
               </Grid>
             </Box>
           </>
+        ) : null}
+
+        {metrica === "marketing" ? (
+          <Box></Box>
         ) : (
           <>
             {metrica === "histórico" ? (
@@ -915,6 +846,24 @@ const DashAdmin = () => {
                       data={dataProgressaoSessoes}
                       width="100%"
                     ></CardBarLineChart>
+                  </Grid>
+                  <Grid
+                    item
+                    xl={11}
+                    lg={11}
+                    md={11}
+                    sm={10}
+                    xs={10}
+                    sx={{
+                      paddingLeft: "0 !important",
+                      // paddingTop: "0 !important",
+                    }}
+                  >
+                    <CardStackedBarChart
+                      tituloPieChart="Clientes que agendaram sessões com 1 semana utilizando o sistema"
+                      width="100%"
+                      data={dataClienteSemana}
+                    ></CardStackedBarChart>
                   </Grid>
                 </Grid>
               </Box>
