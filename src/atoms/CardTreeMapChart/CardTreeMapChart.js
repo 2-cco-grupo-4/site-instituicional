@@ -22,7 +22,7 @@ const CardTreeMapChart = ({ tituloPieChart, data, width }) => {
         >
           {tituloPieChart}
         </Typography>
-        <Typography>Data inválida</Typography>
+        <Typography>Dados Insuficientes</Typography>
       </BoxShadow>
     );
   }

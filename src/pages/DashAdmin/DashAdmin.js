@@ -58,7 +58,7 @@ const DashAdmin = () => {
 
   const [metrica, setMetrica] = useState(defaultValues.metrica);
 
-  const [mesReferencia, setMesReferencia] = useState("novembro");
+  const [mesReferencia, setMesReferencia] = useState("november");
 
   const [mesReferenciaLegenda, setMesReferenciaLegenda] = useState("Novembro");
 
@@ -352,6 +352,14 @@ const DashAdmin = () => {
     }
   }, [token, mesReferencia, anoReferencia]);
 
+  const obterMes = () => {
+    const mes = new Date();
+    const opcoes = { month: "long" };
+    const mesEmPortugues = new Date(mes).toLocaleDateString("pt-BR", opcoes);
+
+    return mesEmPortugues.charAt(0).toUpperCase() + mesEmPortugues.slice(1);
+  };
+
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Box>
@@ -477,6 +485,9 @@ const DashAdmin = () => {
           paddingRight="0 !important"
           width="100%"
         >
+          <Typography fontWeight={"bold"} textAlign={"center"} pt={3}>
+            KPIS Com valores referentes a: {obterMes()}
+          </Typography>
           <Box
             mt={4}
             display="flex"
@@ -538,7 +549,7 @@ const DashAdmin = () => {
               // textAlign="center"
               flex={1}
             >
-              Você está acessando as métricas de{" "}
+              Você está acessando os gráficos de{" "}
               <Box display="inline" fontWeight="bold">
                 {metrica}
               </Box>
@@ -728,6 +739,7 @@ const DashAdmin = () => {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "center",
+                    paddingBottom: "60px",
                     // paddingTop: "0 !important",
                   }}
                 >
