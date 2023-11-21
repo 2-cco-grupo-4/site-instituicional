@@ -83,7 +83,7 @@ const Chat = () => {
 
   return (
     <div>
-      <h1>Meu chat - PICME</h1>
+      <h1>Meu chatt - PICME</h1>
       <ul>
         {userData.map((chat) => (
           <li key={chat.id} onClick={() => handleChatClick(chat.id)}>
