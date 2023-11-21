@@ -18,6 +18,7 @@ import { useUserContext } from "contexts";
 import { IMAGEM } from "service/imagem";
 import { ROUTES } from "utils/constants";
 import { useNavigate } from "react-router-dom";
+import { TEMA } from "service/tema";
 
 const CATEGORIES = [
   "Casamento",
@@ -45,9 +46,15 @@ const Feed = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [numImagesToShow, setNumImagesToShow] = useState(20);
+  const [temas, setTemas] = useState([]);
+  const [temaBusca, setTemaBusca] = useState("");
+  const [tabActive, setTabActive] = useState(null);
 
   useEffect(() => {
-    if (token) loadImages();
+    if (token) {
+      loadImages();
+      loadThemes();
+    }
   }, [token]);
 
   const loadImages = () => {
@@ -68,9 +75,19 @@ const Feed = () => {
       });
   };
 
+  const loadThemes = () => {
+    TEMA.LISTAR_TEMAS(token).then((response) => {
+      setTemas(response.data);
+      console.log(`TESTANDO LISTA DE TEMAS: ${JSON.stringify(response.data)}`);
+    });
+  };
+
   const handleTabChange = (_, newCategory) => {
     console.log(newCategory);
-    setCategory(newCategory);
+    // Se o novo Tab for o mesmo que o Tab ativo, desceleciona
+    const newTabActive = tabActive === newCategory ? null : newCategory;
+    setTabActive(newTabActive);
+    setCategory(newTabActive);
   };
 
   const handleScroll = () => {
@@ -78,6 +95,7 @@ const Feed = () => {
       window.innerHeight + document.documentElement.scrollTop ===
       document.documentElement.offsetHeight
     ) {
+      if (temaBusca != "") return;
       loadImages();
     }
   };
@@ -93,20 +111,61 @@ const Feed = () => {
     };
   }, []);
 
+  const searchTheme = (nomeTema) => {
+    if (loading) return;
+    setLoading(true);
+    IMAGEM.VISUALIZAR_TEMA(token, nomeTema)
+      .then((response) => {
+        console.log(
+          `TESTANDO RESPOSTA DA API: ${JSON.stringify(response.data)}`
+        );
+        const shuffledImages = response.data.sort(() => 0.5 - Math.random());
+        setImages(shuffledImages.slice(0, numImagesToShow));
+        setNumImagesToShow(numImagesToShow + 20);
+        setTimeout(() => {
+          setLoading(false);
+        }, loadingDuration);
+      })
+      .catch((error) => {
+        console.error("Erro na chamada API:", error);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    console.log(`TESTANDO TEMA BUSCA: ${JSON.stringify(temaBusca)}`);
+    if (temaBusca != "") {
+      searchTheme(temaBusca);
+    }
+    if (temaBusca === "") {
+      loadImages();
+    }
+  }, [temaBusca]);
+
   return (
     <>
       <Header type={2} />
       <Tabs
         className={classes.tabs}
-        value={category}
+        value={tabActive}
         variant="scrollable"
         scrollButtons
         aria-label="scrollable categories"
         onChange={handleTabChange}
       >
-        {CATEGORIES.map((content) => (
-          <Tab key={content} label={content} />
-        ))}
+        {temas.length > 0
+          ? temas.map((content) => (
+              <Tab
+                key={content.id_tema}
+                label={content.nome}
+                onClick={() =>
+                  temaBusca === content.nome
+                    ? setTemaBusca("")
+                    : setTemaBusca(content.nome)
+                }
+              />
+            ))
+          : console.log(`TEMAS ENCONTRADOS: ${JSON.stringify(temas)}`)}
       </Tabs>
       <Collapse in={isInfoOpen}>
         <Alert
