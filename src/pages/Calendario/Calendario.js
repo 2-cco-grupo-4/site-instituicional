@@ -40,6 +40,7 @@ function Calendario(props) {
     setOpen(false);
   };
 
+
   const listarFotografo = async () => {
     FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
 
@@ -66,7 +67,7 @@ function Calendario(props) {
       });
 
       setEvents(updatedEvents);
-      console.log(updatedEvents);
+
     });
   };
 
@@ -81,7 +82,7 @@ function Calendario(props) {
   let currentModal = null;
 
   function openModal(info, isAppointment) {
-    // Close the current modal if it exists
+
     if (currentModal) {
       closeModal(currentModal);
     }

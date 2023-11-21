@@ -34,8 +34,8 @@ const Chat = () => {
   const [userOutName, setUserOutName] = useState("");
 
   const { id, nome, tipoUsuario, token } = useUserContext();
-  const userId = Number(id);
-  const campoUser = tipoUsuario === "1" ? "id_cliente" : "id_fotografo";
+  const [userId] = useState(Number(id))
+  const [campoUser] = useState(tipoUsuario === "1" ? "id_cliente" : "id_fotografo");
 
   useEffect(() => {
     const loadChats = async () => {
@@ -56,7 +56,7 @@ const Chat = () => {
       }
     };
     loadChats();
-  }, [id]);
+  }, [id, userChats]);
 
   const loadMessages = async (chatId) => {
     try {

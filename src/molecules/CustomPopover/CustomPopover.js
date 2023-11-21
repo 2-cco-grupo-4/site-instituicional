@@ -7,8 +7,10 @@ import useStyles from "./CustomPopover.styles";
 import arrow from "assets/icons/popover-arrow.svg";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ChatIcon from "@mui/icons-material/Chat";
 import { ROUTES } from "utils/constants";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const CustomPopover = ({ ...props }) => {
   const classes = useStyles();
@@ -61,18 +63,16 @@ const CustomPopover = ({ ...props }) => {
       >
         <Stack
           onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("nome");
-            handleNavigation("/");
-            setAutenticado(false);
-          }}
+            handleNavigation(ROUTES.CHAT)
+          }
+          }
           direction="row"
           alignItems="center"
           sx={{ cursor: "pointer" }}
           p={2}
         >
-          <LogoutIcon></LogoutIcon>
-          <Typography paddingLeft={1}>Logoff</Typography>
+          <ChatIcon />
+          <Typography paddingLeft={1}>Chat</Typography>
         </Stack>
         {tipoUsuario == 2 && (
           <>
@@ -90,6 +90,18 @@ const CustomPopover = ({ ...props }) => {
             </Stack>
             <Stack
               onClick={() => {
+                navigate(ROUTES.CALENDARIO);
+              }}
+              direction="row"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
+              p={2}
+            >
+              <CalendarMonthIcon></CalendarMonthIcon>
+              <Typography paddingLeft={1}>Calendário</Typography>
+            </Stack>
+            <Stack
+              onClick={() => {
                 navigate(ROUTES.DASH_FOTOGRAFO);
               }}
               direction="row"
@@ -102,7 +114,22 @@ const CustomPopover = ({ ...props }) => {
             </Stack>
           </>
         )}
-      </Popover>
+        <Stack
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("nome");
+            handleNavigation("/");
+            setAutenticado(false);
+          }}
+          direction="row"
+          alignItems="center"
+          sx={{ cursor: "pointer" }}
+          p={2}
+        >
+          <LogoutIcon></LogoutIcon>
+          <Typography paddingLeft={1}>Logoff</Typography>
+        </Stack>
+      </Popover >
     </>
   );
 };

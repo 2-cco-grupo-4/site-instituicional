@@ -10,4 +10,7 @@
         100,
         100
     ],
+    "files.associations": {
+        "*.js": "javascriptreact",
+    }
 }

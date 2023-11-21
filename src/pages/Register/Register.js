@@ -74,8 +74,6 @@ const Register = () => {
       data["profile"] = 2
     } else if (perfil === "cliente") {
       data["profile"] = 1
-    } else {
-      alert("Perfil inválido!")
     }
 
     const payload = { ...data }
@@ -97,7 +95,9 @@ const Register = () => {
           setTemas(response.data.temas)
 
           await LOGIN(login)
-            .then(() => {
+            .then((responseLogin) => {
+              console.log(responseLogin.data.token)
+              setToken(responseLogin.data.token)
               navigate(ROUTES.PREFERENCES)
             })
             .catch((err) => {
@@ -121,7 +121,8 @@ const Register = () => {
           setTemas(response.data.temas)
 
           await LOGIN(login)
-            .then(() => {
+            .then((responseLogin) => {
+              setToken(responseLogin.data.token)
               navigate(ROUTES.PREFERENCES)
             })
             .catch((err) => {

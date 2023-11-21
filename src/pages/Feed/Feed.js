@@ -1,31 +1,44 @@
-import useStyles from "./Feed.styles"
-import Header from 'molecules/Header'
-import { Alert, Collapse, IconButton, Stack, Tab, Tabs, Typography, useTheme } from "@mui/material"
-import Container from "atoms/Container"
-import FeedAlbum from "molecules/FeedAlbum/FeedAlbum"
-import { Masonry } from "@mui/lab"
-import { useState, useEffect } from "react"
-import { useUserContext } from "contexts"
+import useStyles from "./Feed.styles";
+import Header from "molecules/Header";
+import {
+  Alert,
+  Collapse,
+  IconButton,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import Container from "atoms/Container";
+import FeedAlbum from "molecules/FeedAlbum/FeedAlbum";
+import { Masonry } from "@mui/lab";
+import { useState, useEffect } from "react";
+import { useUserContext } from "contexts";
 import { IMAGEM } from "service/imagem";
+import { ROUTES } from "utils/constants";
+import { useNavigate } from "react-router-dom";
 
 const CATEGORIES = [
-  'Casamento',
-  'Vintage',
-  'Evento', 'Família',
-  'Aniversário',
-  'Festa',
-  'Pets',
-  'Debutante',
-  'Formatura',
-  'Esporte',
-  'Paisagem'
-]
+  "Casamento",
+  "Vintage",
+  "Evento",
+  "Família",
+  "Aniversário",
+  "Festa",
+  "Pets",
+  "Debutante",
+  "Formatura",
+  "Esporte",
+  "Paisagem",
+];
 
 const loadingDuration = 2000;
 
 const Feed = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const navigate = useNavigate();
   const [category, setCategory] = useState();
   const [isInfoOpen, setIsInfoOpen] = useState(true);
   const { token } = useUserContext();
@@ -34,7 +47,7 @@ const Feed = () => {
   const [numImagesToShow, setNumImagesToShow] = useState(20);
 
   useEffect(() => {
-    loadImages();
+    if (token) loadImages();
   }, [token]);
 
   const loadImages = () => {
@@ -50,13 +63,13 @@ const Feed = () => {
         }, loadingDuration);
       })
       .catch((error) => {
-        console.error('Erro na chamada API:', error);
+        console.error("Erro na chamada API:", error);
         setLoading(false);
       });
   };
 
   const handleTabChange = (_, newCategory) => {
-    console.log(newCategory)
+    console.log(newCategory);
     setCategory(newCategory);
   };
 
@@ -70,13 +83,13 @@ const Feed = () => {
   };
 
   const handleImageClick = (idAlbum) => {
-    console.log("Clicou na imagem com idAlbum:", idAlbum);
+    navigate(ROUTES.ALBUM(idAlbum));
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -103,28 +116,27 @@ const Feed = () => {
           style={{
             borderRadius: 0,
             backgroundColor: theme.palette.secondary.main,
-            display: 'flex',
-            alignItems: 'center',
+            display: "flex",
+            alignItems: "center",
             padding: theme.spacing(0, 8),
           }}
         >
           <Typography variant="paragraph-xsmall-regular">
-            Escolhemos essas imagens com base nas suas preferências, caso deseje ver mais opções{' '}
-            você pode fazer uma busca ou navegar pelas tags!
+            Escolhemos essas imagens com base nas suas preferências, caso deseje
+            ver mais opções você pode fazer uma busca ou navegar pelas tags!
           </Typography>
         </Alert>
       </Collapse>
       <Stack py={4}>
         <Container display="flex" flexDirection="column" alignItems="center">
           <Stack alignItems="center" sx={{ width: "calc(100% + 24px)" }}>
-            <Masonry columns={3} spacing={3} sx={{ width: '100%' }}>
+            <Masonry columns={3} spacing={3} sx={{ width: "100%" }}>
               {images.map((image, index) => (
                 <FeedAlbum
                   key={index}
                   src={image.path}
                   autor={image.fotografo}
-                  idAlbum={image.albumId}
-                  onImageClick={handleImageClick}
+                  onClick={() => handleImageClick(image.albumId)}
                 />
               ))}
             </Masonry>
@@ -135,7 +147,6 @@ const Feed = () => {
         <Typography
           variant="h6"
           style={{
-            filter: "blur(3px)",
             transition: `filter ${loadingDuration}ms`,
           }}
         >
