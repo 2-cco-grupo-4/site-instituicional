@@ -21,6 +21,7 @@ import {
   where,
   orderBy,
   addDoc,
+  or,
 } from "firebase/firestore"
 import db from "service/firebase"
 import { useUserContext } from "contexts"
@@ -37,11 +38,10 @@ const Chat = () => {
   const [messageInput, setMessageInput] = useState("")
   const [userChatName, setUserChatName] = useState("")
 
-  const { id, nome, tipoUsuario, token } = useUserContext()
+  const inputRef = useRef(null)
+
+  const { id, nome, token } = useUserContext()
   const [userId] = useState(Number(id))
-  const [campoUser] = useState(
-    tipoUsuario == 1 ? "id_cliente" : "id_fotografo"
-  )
 
   const formatDatesChat = (data) => {
     const newChats = data
@@ -54,15 +54,27 @@ const Chat = () => {
       const dataSemanaPassada = new Date(dataAtual)
       dataSemanaPassada.setDate(dataSemanaPassada.getDate() - 7)
 
-
       if (dataMensagem.getDate() === dataAtual.getDate()) {
-        chat.data_ultima_mensagem = dataMensagem.toLocaleTimeString().slice(0, 5)
-      } else if (dataMensagem.getDate() === dataOntem.getDate()){
+        chat.data_ultima_mensagem = dataMensagem
+          .toLocaleTimeString()
+          .slice(0, 5)
+      } else if (dataMensagem.getDate() === dataOntem.getDate()) {
         chat.data_ultima_mensagem = "ontem"
-      } else if (dataMensagem.getDate() < dataOntem.getDate() && dataMensagem.getDate() > dataSemanaPassada.getDate()) {
-        const daysOfWeek = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
+      } else if (
+        dataMensagem.getDate() < dataOntem.getDate() &&
+        dataMensagem.getDate() > dataSemanaPassada.getDate()
+      ) {
+        const daysOfWeek = [
+          "domingo",
+          "segunda-feira",
+          "terça-feira",
+          "quarta-feira",
+          "quinta-feira",
+          "sexta-feira",
+          "sábado",
+        ]
         chat.data_ultima_mensagem = daysOfWeek[dataMensagem.getDay()]
-      }else{
+      } else {
         chat.data_ultima_mensagem = dataMensagem.toLocaleDateString()
       }
     })
@@ -74,7 +86,10 @@ const Chat = () => {
     try {
       const chatQuery = query(
         collection(db, "chats"),
-        where(campoUser, "==", userId),
+        or(
+          where("id_fotografo", "==", userId),
+          where("id_contratante", "==", userId)
+        ),
         orderBy("data_ultima_mensagem")
       )
 
@@ -120,171 +135,180 @@ const Chat = () => {
     loadMessages(chatId)
   }
 
-  // const handleMessageSubmit = async () => {
-  //   if (!selectedChat || !messageInput) return
+  const handleMessageSubmit = async () => {
+    if (!selectedChat || !messageInput) return
 
-  //   try {
-  //     const docRef = await addDoc(
-  //       collection(db, "chats", selectedChat, "mensagens"),
-  //       {
-  //         mensagem: messageInput,
-  //         horario_envio: new Date(),
-  //         id_usuario: userId,
-  //       }
-  //     )
-  //     console.log("Mensagem enviada com ID: ", docRef.id)
-  //     setMessageInput("")
-  //     loadMessages(selectedChat)
-  //   } catch (error) {
-  //     console.error("Erro ao enviar mensagem:", error)
-  //   }
-  // }
-
-  // const refBody = useRef("")
-
-  // useEffect(() => {
-  //   if (refBody.current.scrollHeight > refBody.current.offsetHeight) {
-  //     refBody.current.scrollTop =
-  //       refBody.current.scrollHeight - refBody.currentoffsetHeight
-  //   }
-  // }, [messages])
+    try {
+      const docRef = await addDoc(
+        collection(db, "chats", selectedChat, "mensagens"),
+        {
+          mensagem: messageInput,
+          horario_envio: new Date(),
+          id_usuario: userId,
+        }
+      )
+      console.log("Mensagem enviada com ID: ", docRef.id)
+      inputRef.current.value = ""
+      setMessageInput("")
+      loadMessages(selectedChat)
+    } catch (error) {
+      console.error("Erro ao enviar mensagem:", error)
+    }
+  }
 
   useEffect(() => {
-    setTimeout(() => {
-      loadChats()
-    }, 100)
+    loadChats()
   }, [id])
 
+  useEffect(() => {
+    console.log(id)
+    console.log(userChats)
+  }, [userChats])
 
   return (
     <Stack height="100dvh" sx={{ flexGrow: 1 }}>
       <Grid container height="100%" position="relative">
         <Grid item xs={4} className={classes.sidebar}>
           <Stack direction="column-reverse">
-            {userChats.map((chat) => (
-              <Stack
-                key={chat.id}
-                columnGap={2}
-                flexDirection="row"
-                alignItems="center"
-                className={classes.chatItem}
-                onClick={() => handleChatClick(chat.id, chat.nome_fotografo)}
-              >
-                <ProfilePic
-                  autor={chat.nome_fotografo}
-                  alt={chat.nome_fotografo}
-                  sx={{ width: theme.spacing(5), height: theme.spacing(5) }}
-                />
-                <Stack rowGap={1} className={classes.chatItemText}>
-                  <Stack
-                    columnGap={1}
-                    flexDirection="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    width="100%"
-                  >
-                    <Typography noWrap variant="paragraph-medium-bold">
-                      {chat.nome_fotografo}
-                    </Typography>
-                    <Typography
-                      variant="paragraph-xsmall-regular"
-                      align="right"
+            {userChats.map((chat) => {
+              let nameChatUser =
+                id === chat.id_contratante
+                  ? chat.nome_fotografo
+                  : chat.nome_contratante
+              return (
+                <Stack
+                  key={chat.id}
+                  columnGap={2}
+                  flexDirection="row"
+                  alignItems="center"
+                  className={classes.chatItem}
+                  onClick={() => handleChatClick(chat.id, nameChatUser)}
+                >
+                  <ProfilePic
+                    autor={nameChatUser}
+                    alt={nameChatUser}
+                    sx={{ width: theme.spacing(5), height: theme.spacing(5) }}
+                  />
+                  <Stack rowGap={1} className={classes.chatItemText}>
+                    <Stack
+                      columnGap={1}
+                      flexDirection="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      width="100%"
                     >
-                      {chat.data_ultima_mensagem}
+                      <Typography noWrap variant="paragraph-medium-bold">
+                        {nameChatUser}
+                      </Typography>
+                      <Typography
+                        variant="paragraph-xsmall-regular"
+                        align="right"
+                      >
+                        {chat.data_ultima_mensagem}
+                      </Typography>
+                    </Stack>
+                    <Typography noWrap variant="paragraph-small-regular">
+                      {chat.ultima_mensagem}
                     </Typography>
                   </Stack>
-                  <Typography noWrap variant="paragraph-small-regular">
-                    {chat.ultima_mensagem}
-                  </Typography>
                 </Stack>
-              </Stack>
-            ))}
+              )
+            })}
           </Stack>
         </Grid>
-        <Grid item xs={8} className={classes.chatTextArea}>
+        <Grid item xs={9} className={classes.chatTextArea}>
           {selectedChat && (
             <Container
-              pb={2}
+              py={4}
               minHeight="100%"
+              maxHeight="100dvh"
               flexDirection="column"
-              justifyContent="flex-end"
+              justifyContent="flex-start"
             >
               <Stack
                 pb={4}
-                height="100%"
                 flexDirection="column"
                 justifyContent="flex-end"
-                rowGap={3}
+                className={classes.messagesContainer}
               >
-                {messages.map((content, index) => (
-                  <Stack
-                    key={index}
-                    direction="row"
-                    width="100%"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
-                    columnGap={1}
-                  >
-                    <Typography
-                      sx={{
-                        width: "fit-content",
-                        maxWidth: "60%",
-                        color: theme.palette.white.main,
-                        bgcolor: theme.palette.primary.main,
-                        borderRadius: theme.shape.borderRadius,
-                        borderBottomRightRadius: 1,
-                        padding: theme.spacing(1, 2),
-                      }}
+                {messages.map((content, index) => {
+                  let isNextMessageFromUser
+
+                  if (
+                    index < messages.length - 1 &&
+                    messages[index + 1].id_usuario === content.id_usuario
+                  ) {
+                    isNextMessageFromUser = true
+                  } else {
+                    isNextMessageFromUser = false
+                  }
+
+                  return (
+                    <Stack
+                      key={index}
+                      direction={
+                        id == content.id_usuario ? "row" : "row-reverse"
+                      }
+                      width="100%"
+                      justifyContent="flex-end"
+                      alignItems="flex-end"
+                      columnGap={1}
+                      mb={isNextMessageFromUser ? 0.5 : 3}
                     >
-                      {content.mensagem}
-                    </Typography>
-                    <ProfilePic
-                      autor={id == content.id_usuario ? nome : userChatName }
-                      sx={{
-                        width: theme.spacing(4),
-                        height: theme.spacing(4),
-                        fontSize: theme.spacing(2),
-                      }}
-                    />
-                  </Stack>
-                ))}
-                {/* <Stack
-                  direction="row-reverse"
-                  width="100%"
-                  justifyContent="flex-end"
-                  alignItems="flex-end"
-                  columnGap={1}
-                >
-                  <Typography
-                    sx={{
-                      width: "fit-content",
-                      maxWidth: "60%",
-                      bgcolor: theme.palette.whiteSoft.main,
-                      borderRadius: theme.shape.borderRadius,
-                      borderBottomLeftRadius: 1,
-                      padding: theme.spacing(1, 2),
-                    }}
-                  >
-                    Claro! Te ligo pelo WhatsApp!
-                  </Typography>
-                  <ProfilePic
-                    autor="Ryan Miyazato"
-                    sx={{
-                      width: theme.spacing(4),
-                      height: theme.spacing(4),
-                      fontSize: theme.spacing(2),
-                    }}
-                  />
-                </Stack> */}
+                      <Typography
+                        sx={
+                          id == content.id_usuario
+                            ? {
+                                width: "fit-content",
+                                maxWidth: "60%",
+                                color: theme.palette.white.main,
+                                bgcolor: theme.palette.primary.main,
+                                borderRadius: theme.shape.borderRadius,
+                                borderBottomRightRadius: 1,
+                                padding: theme.spacing(1, 2),
+                                marginRight:
+                                  isNextMessageFromUser && theme.spacing(5),
+                              }
+                            : {
+                                width: "fit-content",
+                                maxWidth: "60%",
+                                bgcolor: theme.palette.whiteSoft.main,
+                                borderRadius: theme.shape.borderRadius,
+                                borderBottomLeftRadius: 1,
+                                padding: theme.spacing(1, 2),
+                                marginLeft:
+                                  isNextMessageFromUser && theme.spacing(5),
+                              }
+                        }
+                      >
+                        {content.mensagem}
+                      </Typography>
+                      {isNextMessageFromUser || (
+                        <ProfilePic
+                          autor={id == content.id_usuario ? nome : userChatName}
+                          sx={{
+                            width: theme.spacing(4),
+                            height: theme.spacing(4),
+                            fontSize: theme.spacing(2),
+                          }}
+                        />
+                      )}
+                    </Stack>
+                  )
+                })}
               </Stack>
               <OutlinedInput
                 multiline
                 maxRows={5}
                 placeholder="Digite uma mensagem..."
                 fullWidth
+                className={classes.inputMessage}
+                inputRef={inputRef}
+                onChange={(e) => setMessageInput(e.target.value)}
                 sx={{ bgcolor: theme.palette.white.main }}
                 endAdornment={
                   <Button
+                    onClick={() => handleMessageSubmit()}
                     sx={{
                       fontSize: theme.spacing(2),
                       minWidth: 0,

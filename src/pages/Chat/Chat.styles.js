@@ -40,4 +40,14 @@ export default makeStyles((theme) => ({
     width: "100%",
     right: 0,
   },
+
+  messagesContainer: {
+    height: "100%",
+    maxHeight: "100%",
+    width: "100%",
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  },
 }))

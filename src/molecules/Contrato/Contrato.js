@@ -21,13 +21,8 @@ import { stringAvatar, toLocalDate } from "utils/helpers/string"
 import CustomButton from "atoms/CustomButton"
 import { useNavigate } from "react-router"
 import { ROUTES } from "utils/constants"
-import {
-  collection,
-  addDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
-import db from "service/firebase";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore"
+import db from "service/firebase"
 import { useUserContext } from "contexts"
 
 const Contract = ({ open, setOpen, fotografo }) => {
@@ -55,30 +50,30 @@ const Contract = ({ open, setOpen, fotografo }) => {
     setLoading(true)
     try {
       const chatRef = await addDoc(collection(db, "chats"), {
-        id_cliente: idCliente,
+        id_contratante: idCliente,
         id_fotografo: fotografo.id,
-        nome_cliente: nome,
+        nome_contratante: nome,
         nome_fotografo: fotografo.nome,
         data_ultima_mensagem: new Date(),
-      });
+      })
 
       console.log(chatRef)
 
-      const chatId = chatRef.id;
+      const chatId = chatRef.id
 
       await addDoc(collection(db, "chats", chatId, "mensagens"), {
-        mensagem: contract?.mensagem || "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+        mensagem: contract?.mensagem || "Olá! Tenho interesse no seu trabalho!",
         horario_envio: new Date(),
         id_usuario: idCliente,
-      });
+      })
 
-      const chatDoc = doc(db, 'chats', chatId);
+      const chatDoc = doc(db, "chats", chatId)
       await updateDoc(chatDoc, {
-        ultima_mensagem: contract?.mensagem || "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
-      });
+        ultima_mensagem:
+          contract?.mensagem || "Olá! Tenho interesse no seu trabalho!",
+      })
 
       callback()
-
     } catch (err) {
       console.log(err)
       onError()
@@ -115,7 +110,10 @@ const Contract = ({ open, setOpen, fotografo }) => {
         break
       case 2:
         console.log(contract)
-        createChat({ callback: () => setStep(3), onError: () => console.log("erro") })
+        createChat({
+          callback: () => setStep(3),
+          onError: () => console.log("erro"),
+        })
         break
     }
   }
