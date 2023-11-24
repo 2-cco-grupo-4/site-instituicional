@@ -1,13 +1,12 @@
-import { makeStyles } from "@mui/styles"
+import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
   sidebar: {
     boxShadow: "0px 8px 8px rgb(0,0,0,0.25)",
     height: "100%",
     backgroundColor: theme.palette.white.main,
-    position: "fixed",
     overflowY: "scroll",
-    zIndex: 10,
+    position: "relative",
     "&::-webkit-scrollbar": {
       display: "none",
     },
@@ -34,20 +33,26 @@ export default makeStyles((theme) => ({
   },
 
   chatTextArea: {
-    // backgroundColor: "rgba(0,0,0,0.1)",
-    position: "fixed",
-    height: "100%",
+    maxHeight: "100dvh",
     width: "100%",
-    right: 0,
+    overflowY: "scroll",
+    justifyContent: "flex-end",
   },
 
   messagesContainer: {
     height: "100%",
     maxHeight: "100%",
-    width: "100%",
-    overflowY: "scroll",
+    maxWidth: "100%",
+    overflowY: "auto",
+    position: "relative",
     "&::-webkit-scrollbar": {
       display: "none",
     },
   },
-}))
+
+  inputMessage: {
+    position: "sticky !important",
+    bottom: theme.spacing(3),
+    left: 0,
+  },
+}));
