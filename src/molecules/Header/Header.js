@@ -1,6 +1,6 @@
-import useStyles from "./Header.styles"
-import OptionNav from "atoms/OptionNav"
-import CustomButton from "atoms/CustomButton/CustomButton"
+import useStyles from "./Header.styles";
+import OptionNav from "atoms/OptionNav";
+import CustomButton from "atoms/CustomButton/CustomButton";
 import {
   Box,
   Typography,
@@ -12,38 +12,69 @@ import {
   Drawer,
   Menu,
   Grid,
-} from "@mui/material"
-import { HEADER_HEIGHT, ROUTES } from "utils/constants"
-import Container from "atoms/Container"
-import { useUserContext } from "contexts"
-import { useNavigate } from "react-router-dom"
-import CustomPopover from "molecules/CustomPopover"
-import LogoPicme from "atoms/LogoPicme"
-import iconSearch from "assets/icons/search.svg"
-import { useState } from "react"
+  InputAdornment,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
+import { HEADER_HEIGHT, ROUTES } from "utils/constants";
+import Container from "atoms/Container";
+import { useUserContext } from "contexts";
+import { useNavigate } from "react-router-dom";
+import CustomPopover from "molecules/CustomPopover";
+import LogoPicme from "atoms/LogoPicme";
+import iconSearch from "assets/icons/search.svg";
+import { useState, useRef, useEffect } from "react";
+import { PESQUISA } from "service/pesquisa";
 
-import MenuIcon from "@mui/icons-material/Menu"
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import { Controller, useForm } from "react-hook-form";
 
 const Header = ({ type }) => {
-  const classes = useStyles()
-  const navigate = useNavigate()
-  const { autenticado } = useUserContext()
-  const [open, setState] = useState(false)
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const { autenticado, token } = useUserContext();
+  const [open, setState] = useState(false);
+  const inputRef = useRef(null);
+  const [listaPesquisa, setListaPesquisa] = useState([]);
+
+  const { handleSubmit, control, setValue, reset } = useForm();
+
+  const testador = ["Lista 1", "Lista 2", "Lista 3", "Lista 4"];
+
+  const [termoBusca, setTermoBusca] = useState("");
 
   const handleNavigation = (route) => {
-    navigate(route)
-  }
+    navigate(route);
+  };
+
+  useEffect(() => {
+    setTermoBusca("");
+  }, []);
+
+  const buscar = async (pesquisa) => {
+    try {
+      const response = await PESQUISA.TERMO(pesquisa, token);
+      if (response.status === 200) {
+        setListaPesquisa(response.data);
+      } else if (response.status === 204) {
+        setListaPesquisa([]);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar:", error);
+    }
+  };
 
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
     ) {
-      return
+      return;
     }
     //changes the function state according to the value of open
-    setState(open)
-  }
+    setState(open);
+  };
 
   const Content = (props) => {
     switch (type) {
@@ -55,22 +86,68 @@ const Header = ({ type }) => {
             <OptionNav title="Produto" navigation="#produto" />
             <OptionNav title="Explorar" navigation="#explorar" />
           </Box>
-        )
+        );
       case 2:
         return (
-          <Box className={classes.search}>
-            <img src={iconSearch} alt="search-icon" />
-            <InputBase
-              name="pesquisa"
-              placeholder="Pesquise imagens do seu interesse"
-              inputProps={{ "aria-label": "search" }}
-            />
+          <Box display="flex" flexDirection="row">
+            {console.log("Lista de Pesquisa:", listaPesquisa)}
+            <Controller
+              name="idPesquisa"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Autocomplete
+                  freeSolo
+                  inputValue={termoBusca}
+                  options={
+                    listaPesquisa.length > 0
+                      ? listaPesquisa.map((pesquisa) => pesquisa.termo)
+                      : []
+                  }
+                  getOptionLabel={(option) => option}
+                  onChange={(event, newValue) => {
+                    const selectedTermo = listaPesquisa.find(
+                      (termo) => termo.termo === newValue
+                    );
+                    if (selectedTermo) {
+                      setTermoBusca(selectedTermo.termo);
+                    } else {
+                      setTermoBusca(newValue || "");
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      {...field}
+                      id="busca"
+                      label="Pesquise"
+                      autoFocus="autoFocus"
+                      sx={{
+                        width: 600,
+                      }}
+                      onChange={(e) => {
+                        setTermoBusca(e.target.value);
+                        field.onChange(e.target.value);
+                        buscar(e.target.value);
+                      }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <SearchIcon sx={{ fontSize: 26 }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    ></TextField>
+                  )}
+                ></Autocomplete>
+              )}
+            ></Controller>
           </Box>
-        )
+        );
       default:
-        return <></>
+        return <></>;
     }
-  }
+  };
 
   return (
     <Container
@@ -197,7 +274,7 @@ const Header = ({ type }) => {
         </Toolbar>
       </AppBar>
     </Container>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

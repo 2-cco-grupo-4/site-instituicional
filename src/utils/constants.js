@@ -1,4 +1,4 @@
-export const HEADER_HEIGHT = "56px";
+export const HEADER_HEIGHT = "80px";
 
 export const ROUTES = {
   HOME: "/",
@@ -15,7 +15,7 @@ export const ROUTES = {
   DASH_FOTOGRAFO: "/dash-fotografo",
   ARQUIVOS_ADMIN: "/dash-admin/arquivos",
   ARQUIVOS_FOTOGRAFO: "/dash-fotografo/arquivos",
-  CALENDARIO: "/calendario"
+  CALENDARIO: "/calendario",
 };
 
 export const PROFILE_TYPES = {

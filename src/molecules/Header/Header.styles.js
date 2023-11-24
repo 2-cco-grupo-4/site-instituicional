@@ -46,6 +46,9 @@ export default makeStyles((theme) => ({
       width: "25vw",
     },
   },
+  busca: {
+    height: "70%",
+  },
   largeIcon: {
     width: 60,
     height: 60,
