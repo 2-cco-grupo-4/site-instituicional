@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import CustomPopover from "molecules/CustomPopover";
 import LogoPicme from "atoms/LogoPicme";
 import iconSearch from "assets/icons/search.svg";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { PESQUISA } from "service/pesquisa";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -37,33 +37,34 @@ const Header = ({ type }) => {
   const [open, setState] = useState(false);
   const inputRef = useRef(null);
   const [listaPesquisa, setListaPesquisa] = useState([]);
-
-  const { handleSubmit, control, setValue, reset } = useForm();
-
-  const testador = ["Lista 1", "Lista 2", "Lista 3", "Lista 4"];
-
-  const [termoBusca, setTermoBusca] = useState("");
+  const [termoPesquisa, setTermoPesquisa] = useState("");
 
   const handleNavigation = (route) => {
     navigate(route);
   };
 
-  useEffect(() => {
-    setTermoBusca("");
+  const handleSearchChange = useCallback((event, value) => {
+    console.log("Valor da Pesquisa:", value);
+    setTermoPesquisa(value);
   }, []);
 
-  const buscar = async (pesquisa) => {
-    try {
-      const response = await PESQUISA.TERMO(pesquisa, token);
+  const buscar = (pesquisa) => {
+    PESQUISA.TERMO(pesquisa, token).then((response) => {
       if (response.status === 200) {
         setListaPesquisa(response.data);
       } else if (response.status === 204) {
         setListaPesquisa([]);
       }
-    } catch (error) {
-      console.error("Erro ao buscar:", error);
-    }
+    });
   };
+
+  useEffect(() => {
+    if (termoPesquisa !== "") {
+      buscar(termoPesquisa);
+    } else {
+      setListaPesquisa([]);
+    }
+  }, [termoPesquisa]);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -90,58 +91,39 @@ const Header = ({ type }) => {
       case 2:
         return (
           <Box display="flex" flexDirection="row">
-            {console.log("Lista de Pesquisa:", listaPesquisa)}
-            <Controller
-              name="idPesquisa"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Autocomplete
-                  freeSolo
-                  inputValue={termoBusca}
-                  options={
-                    listaPesquisa.length > 0
-                      ? listaPesquisa.map((pesquisa) => pesquisa.termo)
-                      : []
-                  }
-                  getOptionLabel={(option) => option}
-                  onChange={(event, newValue) => {
-                    const selectedTermo = listaPesquisa.find(
-                      (termo) => termo.termo === newValue
-                    );
-                    if (selectedTermo) {
-                      setTermoBusca(selectedTermo.termo);
-                    } else {
-                      setTermoBusca(newValue || "");
-                    }
+            {console.log("Lista de Pesquisa:", termoPesquisa)}
+            <Autocomplete
+              key="bobao"
+              freeSolo
+              options={
+                listaPesquisa.length > 0
+                  ? listaPesquisa.map(
+                      (pesquisa) => pesquisa.termo + `\t${pesquisa.tipo}`
+                    )
+                  : []
+              }
+              getOptionLabel={(option) => option}
+              onInputChange={handleSearchChange}
+              value={termoPesquisa}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  id="busca"
+                  label="Pesquise"
+                  sx={{
+                    width: 600,
                   }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      {...field}
-                      id="busca"
-                      label="Pesquise"
-                      autoFocus="autoFocus"
-                      sx={{
-                        width: 600,
-                      }}
-                      onChange={(e) => {
-                        setTermoBusca(e.target.value);
-                        field.onChange(e.target.value);
-                        buscar(e.target.value);
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <SearchIcon sx={{ fontSize: 26 }} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    ></TextField>
-                  )}
-                ></Autocomplete>
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               )}
-            ></Controller>
+            />
           </Box>
         );
       default:

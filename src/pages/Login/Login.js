@@ -30,6 +30,7 @@ const Login = () => {
   const { tipoUsuario, setTipoUsuario } = useUserContext();
   const { tokenSolicitacao, setTokenSolicitacao } = useUserContext();
   const [btnLoading, setBtnLoading] = useState(false);
+  const [loginError, setLoginError] = useState(false);
 
   const {
     register,
@@ -39,6 +40,7 @@ const Login = () => {
 
   const onSubmitHandler = async (data) => {
     setBtnLoading(true);
+    setLoginError(false);
 
     await LOGIN(data)
       .then((response) => {
@@ -60,7 +62,7 @@ const Login = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        setLoginError(true);
       })
       .finally(() => setBtnLoading(false));
   };
@@ -113,8 +115,12 @@ const Login = () => {
                 label="E-mail"
                 fullWidth
                 {...register("email")}
-                error={!!errors.email}
-                helperText={errors.email?.message}
+                error={!!errors.email || loginError}
+                helperText={
+                  errors.email?.message ||
+                  (loginError && "E-mail ou senha incorretos")
+                }
+                onKeyDown={() => setLoginError(false)}
               />
               <TextField
                 id="password-ipt"
@@ -123,8 +129,12 @@ const Login = () => {
                 label="Senha"
                 fullWidth
                 {...register("senha")}
-                error={!!errors.senha}
-                helperText={errors.senha?.message}
+                error={!!errors.senha || loginError}
+                helperText={
+                  errors.senha?.message ||
+                  (loginError && "E-mail ou senha incorretos")
+                }
+                onKeyDown={() => setLoginError(false)}
               />
             </Stack>
             <CustomButton
