@@ -11,6 +11,7 @@ pipeline {
   }
 
   stages {
+
     stage('Login Docker Hub') {
       steps {
         script {
@@ -71,5 +72,6 @@ pipeline {
         }
       }
     }
+    
   }
 }

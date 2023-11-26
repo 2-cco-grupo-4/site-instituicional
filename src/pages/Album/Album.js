@@ -32,6 +32,7 @@ import Contrato from "molecules/Contrato/Contrato";
 import { ALBUM } from "service/album";
 import { AVALIACAO } from "service/avaliacao";
 import { set } from "react-hook-form";
+import { IMAGEM } from "service/imagem";
 
 const images = [
   {
@@ -69,6 +70,7 @@ function Album() {
   const [tema, setTemas] = useState([]);
   const [avaliacoes, setAvaliacoes] = useState([]);
   const { idAlbum } = useParams();
+  const [imagensRenderizadas, setImagensRenderizadas] = useState([]);
 
   const [clientes, setClientes] = useState([]);
   const [sessoes, setSessoes] = useState([]);
@@ -164,6 +166,59 @@ function Album() {
     }
   }, [sessoes]);
 
+  useEffect(() => {
+    const fetchImagens = async () => {
+      const imagensRenderizadas = await Promise.all(
+        imagens.map(async (imagem) => {
+          console.log(`TESTE IMAGEM: ${JSON.stringify(imagem)}`);
+          if (imagem.origemImagem === "s3") {
+            try {
+              const response = await IMAGEM.GET_OBJECT(imagem.id);
+              const tipoImagem =
+                response.headers["content-type"] || "image/png";
+
+              const blob = new Blob([response.data], {
+                type: tipoImagem,
+              });
+
+              const url = URL.createObjectURL(blob);
+
+              // Retornar o elemento JSX diretamente
+              return (
+                <ImageContainer key={imagem.id} className="image">
+                  <ImageElement
+                    src={url}
+                    alt={imagem.descricao}
+                    style={{ width: "auto", height: "auto", maxWidth: "100%" }}
+                  />
+                </ImageContainer>
+              );
+            } catch (error) {
+              console.error("Erro na chamada API:", error);
+              return null;
+            }
+          } else {
+            // Se a origem não é S3, retornar o componente FeedAlbum padrão
+            return (
+              <ImageContainer key={imagem.id} className="image">
+                <ImageElement
+                  src={imagem.path}
+                  alt={imagem.descricao}
+                  style={{ width: "auto", height: "auto" }}
+                />
+              </ImageContainer>
+            );
+          }
+        })
+      );
+
+      // Atualizar o componente renderizando os elementos JSX diretamente
+      setImagensRenderizadas(imagensRenderizadas);
+    };
+
+    fetchImagens();
+  }, [imagens, token]);
+
   return (
     <>
       <Header type={2} />
@@ -179,17 +234,7 @@ function Album() {
             alignItems: "center",
           }}
         >
-          {imagens
-            ? imagens.map((image) => (
-                <ImageContainer key={image.id} className="image">
-                  <ImageElement
-                    src={image.path}
-                    alt={image.descricao}
-                    style={{ width: "auto", height: "auto" }}
-                  />
-                </ImageContainer>
-              ))
-            : console.log("Carregando...")}
+          {imagensRenderizadas}
         </ImageStack>
         <Sidebar spacing={5}>
           <UserArea spacing={3}>
