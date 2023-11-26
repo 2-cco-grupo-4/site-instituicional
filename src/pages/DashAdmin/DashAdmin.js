@@ -360,6 +360,10 @@ const DashAdmin = () => {
     return mesEmPortugues.charAt(0).toUpperCase() + mesEmPortugues.slice(1);
   };
 
+  const handleNavigation = (route) => {
+    navigate(route);
+  };
+
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Box>
@@ -456,8 +460,13 @@ const DashAdmin = () => {
                 justifyContent="space-around"
                 sx={{ cursor: "pointer" }}
                 onClick={() => {
-                  localStorage.clear();
-                  navigate(ROUTES.HOME);
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("nome");
+                  localStorage.removeItem("tipoUsuario");
+                  localStorage.removeItem("id");
+                  localStorage.removeItem("temas");
+                  localStorage.removeItem("tokenSolicitacao");
+                  handleNavigation("/");
                 }}
               >
                 <LogoutIcon
@@ -836,7 +845,7 @@ const DashAdmin = () => {
                     }}
                   >
                     <CardStackedBarChart
-                      tituloPieChart="Contatos convertidos em sessões"
+                      tituloPieChart="Contatos iniciados no mês que foram convertidos em sessões"
                       width="100%"
                       data={dataContatosConvertidos}
                     ></CardStackedBarChart>
@@ -854,7 +863,7 @@ const DashAdmin = () => {
                     }}
                   >
                     <CardBarLineChart
-                      tituloPieChart="Progressão sessões de fotos realizadas"
+                      tituloPieChart="Progressão de sessões de fotos realizadas em cada mês"
                       data={dataProgressaoSessoes}
                       width="100%"
                     ></CardBarLineChart>

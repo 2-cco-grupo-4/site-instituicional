@@ -88,6 +88,10 @@ const ArquivosAdmin = () => {
       });
   };
 
+  const handleNavigation = (route) => {
+    navigate(route);
+  };
+
   return (
     <Stack>
       <Box>
@@ -186,8 +190,13 @@ const ArquivosAdmin = () => {
                 justifyContent="space-around"
                 sx={{ cursor: "pointer" }}
                 onClick={() => {
-                  localStorage.clear();
-                  navigate(ROUTES.HOME);
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("nome");
+                  localStorage.removeItem("tipoUsuario");
+                  localStorage.removeItem("id");
+                  localStorage.removeItem("temas");
+                  localStorage.removeItem("tokenSolicitacao");
+                  handleNavigation("/");
                 }}
               >
                 <LogoutIcon
