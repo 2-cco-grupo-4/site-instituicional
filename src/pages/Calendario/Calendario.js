@@ -44,6 +44,7 @@ function Calendario(props) {
   const listarFotografo = async () => {
     FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
 
+
       const updatedEvents = response.data.map((event) => {
 
 
@@ -59,10 +60,11 @@ function Calendario(props) {
           bairro: event.endereco.bairro,
           estado: event.endereco.estado,
           complemento: event.endereco.complemento,
+          cep: event.endereco.cep,
           numero: event.endereco.numero,
           statusSessao: event.statusSessao,
           cep: event.cep,
-
+          dataRealizacao: event.dataRealizacao,
         };
       });
 
@@ -99,37 +101,54 @@ function Calendario(props) {
 
     if (isAppointment) {
       title = info.title;
-      date = new Date(info.start).toLocaleDateString();
+      date = new Date(info.start);
       endereco = info.endereco;
       cliente = info.cliente;
       status = info.statusSessao;
     } else {
-      title = `${info.event._def.extendedProps.cliente} Evento`;
-      date = new Date(info.event._def.extendedProps.start).toLocaleTimeString();
-      endereco = `${info.event._def.extendedProps.estado}, ${info.event._def.extendedProps.cidade}, ${info.event._def.extendedProps.bairro}, ${info.event._def.extendedProps.rua}, ${info.event._def.extendedProps.numero}, ${info.event._def.extendedProps.complemento}`;
-      cliente = info.event._def.extendedProps.cliente;
-      status = info.event._def.extendedProps.statusSessao;
+      let data = info.event._def.extendedProps;
+      title = `${data.cliente} Evento`;
+      date = new Date(data.dataRealizacao);
+      endereco = `${data.estado}, ${data.cidade}, ${data.bairro}, ${data.rua}, ${data.numero}, ${data.complemento}`;
+      cliente = data.cliente;
+      status = data.statusSessao;
     }
 
+
+    let dataDiv = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    let horaDiv = `${date.getHours()}:${date.getMinutes()}`;
     boxModal.innerHTML = `
-      <div class="box-title">
-        <h2>${title}</h2>
-        <p>${date}</p>
+
+
+    <div class="box-header">
+    <div class="date">${dataDiv} ${horaDiv} </div>
+    <div class="close">X</div>
+  </div>
+
+  <div class="box-body">
+    <div class="box-body">
+      <div class="box">
+        <h1>${title}</h1>
       </div>
-      <div class="box-info">
-        <div class="box-endereco">
-          <h3>Endereço</h3>
-          <p>${endereco}</p>
-        </div>
-        <div class="box-cliente">
-          <h3>Cliente</h3>
-          <p>${cliente}</p>
-        </div>
-        <div class="box-status">
-          <h3>Status</h3>
-          <p>${status}</p>
-        </div>
+
+      <div class="box">
+        <h3>Endereço</h3>
+        <p>${endereco}</p>
       </div>
+
+      <div class="box">
+        <h3>Cliente</h3>
+        <p>${cliente}</p>
+      </div>
+
+      <div class="box">
+        <h3>Status</h3>
+        <p>${status}</p>
+      </div>
+    </div>
+  </div>
+
+
     `;
 
     pophover.appendChild(boxModal);
@@ -173,7 +192,7 @@ function Calendario(props) {
                     openModal(event, true);
                   }}
                 >
-                  <Icon></Icon>
+
                   <Dados>
                     <Typography variant="h4">Evento de {event.cliente}</Typography>
                     <Typography variant="subtitle1">{event.date}</Typography>
