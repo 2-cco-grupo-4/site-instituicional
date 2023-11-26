@@ -141,7 +141,7 @@ const PerfilFotografo = () => {
     const ChamadaApi = async () => {
       ALBUM.BUSCAR_CAPAS_ALBUM(idFotografo, token).then((response) => {
         console.log(`RESPOSTA LISTAR ALBUNS: ${JSON.stringify(response.data)}`);
-        setAlbums(response.data);
+        setCapaAlbum(response.data);
       });
     };
     ChamadaApi();
@@ -171,7 +171,10 @@ const PerfilFotografo = () => {
     const ChamadaApi = async () => {
       const capasAlbum = await Promise.all(
         capaAlbum.map(async (album) => {
-          if (album.origemImagem === "s3") {
+          if (album.origemImagem == "s3") {
+            console.log(
+              `ENTROU NO IF DO S3, objeto q entrou: ${JSON.stringify(album)}`
+            );
             try {
               const response = await IMAGEM.GET_OBJECT(album.idImagem);
               const tipoImagem =
