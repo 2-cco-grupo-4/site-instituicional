@@ -44,26 +44,31 @@ const Header = ({ type }) => {
   };
 
   const handleSearchChange = useCallback((event, value) => {
-    console.log("Valor da Pesquisa:", value);
     setTermoPesquisa(value);
   }, []);
 
-  const buscar = (pesquisa) => {
-    PESQUISA.TERMO(pesquisa, token).then((response) => {
-      if (response.status === 200) {
-        setListaPesquisa(response.data);
-      } else if (response.status === 204) {
+  useEffect(() => {
+    const fetchPesquisa = async () => {
+      if (termoPesquisa !== "") {
+        try {
+          const response = await PESQUISA.TERMO(termoPesquisa, token);
+          if (response.status === 200) {
+            setListaPesquisa(response.data);
+          } else if (response.status === 204) {
+            setListaPesquisa([]);
+          }
+        } catch (error) {
+          console.error("Erro na chamada API:", error);
+        }
+      } else {
         setListaPesquisa([]);
       }
-    });
-  };
 
-  useEffect(() => {
-    if (termoPesquisa !== "") {
-      buscar(termoPesquisa);
-    } else {
-      setListaPesquisa([]);
-    }
+      // Focar diretamente no campo após a pesquisa
+      inputRef.current && inputRef.current.focus();
+    };
+
+    fetchPesquisa();
   }, [termoPesquisa]);
 
   const toggleDrawer = (open) => (event) => {
@@ -91,28 +96,24 @@ const Header = ({ type }) => {
       case 2:
         return (
           <Box display="flex" flexDirection="row">
-            {console.log("Lista de Pesquisa:", termoPesquisa)}
             <Autocomplete
-              key="bobao"
+              key="search"
               freeSolo
-              options={
-                listaPesquisa.length > 0
-                  ? listaPesquisa.map(
-                      (pesquisa) => pesquisa.termo + `\t${pesquisa.tipo}`
-                    )
-                  : []
-              }
+              options={listaPesquisa.map(
+                (pesquisa) =>
+                  pesquisa.termo +
+                  `                -                ${pesquisa.tipo}`
+              )}
               getOptionLabel={(option) => option}
-              onInputChange={handleSearchChange}
+              onChange={handleSearchChange}
               value={termoPesquisa}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   id="busca"
                   label="Pesquise"
-                  sx={{
-                    width: 600,
-                  }}
+                  sx={{ width: 600 }}
+                  inputRef={inputRef}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: (
