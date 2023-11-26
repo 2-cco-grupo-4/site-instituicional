@@ -32,6 +32,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "contexts";
 import { ALBUM } from "service/album";
 import api from "service/api";
+import { IMAGEM } from "service/imagem";
 
 const imageList = [
   {
@@ -134,6 +135,8 @@ const PerfilFotografo = () => {
 
   const { idFotografo } = useParams();
 
+  const [listCapas, setListCapas] = useState([]);
+
   useEffect(() => {
     const ChamadaApi = async () => {
       ALBUM.BUSCAR_CAPAS_ALBUM(idFotografo, token).then((response) => {
@@ -163,6 +166,52 @@ const PerfilFotografo = () => {
     }));
     setCapaAlbum(capa);
   }, [albums]);
+
+  useEffect(() => {
+    const ChamadaApi = async () => {
+      const capasAlbum = await Promise.all(
+        capaAlbum.map(async (album) => {
+          if (album.origemImagem === "s3") {
+            try {
+              const response = await IMAGEM.GET_OBJECT(album.idImagem);
+              const tipoImagem =
+                response.headers["content-type"] || "image/jpeg";
+              const blob = new Blob([response.data], { type: tipoImagem });
+              const src = URL.createObjectURL(blob);
+
+              return (
+                <ImageListItem
+                  key={album.alt}
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => navigate(ROUTES.ALBUM(album.alt))}
+                >
+                  <img src={src} alt={album.alt} />
+                </ImageListItem>
+              );
+            } catch (error) {
+              console.error(error);
+              return null; // Retorna null para ser filtrado posteriormente
+            }
+          } else {
+            return (
+              <ImageListItem
+                key={album.alt}
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate(ROUTES.ALBUM(album.alt))}
+              >
+                <img src={album.src} alt={album.alt} />
+              </ImageListItem>
+            );
+          }
+        })
+      );
+
+      // Filtra elementos nulos (resultados de catch)
+      setListCapas(capasAlbum.filter(Boolean));
+    };
+
+    ChamadaApi();
+  }, [capaAlbum]);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
@@ -250,15 +299,7 @@ const PerfilFotografo = () => {
 
       <Container sx={{ display: displayAlbum }} pb={2}>
         <ImageList variant="masonry" cols={4} gap={8}>
-          {capaAlbum.map((album, index) => (
-            <ImageListItem
-              key={album.alt}
-              sx={{ cursor: "pointer" }}
-              onClick={() => navigate(ROUTES.ALBUM(album.alt))}
-            >
-              <img src={album.src} alt={album.alt} />
-            </ImageListItem>
-          ))}
+          {listCapas.map((item) => item)}
         </ImageList>
       </Container>
 
