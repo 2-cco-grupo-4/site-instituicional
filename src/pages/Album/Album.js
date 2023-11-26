@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   Typography,
@@ -8,9 +8,9 @@ import {
   useTheme,
   Breadcrumbs,
   Link,
-} from "@mui/material"
-import Header from "molecules/Header"
-import Footer from "molecules/Footer"
+} from "@mui/material";
+import Header from "molecules/Header";
+import Footer from "molecules/Footer";
 import {
   ImageStack,
   ImageContainer,
@@ -32,6 +32,7 @@ import Contrato from "molecules/Contrato/Contrato";
 import { ALBUM } from "service/album";
 import { AVALIACAO } from "service/avaliacao";
 import { set } from "react-hook-form";
+import { IMAGEM } from "service/imagem";
 
 const images = [
   {
@@ -53,7 +54,7 @@ const images = [
     tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
-]
+];
 
 function Album() {
   const theme = useTheme();
@@ -69,6 +70,7 @@ function Album() {
   const [tema, setTemas] = useState([]);
   const [avaliacoes, setAvaliacoes] = useState([]);
   const { idAlbum } = useParams();
+  const [imagensRenderizadas, setImagensRenderizadas] = useState([]);
 
   const [clientes, setClientes] = useState([]);
   const [sessoes, setSessoes] = useState([]);
@@ -78,15 +80,15 @@ function Album() {
   let ready = false;
 
   useEffect(() => {
-    let v = []
-    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)))
+    let v = [];
+    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)));
 
     setTags(v);
   }, []);
 
   const handleContract = () => {
     if (autenticado) {
-      setOpenContrato(true)
+      setOpenContrato(true);
     } else {
       setOpenLoginModal(true);
     }
@@ -164,22 +166,75 @@ function Album() {
     }
   }, [sessoes]);
 
-  return (
-    <>
-      <Header type={2} />
-      <Stack direction="row" sx={{ width: "100%", alignItems: "center", justifyContent: "center"}}>
-        <ImageStack sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-          {imagens
-            ? imagens.map((image) => (
-              <ImageContainer key={image.id} className="image">
+  useEffect(() => {
+    const fetchImagens = async () => {
+      const imagensRenderizadas = await Promise.all(
+        imagens.map(async (imagem) => {
+          console.log(`TESTE IMAGEM: ${JSON.stringify(imagem)}`);
+          if (imagem.origemImagem === "s3") {
+            try {
+              const response = await IMAGEM.GET_OBJECT(imagem.id);
+              const tipoImagem =
+                response.headers["content-type"] || "image/png";
+
+              const blob = new Blob([response.data], {
+                type: tipoImagem,
+              });
+
+              const url = URL.createObjectURL(blob);
+
+              // Retornar o elemento JSX diretamente
+              return (
+                <ImageContainer key={imagem.id} className="image">
+                  <ImageElement
+                    src={url}
+                    alt={imagem.descricao}
+                    style={{ width: "auto", height: "auto", maxWidth: "100%" }}
+                  />
+                </ImageContainer>
+              );
+            } catch (error) {
+              console.error("Erro na chamada API:", error);
+              return null;
+            }
+          } else {
+            // Se a origem não é S3, retornar o componente FeedAlbum padrão
+            return (
+              <ImageContainer key={imagem.id} className="image">
                 <ImageElement
-                  src={image.path}
-                  alt={image.descricao}
+                  src={imagem.path}
+                  alt={imagem.descricao}
                   style={{ width: "auto", height: "auto" }}
                 />
               </ImageContainer>
-            ))
-            : console.log("Carregando...")}
+            );
+          }
+        })
+      );
+
+      // Atualizar o componente renderizando os elementos JSX diretamente
+      setImagensRenderizadas(imagensRenderizadas);
+    };
+
+    fetchImagens();
+  }, [imagens, token]);
+
+  return (
+    <>
+      <Header type={2} />
+      <Stack
+        direction="row"
+        sx={{ width: "100%", alignItems: "center", justifyContent: "center" }}
+      >
+        <ImageStack
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {imagensRenderizadas}
         </ImageStack>
         <Sidebar spacing={5}>
           <UserArea spacing={3}>
@@ -289,7 +344,7 @@ function Album() {
                       sx={{ fontSize: theme.spacing(4) }}
                       readOnly
                       value={typeof avaliacao == "object" ? avaliacao.nota : 2}
-                    // value={3.5}
+                      // value={3.5}
                     />
                     <Typography
                       variant="body1"
@@ -299,8 +354,8 @@ function Album() {
                       }}
                     >
                       {typeof clientes === "object" &&
-                        clientes[indice] &&
-                        clientes[indice].nome !== undefined
+                      clientes[indice] &&
+                      clientes[indice].nome !== undefined
                         ? clientes[indice].nome
                         : "Padrão"}
                     </Typography>
@@ -326,12 +381,16 @@ function Album() {
       </Stack>
       <Footer />
       {autenticado ? (
-        <Contrato open={openContrato} setOpen={setOpenContrato} fotografo={fotografo} />
+        <Contrato
+          open={openContrato}
+          setOpen={setOpenContrato}
+          fotografo={fotografo}
+        />
       ) : (
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
       )}
     </>
-  )
+  );
 }
 
-export default Album
+export default Album;
