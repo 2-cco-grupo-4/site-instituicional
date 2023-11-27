@@ -29,19 +29,27 @@ import {
 } from "firebase/firestore";
 import db from "service/firebase";
 import { useUserContext } from "contexts"
+import { TEMA } from "service/tema"
+import { CONTRATO } from "service/contrato"
+
+
+
 
 const Contract = ({ open, setOpen, fotografo }) => {
+
+  const [temas, setTemas] = useState([]);
   const classes = useStyles()
   const theme = useTheme()
   const navigate = useNavigate()
 
-  const { id, nome } = useUserContext()
+  const { id, nome, token } = useUserContext()
 
   const [step, setStep] = useState(0)
   const [progressBar, setProgressBar] = useState(0)
   const [genericError, setGenericError] = useState(false)
   const [contract, setContract] = useState({})
   const [loading, setLoading] = useState(false)
+
 
   const {
     control,
@@ -50,75 +58,150 @@ const Contract = ({ open, setOpen, fotografo }) => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(contractSchema) })
 
+  useEffect(() => {
+    const fetchTemas = async () => {
+      try {
+        const response = await TEMA.LISTAR_TEMA();
+        setTemas(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Erro ao obter a lista de temas", error.response.data);
+        console.log(error);
+      }
+    };
+
+    fetchTemas();
+  }, []);
+
   const createChat = async ({ callback, onError }) => {
-    const idCliente = Number(id)
-    setLoading(true)
+    console.log("Iniciando criação do chat...");
+    setLoading(true);
+
     try {
-      const chatRef = await addDoc(collection(db, "chats"), {
-        id_cliente: idCliente,
-        id_fotografo: fotografo.id,
-        nome_cliente: nome,
-        nome_fotografo: fotografo.nome,
-        data_ultima_mensagem: new Date(),
-      });
+      const sessionPayload = {
+        dataRealizacao: contract.data,
+        statusSessao: "Proposta",
+        idFotografo: fotografo.id,
+        idCliente: Number(id),
+        idTema: temas.find((tema) => tema.nome === contract.tema)?.id,
+        createdAt: new Date().toISOString(),
+      };
 
-      console.log(chatRef)
+      console.log("Session Payload:", sessionPayload);
+      const sessionResponse = await CONTRATO.CADASTRAR_SESSAO(sessionPayload, token);
+      console.log("Session Response:", sessionResponse);
 
-      const chatId = chatRef.id;
+      await cadastrarEndereco(sessionResponse.data.id);
 
-      await addDoc(collection(db, "chats", chatId, "mensagens"), {
-        mensagem: contract?.mensagem || "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
-        horario_envio: new Date(),
-        id_usuario: idCliente,
-      });
+      await criarChat();
 
-      const chatDoc = doc(db, 'chats', chatId);
-      await updateDoc(chatDoc, {
-        ultima_mensagem: contract?.mensagem || "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
-      });
-
-      callback()
-
+      callback();
+      console.log("Chat criado com sucesso!");
     } catch (err) {
-      console.log(err)
-      onError()
+      console.error("Erro ao criar chat:", err);
+      onError();
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  const cadastrarEndereco = async (idEvento) => {
+    console.log("Iniciando cadastro do endereço...");
+    const addressPayload = {
+      estado: contract.estado,
+      cidade: contract.cidade,
+      cep: contract.cep,
+      bairro: contract.bairro,
+      logradouro: contract.rua,
+      numero: contract.numero,
+      complemento: contract.complemento,
+      idEvento,
+    };
+
+    console.log("Address Payload:", addressPayload);
+    await CONTRATO.CADASTRAR_ENDERECO(addressPayload, token);
+    console.log("Endereço cadastrado com sucesso!");
+  };
+
+  const criarChat = async () => {
+    console.log("Iniciando criação do chat no banco de dados...");
+    const chatRef = await addDoc(collection(db, "chats"), {
+      id_cliente: Number(id),
+      id_fotografo: fotografo.id,
+      nome_cliente: nome,
+      nome_fotografo: fotografo.nome,
+      data_ultima_mensagem: new Date(),
+    });
+
+    console.log("Chat criado:", chatRef);
+
+    const chatId = chatRef.id;
+
+    await adicionarMensagemInicial(chatId);
+
+    const chatDoc = doc(db, "chats", chatId);
+    await atualizarUltimaMensagem(chatDoc);
+    console.log("Chat criado com sucesso!");
+  };
+
+  const adicionarMensagemInicial = async (chatId) => {
+    console.log("Adicionando mensagem inicial ao chat...");
+    await addDoc(collection(db, "chats", chatId, "mensagens"), {
+      mensagem:
+        contract?.mensagem ||
+        "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+      horario_envio: new Date(),
+      id_usuario: Number(id),
+    });
+    console.log("Mensagem inicial adicionada com sucesso!");
+  };
+
+  const atualizarUltimaMensagem = async (chatDoc) => {
+    console.log("Atualizando última mensagem no chat...");
+    await updateDoc(chatDoc, {
+      ultima_mensagem:
+        contract?.mensagem ||
+        "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+    });
+    console.log("Última mensagem atualizada com sucesso!");
+  };
 
   const onSubmit = (payload) => {
     switch (step) {
       case 0:
-        const data = payload?.data?.toISOString().substring(0, 10)
-        const horario = new Date(payload?.horario).toLocaleTimeString()
+        const data = payload?.data?.toISOString().substring(0, 10);
+        const horario = new Date(payload?.horario).toLocaleTimeString();
         const contractInfo = {
           ...payload,
           data,
           horario,
-        }
+        };
         setContract((current) => ({
           ...current,
           ...contractInfo,
-        }))
-        setStep(1)
-        setProgressBar(50)
-        break
+        }));
+        setStep(1);
+        setProgressBar(50);
+        break;
       case 1:
         setContract((current) => ({
           ...current,
           mensagem: payload?.mensagem,
-        }))
-        console.log(payload?.mensagem)
-        setStep(2)
-        setProgressBar(100)
-        break
+          formaPagamento: payload?.formaPagamento,
+          valor: payload?.valor,
+          parcelas: payload?.parcelas,
+        }));
+        console.log(payload?.mensagem);
+        setStep(2);
+        setProgressBar(100);
+        break;
       case 2:
-        console.log(contract)
-        createChat({ callback: () => setStep(3), onError: () => console.log("erro") })
-        break
+        console.log(contract);
+        createChat({ callback: () => setStep(3), onError: () => console.log("erro") });
+        break;
     }
-  }
+  };
+
 
   const handleGoBack = () => {
     setStep((current) => current - 1)
@@ -152,9 +235,11 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 error={!!errors?.tema || genericError}
                 helperText={errors?.tema?.message}
               >
-                <MenuItem value="Tema 1">Tema 1</MenuItem>
-                <MenuItem value="Tema 2">Tema 2</MenuItem>
-                <MenuItem value="Tema 3">Tema 3</MenuItem>
+                {temas.map((tema) => (
+                  <MenuItem key={tema.id} value={tema.nome}>
+                    {tema.nome}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
             <Grid item xs={3}>
@@ -326,11 +411,11 @@ const Contract = ({ open, setOpen, fotografo }) => {
               spacing={1}
             >
               <Avatar
-                {...stringAvatar("Renata Ferreira")}
+                {...stringAvatar(fotografo?.nome)}
                 sx={{ width: theme.spacing(4), height: theme.spacing(4) }}
               />
               <Typography variant="paragraph-medium-regular">
-                Renata Ferreira
+                {fotografo.nome}
               </Typography>
             </Stack>
           </Stack>
@@ -344,8 +429,57 @@ const Contract = ({ open, setOpen, fotografo }) => {
           {...register("mensagem")}
         />
       </Stack>
+
+      <Stack spacing={3}>
+        <Stack spacing={1}>
+          <Typography variant="subtitle-small-bold">Pagamento</Typography>
+          <Typography>
+            Insira as informações de pagamento para confirmar a proposta.
+          </Typography>
+        </Stack>
+        <Stack spacing={1}>
+          <TextField
+            name="formaPagamento"
+            select
+            label="Forma de Pagamento"
+            fullWidth
+            defaultValue="Cartão de Crédito"
+            {...register("formaPagamento")}
+            error={!!errors?.formaPagamento || genericError}
+            helperText={errors?.formaPagamento?.message}
+          >
+            <MenuItem value="Pix">PIX</MenuItem>
+            <MenuItem value="Cartão de Crédito">Cartão de Crédito</MenuItem>
+            <MenuItem value="Transferência Bancária">Transferência Bancária</MenuItem>
+            <MenuItem value="Boleto Bancário">Boleto Bancário</MenuItem>
+          </TextField>
+        </Stack>
+        <Stack spacing={1}>
+          <TextField
+            name="valor"
+            type="number"
+            label="Valor (R$)"
+            fullWidth
+            {...register("valor")}
+            error={!!errors?.valor || genericError}
+            helperText={errors?.valor?.message}
+          />
+        </Stack>
+        <Stack spacing={1}>
+          <TextField
+            name="parcelas"
+            type="number"
+            label="Número de Parcelas"
+            fullWidth
+            {...register("parcelas")}
+            error={!!errors?.parcelas || genericError}
+            helperText={errors?.parcelas?.message}
+          />
+        </Stack>
+      </Stack>
     </Stack>
   )
+
 
   const Confirm = () => (
     <Stack spacing={4}>
@@ -364,7 +498,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
               <Typography variant="paragraph-medium-bold">
                 Fotógrafo(a):
               </Typography>
-              <Typography>Renata Ferreira</Typography>
+              <Typography>{fotografo.nome}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={4}>
@@ -381,6 +515,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
           </Grid>
         </Grid>
       </Stack>
+
       <Stack spacing={1}>
         <Typography
           variant="paragraph-medium-bold"
@@ -390,12 +525,49 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Typography>
         <Typography>{contract?.mensagem || "N/A"}</Typography>
       </Stack>
-      <Stack sx={{ flexGrow: 1 }}>
+      <Stack spacing={1}>
         <Typography
           mb={1}
           variant="paragraph-medium-bold"
           className={classes.lineBelowTitle}
         >
+          Informações de Pagamento:
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">
+                Forma de Pagamento:
+              </Typography>
+              <Typography>{contract?.formaPagamento}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">Valor (R$):</Typography>
+              <Typography>{contract?.valor}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={3}>
+            <Stack direction="row" alignItems="center" columnGap={1}>
+              <Typography variant="paragraph-medium-bold">
+                Número de Parcelas:
+              </Typography>
+              <Typography>{contract?.parcelas}</Typography>
+            </Stack>
+          </Grid>
+          {/* Adicione mais itens do Grid conforme necessário */}
+        </Grid>
+      </Stack>
+      <Stack sx={{ flexGrow: 1 }}>
+
+        <Typography
+          mb={1}
+          variant="paragraph-medium-bold"
+          className={classes.lineBelowTitle}
+        >
+
+
           Endereço:
         </Typography>
         <Grid container spacing={2}>
