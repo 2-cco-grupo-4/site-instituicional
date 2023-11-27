@@ -54,7 +54,7 @@ const CadastroAlbum = () => {
     setOrigem(origem);
 
     if (origem === "INSTA") {
-      listImagensInsta();
+      listarImagensInsta();
     } else if (origem === "S3") {
       setOrigemVisible(false);
       setImagensVisible(true);
@@ -184,7 +184,7 @@ const CadastroAlbum = () => {
               src={goBackArrow}
               alt="go-back-arrow"
               style={{ cursor: "pointer" }}
-              onClick={() => navigate(ROUTES.PERFIL)}
+              onClick={() => navigate(ROUTES.FEED)}
             />
           </Container>
           <Container sx={{ marginBottom: "50px" }}>

@@ -33,6 +33,7 @@ import { useUserContext } from "contexts";
 import { ALBUM } from "service/album";
 import api from "service/api";
 import { IMAGEM } from "service/imagem";
+import { FOTOGRAFO } from "service/fotografos";
 
 const imageList = [
   {
@@ -137,6 +138,8 @@ const PerfilFotografo = () => {
 
   const [listCapas, setListCapas] = useState([]);
 
+  const [nomeFotografo, setNomeFotografo] = useState("");
+
   useEffect(() => {
     const ChamadaApi = async () => {
       ALBUM.BUSCAR_CAPAS_ALBUM(idFotografo, token).then((response) => {
@@ -216,6 +219,15 @@ const PerfilFotografo = () => {
     ChamadaApi();
   }, [capaAlbum]);
 
+  useEffect(() => {
+    FOTOGRAFO.BUSCAR_FOTOGRAFO(idFotografo, token).then((response) => {
+      console.log(
+        `RESPOSTA BUSCAR FOTOGRAFO: ${JSON.stringify(response.data)}`
+      );
+      setNomeFotografo(response.data.nome);
+    });
+  }, [idFotografo, token]);
+
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={2} />
@@ -240,24 +252,17 @@ const PerfilFotografo = () => {
           underline="hover"
           href={ROUTES.PERFIL}
         >
-          Renata Ferreira
-        </Link>
-        <Link
-          color={theme.palette.secondary.main}
-          underline="hover"
-          href={ROUTES.ALBUM}
-        >
-          Casamento Ana e Bruno
+          {nomeFotografo}
         </Link>
       </Breadcrumbs>
       <Stack className={classes.textoCabecalho}>
         <Stack className={classes.cabecalho}></Stack>
         <Typography fontWeight={"bold"} fontSize={"24px"}>
-          Renata Fereira
+          {nomeFotografo}
         </Typography>
-        <Typography color={"grey"} fontWeight={"bold"}>
+        {/* <Typography color={"grey"} fontWeight={"bold"}>
           @referphots
-        </Typography>
+        </Typography> */}
         <Typography width={"35%"} marginBottom={"15px"} paddingTop={"10px"}>
           Pessoas fazem fotos de qualquer coisa bonita. Fotógrafos fazem fotos
           bonitas de qualquer coisa.
@@ -312,13 +317,17 @@ const PerfilFotografo = () => {
         sx={{ display: displayAvaliacao }}
         className={classes.avaliacoes}
       >
-        {avaliacoes.map((avaliacao, index) => (
-          <CardAvaliacao
-            key={index}
-            name={avaliacao.name}
-            text={avaliacao.text}
-          />
-        ))}
+        {avaliacoes.length > 0 ? (
+          avaliacoes.map((avaliacao, index) => (
+            <CardAvaliacao
+              key={index}
+              name={avaliacao.evento.cliente.nome}
+              text={avaliacao.descricao}
+            />
+          ))
+        ) : (
+          <Typography>Não há avaliações para este fotógrafo.</Typography>
+        )}
       </Container>
       <Footer />
     </Stack>
