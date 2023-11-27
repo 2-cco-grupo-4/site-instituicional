@@ -1,4 +1,4 @@
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles"
 
 export default makeStyles((theme) => ({
   sidebar: {
@@ -34,6 +34,7 @@ export default makeStyles((theme) => ({
 
   chatTextArea: {
     maxHeight: "100dvh",
+    minHeight: "100dvh",
     width: "100%",
     overflowY: "scroll",
     justifyContent: "flex-end",
@@ -53,6 +54,5 @@ export default makeStyles((theme) => ({
   inputMessage: {
     position: "sticky !important",
     bottom: theme.spacing(3),
-    left: 0,
   },
-}));
+}))

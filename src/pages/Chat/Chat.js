@@ -8,11 +8,13 @@ import {
   Grid,
   OutlinedInput,
   Button,
-} from "@mui/material";
-import Container from "atoms/Container";
-import React, { useState, useEffect, useRef } from "react";
-import Header from "molecules/Header";
-import IconSend from "@mui/icons-material/Send";
+} from "@mui/material"
+import Container from "atoms/Container"
+import React, { useState, useEffect, useRef } from "react"
+import Header from "molecules/Header"
+import IconSend from "@mui/icons-material/Send"
+import IconChat from "@mui/icons-material/ChatRounded"
+import IconEdit from "@mui/icons-material/ModeEdit"
 
 import {
   collection,
@@ -24,44 +26,44 @@ import {
   addDoc,
   or,
   doc,
-} from "firebase/firestore";
-import db from "service/firebase";
-import { useUserContext } from "contexts";
-import useStyles from "./Chat.styles";
-import ProfilePic from "atoms/ProfilePic";
-import { DataObjectOutlined } from "@mui/icons-material";
+} from "firebase/firestore"
+import db from "service/firebase"
+import { useUserContext } from "contexts"
+import useStyles from "./Chat.styles"
+import ProfilePic from "atoms/ProfilePic"
 
 const Chat = () => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [userChats, setUserChats] = useState([]);
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [messageInput, setMessageInput] = useState("");
-  const [userChatName, setUserChatName] = useState("");
+  const classes = useStyles()
+  const theme = useTheme()
+  const [userChats, setUserChats] = useState([])
+  const [allChats, setAllChats] = useState([])
+  const [selectedChat, setSelectedChat] = useState(null)
+  const [messages, setMessages] = useState([])
+  const [messageInput, setMessageInput] = useState("")
+  const [userChatName, setUserChatName] = useState("")
 
-  const inputRef = useRef(null);
+  const inputRef = useRef(null)
 
-  const { id, nome, token } = useUserContext();
-  const [userId] = useState(Number(id));
+  const { id, nome, token } = useUserContext()
+  const [userId] = useState(Number(id))
 
   const formatDatesChat = (data) => {
-    const newChats = data;
+    const newChats = data
     newChats.forEach((chat) => {
-      const dataMensagem = new Date(chat.data_ultima_mensagem.seconds * 1000);
-      const dataAtual = new Date();
-      const dataOntem = new Date(dataAtual);
-      dataOntem.setDate(dataOntem.getDate() - 1);
+      const dataMensagem = new Date(chat.data_ultima_mensagem.seconds * 1000)
+      const dataAtual = new Date()
+      const dataOntem = new Date(dataAtual)
+      dataOntem.setDate(dataOntem.getDate() - 1)
 
-      const dataSemanaPassada = new Date(dataAtual);
-      dataSemanaPassada.setDate(dataSemanaPassada.getDate() - 7);
+      const dataSemanaPassada = new Date(dataAtual)
+      dataSemanaPassada.setDate(dataSemanaPassada.getDate() - 7)
 
       if (dataMensagem.getDate() === dataAtual.getDate()) {
         chat.data_ultima_mensagem = dataMensagem
           .toLocaleTimeString()
-          .slice(0, 5);
+          .slice(0, 5)
       } else if (dataMensagem.getDate() === dataOntem.getDate()) {
-        chat.data_ultima_mensagem = "ontem";
+        chat.data_ultima_mensagem = "ontem"
       } else if (
         dataMensagem.getDate() < dataOntem.getDate() &&
         dataMensagem.getDate() > dataSemanaPassada.getDate()
@@ -74,43 +76,61 @@ const Chat = () => {
           "quinta-feira",
           "sexta-feira",
           "sábado",
-        ];
-        chat.data_ultima_mensagem = daysOfWeek[dataMensagem.getDay()];
+        ]
+        chat.data_ultima_mensagem = daysOfWeek[dataMensagem.getDay()]
       } else {
-        chat.data_ultima_mensagem = dataMensagem.toLocaleDateString();
+        chat.data_ultima_mensagem = dataMensagem.toLocaleDateString()
       }
-    });
+    })
 
-    return newChats;
-  };
+    return newChats
+  }
 
   const formatDatesMensagem = (dataMensagens) => {
-    const newMessages = dataMensagens;
+    const newMessages = dataMensagens
     newMessages.forEach((mensagemAtual) => {
       let value = mensagemAtual.horario_envio.split(", ").map((current, i) => {
-        let newValue = current.split(/\W/).map((x) => Number(x));
+        let newValue = current.split(/\W/).map((x) => Number(x))
         if (i === 0) {
-          newValue[1] -= 1;
-          return newValue.reverse();
+          newValue[1] -= 1
+          return newValue.reverse()
         }
-        return newValue;
-      });
-      value = [...value[0], ...value[1]];
+        return newValue
+      })
+      value = [...value[0], ...value[1]]
 
-      const dataMensagem = new Date(...value);
-      const dataAtual = new Date();
+      const dataMensagem = new Date(...value)
+      const dataAtual = new Date()
 
       if (dataMensagem.getDate() === dataAtual.getDate()) {
         mensagemAtual.horario_envio = dataMensagem
           .toLocaleTimeString()
-          .slice(0, 5);
+          .slice(0, 5)
       } else {
-        mensagemAtual.horario_envio = dataMensagem.toLocaleDateString();
+        mensagemAtual.horario_envio = dataMensagem.toLocaleDateString()
       }
-    });
+    })
 
-    return newMessages;
-  };
+    return newMessages
+  }
+
+  const filterChats = (nomeChat) => {
+    const newChats = allChats.filter(
+      (chat) =>
+        chat?.nome_fotografo
+          ?.toLowerCase()
+          .startsWith(nomeChat.toLowerCase()) ||
+        chat?.nome_contratante?.toLowerCase().startsWith(nomeChat.toLowerCase())
+    )
+
+    console.log(newChats)
+
+    if (!newChats) {
+      setUserChats(allChats)
+    } else {
+      setUserChats(newChats)
+    }
+  }
 
   const loadChats = async () => {
     try {
@@ -121,54 +141,55 @@ const Chat = () => {
           where("id_contratante", "==", userId)
         ),
         orderBy("data_ultima_mensagem")
-      );
+      )
 
-      const querySnapshot = await getDocs(chatQuery);
+      const querySnapshot = await getDocs(chatQuery)
 
-      const data = [];
+      const data = []
       querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() });
-      });
+        data.push({ id: doc.id, ...doc.data() })
+      })
 
-      setUserChats(formatDatesChat(data));
+      setUserChats(formatDatesChat(data))
+      setAllChats(formatDatesChat(data))
     } catch (error) {
-      console.error("Erro ao recuperar dados:", error);
+      console.error("Erro ao recuperar dados:", error)
     }
-  };
+  }
 
   const loadMessages = async (chatId) => {
     try {
       const messagesQuery = query(
         collection(db, "chats", chatId, "mensagens"),
         orderBy("horario_envio")
-      );
-      const messagesSnapshot = await getDocs(messagesQuery);
-      const messagesData = [];
+      )
+      const messagesSnapshot = await getDocs(messagesQuery)
+      const messagesData = []
       messagesSnapshot.forEach((doc) => {
-        const messageData = { id: doc.id, ...doc.data() };
+        const messageData = { id: doc.id, ...doc.data() }
         messageData.horario_envio = new Date(
           messageData.horario_envio.seconds * 1000
-        ).toLocaleString();
-        messagesData.push(messageData);
-      });
+        ).toLocaleString()
+        messagesData.push(messageData)
+      })
 
-      console.log(messagesData);
-      setMessages(formatDatesMensagem(messagesData));
+      console.log(messagesData)
+      setMessages(formatDatesMensagem(messagesData))
     } catch (error) {
-      console.error("Erro ao carregar mensagens:", error);
+      console.error("Erro ao carregar mensagens:", error)
     }
-  };
+  }
 
   const handleChatClick = (chatId, userName) => {
-    setSelectedChat(chatId);
-    setUserChatName(userName);
-    loadMessages(chatId);
-  };
+    setSelectedChat(chatId)
+    setUserChatName(userName)
+    loadMessages(chatId)
+  }
 
   const handleMessageSubmit = async () => {
-    if (!selectedChat || !messageInput) return;
+    if (!selectedChat || !messageInput) return
 
-    const dataAtual = new Date();
+    const dataAtual = new Date()
 
     try {
       const docRef = await addDoc(
@@ -178,41 +199,82 @@ const Chat = () => {
           horario_envio: dataAtual,
           id_usuario: userId,
         }
-      );
+      )
 
       await updateDoc(doc(db, "chats", selectedChat), {
         ultima_mensagem: messageInput,
         data_ultima_mensagem: dataAtual,
-      });
+      })
 
-      console.log("Mensagem enviada com ID: ", docRef.id);
-      inputRef.current.value = "";
-      setMessageInput("");
-      loadMessages(selectedChat);
+      console.log("Mensagem enviada com ID: ", docRef.id)
+      inputRef.current.value = ""
+      setMessageInput("")
+      loadMessages(selectedChat)
     } catch (error) {
-      console.error("Erro ao enviar mensagem:", error);
+      console.error("Erro ao enviar mensagem:", error)
     }
-  };
+  }
 
   useEffect(() => {
-    loadChats();
-  }, [id]);
+    loadChats()
+  }, [id])
 
   useEffect(() => {
-    console.log(id);
-    console.log(userChats);
-  }, []);
+    console.log(id)
+    console.log(userChats)
+  }, [])
 
   return (
     <Stack height="100dvh" sx={{ flexGrow: 1 }}>
       <Grid container height="100%" position="relative">
         <Grid item xs={3} md={4} className={classes.sidebar}>
+          <Stack
+            p={3}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            columnGap={2}
+            sx={{ borderBottom: "1px solid rgb(0,0,0, 0.1)" }}
+          >
+            <Stack direction="row" alignItems="center" columnGap={2}>
+              <ProfilePic
+                autor={nome}
+                alt={nome}
+                sx={{
+                  width: theme.spacing(6),
+                  height: theme.spacing(6),
+                }}
+              />
+              <Typography variant="paragraph-large-bold">{nome}</Typography>
+            </Stack>
+            <Button
+              color="secondary"
+              sx={{ fontSize: theme.spacing(2), minWidth: 0, padding: 0 }}
+            >
+              <IconEdit />
+            </Button>
+          </Stack>
+          <Stack
+            px={3}
+            py={2}
+            sx={{
+              borderBottom: "1px solid rgb(0,0,0, 0.1)",
+            }}
+          >
+            <OutlinedInput
+              maxRows={1}
+              size="small"
+              placeholder="Pesquise um bate-papo"
+              onChange={(e) => filterChats(e.target.value)}
+              sx={{ fontSize: 14 }}
+            />
+          </Stack>
           <Stack direction="column-reverse" className={classes.sidebarContent}>
             {userChats.map((chat) => {
               let nameChatUser =
                 id === chat.id_contratante
                   ? chat.nome_fotografo
-                  : chat.nome_contratante;
+                  : chat.nome_contratante
               return (
                 <Stack
                   key={chat.id}
@@ -245,22 +307,43 @@ const Chat = () => {
                         {chat.data_ultima_mensagem}
                       </Typography>
                     </Stack>
-                    <Typography noWrap variant="paragraph-small-regular">
-                      {chat.ultima_mensagem}
-                    </Typography>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Typography noWrap variant="paragraph-small-regular">
+                        {chat.ultima_mensagem}
+                      </Typography>
+                      {/* <Typography
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        variant="paragraph-xsmall-regular"
+                        bgcolor={theme.palette.primary.main}
+                        p={0.5}
+                        minHeight={12}
+                        minWidth={12}
+                        color="white.main"
+                        borderRadius="100%"
+                        fontSize={10}
+                      >
+                        1
+                      </Typography> */}
+                    </Stack>
                   </Stack>
                 </Stack>
-              );
+              )
             })}
           </Stack>
         </Grid>
         <Grid item xs={9} md={8} className={classes.chatTextArea}>
-          {selectedChat && (
+          {selectedChat ? (
             <Container
               py={4}
               minHeight="100dvh"
               flexDirection="column"
-              justifyContent="flex-start"
+              justifyContent="space-between"
               position="relative"
             >
               <Stack
@@ -273,15 +356,15 @@ const Chat = () => {
                 className={classes.messagesContainer}
               >
                 {messages.map((content, index) => {
-                  let isNextMessageFromUser;
+                  let isNextMessageFromUser
 
                   if (
                     index < messages.length - 1 &&
                     messages[index + 1].id_usuario === content.id_usuario
                   ) {
-                    isNextMessageFromUser = true;
+                    isNextMessageFromUser = true
                   } else {
-                    isNextMessageFromUser = false;
+                    isNextMessageFromUser = false
                   }
 
                   return (
@@ -340,7 +423,7 @@ const Chat = () => {
                         />
                       )}
                     </Stack>
-                  );
+                  )
                 })}
               </Stack>
               <OutlinedInput
@@ -368,11 +451,22 @@ const Chat = () => {
                 }
               />
             </Container>
+          ) : (
+            <Stack
+              height="100%"
+              width="100%"
+              justifyContent="center"
+              alignItems="center"
+              rowGap={2}
+            >
+              <IconChat style={{ fontSize: 80 }} />
+              Selecione um bate-papo para visualizá-lo
+            </Stack>
           )}
         </Grid>
       </Grid>
     </Stack>
-  );
-};
+  )
+}
 
-export default Chat;
+export default Chat
