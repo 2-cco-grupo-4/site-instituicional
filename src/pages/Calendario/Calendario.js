@@ -29,7 +29,7 @@ function Calendario(props) {
 
   const { id, nome, token } = useUserContext();
   const [open, setOpen] = useState(false);
-
+  const [updateEffect, setUpdateEffect] = useState(false);
 
   const handleOpen = () => {
     console.log("Add evento");
@@ -42,6 +42,7 @@ function Calendario(props) {
 
 
   const listarFotografo = async () => {
+    console.log("Listando fotógrafos")
     FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
       const updatedEvents = response.data.map((event) => {
         return {
@@ -67,9 +68,20 @@ function Calendario(props) {
     });
   };
 
+
   useEffect(() => {
     listarFotografo();
-  }, [token]);
+    setUpdateEffect(false);
+  }, [token, updateEffect]);
+
+  const onConfirm = (data) => {
+    console.log("COnfirmado")
+    console.log(data)
+    data.title = data.cliente + " Evento";
+    data.start = data.dataRealizacao
+
+    setEvents([...events, data]);
+  }
 
   function validateJsonIsCalendarType(event) {
     return event == undefined;
@@ -109,41 +121,48 @@ function Calendario(props) {
     }
 
 
-    let dataDiv = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    let horaDiv = `${date.getHours()}:${date.getMinutes()}`;
+
+    let dataModal = new Date(date);
+
+    let options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    };
+
+    let formattedDate = dataModal.toLocaleString("pt-BR", options);
+
     boxModal.innerHTML = `
-
-
-    <div class="box-header">
-    <div class="date">${dataDiv} ${horaDiv} </div>
-    <div class="close">X</div>
-  </div>
-
-  <div class="box-body">
-    <div class="box-body">
-      <div class="box">
-        <h1>${title}</h1>
+      <div class="box-header">
+        <div class="date">${formattedDate}</div>
+        <div class="close">X</div>
       </div>
-
-      <div class="box">
-        <h3>Endereço</h3>
-        <p>${endereco}</p>
-      </div>
-
-      <div class="box">
-        <h3>Cliente</h3>
-        <p>${cliente}</p>
-      </div>
-
-      <div class="box">
-        <h3>Status</h3>
-        <p>${status}</p>
-      </div>
-    </div>
-  </div>
-
-
-    `;
+    
+      <div class="box-body">
+        <div class="box-body">
+          <div class="box">
+            <h1>${title}</h1>
+          </div>
+    
+          <div class="box">
+            <h3>Endereço</h3>
+            <p>${endereco}</p>
+          </div>
+    
+          <div class="box">
+            <h3>Cliente</h3>
+            <p>${cliente}</p>
+          </div>
+    
+          <div class="box">
+            <h3>Status</h3>
+            <p>${status}</p>
+          </div>
+        </div>
+      </div>`;
 
     pophover.appendChild(boxModal);
     modal.appendChild(pophover);
@@ -194,7 +213,9 @@ function Calendario(props) {
                 </Agendamento>
               );
             })}
+
           </CardBody>
+          <h4>Você tem um total de {events.length} eventos cadastrados</h4>
         </Card>
         <CalendarioDiv>
           <div id="modal"></div>
@@ -212,7 +233,7 @@ function Calendario(props) {
               });
             }}
           />
-          <ResponsiveDialog open={open} handleClose={handleClose} />
+          <ResponsiveDialog open={open} handleClose={handleClose} onConfirm={onConfirm} />
         </CalendarioDiv>
       </Content>
     </>

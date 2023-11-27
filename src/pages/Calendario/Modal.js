@@ -10,13 +10,13 @@ import { useState } from "react";
 import InputMask from "react-input-mask";
 import { FOTOGRAFO } from "service/calendario";
 import { useUserContext } from "contexts";
-export default function ResponsiveDialog({ open, handleClose }) {
+export default function ResponsiveDialog({ open, handleClose, onConfirm }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const { id, nome, token } = useUserContext();
   const [formData, setFormData] = useState({ statusSessao: "Agendamento" });
 
   const handleConfirm = () => {
-    listarFotografo();
+
     setConfirmOpen(true);
   };
 
@@ -34,29 +34,29 @@ export default function ResponsiveDialog({ open, handleClose }) {
     });
 
     setConfirmOpen(false);
-    console.log("indo listar fotografo")
-    listarFotografo();
+    onConfirm(formData);
   };
-
   const handleCepChange = async (e) => {
     const cep = e.target.value;
-    setFormData({ ...formData, cep });
+
+    setFormData((prevFormData) => ({ ...prevFormData, cep }));
 
     if (cep.length === 9) {
       const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const data = await response.json();
 
       if (!data.erro) {
-        setFormData({
-          ...formData,
+        setFormData((prevFormData) => ({
+          ...prevFormData,
           endereco: data.logradouro,
           bairro: data.bairro,
           cidade: data.localidade,
           estado: data.uf,
-        });
+        }));
       }
     }
   };
+
 
   const handleBack = () => {
     setConfirmOpen(false);
