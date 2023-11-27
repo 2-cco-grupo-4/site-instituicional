@@ -91,6 +91,11 @@
   margin-left: 3px !important;
 }
 
+.fc-event {
+  background-color: #e1e1e1 !important;
+  margin-top: 5px;
+}
+
 .fc-popover-header {
   font-weight: bold;
   background-color: #229DD2 !important;

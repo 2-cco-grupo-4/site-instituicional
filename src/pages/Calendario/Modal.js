@@ -16,6 +16,7 @@ export default function ResponsiveDialog({ open, handleClose }) {
   const [formData, setFormData] = useState({ statusSessao: "Agendamento" });
 
   const handleConfirm = () => {
+    listarFotografo();
     setConfirmOpen(true);
   };
 
@@ -26,13 +27,15 @@ export default function ResponsiveDialog({ open, handleClose }) {
     delete formData.horario;
     delete formData.data;
 
-    console.log(formData);
+
     FOTOGRAFO.CADASTRAR_EVENTO(formData, token).then((response) => {
       console.log(response.data);
       console.log(token + " : token ")
     });
 
     setConfirmOpen(false);
+    console.log("indo listar fotografo")
+    listarFotografo();
   };
 
   const handleCepChange = async (e) => {

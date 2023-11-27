@@ -43,11 +43,7 @@ function Calendario(props) {
 
   const listarFotografo = async () => {
     FOTOGRAFO.LISTAR_EVENTOS(id, token).then((response) => {
-
-
       const updatedEvents = response.data.map((event) => {
-
-
         return {
           id: event.id,
           idCliente: event.cliente.id,
@@ -67,9 +63,7 @@ function Calendario(props) {
           dataRealizacao: event.dataRealizacao,
         };
       });
-
       setEvents(updatedEvents);
-
     });
   };
 
@@ -109,7 +103,7 @@ function Calendario(props) {
       let data = info.event._def.extendedProps;
       title = `${data.cliente} Evento`;
       date = new Date(data.dataRealizacao);
-      endereco = `${data.estado}, ${data.cidade}, ${data.bairro}, ${data.rua}, ${data.numero}, ${data.complemento}`;
+      endereco = data.endereco;
       cliente = data.cliente;
       status = data.statusSessao;
     }
