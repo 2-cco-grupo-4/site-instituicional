@@ -9,6 +9,10 @@ export const IMAGEM = {
     api.get("/imagens/paths", {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  VISUALIZAR_TEMA: (token, nomeTema) =>
+    api.get(`/imagens/paths/${nomeTema}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
   SALVAR_S3: (token, formData, idAlbum) =>
     api.post(`/imagens/album/${idAlbum}/multiUpload`, formData, {
       headers: {
