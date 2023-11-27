@@ -142,6 +142,68 @@ const Feed = () => {
     }
   }, [temaBusca]);
 
+  const getImagemS3 = (idObject) => {
+    IMAGEM.GET_OBJECT(idObject)
+      .then((response) => {
+        console.log(`TESTE RETORNO S3: ${response.data}`);
+        return response.data;
+      })
+      .catch((error) => {
+        console.error("Erro na chamada API:", error);
+      });
+  };
+
+  const [imagens, setImagens] = useState([]);
+
+  useEffect(() => {
+    const fetchImagens = async () => {
+      const imagensAtualizadas = await Promise.all(
+        images.map(async (image, index) => {
+          if (image.origemImagem === "s3") {
+            try {
+              const response = await IMAGEM.GET_OBJECT(image.imagemId);
+              const tipoImagem =
+                response.headers["content-type"] || "image/png";
+
+              const blob = new Blob([response.data], {
+                type: tipoImagem,
+              });
+
+              const url = URL.createObjectURL(blob);
+
+              // Renderizar o componente FeedAlbum com a URL da imagem
+              return (
+                <FeedAlbum
+                  key={index}
+                  src={url}
+                  autor={image.fotografo}
+                  onClick={() => handleImageClick(image.albumId)}
+                />
+              );
+            } catch (error) {
+              console.error("Erro ao buscar imagem:", error);
+              return null; // Ou qualquer coisa que indique que houve um erro
+            }
+          } else {
+            // Se a origem não é S3, retornar o componente FeedAlbum padrão
+            return (
+              <FeedAlbum
+                key={index}
+                src={image.path}
+                autor={image.fotografo}
+                onClick={() => handleImageClick(image.albumId)}
+              />
+            );
+          }
+        })
+      );
+
+      setImagens(imagensAtualizadas.filter(Boolean));
+    };
+
+    fetchImagens();
+  }, [images]);
+
   return (
     <>
       <Header type={2} />
@@ -190,14 +252,7 @@ const Feed = () => {
         <Container display="flex" flexDirection="column" alignItems="center">
           <Stack alignItems="center" sx={{ width: "calc(100% + 24px)" }}>
             <Masonry columns={3} spacing={3} sx={{ width: "100%" }}>
-              {images.map((image, index) => (
-                <FeedAlbum
-                  key={index}
-                  src={image.path}
-                  autor={image.fotografo}
-                  onClick={() => handleImageClick(image.albumId)}
-                />
-              ))}
+              {imagens.map((imagem) => imagem)}
             </Masonry>
           </Stack>
         </Container>

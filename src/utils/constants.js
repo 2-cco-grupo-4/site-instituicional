@@ -10,12 +10,12 @@ export const ROUTES = {
   DASH_ADMIN: "/dash-admin",
   PREFERENCES: "/preferencias",
   ALBUM: (albumId) => `/album/${albumId}`,
-  PERFIL: "/perfil-fotografo",
+  PERFIL: (idFotografo) => `/perfil-fotografo/${idFotografo}`,
   NOVO_ALBUM: "/cadastro-album",
   DASH_FOTOGRAFO: "/dash-fotografo",
   ARQUIVOS_ADMIN: "/dash-admin/arquivos",
   ARQUIVOS_FOTOGRAFO: "/dash-fotografo/arquivos",
-  CALENDARIO: "/calendario"
+  CALENDARIO: "/calendario",
 };
 
 export const PROFILE_TYPES = {

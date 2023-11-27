@@ -2,8 +2,8 @@ import api from "./api";
 // const { token, id } = useUserContext();
 
 export const ADMIN = {
-  CONTAGEM_TEMA_CONTATO: (token) =>
-    api.get("/dashboard/admin/contagem-tema-contato", {
+  CONTAGEM_TEMA_CONTATO: (token, mes, ano) =>
+    api.get(`/dashboard/admin/contagem-tema-contato?mes=${mes}&ano=${ano}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
   CONTAGEM_CLIENTES_SEMANA: (token) =>
@@ -28,6 +28,18 @@ export const ADMIN = {
     }),
   PROGRESSAO_SESSOES_MES: (token) =>
     api.get("/dashboard/admin/progressao-sessoes-mes", {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  PAGAMENTS_MAIS_UTILIZADOS: (token, mes, ano) =>
+    api.get(`/dashboard/admin/formas-pagamento-mais-utilizadas?mes=${mes}&ano=${ano}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  FLUXO_CONVERSAO_SESSOES: (token, mes, ano) =>
+    api.get(`/dashboard/admin/fluxo-conversao-contatos?mes=${mes}&ano=${ano}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  ESTADOS_MAIS_SESSOES: (token, mes, ano) =>
+    api.get(`/dashboard/admin/estados-mais-sessoes-agendadas?mes=${mes}&ano=${ano}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
   KPI_TOTAL_USUARIOS: (token) =>
