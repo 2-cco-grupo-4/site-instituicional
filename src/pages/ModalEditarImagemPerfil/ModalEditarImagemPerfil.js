@@ -51,7 +51,7 @@ const ModalEditarImagemPerfil = () => {
       rightButtonProps={{ onClick: handleSave }}
 
     >
-      <Avatar alt="" src={selectedImage || "./assets/img/bolo.jpg"} className={classes.avatar} sx={{ width: '22vw', height: '45vh' }} />
+      <Avatar alt="" src={selectedImage || "./assets/img/bolo.jpg"} className={classes.avatar} sx={{ width: '18vw', height: '38vh' }} />
 
       <Button>
         <input
@@ -63,8 +63,8 @@ const ModalEditarImagemPerfil = () => {
         />
 
         <label htmlFor="contained-button-file">
-          <Typography variant="paragraph-medium-bold" className={classes.button}>
-            Escolher imagem...
+          <Typography variant="paragraph-medium-regular" className={classes.button}>
+            Selecionar...
           </Typography>
         </label>
       </Button>
