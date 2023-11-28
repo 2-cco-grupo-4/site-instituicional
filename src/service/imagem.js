@@ -1,22 +1,12 @@
 import api from "./api";
 
 export const IMAGEM = {
-  SALVAR: (token, paylod) =>
-    api.post("/imagens", paylod, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
-  VISUALIZAR: (token) =>
-    api.get("/imagens/paths", {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
-  VISUALIZAR_TEMA: (token, nomeTema) =>
-    api.get(`/imagens/paths/${nomeTema}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
+  SALVAR: (token, paylod) => api.post("/imagens", paylod),
+  VISUALIZAR: (token) => api.get("/imagens/paths"),
+  VISUALIZAR_TEMA: (token, nomeTema) => api.get(`/imagens/paths/${nomeTema}`),
   SALVAR_S3: (token, formData, idAlbum) =>
     api.post(`/imagens/album/${idAlbum}/multiUpload`, formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
     }),
@@ -24,8 +14,5 @@ export const IMAGEM = {
     api.get(`/imagens/album/${idImagem}`, {
       responseType: "blob",
     }),
-  TESTE_FEED: (token, idAlbum) =>
-    api.get(`/imagens/feed/${idAlbum}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
+  TESTE_FEED: (token, idAlbum) => api.get(`/imagens/feed/${idAlbum}`),
 };
