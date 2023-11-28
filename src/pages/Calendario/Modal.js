@@ -9,18 +9,27 @@ import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import InputMask from "react-input-mask";
 import { FOTOGRAFO } from "service/calendario";
+import { useUserContext } from "contexts";
 export default function ResponsiveDialog({ open, handleClose }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [formData, setFormData] = useState({ status: "Agendamento", fkFotografo:"" });
+  const { id, nome, token } = useUserContext();
+  const [formData, setFormData] = useState({ statusSessao: "Agendamento" });
 
   const handleConfirm = () => {
     setConfirmOpen(true);
   };
 
   const handleConfirmFinal = () => {
+    var dataRealizacao = new Date(formData.data + " " + formData.horario + ":00");
+    formData.dataRealizacao = dataRealizacao.toISOString();
+    formData.idFotografo = id;
+    delete formData.horario;
+    delete formData.data;
+
     console.log(formData);
-    FOTOGRAFO.CADASTRAR_EVENTO(formData).then((response) => {
+    FOTOGRAFO.CADASTRAR_EVENTO(formData, token).then((response) => {
       console.log(response.data);
+      console.log(token + " : token ")
     });
 
     setConfirmOpen(false);
@@ -96,7 +105,9 @@ export default function ResponsiveDialog({ open, handleClose }) {
               <TextField
                 type="date"
                 fullWidth
-   
+                onChange={(e) =>
+                  setFormData({ ...formData, data: e.target.value })
+                }
               />
             </Grid>
             <Grid item xs={6}>
@@ -167,10 +178,11 @@ export default function ResponsiveDialog({ open, handleClose }) {
                 label="Complemento"
                 fullWidth
                 onChange={(e) =>
-                  setFormData({ ...formData, comp: e.target.value })
+                  setFormData({ ...formData, complemento: e.target.value })
                 }
               />
             </Grid>
+
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -215,7 +227,7 @@ export default function ResponsiveDialog({ open, handleClose }) {
               <strong>Estado:</strong> {formData.estado}
             </p>
             <p>
-              <strong>Complemento:</strong> {formData.comp}
+              <strong>Complemento:</strong> {formData.complemento}
             </p>
 
           </div>
