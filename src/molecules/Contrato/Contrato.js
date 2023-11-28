@@ -50,6 +50,10 @@ const Contract = ({ open, setOpen, fotografo }) => {
   const [contract, setContract] = useState({})
   const [loading, setLoading] = useState(false)
 
+  const estadosBrasil = [
+    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
+    "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+  ];
 
   const {
     control,
@@ -91,7 +95,11 @@ const Contract = ({ open, setOpen, fotografo }) => {
       const sessionResponse = await CONTRATO.CADASTRAR_SESSAO(sessionPayload, token);
       console.log("Session Response:", sessionResponse);
 
-      await cadastrarEndereco(sessionResponse.data.id);
+      const idSessao = sessionResponse.data.id;
+
+      await cadastrarEndereco(idSessao);
+
+      await cadastrarPagamento(idSessao);
 
       await criarChat();
 
@@ -103,6 +111,20 @@ const Contract = ({ open, setOpen, fotografo }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const cadastrarPagamento = async (idSessao) => {
+    console.log("Iniciando cadastro do pagamento...");
+    const pagamentoPayload = {
+      forma: contract.formaPagamento,
+      valor: contract.valor,
+      parcelas: contract.parcelas,
+      idSessao,
+    };
+
+    console.log("Pagamento Payload:", pagamentoPayload);
+    await CONTRATO.CADASTRAR_PAGAMENTO(pagamentoPayload, token);
+    console.log("Pagamento cadastrado com sucesso!");
   };
 
   const cadastrarEndereco = async (idEvento) => {
@@ -322,12 +344,28 @@ const Contract = ({ open, setOpen, fotografo }) => {
             <Grid item xs={5}>
               <TextField
                 name="estado"
+                select
                 label="Estado"
                 fullWidth
                 {...register("estado")}
                 error={!!errors?.estado || genericError}
                 helperText={errors?.estado?.message}
-              />
+                SelectProps={{
+                  MenuProps: {
+                    PaperProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  },
+                }}
+              >
+                {estadosBrasil.map((estado) => (
+                  <MenuItem key={estado} value={estado}>
+                    {estado}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={5}>
               <TextField

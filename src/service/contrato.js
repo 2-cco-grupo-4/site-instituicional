@@ -10,6 +10,10 @@ export const CONTRATO = {
     api.post("/eventos/contrato", payload, {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  CADASTRAR_PAGAMENTO: (payload, token) =>
+    api.post("/eventos/cadastrarPagamento", payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 
 
 }
