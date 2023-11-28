@@ -42,7 +42,7 @@ import { ROUTES } from "utils/constants";
 import { stringAvatar } from "utils/helpers/string";
 
 const DashFotografo = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   const defaultValues = {
     metrica: "fotografo",
   };
@@ -149,6 +149,10 @@ const DashFotografo = () => {
     }
   }, [token, id]);
 
+  const handleNavigation = (route) => {
+    navigate(route);
+  };
+
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Box>
@@ -172,7 +176,14 @@ const DashFotografo = () => {
             <LogoPicme dash={true} height={theme.spacing(4)} />
           </Box>
           <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Box
               p={1}
               mb={5}
@@ -222,8 +233,7 @@ const DashFotografo = () => {
                 alignItems: "center",
               }}
             >
-              <Avatar {...stringAvatar(nome ? (nome) : ("Teste"))}>
-              </Avatar>
+              <Avatar {...stringAvatar(nome ? nome : "Teste")}></Avatar>
             </Box>
             <Box
               sx={{
@@ -239,8 +249,13 @@ const DashFotografo = () => {
                 justifyContent="space-around"
                 sx={{ cursor: "pointer" }}
                 onClick={() => {
-                  localStorage.clear();
-                  navigate(ROUTES.HOME);
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("nome");
+                  localStorage.removeItem("tipoUsuario");
+                  localStorage.removeItem("id");
+                  localStorage.removeItem("temas");
+                  localStorage.removeItem("tokenSolicitacao");
+                  handleNavigation("/");
                 }}
               >
                 <LogoutIcon
@@ -330,13 +345,13 @@ const DashFotografo = () => {
                     height: "100%",
                   }}
                 >
-                  <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
+                  {/* <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
                     <CaixaKpi
                       textoKpi="Valor médio cobrado: "
                       valorKpi={valorKpi1}
                       direita={true}
                     ></CaixaKpi>
-                  </Grid>
+                  </Grid> */}
                   <Grid item md={12} sx={{ paddingLeft: "0 !important" }}>
                     <CaixaKpi
                       textoKpi="Sessões agendadas no mês:"
@@ -371,13 +386,34 @@ const DashFotografo = () => {
                 xs={10}
                 sx={{
                   paddingLeft: "0 !important",
+                  // paddingTop: "0 !important",
+                }}
+              >
+                <CardBarChart
+                  tituloPieChart="Avaliação média por tema"
+                  data={dataBarAvaliacaoTema}
+                  width="100%"
+                />
+              </Grid>
+              <Grid
+                item
+                xl={12}
+                lg={12}
+                md={12}
+                sm={10}
+                xs={10}
+                sx={{
+                  paddingLeft: "0 !important",
                   height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "flex",
                   // paddingTop: "0 !important",
                 }}
               >
                 <CardBarLineChart
                   tituloPieChart="Lucro nos últimos meses"
-                  width="100%"
+                  width="95%"
                   height={580}
                   data={dataBar}
                 ></CardBarLineChart>
@@ -399,45 +435,31 @@ const DashFotografo = () => {
             >
               <Grid
                 item
-                xl={4}
-                lg={4}
-                md={4}
+                xl={12}
+                lg={12}
+                md={12}
                 sm={10}
                 xs={10}
                 sx={{
                   paddingLeft: "0 !important",
-                  // paddingTop: "0 !important",
-                }}
-              >
-                <CardBarChart
-                  tituloPieChart="Avaliação média por tema"
-                  data={dataBarAvaliacaoTema}
-                  width="100%"
-                />
-              </Grid>
-              <Grid
-                item
-                xl={7}
-                lg={7}
-                md={7}
-                sm={10}
-                xs={10}
-                sx={{
-                  paddingLeft: "0 !important",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "flex",
                   // paddingTop: "0 !important",
                 }}
               >
                 <CardStackedBarChart
-                  tituloPieChart="Contatos convertidos em sessões"
-                  width="100%"
+                  tituloPieChart="Contatos convertidos em sessões no ano"
+                  width="95%"
                   data={dataSessoesConvertidas}
                 />
               </Grid>
               <Grid
                 item
-                xl={6}
-                lg={6}
-                md={6}
+                xl={12}
+                lg={12}
+                md={12}
                 sm={10}
                 xs={10}
                 sx={{

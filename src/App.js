@@ -24,6 +24,7 @@ import Chat from "pages/Chat";
 import ArquivosAdmin from "pages/ArquivosAdmin";
 import ArquivosFotografo from "pages/ArquivosFotografo";
 import ListarFotografoTeste from "pages/ListarFotografoTeste";
+import ModalEditarImagemPerfil from "pages/ModalEditarImagemPerfil";
 
 const DefaultProviders = ({ children }) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,6 +41,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/pedido" element={<Pedido />} />
+            <Route exact path="/modal-editar-imagem" element={<ModalEditarImagemPerfil />} />
             <Route exact path="/persona" element={<ChooseProfileType />} />
             <Route exact path="/cadastro/:profileType" element={<Register />} />
             <Route exact path="/login" element={<Login />} />
@@ -67,7 +69,7 @@ function App() {
             ></Route>
             <Route
               exact
-              path="/perfil-fotografo"
+              path="/perfil-fotografo/:idFotografo"
               element={<PerfilFotografo />}
             ></Route>
             <Route

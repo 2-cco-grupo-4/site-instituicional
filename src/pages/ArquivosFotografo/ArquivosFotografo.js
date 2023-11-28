@@ -6,6 +6,8 @@ import {
   Divider,
   Grid,
   Input,
+  useTheme,
+  Avatar,
 } from "@mui/material";
 import useStyles from "./ArquivosFotografo.style.js";
 import Header from "molecules/Header";
@@ -23,12 +25,15 @@ import { useEffect, useState, useRef } from "react";
 import Container from "atoms/Container";
 import CustomButton from "atoms/CustomButton/CustomButton.js";
 import { ARQUIVOS_FOTOGRAFO } from "service/arquivos.js";
+import { stringAvatar } from "utils/helpers/string";
 
 const ArquivosFotografo = () => {
   const classes = useStyles();
 
   const { token, id, nome } = useUserContext();
   const navigate = useNavigate();
+
+  const theme = useTheme();
 
   const exportarCsv = () => {
     console.log("token", token);
@@ -61,6 +66,10 @@ const ArquivosFotografo = () => {
       });
   };
 
+  const handleNavigation = (route) => {
+    navigate(route);
+  };
+
   return (
     <Stack>
       <Box>
@@ -80,10 +89,17 @@ const ArquivosFotografo = () => {
           }}
         >
           <Box>
-            <LogoPicme dash={true} height={70} />
+            <LogoPicme dash={true} height={theme.spacing(4)} />
           </Box>
-          <Divider />
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Box
               p={1}
               mb={5}
@@ -92,7 +108,7 @@ const ArquivosFotografo = () => {
             >
               <BarChartIcon
                 fontSize="large"
-                style={{ color: "#ffffff", fontSize: 40 }}
+                style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
             <Box
@@ -100,30 +116,30 @@ const ArquivosFotografo = () => {
               mb={5}
               sx={{
                 backgroundColor: "#ffffff",
-                borderRadius: 5,
+                borderRadius: theme.shape.borderRadius,
                 cursor: "pointer",
               }}
               onClick={() => navigate(ROUTES.ARQUIVOS_FOTOGRAFO)}
             >
               <ContentPasteGoIcon
                 fontSize="large"
-                style={{ color: "#1E1E1E", fontSize: 40 }}
+                style={{ color: "#1E1E1E", fontSize: theme.spacing(4) }}
               />
             </Box>
-            <Box p={1} mb={5} sx={{ cursor: "pointer" }}>
+            <Box p={1} sx={{ cursor: "pointer" }}>
               <SettingsIcon
                 fontSize="large"
-                style={{ color: "#ffffff", fontSize: 40 }}
+                style={{ color: "#ffffff", fontSize: theme.spacing(4) }}
               />
             </Box>
           </Box>
-          <Divider />
+          <Divider sx={{ backgroundColor: "#ffffff", width: "60%" }} />
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              // justifyContent: "center",
+              justifyContent: "center",
             }}
           >
             <Box
@@ -133,10 +149,7 @@ const ArquivosFotografo = () => {
                 alignItems: "center",
               }}
             >
-              <PersonIcon style={{ color: "#ffffff", fontSize: 40 }} />
-              <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
-                {nome}
-              </Typography>
+              <Avatar {...stringAvatar(nome ? nome : "Teste")}></Avatar>
             </Box>
             <Box
               sx={{
@@ -152,20 +165,18 @@ const ArquivosFotografo = () => {
                 justifyContent="space-around"
                 sx={{ cursor: "pointer" }}
                 onClick={() => {
-                  localStorage.clear();
-                  navigate(ROUTES.HOME);
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("nome");
+                  localStorage.removeItem("tipoUsuario");
+                  localStorage.removeItem("id");
+                  localStorage.removeItem("temas");
+                  localStorage.removeItem("tokenSolicitacao");
+                  handleNavigation("/");
                 }}
               >
                 <LogoutIcon
-                  style={{
-                    color: "#ffffff",
-                    fontSize: 35,
-                    paddingTop: "10px",
-                  }}
+                  style={{ color: "#ffffff", fontSize: 25, paddingTop: "10px" }}
                 />
-                <Typography fontSize="14px" sx={{ color: "#ffffff" }}>
-                  Sair
-                </Typography>
               </Box>
             </Box>
           </Box>
