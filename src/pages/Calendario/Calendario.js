@@ -2,7 +2,7 @@ import React from "react";
 import { Stack, Typography, Button, Avatar, Chip } from "@mui/material";
 import Header from "molecules/Header";
 import Footer from "molecules/Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./Calendario.css";
 import ResponsiveDialog from "./Modal";
@@ -23,13 +23,17 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { FOTOGRAFO } from "service/calendario";
 import { useUserContext } from "contexts";
+import { set } from "react-hook-form";
 
 function Calendario(props) {
   const [events, setEvents] = useState([]);
-
+  const [eventosMes, setEventosMes] = useState(0);
   const { id, nome, token } = useUserContext();
   const [open, setOpen] = useState(false);
   const [updateEffect, setUpdateEffect] = useState(false);
+  const [updateClass, setUpdateClass] = useState(false);
+  const calendarRef = useRef(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const handleOpen = () => {
     console.log("Add evento");
@@ -73,6 +77,18 @@ function Calendario(props) {
     listarFotografo();
     setUpdateEffect(false);
   }, [token, updateEffect]);
+
+
+  useEffect(() => {
+    const elementosEventos = document.querySelectorAll('.fc-event');
+    setEventosMes(elementosEventos.length);
+  }, [updateClass]);
+
+  //repetir a cada 2 segundos 
+
+  setInterval(() => {
+    setUpdateClass(!updateClass);
+  }, 1000);
 
   const onConfirm = (data) => {
     console.log("COnfirmado")
@@ -185,8 +201,35 @@ function Calendario(props) {
       text: "Adicionar evento +",
       click: handleOpen,
     },
+    cprev: {
+      text: "Anterior",
+      click: handlePrev,
+    },
+    cnext: {
+      text: "Próximo",
+      click: handleNext,
+    }
   };
-  const header = { left: "title prev next", right: "customButton" };
+
+  function handlePrev() {
+
+    if (calendarRef.current) {
+      calendarRef.current.getApi().prev();
+      setCurrentDate(calendarRef.current.getApi().getDate());
+    }
+    setUpdateClass(!updateClass);
+  }
+
+  function handleNext() {
+    if (calendarRef.current) {
+      calendarRef.current.getApi().next();
+      setCurrentDate(calendarRef.current.getApi().getDate());
+    }
+    setUpdateClass(!updateClass);
+
+
+  }
+  const header = { left: "title cprev cnext", right: "customButton" };
 
   return (
     <>
@@ -220,6 +263,7 @@ function Calendario(props) {
         <CalendarioDiv>
           <div id="modal"></div>
           <FullCalendar
+            ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             headerToolbar={header}
@@ -227,15 +271,19 @@ function Calendario(props) {
             events={events}
             aspectRatio={1.35}
             dayMaxEventRows={true}
+            dateClick={(arg) => setCurrentDate(arg.date)}
             eventDidMount={function (info) {
               info.el.addEventListener("click", function () {
                 openModal(info, false);
               });
             }}
           />
+          <h4> Para esse mês, há {eventosMes} eventos </h4>
           <ResponsiveDialog open={open} handleClose={handleClose} onConfirm={onConfirm} />
         </CalendarioDiv>
+
       </Content>
+      <Footer></Footer>
     </>
   );
 }
