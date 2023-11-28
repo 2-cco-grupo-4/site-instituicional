@@ -7,6 +7,15 @@ export default makeStyles((theme) => ({
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
   },
-}
-
-));
+  input: {
+    display: 'none',
+  },
+  button: {
+    margin: theme.spacing(1),
+    color: theme.palette.white.main,
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: '5px',
+    padding: theme.spacing(1),
+    cursor: 'pointer',
+  },
+}));

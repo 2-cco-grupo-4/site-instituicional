@@ -1,19 +1,44 @@
 import React, { useState } from 'react';
 import useStyles from "./ModalEditarImagemPerfil.styles";
 import CustomModal from 'molecules/CustomModal';
-import { Typography, Avatar } from '@mui/material';
-import ImageUpload from 'molecules/ImageUpload';
+import { Typography, Avatar, Button, Snackbar } from '@mui/material';
 
 const ModalEditarImagemPerfil = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = () => {
+    setOpen(false);
+    setConfirmationOpen(true);
 
   };
 
+  const handleConfirmationClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setConfirmationOpen(false);
+  };
 
   return (
     <CustomModal
@@ -23,23 +48,28 @@ const ModalEditarImagemPerfil = () => {
       leftButtonText={"Cancelar"}
       leftButtonProps={{ onClick: handleClose }}
       rightButtonText={"Salvar"}
-    >
-      <Avatar alt="" src="./assets/img/bolo.jpg" className={classes.avatar} sx={{ width: '22vw', height: '45vh' }} />
+      rightButtonProps={{ onClick: handleSave }}
 
-      <input
-        accept="image/*"
-        className={classes.input}
-        style={{ display: 'none' }}
-        id="raised-button-file"
-        multiple
-        type="file"
-      />
-      <label htmlFor="raised-button-file">
-        <Button variant="raised" component="span" className={classes.button}>
-          Upload
-        </Button>
-      </label>
-    </CustomModal >
+    >
+      <Avatar alt="" src={selectedImage || "./assets/img/bolo.jpg"} className={classes.avatar} sx={{ width: '22vw', height: '45vh' }} />
+
+      <Button>
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="contained-button-file"
+          type="file"
+          onChange={handleImageChange}
+        />
+
+        <label htmlFor="contained-button-file">
+          <Typography variant="paragraph-medium-bold" className={classes.button}>
+            Escolher imagem...
+          </Typography>
+        </label>
+      </Button>
+    </CustomModal>
+
   );
 };
 
