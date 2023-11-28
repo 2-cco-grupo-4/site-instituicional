@@ -8,6 +8,7 @@ import {
   Grid,
   OutlinedInput,
   Button,
+  Link,
 } from "@mui/material"
 import Container from "atoms/Container"
 import React, { useState, useEffect, useRef } from "react"
@@ -15,6 +16,7 @@ import Header from "molecules/Header"
 import IconSend from "@mui/icons-material/Send"
 import IconChat from "@mui/icons-material/ChatRounded"
 import IconEdit from "@mui/icons-material/ModeEdit"
+import IconArrowBack from "@mui/icons-material/ArrowBackRounded"
 
 import {
   collection,
@@ -24,6 +26,7 @@ import {
   orderBy,
   updateDoc,
   addDoc,
+  onSnapshot,
   or,
   doc,
 } from "firebase/firestore"
@@ -31,6 +34,8 @@ import db from "service/firebase"
 import { useUserContext } from "contexts"
 import useStyles from "./Chat.styles"
 import ProfilePic from "atoms/ProfilePic"
+import { ROUTES } from "utils/constants"
+import CustomButton from "atoms/CustomButton"
 
 const Chat = () => {
   const classes = useStyles()
@@ -117,13 +122,9 @@ const Chat = () => {
   const filterChats = (nomeChat) => {
     const newChats = allChats.filter(
       (chat) =>
-        chat?.nome_fotografo
-          ?.toLowerCase()
-          .startsWith(nomeChat.toLowerCase()) ||
-        chat?.nome_contratante?.toLowerCase().startsWith(nomeChat.toLowerCase())
+        chat?.nome_fotografo?.toLowerCase().includes(nomeChat.toLowerCase()) ||
+        chat?.nome_contratante?.toLowerCase().includes(nomeChat.toLowerCase())
     )
-
-    console.log(newChats)
 
     if (!newChats) {
       setUserChats(allChats)
@@ -134,24 +135,23 @@ const Chat = () => {
 
   const loadChats = async () => {
     try {
-      const chatQuery = query(
-        collection(db, "chats"),
-        or(
-          where("id_fotografo", "==", userId),
-          where("id_contratante", "==", userId)
+      const chats = onSnapshot(
+        query(
+          collection(db, "chats"),
+          or(
+            where("id_fotografo", "==", userId),
+            where("id_contratante", "==", userId)
+          ),
+          orderBy("data_ultima_mensagem")
         ),
-        orderBy("data_ultima_mensagem")
+        (querySnapshot) => {
+          const data = []
+          querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() })
+          })
+          setAllChats(formatDatesChat(data))
+        }
       )
-
-      const querySnapshot = await getDocs(chatQuery)
-
-      const data = []
-      querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() })
-      })
-
-      setUserChats(formatDatesChat(data))
-      setAllChats(formatDatesChat(data))
     } catch (error) {
       console.error("Erro ao recuperar dados:", error)
     }
@@ -220,16 +220,28 @@ const Chat = () => {
   }, [id])
 
   useEffect(() => {
-    console.log(id)
-    console.log(userChats)
-  }, [])
+    setUserChats(allChats)
+  }, [allChats])
 
   return (
     <Stack height="100dvh" sx={{ flexGrow: 1 }}>
       <Grid container height="100%" position="relative">
         <Grid item xs={3} md={4} className={classes.sidebar}>
           <Stack
-            p={3}
+            direction="row"
+            alignItems="center"
+            columnGap={2}
+            p={2}
+            sx={{ borderBottom: "1px solid rgb(0,0,0, 0.1)" }}
+          >
+            <Link color="inherit" underline="hover" href={ROUTES.FEED}>
+              <IconArrowBack style={{ marginRight: theme.spacing(1) }} />
+              Voltar
+            </Link>
+          </Stack>
+          <Stack
+            px={3}
+            py={2}
             direction="row"
             alignItems="center"
             justifyContent="space-between"
@@ -241,11 +253,11 @@ const Chat = () => {
                 autor={nome}
                 alt={nome}
                 sx={{
-                  width: theme.spacing(6),
-                  height: theme.spacing(6),
+                  width: theme.spacing(5),
+                  height: theme.spacing(5),
                 }}
               />
-              <Typography variant="paragraph-large-bold">{nome}</Typography>
+              <Typography variant="paragraph-medium-bold">{nome}</Typography>
             </Stack>
             <Button
               color="secondary"
@@ -337,120 +349,170 @@ const Chat = () => {
             })}
           </Stack>
         </Grid>
-        <Grid item xs={9} md={8} className={classes.chatTextArea}>
+        <Grid
+          item
+          xs={9}
+          md={8}
+          position="relative"
+          className={classes.chatTextArea}
+        >
           {selectedChat ? (
-            <Container
-              py={4}
-              minHeight="100dvh"
-              flexDirection="column"
-              justifyContent="space-between"
-              position="relative"
-            >
+            <>
               <Stack
-                pb={4}
+                width="100%"
+                position="sticky"
+                top={0}
+                left={0}
+                zIndex={5}
+                py={1.5}
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
                 sx={{
-                  height: `calc(100% - ${inputRef?.current?.offsetHeight}px)`,
+                  backgroundColor: theme.palette.white.main,
+                  borderBottom: "1px solid rgb(0,0,0, 0.1)",
                 }}
-                flexDirection="column"
-                justifyContent="flex-end"
-                className={classes.messagesContainer}
               >
-                {messages.map((content, index) => {
-                  let isNextMessageFromUser
-
-                  if (
-                    index < messages.length - 1 &&
-                    messages[index + 1].id_usuario === content.id_usuario
-                  ) {
-                    isNextMessageFromUser = true
-                  } else {
-                    isNextMessageFromUser = false
-                  }
-
-                  return (
-                    <Stack
-                      key={index}
-                      direction={
-                        id == content.id_usuario ? "row" : "row-reverse"
-                      }
-                      width="100%"
-                      justifyContent="flex-end"
-                      alignItems="flex-end"
-                      columnGap={1}
-                      mb={isNextMessageFromUser ? 0.5 : 3}
-                    >
-                      {!isNextMessageFromUser && (
-                        <Typography variant="paragraph-xsmall-regular">
-                          {content.horario_envio}
-                        </Typography>
-                      )}
-                      <Typography
-                        sx={
-                          id == content.id_usuario
-                            ? {
-                                width: "fit-content",
-                                maxWidth: "60%",
-                                color: theme.palette.white.main,
-                                bgcolor: theme.palette.primary.main,
-                                borderRadius: theme.shape.borderRadius,
-                                borderBottomRightRadius: 1,
-                                padding: theme.spacing(1, 2),
-                                marginRight:
-                                  isNextMessageFromUser && theme.spacing(5),
-                              }
-                            : {
-                                width: "fit-content",
-                                maxWidth: "60%",
-                                bgcolor: theme.palette.whiteSoft.main,
-                                borderRadius: theme.shape.borderRadius,
-                                borderBottomLeftRadius: 1,
-                                padding: theme.spacing(1, 2),
-                                marginLeft:
-                                  isNextMessageFromUser && theme.spacing(5),
-                              }
-                        }
-                      >
-                        {content.mensagem}
-                      </Typography>
-                      {isNextMessageFromUser || (
-                        <ProfilePic
-                          autor={id == content.id_usuario ? nome : userChatName}
-                          sx={{
-                            width: theme.spacing(4),
-                            height: theme.spacing(4),
-                            fontSize: theme.spacing(2),
-                          }}
-                        />
-                      )}
-                    </Stack>
-                  )
-                })}
-              </Stack>
-              <OutlinedInput
-                multiline
-                maxRows={5}
-                placeholder="Digite uma mensagem..."
-                fullWidth
-                className={classes.inputMessage}
-                inputRef={inputRef}
-                onChange={(e) => setMessageInput(e.target.value)}
-                sx={{ bgcolor: theme.palette.white.main }}
-                endAdornment={
-                  <Button
-                    onClick={() => handleMessageSubmit()}
-                    sx={{
-                      fontSize: theme.spacing(2),
-                      minWidth: 0,
-                      padding: theme.spacing(1),
-                      alignSelf: "flex-start",
-                    }}
-                    variant="contained"
+                <Stack direction="row" alignItems="center" columnGap={1} px={2}>
+                  <ProfilePic
+                    autor={userChatName}
+                    alt={userChatName}
+                    sx={{ width: theme.spacing(4), height: theme.spacing(4) }}
+                  />
+                  <Typography>{userChatName}</Typography>
+                </Stack>
+                <Stack direction="row" alignItems="center" columnGap={1} mr={1}>
+                  <CustomButton
+                    size="small"
+                    variant="outlined"
+                    color="secondary"
                   >
-                    <IconSend />
-                  </Button>
-                }
-              />
-            </Container>
+                    Perfil
+                  </CustomButton>
+                  <CustomButton
+                    size="small"
+                    variant="outlined"
+                    color="secondary"
+                  >
+                    Contrato
+                  </CustomButton>
+                </Stack>
+              </Stack>
+              <Container
+                pb={4}
+                minHeight="100dvh"
+                flexDirection="column"
+                justifyContent="space-between"
+                position="relative"
+              >
+                <Stack
+                  py={4}
+                  sx={{
+                    height: `calc(100% - ${inputRef?.current?.offsetHeight}px)`,
+                  }}
+                  flexDirection="column"
+                  justifyContent="flex-end"
+                  className={classes.messagesContainer}
+                >
+                  {messages.map((content, index) => {
+                    let isNextMessageFromUser
+
+                    if (
+                      index < messages.length - 1 &&
+                      messages[index + 1].id_usuario === content.id_usuario
+                    ) {
+                      isNextMessageFromUser = true
+                    } else {
+                      isNextMessageFromUser = false
+                    }
+
+                    return (
+                      <Stack
+                        key={index}
+                        direction={
+                          id == content.id_usuario ? "row" : "row-reverse"
+                        }
+                        width="100%"
+                        justifyContent="flex-end"
+                        alignItems="flex-end"
+                        columnGap={1}
+                        mb={isNextMessageFromUser ? 0.5 : 3}
+                      >
+                        {!isNextMessageFromUser && (
+                          <Typography variant="paragraph-xsmall-regular">
+                            {content.horario_envio}
+                          </Typography>
+                        )}
+                        <Typography
+                          sx={
+                            id == content.id_usuario
+                              ? {
+                                  width: "fit-content",
+                                  maxWidth: "60%",
+                                  color: theme.palette.white.main,
+                                  bgcolor: theme.palette.primary.main,
+                                  borderRadius: theme.shape.borderRadius,
+                                  borderBottomRightRadius: 1,
+                                  padding: theme.spacing(1, 2),
+                                  marginRight:
+                                    isNextMessageFromUser && theme.spacing(5),
+                                }
+                              : {
+                                  width: "fit-content",
+                                  maxWidth: "60%",
+                                  bgcolor: theme.palette.whiteSoft.main,
+                                  borderRadius: theme.shape.borderRadius,
+                                  borderBottomLeftRadius: 1,
+                                  padding: theme.spacing(1, 2),
+                                  marginLeft:
+                                    isNextMessageFromUser && theme.spacing(5),
+                                }
+                          }
+                        >
+                          {content.mensagem}
+                        </Typography>
+                        {isNextMessageFromUser || (
+                          <ProfilePic
+                            autor={
+                              id == content.id_usuario ? nome : userChatName
+                            }
+                            sx={{
+                              width: theme.spacing(4),
+                              height: theme.spacing(4),
+                              fontSize: theme.spacing(2),
+                            }}
+                          />
+                        )}
+                      </Stack>
+                    )
+                  })}
+                </Stack>
+                <OutlinedInput
+                  multiline
+                  maxRows={5}
+                  placeholder="Digite uma mensagem..."
+                  fullWidth
+                  className={classes.inputMessage}
+                  inputRef={inputRef}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  sx={{ bgcolor: theme.palette.white.main }}
+                  endAdornment={
+                    <Button
+                      onClick={() => handleMessageSubmit()}
+                      sx={{
+                        fontSize: theme.spacing(2),
+                        minWidth: 0,
+                        padding: theme.spacing(1),
+                        alignSelf: "flex-start",
+                      }}
+                      variant="contained"
+                    >
+                      <IconSend />
+                    </Button>
+                  }
+                />
+              </Container>
+            </>
           ) : (
             <Stack
               height="100%"

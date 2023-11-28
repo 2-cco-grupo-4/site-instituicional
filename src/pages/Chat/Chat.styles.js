@@ -1,4 +1,4 @@
-import { makeStyles } from "@mui/styles"
+import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
   sidebar: {
@@ -7,6 +7,7 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.white.main,
     overflowY: "scroll",
     position: "relative",
+    zIndex: 10,
     "&::-webkit-scrollbar": {
       display: "none",
     },
@@ -55,4 +56,4 @@ export default makeStyles((theme) => ({
     position: "sticky !important",
     bottom: theme.spacing(3),
   },
-}))
+}));

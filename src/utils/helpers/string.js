@@ -27,10 +27,11 @@ export const stringToColor = (string) => {
 }
 
 export const stringAvatar = (name) => {
+  const newName = name || "A"
   return {
     sx: {
-      bgcolor: stringToColor(name),
+      bgcolor: stringToColor(newName),
     },
-    children: `${name[0].toUpperCase()}`,
+    children: `${newName[0].toUpperCase()}`,
   }
 }
