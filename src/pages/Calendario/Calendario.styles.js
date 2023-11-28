@@ -17,7 +17,7 @@ export const Content = styled("div")`
   padding-right:2%;
   padding-bottom: 4%; 
 
-`; 
+`;
 
 export const Card = styled("div")`
   background-color: #fff;
@@ -42,6 +42,8 @@ export const CardBody = styled("div")`
   padding:20px;
   overflow-y: auto;
   max-height: 50vh;
+
+  
 `;
 
 export const Agendamento = styled("div")`
