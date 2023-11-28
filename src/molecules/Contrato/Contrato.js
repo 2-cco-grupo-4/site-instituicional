@@ -98,46 +98,29 @@ const Contract = ({ open, setOpen, fotografo }) => {
     setLoading(true);
 
     try {
-      const chatRef = await addDoc(collection(db, "chats"), {
-        id_contratante: idCliente,
-        id_fotografo: fotografo.id,
-        nome_contratante: nome,
-        nome_fotografo: fotografo.nome,
-        data_ultima_mensagem: new Date(),
-      });
+      const sessionPayload = {
+        dataRealizacao: contract.data,
+        statusSessao: "Proposta",
+        idFotografo: fotografo.id,
+        idCliente: Number(id),
+        idTema: temas.find((tema) => tema.nome === contract.tema)?.id,
+        createdAt: new Date().toISOString(),
+      };
 
-      console.log("Chat criado:", chatRef);
+      console.log("Session Payload:", sessionPayload);
+      const sessionResponse = await CONTRATO.CADASTRAR_SESSAO(
+        sessionPayload,
+        token
+      );
+      console.log("Session Response:", sessionResponse);
 
-      const chatId = chatRef.id;
+      const idSessao = sessionResponse.data.id;
 
-      await adicionarMensagemInicial(chatId);
+      await cadastrarEndereco(idSessao);
 
-      const chatDoc = doc(db, "chats", chatId);
-      await atualizarUltimaMensagem(chatDoc);
-      console.log("Chat criado com sucesso!");
-    } catch (err) {
-      console.error("Erro ao criar chat:", err);
-      onError();
-    }
+      await cadastrarPagamento(idSessao);
 
-    const adicionarMensagemInicial = async (chatId) => {
-      console.log("Adicionando mensagem inicial ao chat...");
-      await addDoc(collection(db, "chats", chatId, "mensagens"), {
-        mensagem:
-          contract?.mensagem ||
-          "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
-        horario_envio: new Date(),
-        id_usuario: Number(id),
-      });
-      console.log("Mensagem inicial adicionada com sucesso!");
-    };
-    try {
-      const chatDoc = doc(db, "chats", chatId);
-      await updateDoc(chatDoc, {
-        ultima_mensagem:
-          contract?.mensagem ||
-          "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
-      });
+      await criarChat(idSessao);
 
       callback();
       console.log("Chat criado com sucesso!");
@@ -181,14 +164,15 @@ const Contract = ({ open, setOpen, fotografo }) => {
     console.log("Endereço cadastrado com sucesso!");
   };
 
-  const criarChat = async () => {
+  const criarChat = async (idSessao) => {
     console.log("Iniciando criação do chat no banco de dados...");
     const chatRef = await addDoc(collection(db, "chats"), {
-      id_cliente: Number(id),
+      id_contratante: Number(id),
       id_fotografo: fotografo.id,
-      nome_cliente: nome,
+      nome_contratante: nome,
       nome_fotografo: fotografo.nome,
       data_ultima_mensagem: new Date(),
+      id_sessao: idSessao,
     });
 
     console.log("Chat criado:", chatRef);
@@ -505,6 +489,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
           {...register("mensagem")}
         />
       </Stack>
+
       <Stack spacing={3}>
         <Stack spacing={1}>
           <Typography variant="subtitle-small-bold">Pagamento</Typography>
@@ -601,7 +586,6 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Typography>
         <Typography>{contract?.mensagem || "N/A"}</Typography>
       </Stack>
-
       <Stack spacing={1}>
         <Typography
           mb={1}
