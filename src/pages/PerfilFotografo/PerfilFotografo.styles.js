@@ -3,7 +3,7 @@ import backgroundPerfil from "assets/img/foto-perfil-fotografo.png";
 import { HEADER_HEIGHT } from "utils/constants";
 import { makeStyles } from "@mui/styles";
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   banner: {
     height: `calc(30vh - ${HEADER_HEIGHT})`,
     maxWidth: "100%",
@@ -12,8 +12,12 @@ export default makeStyles(() => ({
     backgroundSize: "cover",
     backgroundPosition: "center",
     boxSizing: "border-box",
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: theme.spacing(7),
   },
-  cabecalho: {
+  fotoPerfil: {
     width: "150px",
     height: "150px",
     backgroundImage: `url(${backgroundPerfil})`,
@@ -21,7 +25,7 @@ export default makeStyles(() => ({
     backgroundRepeat: "no-repeat",
     borderRadius: "50%",
     position: "absolute",
-    top: '-50%',
+    top: '+50%',
     alignSelf: "center",
   },
   textoCabecalho: {

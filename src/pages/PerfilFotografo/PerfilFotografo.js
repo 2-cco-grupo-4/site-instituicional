@@ -256,7 +256,6 @@ const PerfilFotografo = () => {
         </Link>
       </Breadcrumbs>
       <Stack className={classes.textoCabecalho}>
-        <Stack className={classes.cabecalho}></Stack>
         <Typography fontWeight={"bold"} fontSize={"24px"}>
           {nomeFotografo}
         </Typography>

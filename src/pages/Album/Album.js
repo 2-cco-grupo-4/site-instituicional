@@ -309,8 +309,9 @@ function Album() {
             <Typography variant="paragraph-large-bold">Avaliação</Typography>
             {avaliacoes.length == 0 ? (
               <Typography
-                variant="paragraph-medium-bold"
-                sx={{ textAlign: "center" }}
+                variant="paragraph-small-regular"
+                color="secondary.main"
+                sx={{ textAlign: "left" }}
               >
                 Não há avaliações para este fotógrafo.
               </Typography>

@@ -1,5 +1,5 @@
-import useStyles from "./Contrato.styles"
-import { useEffect, useState } from "react"
+import useStyles from "./Contrato.styles";
+import { useEffect, useState } from "react";
 import {
   Grid,
   Stack,
@@ -9,50 +9,66 @@ import {
   MenuItem,
   useTheme,
   Avatar,
-} from "@mui/material"
-import CustomModal from "molecules/CustomModal"
-import { Controller, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { contractSchema } from "./Contrato.schema"
-import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import { TimePicker } from "@mui/x-date-pickers/TimePicker"
-import InputMask from "react-input-mask"
-import { stringAvatar, toLocalDate } from "utils/helpers/string"
-import CustomButton from "atoms/CustomButton"
-import { useNavigate } from "react-router"
-import { ROUTES } from "utils/constants"
-import {
-  collection,
-  addDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+} from "@mui/material";
+import CustomModal from "molecules/CustomModal";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { contractSchema } from "./Contrato.schema";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import InputMask from "react-input-mask";
+import { stringAvatar, toLocalDate } from "utils/helpers/string";
+import CustomButton from "atoms/CustomButton";
+import { useNavigate } from "react-router";
+import { ROUTES } from "utils/constants";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import db from "service/firebase";
-import { useUserContext } from "contexts"
-import { TEMA } from "service/tema"
-import { CONTRATO } from "service/contrato"
-
-
-
+import { useUserContext } from "contexts";
+import { TEMA } from "service/tema";
+import { CONTRATO } from "service/contrato";
 
 const Contract = ({ open, setOpen, fotografo }) => {
-
   const [temas, setTemas] = useState([]);
-  const classes = useStyles()
-  const theme = useTheme()
-  const navigate = useNavigate()
+  const classes = useStyles();
+  const theme = useTheme();
+  const navigate = useNavigate();
 
-  const { id, nome, token } = useUserContext()
+  const { id, nome, token } = useUserContext();
 
-  const [step, setStep] = useState(0)
-  const [progressBar, setProgressBar] = useState(0)
-  const [genericError, setGenericError] = useState(false)
-  const [contract, setContract] = useState({})
-  const [loading, setLoading] = useState(false)
+  const [step, setStep] = useState(0);
+  const [progressBar, setProgressBar] = useState(0);
+  const [genericError, setGenericError] = useState(false);
+  const [contract, setContract] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const estadosBrasil = [
-    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-    "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO",
   ];
 
   const {
@@ -60,7 +76,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(contractSchema) })
+  } = useForm({ resolver: yupResolver(contractSchema) });
 
   useEffect(() => {
     const fetchTemas = async () => {
@@ -82,26 +98,46 @@ const Contract = ({ open, setOpen, fotografo }) => {
     setLoading(true);
 
     try {
-      const sessionPayload = {
-        dataRealizacao: contract.data,
-        statusSessao: "Proposta",
-        idFotografo: fotografo.id,
-        idCliente: Number(id),
-        idTema: temas.find((tema) => tema.nome === contract.tema)?.id,
-        createdAt: new Date().toISOString(),
-      };
+      const chatRef = await addDoc(collection(db, "chats"), {
+        id_contratante: idCliente,
+        id_fotografo: fotografo.id,
+        nome_contratante: nome,
+        nome_fotografo: fotografo.nome,
+        data_ultima_mensagem: new Date(),
+      });
 
-      console.log("Session Payload:", sessionPayload);
-      const sessionResponse = await CONTRATO.CADASTRAR_SESSAO(sessionPayload, token);
-      console.log("Session Response:", sessionResponse);
+      console.log("Chat criado:", chatRef);
 
-      const idSessao = sessionResponse.data.id;
+      const chatId = chatRef.id;
 
-      await cadastrarEndereco(idSessao);
+      await adicionarMensagemInicial(chatId);
 
-      await cadastrarPagamento(idSessao);
+      const chatDoc = doc(db, "chats", chatId);
+      await atualizarUltimaMensagem(chatDoc);
+      console.log("Chat criado com sucesso!");
+    } catch (err) {
+      console.error("Erro ao criar chat:", err);
+      onError();
+    }
 
-      await criarChat();
+    const adicionarMensagemInicial = async (chatId) => {
+      console.log("Adicionando mensagem inicial ao chat...");
+      await addDoc(collection(db, "chats", chatId, "mensagens"), {
+        mensagem:
+          contract?.mensagem ||
+          "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+        horario_envio: new Date(),
+        id_usuario: Number(id),
+      });
+      console.log("Mensagem inicial adicionada com sucesso!");
+    };
+    try {
+      const chatDoc = doc(db, "chats", chatId);
+      await updateDoc(chatDoc, {
+        ultima_mensagem:
+          contract?.mensagem ||
+          "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+      });
 
       callback();
       console.log("Chat criado com sucesso!");
@@ -219,19 +255,21 @@ const Contract = ({ open, setOpen, fotografo }) => {
         break;
       case 2:
         console.log(contract);
-        createChat({ callback: () => setStep(3), onError: () => console.log("erro") });
+        createChat({
+          callback: () => setStep(3),
+          onError: () => console.log("erro"),
+        });
         break;
     }
   };
 
-
   const handleGoBack = () => {
-    setStep((current) => current - 1)
-  }
+    setStep((current) => current - 1);
+  };
 
   useEffect(() => {
-    console.log(fotografo)
-  }, [fotografo])
+    console.log(fotografo);
+  }, [fotografo]);
 
   const ContractInfo = () => (
     <Stack spacing={4}>
@@ -276,7 +314,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                       value={field?.value}
                       inputRef={field?.ref}
                       onChange={(currentDate) => {
-                        field?.onChange(currentDate)
+                        field?.onChange(currentDate);
                       }}
                       slotProps={{
                         textField: {
@@ -286,7 +324,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                       }}
                       sx={{ width: "100%" }}
                     />
-                  )
+                  );
                 }}
               />
             </Grid>
@@ -302,8 +340,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                       ampm={false}
                       value={field?.value}
                       onChange={(currentTime) => {
-                        console.log(currentTime)
-                        field?.onChange(currentTime)
+                        console.log(currentTime);
+                        field?.onChange(currentTime);
                       }}
                       sx={{ width: "100%" }}
                       slotProps={{
@@ -313,7 +351,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                         },
                       }}
                     />
-                  )
+                  );
                 }}
               />
             </Grid>
@@ -422,7 +460,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Stack>
       </Stack>
     </Stack>
-  )
+  );
 
   const Message = () => (
     <Stack spacing={4}>
@@ -467,7 +505,6 @@ const Contract = ({ open, setOpen, fotografo }) => {
           {...register("mensagem")}
         />
       </Stack>
-
       <Stack spacing={3}>
         <Stack spacing={1}>
           <Typography variant="subtitle-small-bold">Pagamento</Typography>
@@ -488,7 +525,9 @@ const Contract = ({ open, setOpen, fotografo }) => {
           >
             <MenuItem value="Pix">PIX</MenuItem>
             <MenuItem value="Cartão de Crédito">Cartão de Crédito</MenuItem>
-            <MenuItem value="Transferência Bancária">Transferência Bancária</MenuItem>
+            <MenuItem value="Transferência Bancária">
+              Transferência Bancária
+            </MenuItem>
             <MenuItem value="Boleto Bancário">Boleto Bancário</MenuItem>
           </TextField>
         </Stack>
@@ -516,8 +555,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Stack>
       </Stack>
     </Stack>
-  )
-
+  );
 
   const Confirm = () => (
     <Stack spacing={4}>
@@ -563,6 +601,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Typography>
         <Typography>{contract?.mensagem || "N/A"}</Typography>
       </Stack>
+
       <Stack spacing={1}>
         <Typography
           mb={1}
@@ -582,7 +621,9 @@ const Contract = ({ open, setOpen, fotografo }) => {
           </Grid>
           <Grid item xs={3}>
             <Stack direction="row" alignItems="center" columnGap={1}>
-              <Typography variant="paragraph-medium-bold">Valor (R$):</Typography>
+              <Typography variant="paragraph-medium-bold">
+                Valor (R$):
+              </Typography>
               <Typography>{contract?.valor}</Typography>
             </Stack>
           </Grid>
@@ -598,14 +639,11 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Grid>
       </Stack>
       <Stack sx={{ flexGrow: 1 }}>
-
         <Typography
           mb={1}
           variant="paragraph-medium-bold"
           className={classes.lineBelowTitle}
         >
-
-
           Endereço:
         </Typography>
         <Grid container spacing={2}>
@@ -661,7 +699,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Grid>
       </Stack>
     </Stack>
-  )
+  );
 
   const Final = () => (
     <Stack justifyContent="center" alignItems="center" rowGap={3}>
@@ -680,7 +718,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
         Ir para chat com fotógrafo
       </CustomButton>
     </Stack>
-  )
+  );
 
   const ContractProgress = () => (
     <LinearProgress
@@ -692,9 +730,9 @@ const Contract = ({ open, setOpen, fotografo }) => {
         borderRadius: 3,
       }}
     />
-  )
+  );
 
-  const stepContents = [<ContractInfo />, <Message />, <Confirm />, <Final />]
+  const stepContents = [<ContractInfo />, <Message />, <Confirm />, <Final />];
 
   return (
     <CustomModal
@@ -709,7 +747,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
     >
       {stepContents[step]}
     </CustomModal>
-  )
-}
+  );
+};
 
-export default Contract
+export default Contract;

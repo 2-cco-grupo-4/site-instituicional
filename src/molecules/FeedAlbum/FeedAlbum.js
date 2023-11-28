@@ -1,12 +1,13 @@
-import { Avatar, Rating, Stack, Typography } from "@mui/material";
-import useStyles from "./FeedAlbum.styles";
-import { stringAvatar } from "utils/helpers/string";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "utils/constants";
+import { Avatar, Rating, Stack, Typography } from "@mui/material"
+import useStyles from "./FeedAlbum.styles"
+import { stringAvatar } from "utils/helpers/string"
+import { useNavigate } from "react-router-dom"
+import { ROUTES } from "utils/constants"
+import ProfilePic from "atoms/ProfilePic"
 
 const FeedAlbum = ({ src, alt, autor, fotoPerfil, altPerfil, onClick }) => {
-  const classes = useStyles();
-  const navigate = useNavigate();
+  const classes = useStyles()
+  const navigate = useNavigate()
 
   return (
     <Stack className={classes.content} onClick={onClick}>
@@ -18,11 +19,7 @@ const FeedAlbum = ({ src, alt, autor, fotoPerfil, altPerfil, onClick }) => {
         alignItems="center"
         columnGap={1}
       >
-        {fotoPerfil ? (
-          <Avatar src={fotoPerfil} alt={altPerfil} />
-        ) : (
-          <Avatar {...stringAvatar(autor)} />
-        )}
+        <ProfilePic src={fotoPerfil} alt={altPerfil} autor={autor} />
         <Stack>
           <Typography variant="paragraph-medium-bold">{autor}</Typography>
           <Rating
@@ -34,7 +31,7 @@ const FeedAlbum = ({ src, alt, autor, fotoPerfil, altPerfil, onClick }) => {
         </Stack>
       </Stack>
     </Stack>
-  );
-};
+  )
+}
 
-export default FeedAlbum;
+export default FeedAlbum
