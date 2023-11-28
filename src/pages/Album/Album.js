@@ -222,10 +222,7 @@ function Album() {
   return (
     <>
       <Header type={2} />
-      <Stack
-        direction="row"
-        sx={{ width: "100%", alignItems: "center", justifyContent: "center" }}
-      >
+      <Stack direction="row" sx={{ width: "100%", justifyContent: "center" }}>
         <ImageStack
           sx={{
             display: "flex",
