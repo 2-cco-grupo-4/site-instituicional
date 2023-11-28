@@ -69,7 +69,7 @@ function App() {
             ></Route>
             <Route
               exact
-              path="/perfil-fotografo"
+              path="/perfil-fotografo/:idFotografo"
               element={<PerfilFotografo />}
             ></Route>
             <Route

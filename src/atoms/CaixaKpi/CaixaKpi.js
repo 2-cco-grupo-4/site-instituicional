@@ -16,6 +16,10 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem, direita }) => {
       height="120px"
       flexDirection="row"
       alignItems="center"
+      border="2px solid green"
+      {...(porcentagem >= 0
+        ? { borderColor: "#00BF24" }
+        : { borderColor: "#FF1744" })}
       // marginBottom="25px"
     >
       <Box
@@ -23,7 +27,7 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem, direita }) => {
         alignItems="center"
         justifyContent="center"
         textAlign="center"
-        width="80%"
+        width="100%"
         height="auto"
         padding={0}
       >
@@ -65,15 +69,13 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem, direita }) => {
             alignItems="center"
             sx={{ flexWrap: "wrap", gap: 0 }}
           >
-            {porcentagem >= 0 ? (
-              <ArrowDropUpIcon className={classes.positive}></ArrowDropUpIcon>
-            ) : (
-              <ArrowDropDownIcon
-                className={classes.negative}
-              ></ArrowDropDownIcon>
-            )}
-
-            <Typography fontSize="12px" fontWeight="bold" marginLeft={-1}>
+            <Typography
+              fontSize="14px"
+              fontWeight="bold"
+              style={{
+                color: porcentagem >= 0 ? "#007816" : "#8A0C25",
+              }}
+            >
               {porcentagem}%
             </Typography>
           </Stack>

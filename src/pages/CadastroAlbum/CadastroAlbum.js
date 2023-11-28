@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import Container from "atoms/Container";
 import { Controller, useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FOTOGRAFO } from "service/user";
 import CustomButton from "atoms/CustomButton";
@@ -26,6 +26,9 @@ import { useUserContext } from "contexts";
 import { Masonry } from "@mui/lab";
 import iconCheck from "assets/icons/round-check.svg";
 import FeedAlbum from "molecules/FeedAlbum";
+import DashedCard from "atoms/DashedCard";
+import SlcInsta from "../../assets/img/slc-insta.jpg";
+import SlcDisp from "../../assets/img/slc-disp.jpg";
 
 const CadastroAlbum = () => {
   const navigate = useNavigate();
@@ -38,13 +41,27 @@ const CadastroAlbum = () => {
   const [listImagensSelecionadas, setListImagensSelecionadas] = useState([]);
   const [listTemas, setListTemas] = useState([]);
   const [idFotografo, setIdFotografo] = useState(null);
+  const [origemVisible, setOrigemVisible] = useState(true);
+  const [imagensVisible, setImagensVisible] = useState(false);
+  const [origem, setOrigem] = useState(null);
 
   useEffect(() => {
     setIdFotografo(id);
     console.log("ALERTA: " + id);
   }, [id]);
 
-  useEffect(() => {
+  const handleOrigem = (origem) => {
+    setOrigem(origem);
+
+    if (origem === "INSTA") {
+      listarImagensInsta();
+    } else if (origem === "S3") {
+      setOrigemVisible(false);
+      setImagensVisible(true);
+    }
+  };
+
+  const listarImagensInsta = () => {
     const ChamadaApi = async () => {
       INSTAGRAM.LISTAR_IMAGENS_INSTA(token, tokenSolicitacao).then(
         (response) => {
@@ -53,8 +70,10 @@ const CadastroAlbum = () => {
         }
       );
     };
+    setOrigemVisible(false);
+    setImagensVisible(true);
     ChamadaApi();
-  }, [tokenSolicitacao]);
+  };
 
   const handleClick = (imagem) => {
     if (
@@ -83,24 +102,37 @@ const CadastroAlbum = () => {
     };
 
     await ALBUM.CADASTRAR(payload, token).then((response) => {
-      listImagensSelecionadas.map((imagem) => {
-        const payload = {
-          mediaUrl: imagem.media_url,
-          permalink: imagem.permalink,
-          mediaType: imagem.media_type,
-          origemImagem: "INSTA",
-          updatedAt: new Date(Date.now()),
-          idAlbum: response.data.id,
-        };
+      if (origem === "INSTA") {
+        listImagensSelecionadas.map((imagem) => {
+          const payload = {
+            mediaUrl: imagem.media_url,
+            permalink: imagem.permalink,
+            mediaType: imagem.media_type,
+            origemImagem: "INSTA",
+            updatedAt: new Date(Date.now()),
+            idAlbum: response.data.id,
+          };
+          IMAGEM.SALVAR(token, payload).then((response) => {
+            console.log(response);
+            setBtnLoading(false);
+            reset({ titulo: "", descricao: "", idTema: "" });
+            setListImagensSelecionadas([]);
+          });
+        });
+      } else if (origem === "S3") {
+        const formData = new FormData();
 
-        IMAGEM.SALVAR(token, payload).then((response) => {
+        selectedFile.map((file) => {
+          formData.append("file", file);
+        });
+
+        IMAGEM.SALVAR_S3(token, formData, response.data.id).then((response) => {
           console.log(response);
           setBtnLoading(false);
           reset({ titulo: "", descricao: "", idTema: "" });
           setListImagensSelecionadas([]);
         });
-      });
-
+      }
       console.log(response.data.id);
     });
   };
@@ -120,6 +152,14 @@ const CadastroAlbum = () => {
   }, [listImagensSelecionadas]);
 
   console.log("teste");
+
+  const [selectedFile, setSelectedFile] = useState([]);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    setSelectedFile((prevFiles) => [...prevFiles, ...files]);
+  };
 
   return (
     <Stack>
@@ -144,7 +184,7 @@ const CadastroAlbum = () => {
               src={goBackArrow}
               alt="go-back-arrow"
               style={{ cursor: "pointer" }}
-              onClick={() => navigate(ROUTES.PERFIL)}
+              onClick={() => navigate(ROUTES.FEED)}
             />
           </Container>
           <Container sx={{ marginBottom: "50px" }}>
@@ -263,42 +303,150 @@ const CadastroAlbum = () => {
         </Grid>
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12} margin={0}>
           <Container>
-            <Typography fontWeight="bold">
-              Selecione as imagens que você deseja adicionar nesse álbum:
-            </Typography>
+            <Stack
+              direction="column"
+              alignItems="center"
+              spacing={3}
+              width="100%"
+              {...(origemVisible ? { display: "flex" } : { display: "none" })}
+            >
+              <Typography fontWeight="bold">
+                Qual a origem das imagens desse álbum?
+              </Typography>
+              <Stack direction={{ xs: "column", md: "row" }} spacing={5}>
+                <DashedCard
+                  width={{ xs: 230, sm: 350 }}
+                  alignItems="center"
+                  spacing={4}
+                >
+                  <img src={SlcInsta} className={classes.image}></img>
+                  <Typography
+                    variant="paragraph-medium-regular"
+                    align="center"
+                    width={{ xs: 200, sm: 280 }}
+                  >
+                    Desejo usar imagens do meu perfil do instagram
+                  </Typography>
+                  <CustomButton
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    onClick={() => handleOrigem("INSTA")}
+                  >
+                    <Typography variant="paragraph-small-regular" color="white">
+                      Usar imagens do instagram
+                    </Typography>
+                  </CustomButton>
+                </DashedCard>
+                <DashedCard
+                  width={{ xs: 230, sm: 350 }}
+                  alignItems="center"
+                  spacing={4}
+                >
+                  <img src={SlcDisp} className={classes.image}></img>
+                  <Typography
+                    variant="paragraph-medium-regular"
+                    align="center"
+                    width={{ xs: 200, sm: 280 }}
+                  >
+                    Desejo fazer upload de imagens do meu dispositivo
+                  </Typography>
+                  <CustomButton
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    onClick={() => handleOrigem("S3")}
+                  >
+                    <Typography variant="paragraph-small-regular" color="white">
+                      Usar imagens locais
+                    </Typography>
+                  </CustomButton>
+                </DashedCard>
+              </Stack>
+            </Stack>
           </Container>
         </Grid>
 
-        <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-          <Container>
-            <Grid container spacing={2}>
-              <Container>
-                <Masonry columns={2} spacing={5} sx={{ width: "100%" }}>
-                  {listImagensInsta.map((imagem) => (
-                    <Grid key={imagem.id} item md={4}>
-                      <Stack
-                        id={imagem.id}
-                        className={classes.content}
-                        onClick={() => handleClick(imagem)}
-                      >
-                        <img
+        <Grid
+          item
+          xl={12}
+          lg={12}
+          md={12}
+          sm={12}
+          xs={12}
+          {...(imagensVisible ? { display: "flex" } : { display: "none" })}
+        >
+          {origem === "INSTA" ? ( // INSTA
+            <Container>
+              <Grid container spacing={2}>
+                <Container>
+                  <Masonry columns={2} spacing={5} sx={{ width: "100%" }}>
+                    {listImagensInsta.map((imagem) => (
+                      <Grid key={imagem.id} item md={4}>
+                        <Stack
                           id={imagem.id}
-                          src={imagem.media_url}
-                          alt={imagem.permalink}
-                          style={{ height: "auto", cursor: "pointer" }}
-                          className={
-                            listImagensSelecionadas.includes(imagem)
-                              ? classes.checked
-                              : null
-                          }
-                        />
-                      </Stack>
-                    </Grid>
-                  ))}
-                </Masonry>
-              </Container>
-            </Grid>
-          </Container>
+                          className={classes.content}
+                          onClick={() => handleClick(imagem)}
+                        >
+                          <img
+                            id={imagem.id}
+                            src={imagem.media_url}
+                            alt={imagem.permalink}
+                            style={{
+                              height: 400,
+                              cursor: "pointer",
+                              objectFit: "cover",
+                            }}
+                            className={
+                              listImagensSelecionadas.includes(imagem)
+                                ? classes.checked
+                                : null
+                            }
+                          />
+                        </Stack>
+                      </Grid>
+                    ))}
+                  </Masonry>
+                </Container>
+              </Grid>
+            </Container>
+          ) : (
+            // S3
+            <Container>
+              <Grid container spacing={2}>
+                <Container>
+                  <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                    <Typography sx={{ fontSize: "18px" }}>
+                      Selecione as imagens que deseja adicionar ao álbum
+                    </Typography>
+                    <label htmlFor="file-input">
+                      <input
+                        id="file-input"
+                        ref={fileInputRef}
+                        type="file"
+                        onChange={handleFileChange}
+                        hidden
+                        multiple
+                      />
+                      <CustomButton
+                        component="span"
+                        sx={{
+                          width: "100%",
+                          height: "50px",
+                          backgroundColor: "#1E1E1E",
+                          color: "#ffffff",
+                          borderRadius: 5,
+                          marginTop: "20px",
+                        }}
+                      >
+                        Selecione todas as imagens
+                      </CustomButton>
+                    </label>
+                  </Grid>
+                </Container>
+              </Grid>
+            </Container>
+          )}
         </Grid>
 
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mb={5}>

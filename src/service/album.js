@@ -14,11 +14,13 @@ export const ALBUM = {
     api.get(`/albums?idFotografo=${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  BUSCAR_CAPAS_ALBUM: (id, token) =>
+    api.get(`/albums/capa?idFotografo=${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 
   LISTAR_AVALIACOES: (id, token) =>
     api.get(`/avaliacoes?idFotografo=${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
 };
-
-

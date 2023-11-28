@@ -12,15 +12,6 @@ pipeline {
 
   stages {
 
-    stage('Check if triggered by merge') {
-      when {
-        expression { currentBuild.changeSets.size() == 1 && currentBuild.changeSets[0].kind == 'Merged' }
-      }
-      steps {
-        echo 'Pipeline triggered by merge, skipping other stages.'
-      }
-    }
-
     stage('Login Docker Hub') {
       steps {
         script {
