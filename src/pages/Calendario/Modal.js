@@ -209,7 +209,7 @@ export default function ResponsiveDialog({ open, handleClose, onConfirm }) {
               >
                 {estadosBrasileiros.map((estado) => (
                   <MenuItem key={estado.sigla} value={estado.sigla}>
-                    {estado.nome}
+                    {estado.sigla}
                   </MenuItem>
                 ))}
               </TextField>
