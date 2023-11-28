@@ -9,31 +9,23 @@ import {
   MenuItem,
   useTheme,
   Avatar,
-} from "@mui/material"
-import CustomModal from "molecules/CustomModal"
-import { Controller, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { contractSchema } from "./Contrato.schema"
-import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import { TimePicker } from "@mui/x-date-pickers/TimePicker"
-import InputMask from "react-input-mask"
-import { stringAvatar, toLocalDate } from "utils/helpers/string"
-import CustomButton from "atoms/CustomButton"
-import { useNavigate } from "react-router"
-import { ROUTES } from "utils/constants"
-import {
-  collection,
-  addDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+} from "@mui/material";
+import CustomModal from "molecules/CustomModal";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { contractSchema } from "./Contrato.schema";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import InputMask from "react-input-mask";
+import { stringAvatar, toLocalDate } from "utils/helpers/string";
+import CustomButton from "atoms/CustomButton";
+import { useNavigate } from "react-router";
+import { ROUTES } from "utils/constants";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import db from "service/firebase";
-import { useUserContext } from "contexts"
-import { TEMA } from "service/tema"
-import { CONTRATO } from "service/contrato"
-
-
-
+import { useUserContext } from "contexts";
+import { TEMA } from "service/tema";
+import { CONTRATO } from "service/contrato";
 
 const Contract = ({ open, setOpen, fotografo }) => {
   const [temas, setTemas] = useState([]);
@@ -114,32 +106,37 @@ const Contract = ({ open, setOpen, fotografo }) => {
         data_ultima_mensagem: new Date(),
       });
 
-    console.log("Chat criado:", chatRef);
+      console.log("Chat criado:", chatRef);
 
-    const chatId = chatRef.id;
+      const chatId = chatRef.id;
 
-    await adicionarMensagemInicial(chatId);
+      await adicionarMensagemInicial(chatId);
 
-    const chatDoc = doc(db, "chats", chatId);
-    await atualizarUltimaMensagem(chatDoc);
-    console.log("Chat criado com sucesso!");
-  };
+      const chatDoc = doc(db, "chats", chatId);
+      await atualizarUltimaMensagem(chatDoc);
+      console.log("Chat criado com sucesso!");
+    } catch (err) {
+      console.error("Erro ao criar chat:", err);
+      onError();
+    }
 
-  const adicionarMensagemInicial = async (chatId) => {
-    console.log("Adicionando mensagem inicial ao chat...");
-    await addDoc(collection(db, "chats", chatId, "mensagens"), {
-      mensagem:
-        contract?.mensagem ||
-        "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
-      horario_envio: new Date(),
-      id_usuario: Number(id),
-    });
-    console.log("Mensagem inicial adicionada com sucesso!");
-  };
-
-      const chatDoc = doc(db, 'chats', chatId);
+    const adicionarMensagemInicial = async (chatId) => {
+      console.log("Adicionando mensagem inicial ao chat...");
+      await addDoc(collection(db, "chats", chatId, "mensagens"), {
+        mensagem:
+          contract?.mensagem ||
+          "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+        horario_envio: new Date(),
+        id_usuario: Number(id),
+      });
+      console.log("Mensagem inicial adicionada com sucesso!");
+    };
+    try {
+      const chatDoc = doc(db, "chats", chatId);
       await updateDoc(chatDoc, {
-        ultima_mensagem: contract?.mensagem || "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
+        ultima_mensagem:
+          contract?.mensagem ||
+          "Muito obrigado por estabelecermos o contrato! Estou ansioso para trabalhar com você e criar momentos especiais juntos. Se você tiver alguma dúvida ou precisar de alguma assistência, por favor, não hesite em perguntar. Vamos tornar este projeto incrível!",
       });
 
       callback();
@@ -558,7 +555,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Stack>
       </Stack>
     </Stack>
-  )
+  );
 
   const Confirm = () => (
     <Stack spacing={4}>
@@ -604,7 +601,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
         </Typography>
         <Typography>{contract?.mensagem || "N/A"}</Typography>
       </Stack>
-    
+
       <Stack spacing={1}>
         <Typography
           mb={1}
@@ -647,8 +644,6 @@ const Contract = ({ open, setOpen, fotografo }) => {
           variant="paragraph-medium-bold"
           className={classes.lineBelowTitle}
         >
-
-
           Endereço:
         </Typography>
         <Grid container spacing={2}>
