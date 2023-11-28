@@ -13,6 +13,11 @@ const ModalEditarImagemPerfil = () => {
     setOpen(false);
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
 
@@ -43,7 +48,7 @@ const ModalEditarImagemPerfil = () => {
   return (
     <CustomModal
       open={open}
-      onClose={handleClose}
+      setOpen={setOpen}
       header={<Typography variant='paragraph-medium-bold'>Nova imagem de perfil</Typography>}
       leftButtonText={"Cancelar"}
       leftButtonProps={{ onClick: handleClose }}
