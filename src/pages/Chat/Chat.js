@@ -9,14 +9,14 @@ import {
   OutlinedInput,
   Button,
   Link,
-} from "@mui/material"
-import Container from "atoms/Container"
-import React, { useState, useEffect, useRef } from "react"
-import Header from "molecules/Header"
-import IconSend from "@mui/icons-material/Send"
-import IconChat from "@mui/icons-material/ChatRounded"
-import IconEdit from "@mui/icons-material/ModeEdit"
-import IconArrowBack from "@mui/icons-material/ArrowBackRounded"
+} from "@mui/material";
+import Container from "atoms/Container";
+import React, { useState, useEffect, useRef } from "react";
+import Header from "molecules/Header";
+import IconSend from "@mui/icons-material/Send";
+import IconChat from "@mui/icons-material/ChatRounded";
+import IconEdit from "@mui/icons-material/ModeEdit";
+import IconArrowBack from "@mui/icons-material/ArrowBackRounded";
 
 import {
   collection,
@@ -29,46 +29,48 @@ import {
   onSnapshot,
   or,
   doc,
-} from "firebase/firestore"
-import db from "service/firebase"
-import { useUserContext } from "contexts"
-import useStyles from "./Chat.styles"
-import ProfilePic from "atoms/ProfilePic"
-import { ROUTES } from "utils/constants"
-import CustomButton from "atoms/CustomButton"
+} from "firebase/firestore";
+import db from "service/firebase";
+import { useUserContext } from "contexts";
+import useStyles from "./Chat.styles";
+import ProfilePic from "atoms/ProfilePic";
+import { ROUTES } from "utils/constants";
+import CustomButton from "atoms/CustomButton";
 
 const Chat = () => {
-  const classes = useStyles()
-  const theme = useTheme()
-  const [userChats, setUserChats] = useState([])
-  const [allChats, setAllChats] = useState([])
-  const [selectedChat, setSelectedChat] = useState(null)
-  const [messages, setMessages] = useState([])
-  const [messageInput, setMessageInput] = useState("")
-  const [userChatName, setUserChatName] = useState("")
+  const classes = useStyles();
+  const theme = useTheme();
+  const [userChats, setUserChats] = useState([]);
+  const [allChats, setAllChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [messageInput, setMessageInput] = useState("");
+  const [userChatName, setUserChatName] = useState("");
 
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
+  const messagesRef = useRef(null);
+  const chatHeaderRef = useRef(null);
 
-  const { id, nome, token } = useUserContext()
-  const [userId] = useState(Number(id))
+  const { id, nome, token } = useUserContext();
+  const [userId] = useState(Number(id));
 
   const formatDatesChat = (data) => {
-    const newChats = data
+    const newChats = data;
     newChats.forEach((chat) => {
-      const dataMensagem = new Date(chat.data_ultima_mensagem.seconds * 1000)
-      const dataAtual = new Date()
-      const dataOntem = new Date(dataAtual)
-      dataOntem.setDate(dataOntem.getDate() - 1)
+      const dataMensagem = new Date(chat.data_ultima_mensagem.seconds * 1000);
+      const dataAtual = new Date();
+      const dataOntem = new Date(dataAtual);
+      dataOntem.setDate(dataOntem.getDate() - 1);
 
-      const dataSemanaPassada = new Date(dataAtual)
-      dataSemanaPassada.setDate(dataSemanaPassada.getDate() - 7)
+      const dataSemanaPassada = new Date(dataAtual);
+      dataSemanaPassada.setDate(dataSemanaPassada.getDate() - 7);
 
       if (dataMensagem.getDate() === dataAtual.getDate()) {
         chat.data_ultima_mensagem = dataMensagem
           .toLocaleTimeString()
-          .slice(0, 5)
+          .slice(0, 5);
       } else if (dataMensagem.getDate() === dataOntem.getDate()) {
-        chat.data_ultima_mensagem = "ontem"
+        chat.data_ultima_mensagem = "ontem";
       } else if (
         dataMensagem.getDate() < dataOntem.getDate() &&
         dataMensagem.getDate() > dataSemanaPassada.getDate()
@@ -81,57 +83,57 @@ const Chat = () => {
           "quinta-feira",
           "sexta-feira",
           "sábado",
-        ]
-        chat.data_ultima_mensagem = daysOfWeek[dataMensagem.getDay()]
+        ];
+        chat.data_ultima_mensagem = daysOfWeek[dataMensagem.getDay()];
       } else {
-        chat.data_ultima_mensagem = dataMensagem.toLocaleDateString()
+        chat.data_ultima_mensagem = dataMensagem.toLocaleDateString();
       }
-    })
+    });
 
-    return newChats
-  }
+    return newChats;
+  };
 
   const formatDatesMensagem = (dataMensagens) => {
-    const newMessages = dataMensagens
+    const newMessages = dataMensagens;
     newMessages.forEach((mensagemAtual) => {
       let value = mensagemAtual.horario_envio.split(", ").map((current, i) => {
-        let newValue = current.split(/\W/).map((x) => Number(x))
+        let newValue = current.split(/\W/).map((x) => Number(x));
         if (i === 0) {
-          newValue[1] -= 1
-          return newValue.reverse()
+          newValue[1] -= 1;
+          return newValue.reverse();
         }
-        return newValue
-      })
-      value = [...value[0], ...value[1]]
+        return newValue;
+      });
+      value = [...value[0], ...value[1]];
 
-      const dataMensagem = new Date(...value)
-      const dataAtual = new Date()
+      const dataMensagem = new Date(...value);
+      const dataAtual = new Date();
 
       if (dataMensagem.getDate() === dataAtual.getDate()) {
         mensagemAtual.horario_envio = dataMensagem
           .toLocaleTimeString()
-          .slice(0, 5)
+          .slice(0, 5);
       } else {
-        mensagemAtual.horario_envio = dataMensagem.toLocaleDateString()
+        mensagemAtual.horario_envio = dataMensagem.toLocaleDateString();
       }
-    })
+    });
 
-    return newMessages
-  }
+    return newMessages;
+  };
 
   const filterChats = (nomeChat) => {
     const newChats = allChats.filter(
       (chat) =>
         chat?.nome_fotografo?.toLowerCase().includes(nomeChat.toLowerCase()) ||
         chat?.nome_contratante?.toLowerCase().includes(nomeChat.toLowerCase())
-    )
+    );
 
     if (!newChats) {
-      setUserChats(allChats)
+      setUserChats(allChats);
     } else {
-      setUserChats(newChats)
+      setUserChats(newChats);
     }
-  }
+  };
 
   const loadChats = async () => {
     try {
@@ -145,51 +147,53 @@ const Chat = () => {
           orderBy("data_ultima_mensagem")
         ),
         (querySnapshot) => {
-          const data = []
+          const data = [];
           querySnapshot.forEach((doc) => {
-            data.push({ id: doc.id, ...doc.data() })
-          })
-          setAllChats(formatDatesChat(data))
+            data.push({ id: doc.id, ...doc.data() });
+          });
+          setAllChats(formatDatesChat(data));
         }
-      )
+      );
     } catch (error) {
-      console.error("Erro ao recuperar dados:", error)
+      console.error("Erro ao recuperar dados:", error);
     }
-  }
+  };
 
   const loadMessages = async (chatId) => {
     try {
-      const messagesQuery = query(
-        collection(db, "chats", chatId, "mensagens"),
-        orderBy("horario_envio")
-      )
-      const messagesSnapshot = await getDocs(messagesQuery)
-      const messagesData = []
-      messagesSnapshot.forEach((doc) => {
-        const messageData = { id: doc.id, ...doc.data() }
-        messageData.horario_envio = new Date(
-          messageData.horario_envio.seconds * 1000
-        ).toLocaleString()
-        messagesData.push(messageData)
-      })
+      const messagesQuery = onSnapshot(
+        query(
+          collection(db, "chats", chatId, "mensagens"),
+          orderBy("horario_envio")
+        ),
+        (messagesSnapshot) => {
+          const messagesData = [];
+          messagesSnapshot.forEach((doc) => {
+            const messageData = { id: doc.id, ...doc.data() };
+            messageData.horario_envio = new Date(
+              messageData.horario_envio.seconds * 1000
+            ).toLocaleString();
+            messagesData.push(messageData);
+          });
 
-      console.log(messagesData)
-      setMessages(formatDatesMensagem(messagesData))
+          setMessages(formatDatesMensagem(messagesData));
+        }
+      );
     } catch (error) {
-      console.error("Erro ao carregar mensagens:", error)
+      console.error("Erro ao carregar mensagens:", error);
     }
-  }
+  };
 
   const handleChatClick = (chatId, userName) => {
-    setSelectedChat(chatId)
-    setUserChatName(userName)
-    loadMessages(chatId)
-  }
+    setSelectedChat(chatId);
+    setUserChatName(userName);
+    loadMessages(chatId);
+  };
 
   const handleMessageSubmit = async () => {
-    if (!selectedChat || !messageInput) return
+    if (!selectedChat || !messageInput) return;
 
-    const dataAtual = new Date()
+    const dataAtual = new Date();
 
     try {
       const docRef = await addDoc(
@@ -199,29 +203,33 @@ const Chat = () => {
           horario_envio: dataAtual,
           id_usuario: userId,
         }
-      )
+      );
 
       await updateDoc(doc(db, "chats", selectedChat), {
         ultima_mensagem: messageInput,
         data_ultima_mensagem: dataAtual,
-      })
+      });
 
-      console.log("Mensagem enviada com ID: ", docRef.id)
-      inputRef.current.value = ""
-      setMessageInput("")
-      loadMessages(selectedChat)
+      console.log("Mensagem enviada com ID: ", docRef.id);
+      inputRef.current.value = "";
+      setMessageInput("");
+      loadMessages(selectedChat);
     } catch (error) {
-      console.error("Erro ao enviar mensagem:", error)
+      console.error("Erro ao enviar mensagem:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    loadChats()
-  }, [id])
+    loadChats();
+  }, [id]);
 
   useEffect(() => {
-    setUserChats(allChats)
-  }, [allChats])
+    setUserChats(allChats);
+  }, [allChats]);
+
+  useEffect(() => {
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  }, [messages, selectedChat]);
 
   return (
     <Stack height="100dvh" sx={{ flexGrow: 1 }}>
@@ -286,7 +294,7 @@ const Chat = () => {
               let nameChatUser =
                 id === chat.id_contratante
                   ? chat.nome_fotografo
-                  : chat.nome_contratante
+                  : chat.nome_contratante;
               return (
                 <Stack
                   key={chat.id}
@@ -345,7 +353,7 @@ const Chat = () => {
                     </Stack>
                   </Stack>
                 </Stack>
-              )
+              );
             })}
           </Stack>
         </Grid>
@@ -354,6 +362,7 @@ const Chat = () => {
           xs={9}
           md={8}
           position="relative"
+          ref={messagesRef}
           className={classes.chatTextArea}
         >
           {selectedChat ? (
@@ -368,6 +377,7 @@ const Chat = () => {
                 direction="row"
                 alignItems="center"
                 justifyContent="space-between"
+                ref={chatHeaderRef}
                 sx={{
                   backgroundColor: theme.palette.white.main,
                   borderBottom: "1px solid rgb(0,0,0, 0.1)",
@@ -400,7 +410,10 @@ const Chat = () => {
               </Stack>
               <Container
                 pb={4}
-                minHeight="100dvh"
+                minHeight={`calc(100% - ${
+                  inputRef?.current?.offsetHeight +
+                  chatHeaderRef?.current?.offsetHeight
+                }px)`}
                 flexDirection="column"
                 justifyContent="space-between"
                 position="relative"
@@ -408,22 +421,25 @@ const Chat = () => {
                 <Stack
                   py={4}
                   sx={{
-                    height: `calc(100% - ${inputRef?.current?.offsetHeight}px)`,
+                    height: `calc(100% - ${
+                      inputRef?.current?.offsetHeight +
+                      chatHeaderRef?.current?.offsetHeight
+                    }px)`,
                   }}
                   flexDirection="column"
                   justifyContent="flex-end"
                   className={classes.messagesContainer}
                 >
                   {messages.map((content, index) => {
-                    let isNextMessageFromUser
+                    let isNextMessageFromUser;
 
                     if (
                       index < messages.length - 1 &&
                       messages[index + 1].id_usuario === content.id_usuario
                     ) {
-                      isNextMessageFromUser = true
+                      isNextMessageFromUser = true;
                     } else {
-                      isNextMessageFromUser = false
+                      isNextMessageFromUser = false;
                     }
 
                     return (
@@ -484,7 +500,7 @@ const Chat = () => {
                           />
                         )}
                       </Stack>
-                    )
+                    );
                   })}
                 </Stack>
                 <OutlinedInput
@@ -528,7 +544,7 @@ const Chat = () => {
         </Grid>
       </Grid>
     </Stack>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
