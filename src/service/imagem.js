@@ -1,3 +1,4 @@
+import { identity } from "@fullcalendar/core/internal";
 import api from "./api";
 
 export const IMAGEM = {
@@ -15,4 +16,12 @@ export const IMAGEM = {
       responseType: "blob",
     }),
   TESTE_FEED: (token, idAlbum) => api.get(`/imagens/feed/${idAlbum}`),
+  SALVAR_IMAGEM_PERFIL: (formData, idUsuario) =>
+    api.post(`/imagens/${idUsuario}/upload`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  GET_OBJECT_PERFIL: (idImagem) =>
+    api.get(`/imagens/${idImagem}`, {
+      responseType: "blob",
+    }),
 };

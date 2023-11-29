@@ -76,19 +76,6 @@ const CustomPopover = ({ ...props }) => {
           <ChatIcon />
           <Typography paddingLeft={1}>Chat</Typography>
         </Stack>
-        <Stack
-          onClick={() => {
-            setOpenModal(true);
-          }}
-          direction="row"
-          alignItems="center"
-          sx={{ cursor: "pointer" }}
-          p={2}
-        >
-          <AccountCircleIcon />
-          <Typography paddingLeft={1}>Alterar Imagem</Typography>
-        </Stack>
-        <ModalAlterarImagem open={openModal} setOpen={setOpenModal} />
         {tipoUsuario == 2 && (
           <>
             <Stack
@@ -143,6 +130,23 @@ const CustomPopover = ({ ...props }) => {
         >
           <LogoutIcon></LogoutIcon>
           <Typography paddingLeft={1}>Logoff</Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{ cursor: "pointer" }}
+          p={2}
+        >
+          <AccountCircleIcon />
+          <Typography
+            onClick={() => {
+              setOpenModal(true);
+            }}
+            paddingLeft={1}
+          >
+            Alterar Imagem
+          </Typography>
+          <ModalAlterarImagem open={openModal} setOpen={setOpenModal} />
         </Stack>
       </Popover>
     </>
