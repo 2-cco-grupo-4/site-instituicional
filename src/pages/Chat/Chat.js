@@ -39,9 +39,9 @@ import { ROUTES } from "utils/constants"
 import CustomButton from "atoms/CustomButton"
 
 const Chat = () => {
-  const { autenticado } = useUserContext();
-  const [openContrato, setOpenContrato] = useState(false);
-  const [isContractModalOpen, setContractModalOpen] = useState(false);
+  const { autenticado } = useUserContext()
+  const [openContrato, setOpenContrato] = useState(false)
+  const [isContractModalOpen, setContractModalOpen] = useState(false)
   const classes = useStyles()
   const theme = useTheme()
   const [userChats, setUserChats] = useState([])
@@ -53,9 +53,9 @@ const Chat = () => {
 
   const handleContract = () => {
     if (autenticado) {
-      setOpenContrato(true);
+      setOpenContrato(true)
     }
-  };
+  }
 
   const inputRef = useRef(null)
 
@@ -458,26 +458,26 @@ const Chat = () => {
                           sx={
                             id == content.id_usuario
                               ? {
-                                width: "fit-content",
-                                maxWidth: "60%",
-                                color: theme.palette.white.main,
-                                bgcolor: theme.palette.primary.main,
-                                borderRadius: theme.shape.borderRadius,
-                                borderBottomRightRadius: 1,
-                                padding: theme.spacing(1, 2),
-                                marginRight:
-                                  isNextMessageFromUser && theme.spacing(5),
-                              }
+                                  width: "fit-content",
+                                  maxWidth: "60%",
+                                  color: theme.palette.white.main,
+                                  bgcolor: theme.palette.primary.main,
+                                  borderRadius: theme.shape.borderRadius,
+                                  borderBottomRightRadius: 1,
+                                  padding: theme.spacing(1, 2),
+                                  marginRight:
+                                    isNextMessageFromUser && theme.spacing(5),
+                                }
                               : {
-                                width: "fit-content",
-                                maxWidth: "60%",
-                                bgcolor: theme.palette.whiteSoft.main,
-                                borderRadius: theme.shape.borderRadius,
-                                borderBottomLeftRadius: 1,
-                                padding: theme.spacing(1, 2),
-                                marginLeft:
-                                  isNextMessageFromUser && theme.spacing(5),
-                              }
+                                  width: "fit-content",
+                                  maxWidth: "60%",
+                                  bgcolor: theme.palette.whiteSoft.main,
+                                  borderRadius: theme.shape.borderRadius,
+                                  borderBottomLeftRadius: 1,
+                                  padding: theme.spacing(1, 2),
+                                  marginLeft:
+                                    isNextMessageFromUser && theme.spacing(5),
+                                }
                           }
                         >
                           {content.mensagem}
@@ -537,10 +537,7 @@ const Chat = () => {
             </Stack>
           )}
         </Grid>
-        <ContratoEditar
-          open={openContrato}
-          setOpen={setOpenContrato}
-        />
+        <ContratoEditar open={openContrato} setOpen={setOpenContrato} />
       </Grid>
     </Stack>
   )

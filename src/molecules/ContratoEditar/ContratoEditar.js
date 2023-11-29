@@ -1,4 +1,6 @@
-import React from "react";
+import React from "react"
+import { useEffect, useState } from "react"
+import { useUserContext } from "contexts"
 import {
   Modal,
   Backdrop,
@@ -8,25 +10,45 @@ import {
   Button,
   Grid,
   IconButton,
-  TextField,  // Adicionado
-} from "@mui/material";
-import { useTheme } from "@mui/system";
-import CloseIcon from "@mui/icons-material/Close";
+  TextField, // Adicionado
+} from "@mui/material"
+import { useTheme } from "@mui/system"
+import CloseIcon from "@mui/icons-material/Close"
+import { CONTRATO } from "service/contrato"
 
-const ContratoEditar = ({ open, setOpen }) => {
-  const theme = useTheme();
+const ContratoEditar = ({ open, setOpen, id_sessao }) => {
+  const theme = useTheme()
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
+
+  const { id, nome, token } = useUserContext()
 
   const handleSave = () => {
     // Adicione a lógica para salvar o contrato aqui
     // ...
 
     // Feche o modal após salvar
-    setOpen(false);
-  };
+    setOpen(false)
+  }
+
+  const [messageData, setMessageData] = useState([{}])
+
+  const pagamentoCopia = { ...messageData.pagamento }
+
+  const enderecoCopia = { ...messageData.endereco }
+
+  useEffect(() => {
+    const fetchContrato = async () => {
+      const contrato = await CONTRATO.EXIBIR_CONTRATO(51, token)
+      console.log(contrato.data)
+      setMessageData(contrato.data)
+      console.log(messageData)
+    }
+
+    fetchContrato()
+  }, [])
 
   return (
     <Modal
@@ -48,11 +70,21 @@ const ContratoEditar = ({ open, setOpen }) => {
             bgcolor: theme.palette.background.paper,
             boxShadow: 24,
             p: 5,
-            minWidth: 800,
+            minWidth: 300,
+            minHeight: 300,
+            maxHeight: "80vh",
+            maxWidth: "80vw",
             borderRadius: 8,
+            overflowY: "auto",
           }}
         >
-          <Stack direction="row" justifyContent="space-between" alignItems="center" borderBottom="1px solid #333" pb={2}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            borderBottom="1px solid #333"
+            pb={2}
+          >
             <Typography variant="h4" gutterBottom>
               Editar Contrato
             </Typography>
@@ -66,28 +98,53 @@ const ContratoEditar = ({ open, setOpen }) => {
               <Typography variant="subtitle1" gutterBottom>
                 <strong>Data:</strong>
               </Typography>
-              <TextField label="Data" fullWidth /> {/* Adicionado */}
+              <TextField
+                value={messageData.dataRealizacao}
+                label="Data"
+                fullWidth
+                disabled
+              />
             </Grid>
           </Grid>
 
           {/* Seção de Informações de Pagamento */}
-          <Grid container spacing={2} mt={4} borderBottom="1px solid #333" pb={2}>
+          <Grid
+            container
+            spacing={2}
+            mt={4}
+            borderBottom="1px solid #333"
+            pb={2}
+          >
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
                 <strong>Informações de pagamento:</strong>
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <Typography>Forma de pagamento:</Typography>
-                  <TextField label="Forma de pagamento" fullWidth /> {/* Adicionado */}
+                  <TextField
+                    value={pagamentoCopia.forma}
+                    label="Forma de pagamento"
+                    fullWidth
+                    disabled
+                  />{" "}
                 </Grid>
                 <Grid item xs={3}>
-                  <Typography>Valor:</Typography>
-                  <TextField label="Valor" fullWidth /> {/* Adicionado */}
+                  <TextField
+                    value={pagamentoCopia.valor}
+                    label="Valor"
+                    fullWidth
+                    disabled
+                  />{" "}
+                  {/* Adicionado */}
                 </Grid>
                 <Grid item xs={3}>
-                  <Typography>Parcelas:</Typography>
-                  <TextField label="Parcelas" fullWidth /> {/* Adicionado */}
+                  <TextField
+                    value={pagamentoCopia.parcelas}
+                    label="Parcelas"
+                    fullWidth
+                    disabled
+                  />{" "}
+                  {/* Adicionado */}
                 </Grid>
               </Grid>
             </Grid>
@@ -101,22 +158,55 @@ const ContratoEditar = ({ open, setOpen }) => {
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <Typography>Estado:</Typography>
-                  <TextField label="Estado" fullWidth /> {/* Adicionado */}
-                  <Typography>Cidade:</Typography>
-                  <TextField label="Cidade" fullWidth /> {/* Adicionado */}
-                  <Typography>Bairro:</Typography>
-                  <TextField label="Bairro" fullWidth /> {/* Adicionado */}
+                  <TextField
+                    value={enderecoCopia.estado}
+                    label="Estado"
+                    fullWidth
+                    disabled
+                    mb={2} // Adicionado espaçamento
+                  />
+                  <TextField
+                    value={enderecoCopia.cidade}
+                    label="Cidade"
+                    fullWidth
+                    disabled
+                    mb={2} // Adicionado espaçamento
+                  />
+                  <TextField
+                    value={enderecoCopia.bairro}
+                    label="Bairro"
+                    fullWidth
+                    disabled
+                    mb={2} // Adicionado espaçamento
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography>CEP:</Typography>
-                  <TextField label="CEP" fullWidth /> {/* Adicionado */}
-                  <Typography>Rua:</Typography>
-                  <TextField label="Rua" fullWidth /> {/* Adicionado */}
-                  <Typography>Número:</Typography>
-                  <TextField label="Número" fullWidth /> {/* Adicionado */}
-                  <Typography>Complemento:</Typography>
-                  <TextField label="Complemento" fullWidth /> {/* Adicionado */}
+                  <TextField
+                    value={enderecoCopia.cep}
+                    label="CEP"
+                    fullWidth
+                    disabled
+                    mb={2} // Adicionado espaçamento
+                  />
+                  <TextField
+                    value={enderecoCopia.rua}
+                    disabled
+                    label="Rua"
+                    fullWidth
+                    mb={2} // Adicionado espaçamento
+                  />
+                  <TextField
+                    value={enderecoCopia.numero}
+                    label="Número"
+                    fullWidth
+                    disabled
+                    mb={2} // Adicionado espaçamento
+                  />
+                  <TextField
+                    value={enderecoCopia.complemento}
+                    label="Complemento"
+                    fullWidth
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -137,7 +227,7 @@ const ContratoEditar = ({ open, setOpen }) => {
         </Stack>
       </Fade>
     </Modal>
-  );
-};
+  )
+}
 
-export default ContratoEditar;
+export default ContratoEditar
