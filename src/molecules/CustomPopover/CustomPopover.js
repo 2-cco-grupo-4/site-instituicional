@@ -1,38 +1,38 @@
-import { Popover, Stack, Typography } from "@mui/material";
-import { useUserContext } from "contexts";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import useStyles from "./CustomPopover.styles";
+import { Popover, Stack, Typography } from "@mui/material"
+import { useUserContext } from "contexts"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import useStyles from "./CustomPopover.styles"
 
-import arrow from "assets/icons/popover-arrow.svg";
-import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ChatIcon from "@mui/icons-material/Chat";
-import { ROUTES } from "utils/constants";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ModalAlterarImagem from "pages/ModalEditarImagemPerfil/ModalEditarImagemPerfil";
+import arrow from "assets/icons/popover-arrow.svg"
+import LeaderboardIcon from "@mui/icons-material/Leaderboard"
+import LogoutIcon from "@mui/icons-material/Logout"
+import ChatIcon from "@mui/icons-material/Chat"
+import { ROUTES } from "utils/constants"
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"
+import ModalAlterarImagem from "pages/ModalEditarImagemPerfil/ModalEditarImagemPerfil"
 
 const CustomPopover = ({ ...props }) => {
-  const classes = useStyles();
-  const { nome, setAutenticado, tipoUsuario } = useUserContext();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const isOpen = !!anchorEl;
-  const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
+  const classes = useStyles()
+  const { nome, setAutenticado, tipoUsuario } = useUserContext()
+  const [anchorEl, setAnchorEl] = useState(null)
+  const isOpen = !!anchorEl
+  const navigate = useNavigate()
+  const [openModal, setOpenModal] = useState(false)
 
   const handleClick = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
+    setAnchorEl(e.currentTarget)
+  }
 
   const handleNavigation = (route) => {
-    navigate(route);
-  };
+    navigate(route)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   return (
     <>
@@ -66,7 +66,7 @@ const CustomPopover = ({ ...props }) => {
       >
         <Stack
           onClick={() => {
-            handleNavigation(ROUTES.CHAT);
+            handleNavigation(ROUTES.CHAT)
           }}
           direction="row"
           alignItems="center"
@@ -76,7 +76,7 @@ const CustomPopover = ({ ...props }) => {
           <ChatIcon />
           <Typography paddingLeft={1}>Chat</Typography>
         </Stack>
-        <Stack
+        {/* <Stack
           onClick={() => {
             setOpenModal(true);
           }}
@@ -88,12 +88,12 @@ const CustomPopover = ({ ...props }) => {
           <AccountCircleIcon />
           <Typography paddingLeft={1}>Alterar Imagem</Typography>
         </Stack>
-        <ModalAlterarImagem open={openModal} setOpen={setOpenModal} />
+        <ModalAlterarImagem open={openModal} setOpen={setOpenModal} /> */}
         {tipoUsuario == 2 && (
           <>
             <Stack
               onClick={() => {
-                navigate(ROUTES.NOVO_ALBUM);
+                navigate(ROUTES.NOVO_ALBUM)
               }}
               direction="row"
               alignItems="center"
@@ -105,7 +105,7 @@ const CustomPopover = ({ ...props }) => {
             </Stack>
             <Stack
               onClick={() => {
-                navigate(ROUTES.CALENDARIO);
+                navigate(ROUTES.CALENDARIO)
               }}
               direction="row"
               alignItems="center"
@@ -117,7 +117,7 @@ const CustomPopover = ({ ...props }) => {
             </Stack>
             <Stack
               onClick={() => {
-                navigate(ROUTES.DASH_FOTOGRAFO);
+                navigate(ROUTES.DASH_FOTOGRAFO)
               }}
               direction="row"
               alignItems="center"
@@ -131,10 +131,10 @@ const CustomPopover = ({ ...props }) => {
         )}
         <Stack
           onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("nome");
-            handleNavigation("/");
-            setAutenticado(false);
+            localStorage.removeItem("token")
+            localStorage.removeItem("nome")
+            handleNavigation("/")
+            setAutenticado(false)
           }}
           direction="row"
           alignItems="center"
@@ -146,7 +146,7 @@ const CustomPopover = ({ ...props }) => {
         </Stack>
       </Popover>
     </>
-  );
-};
+  )
+}
 
-export default CustomPopover;
+export default CustomPopover

@@ -4,14 +4,23 @@ import { stringAvatar } from "utils/helpers/string"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "utils/constants"
 import ProfilePic from "atoms/ProfilePic"
+import PictureAlbum from "atoms/PictureAlbum"
 
-const FeedAlbum = ({ src, alt, autor, fotoPerfil, altPerfil, onClick }) => {
+const FeedAlbum = ({
+  src,
+  alt,
+  autor,
+  fotoPerfil,
+  altPerfil,
+  onClick,
+  noImage,
+}) => {
   const classes = useStyles()
   const navigate = useNavigate()
 
   return (
     <Stack className={classes.content} onClick={onClick}>
-      <img src={src} alt={alt} />
+      {noImage || <PictureAlbum src={src} alt={alt} />}
       <Stack
         pt={2}
         pb={3}

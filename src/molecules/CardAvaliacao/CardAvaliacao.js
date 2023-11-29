@@ -4,15 +4,15 @@ import {
   ImageListItem,
   Stack,
   Typography,
-} from "@mui/material";
-import useStyles from "./CardAvaliacao.styles";
-import FeedAlbum from "molecules/FeedAlbum/FeedAlbum";
+} from "@mui/material"
+import useStyles from "./CardAvaliacao.styles"
+import FeedAlbum from "molecules/FeedAlbum/FeedAlbum"
 
-import noivosSorriso from "assets/img/noivos-sorriso.png";
-import noivaFlorestaBuque from "assets/img/noiva-floresta-buque.png";
-import noivosPonte from "assets/img/noivos-ponte.png";
-import cerimonia from "assets/img/cerimonia.png";
-import { Component } from "react";
+import noivosSorriso from "assets/img/noivos-sorriso.png"
+import noivaFlorestaBuque from "assets/img/noiva-floresta-buque.png"
+import noivosPonte from "assets/img/noivos-ponte.png"
+import cerimonia from "assets/img/cerimonia.png"
+import { Component } from "react"
 
 const imageList = [
   {
@@ -31,17 +31,15 @@ const imageList = [
     alt: "cerimonia",
     src: cerimonia,
   },
-];
+]
 
 const CardAvaliacao = ({ name, text }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Stack className={classes.sectionAvaliacao}>
-      <FeedAlbum autor={name} />
-      <Typography>
-        {text}
-      </Typography>
+      <FeedAlbum autor={name} noImage />
+      <Typography>{text}</Typography>
       <ImageList variant="standard" cols={4} gap={8}>
         {imageList.map(({ index, alt, src }) => (
           <ImageListItem key={index}>
@@ -50,10 +48,10 @@ const CardAvaliacao = ({ name, text }) => {
         ))}
       </ImageList>
     </Stack>
-  );
-};
+  )
+}
 
-export default CardAvaliacao;
+export default CardAvaliacao
 
 // {imageList.map(({ index, alt, src }) => (
 //   <img
