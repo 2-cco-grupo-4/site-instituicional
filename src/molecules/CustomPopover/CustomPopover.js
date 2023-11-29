@@ -10,7 +10,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ChatIcon from "@mui/icons-material/Chat";
 import { ROUTES } from "utils/constants";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ModalAlterarImagem from "pages/ModalEditarImagemPerfil/ModalEditarImagemPerfil";
 
 const CustomPopover = ({ ...props }) => {
   const classes = useStyles();
@@ -18,6 +20,7 @@ const CustomPopover = ({ ...props }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = !!anchorEl;
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -63,9 +66,8 @@ const CustomPopover = ({ ...props }) => {
       >
         <Stack
           onClick={() => {
-            handleNavigation(ROUTES.CHAT)
-          }
-          }
+            handleNavigation(ROUTES.CHAT);
+          }}
           direction="row"
           alignItems="center"
           sx={{ cursor: "pointer" }}
@@ -74,6 +76,19 @@ const CustomPopover = ({ ...props }) => {
           <ChatIcon />
           <Typography paddingLeft={1}>Chat</Typography>
         </Stack>
+        <Stack
+          onClick={() => {
+            setOpenModal(true);
+          }}
+          direction="row"
+          alignItems="center"
+          sx={{ cursor: "pointer" }}
+          p={2}
+        >
+          <AccountCircleIcon />
+          <Typography paddingLeft={1}>Alterar Imagem</Typography>
+        </Stack>
+        <ModalAlterarImagem open={openModal} setOpen={setOpenModal} />
         {tipoUsuario == 2 && (
           <>
             <Stack
@@ -129,7 +144,7 @@ const CustomPopover = ({ ...props }) => {
           <LogoutIcon></LogoutIcon>
           <Typography paddingLeft={1}>Logoff</Typography>
         </Stack>
-      </Popover >
+      </Popover>
     </>
   );
 };

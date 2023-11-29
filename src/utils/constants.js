@@ -16,6 +16,7 @@ export const ROUTES = {
   ARQUIVOS_ADMIN: "/dash-admin/arquivos",
   ARQUIVOS_FOTOGRAFO: "/dash-fotografo/arquivos",
   CALENDARIO: "/calendario",
+  ALTERAR_IMAGEM: "/modal-editar-imagem",
 };
 
 export const PROFILE_TYPES = {
