@@ -81,7 +81,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
   useEffect(() => {
     const fetchTemas = async () => {
       try {
-        const response = await TEMA.LISTAR_TEMA();
+        const response = await TEMA.LISTAR_TEMAS();
         setTemas(response.data);
         console.log(response.data);
       } catch (error) {
