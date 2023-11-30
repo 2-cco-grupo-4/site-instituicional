@@ -17,16 +17,12 @@ export const CONTRATO = {
     api.get(`/eventos/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  EDITAR_PAGAMENTO: (payload, token) =>
-    api.put(`/eventos/pagamento/${id}`, payload, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
-  EDITAR_ENDERECO: (payload, token) =>
-    api.put(`/enderecos/${id}`, payload, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
-  EDITAR_SESSAO: (payload, token) =>
-    api.put(`/eventos/contrato/${id}`, payload, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
+  EDITAR_PAGAMENTO: (id, sessaoInfo) =>
+    api.put(`/eventos/pagamento/${id}`, sessaoInfo),
+
+  EDITAR_ENDERECO: (id, sessaoInfo) =>
+    api.put(`/enderecos/${id}`, sessaoInfo),
+
+  EDITAR_SESSAO: (id, sessaoInfo) =>
+    api.put(`/eventos/contrato/${id}`, sessaoInfo),
 }
