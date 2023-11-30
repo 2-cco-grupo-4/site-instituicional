@@ -178,6 +178,7 @@ const PerfilFotografo = () => {
     const ChamadaApi = async () => {
       const capasAlbum = await Promise.all(
         capaAlbum.map(async (album) => {
+          console.log(album)
           if (album.origemImagem == "s3") {
             console.log(
               `ENTROU NO IF DO S3, objeto q entrou: ${JSON.stringify(album)}`
@@ -210,7 +211,7 @@ const PerfilFotografo = () => {
                 alt={album.alt}
                 noUserInfo
                 key={album.alt}
-                onClick={() => navigate(ROUTES.ALBUM(album.alt))}
+                onClick={() => navigate(ROUTES.ALBUM(album.idAlbum))}
               />
             );
           }
