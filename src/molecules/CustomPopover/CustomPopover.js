@@ -12,7 +12,6 @@ import { ROUTES } from "utils/constants";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ModalAlterarImagem from "pages/ModalEditarImagemPerfil/ModalEditarImagemPerfil";
 
 const CustomPopover = ({ ...props }) => {
   const classes = useStyles();
@@ -76,19 +75,6 @@ const CustomPopover = ({ ...props }) => {
           <ChatIcon />
           <Typography paddingLeft={1}>Chat</Typography>
         </Stack>
-        <Stack
-          onClick={() => {
-            setOpenModal(true);
-          }}
-          direction="row"
-          alignItems="center"
-          sx={{ cursor: "pointer" }}
-          p={2}
-        >
-          <AccountCircleIcon />
-          <Typography paddingLeft={1}>Alterar Imagem</Typography>
-        </Stack>
-        <ModalAlterarImagem open={openModal} setOpen={setOpenModal} />
         {tipoUsuario == 2 && (
           <>
             <Stack
