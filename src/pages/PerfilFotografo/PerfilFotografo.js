@@ -10,32 +10,34 @@ import {
   Typography,
   Link,
   useTheme,
-} from "@mui/material"
-import useStyles from "./PerfilFotografo.styles"
-import Container from "atoms/Container"
-import CustomButton from "atoms/CustomButton/CustomButton"
-import Header from "molecules/Header"
+} from "@mui/material";
+import useStyles from "./PerfilFotografo.styles";
+import Container from "atoms/Container";
+import CustomButton from "atoms/CustomButton/CustomButton";
+import Header from "molecules/Header";
 
-import noivosSorriso from "assets/img/noivos-sorriso.png"
-import noivaFlorestaBuque from "assets/img/noiva-floresta-buque.png"
-import noivosPonte from "assets/img/noivos-ponte.png"
-import cerimonia from "assets/img/cerimonia.png"
-import noivosPorDoSol from "assets/img/noivos-por-do-sol.png"
-import noivaPai from "assets/img/noiva-e-pai.png"
-import noivaPraia from "assets/img/noivos-praia.png"
-import noivaSolitaria from "assets/img/noiva-solitaria.png"
-import { useState, useEffect } from "react"
-import CardAvaliacao from "molecules/CardAvaliacao/CardAvaliacao"
-import { ROUTES } from "utils/constants"
-import Footer from "molecules/Footer/Footer"
-import { useNavigate, useParams } from "react-router-dom"
-import { useUserContext } from "contexts"
-import { ALBUM } from "service/album"
-import api from "service/api"
-import { IMAGEM } from "service/imagem"
-import { FOTOGRAFO } from "service/fotografos"
-import PictureAlbum from "atoms/PictureAlbum"
-import { Masonry } from "@mui/lab"
+import noivosSorriso from "assets/img/noivos-sorriso.png";
+import noivaFlorestaBuque from "assets/img/noiva-floresta-buque.png";
+import noivosPonte from "assets/img/noivos-ponte.png";
+import cerimonia from "assets/img/cerimonia.png";
+import noivosPorDoSol from "assets/img/noivos-por-do-sol.png";
+import noivaPai from "assets/img/noiva-e-pai.png";
+import noivaPraia from "assets/img/noivos-praia.png";
+import noivaSolitaria from "assets/img/noiva-solitaria.png";
+import { useState, useEffect } from "react";
+import CardAvaliacao from "molecules/CardAvaliacao/CardAvaliacao";
+import { ROUTES } from "utils/constants";
+import Footer from "molecules/Footer/Footer";
+import { useNavigate, useParams } from "react-router-dom";
+import { useUserContext } from "contexts";
+import { ALBUM } from "service/album";
+import api from "service/api";
+import { IMAGEM } from "service/imagem";
+import { FOTOGRAFO } from "service/fotografos";
+import PictureAlbum from "atoms/PictureAlbum";
+import { Masonry } from "@mui/lab";
+import ProfilePic from "atoms/ProfilePic";
+import FeedAlbum from "molecules/FeedAlbum";
 
 const imageList = [
   {
@@ -70,7 +72,7 @@ const imageList = [
     alt: "noiva-solitaria",
     src: noivaSolitaria,
   },
-]
+];
 
 const avaliacaoList = [
   {
@@ -89,88 +91,88 @@ const avaliacaoList = [
     name: "Davi",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
-]
+];
 
 const PerfilFotografo = () => {
-  const [displayAlbum, setDisplayAlbum] = useState("")
-  const [displayAvaliacao, setDisplayAvaliacao] = useState("none")
+  const [displayAlbum, setDisplayAlbum] = useState("");
+  const [displayAvaliacao, setDisplayAvaliacao] = useState("none");
 
-  const [colorTextAlbum, setColorTextAlbum] = useState("white")
-  const [colorBackAlbum, setColorBackAlbum] = useState("black")
-  const [colorTextAvaliacao, setColorTextAvaliacao] = useState("black")
-  const [colorBackAvaliacao, setColorBackAvaliacao] = useState("white")
+  const [colorTextAlbum, setColorTextAlbum] = useState("white");
+  const [colorBackAlbum, setColorBackAlbum] = useState("black");
+  const [colorTextAvaliacao, setColorTextAvaliacao] = useState("black");
+  const [colorBackAvaliacao, setColorBackAvaliacao] = useState("white");
 
   const aoClicarAlbum = (evento) => {
-    evento.preventDefault()
-    setDisplayAlbum("")
-    setDisplayAvaliacao("none")
+    evento.preventDefault();
+    setDisplayAlbum("");
+    setDisplayAvaliacao("none");
 
-    setColorTextAlbum("white")
-    setColorBackAlbum("black")
-    setColorTextAvaliacao("black")
-    setColorBackAvaliacao("white")
+    setColorTextAlbum("white");
+    setColorBackAlbum("black");
+    setColorTextAvaliacao("black");
+    setColorBackAvaliacao("white");
 
     // console.log("ColorTextAlbum: " + colorTextAlbum);
-  }
+  };
 
   const aoClicarAvaliacao = (evento) => {
-    evento.preventDefault()
-    setDisplayAlbum("none")
-    setDisplayAvaliacao("")
+    evento.preventDefault();
+    setDisplayAlbum("none");
+    setDisplayAvaliacao("");
 
-    setColorTextAlbum("black")
-    setColorBackAlbum("white")
-    setColorTextAvaliacao("white")
-    setColorBackAvaliacao("black")
-  }
+    setColorTextAlbum("black");
+    setColorBackAlbum("white");
+    setColorTextAvaliacao("white");
+    setColorBackAvaliacao("black");
+  };
 
-  const theme = useTheme()
-  const navigate = useNavigate()
-  const classes = useStyles()
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const classes = useStyles();
 
-  const [albums, setAlbums] = useState([])
+  const [albums, setAlbums] = useState([]);
 
-  const [capaAlbum, setCapaAlbum] = useState([])
+  const [capaAlbum, setCapaAlbum] = useState([]);
 
-  const [avaliacoes, setAvaliacoes] = useState([])
+  const [avaliacoes, setAvaliacoes] = useState([]);
 
-  const { token, nome, tokenSolicitacao } = useUserContext()
+  const { token, nome, tokenSolicitacao } = useUserContext();
 
-  const { idFotografo } = useParams()
+  const { idFotografo } = useParams();
 
-  const [listCapas, setListCapas] = useState([])
+  const [listCapas, setListCapas] = useState([]);
 
-  const [nomeFotografo, setNomeFotografo] = useState("")
+  const [nomeFotografo, setNomeFotografo] = useState("");
 
   useEffect(() => {
     const ChamadaApi = async () => {
       ALBUM.BUSCAR_CAPAS_ALBUM(idFotografo, token).then((response) => {
-        console.log(`RESPOSTA LISTAR ALBUNS: ${JSON.stringify(response.data)}`)
-        setCapaAlbum(response.data)
-      })
-    }
-    ChamadaApi()
-  }, [idFotografo, token])
+        console.log(`RESPOSTA LISTAR ALBUNS: ${JSON.stringify(response.data)}`);
+        setCapaAlbum(response.data);
+      });
+    };
+    ChamadaApi();
+  }, [idFotografo, token]);
 
   useEffect(() => {
     const ChamadaApi = async () => {
       ALBUM.LISTAR_AVALIACOES(idFotografo, token).then((response) => {
         console.log(
           `RESPOSTA LISTAR AVALIACOES: ${JSON.stringify(response.data)}`
-        )
-        setAvaliacoes(response.data)
-      })
-    }
-    ChamadaApi()
-  }, [idFotografo, token])
+        );
+        setAvaliacoes(response.data);
+      });
+    };
+    ChamadaApi();
+  }, [idFotografo, token]);
 
   useEffect(() => {
     let capa = albums.map((album, index) => ({
       alt: album.idAlbum,
       src: album.pathCapa,
-    }))
-    setCapaAlbum(capa)
-  }, [albums])
+    }));
+    setCapaAlbum(capa);
+  }, [albums]);
 
   useEffect(() => {
     const ChamadaApi = async () => {
@@ -179,62 +181,64 @@ const PerfilFotografo = () => {
           if (album.origemImagem == "s3") {
             console.log(
               `ENTROU NO IF DO S3, objeto q entrou: ${JSON.stringify(album)}`
-            )
+            );
             try {
-              const response = await IMAGEM.GET_OBJECT(album.idImagem)
+              const response = await IMAGEM.GET_OBJECT(album.idImagem);
               const tipoImagem =
-                response.headers["content-type"] || "image/jpeg"
-              const blob = new Blob([response.data], { type: tipoImagem })
-              const src = URL.createObjectURL(blob)
+                response.headers["content-type"] || "image/jpeg";
+              const blob = new Blob([response.data], { type: tipoImagem });
+              const src = URL.createObjectURL(blob);
 
               return (
-                <ImageListItem
+                <FeedAlbum
                   key={album.alt}
-                  sx={{ cursor: "pointer" }}
+                  src={src}
+                  alt={album.alt}
+                  noUserInfo
                   onClick={() => navigate(ROUTES.ALBUM(album.alt))}
-                >
-                  <PictureAlbum src={src} alt={album.alt} />
-                </ImageListItem>
-              )
+                />
+              );
             } catch (error) {
-              console.error(error)
-              return null // Retorna null para ser filtrado posteriormente
+              console.error(error);
+              return null; // Retorna null para ser filtrado posteriormente
             }
           } else {
-            console.log(album)
+            console.log("album", album);
             return (
-              <ImageListItem
+              <FeedAlbum
+                src={album.pathCapa}
+                alt={album.alt}
+                noUserInfo
                 key={album.alt}
-                sx={{ cursor: "pointer" }}
                 onClick={() => navigate(ROUTES.ALBUM(album.alt))}
-              >
-                <PictureAlbum src={album.src} alt={album.alt} />
-              </ImageListItem>
-            )
+              />
+            );
           }
         })
-      )
-      console.log("capa", capasAlbum)
+      );
+      console.log("capa", capasAlbum);
 
       // Filtra elementos nulos (resultados de catch)
-      setListCapas(capasAlbum.filter(Boolean))
-    }
+      setListCapas(capasAlbum);
+    };
 
-    ChamadaApi()
-  }, [capaAlbum])
+    ChamadaApi();
+  }, [capaAlbum]);
 
   useEffect(() => {
     FOTOGRAFO.BUSCAR_FOTOGRAFO(idFotografo, token).then((response) => {
-      console.log(`RESPOSTA BUSCAR FOTOGRAFO: ${JSON.stringify(response.data)}`)
-      setNomeFotografo(response.data.nome)
-    })
-  }, [idFotografo, token])
+      console.log(
+        `RESPOSTA BUSCAR FOTOGRAFO: ${JSON.stringify(response.data)}`
+      );
+      setNomeFotografo(response.data.nome);
+    });
+  }, [idFotografo, token]);
 
   return (
     <Stack sx={{ transition: "2s all ease" }}>
       <Header type={2} />
       <Container className={classes.banner}></Container>
-      <Breadcrumbs
+      {/* <Breadcrumbs
         separator=">"
         sx={{
           cursor: "pointer",
@@ -256,8 +260,18 @@ const PerfilFotografo = () => {
         >
           {nomeFotografo}
         </Link>
-      </Breadcrumbs>
+      </Breadcrumbs> */}
       <Stack className={classes.textoCabecalho}>
+        <Stack className={classes.fotoPerfil}>
+          <ProfilePic
+            autor={nomeFotografo}
+            sx={{
+              width: theme.spacing(20),
+              height: theme.spacing(20),
+              fontSize: theme.spacing(8),
+            }}
+          />
+        </Stack>
         <Typography fontWeight={"bold"} fontSize={"24px"}>
           {nomeFotografo}
         </Typography>
@@ -332,7 +346,7 @@ const PerfilFotografo = () => {
       </Container>
       <Footer />
     </Stack>
-  )
-}
+  );
+};
 
-export default PerfilFotografo
+export default PerfilFotografo;

@@ -260,6 +260,7 @@ function Album() {
                   width: theme.spacing(8),
                   height: theme.spacing(8),
                   fontSize: 24,
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(ROUTES.PERFIL(fotografo.id));

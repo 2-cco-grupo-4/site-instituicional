@@ -1,14 +1,15 @@
-import { Avatar } from "@mui/material"
-import { stringAvatar } from "utils/helpers/string"
+import { Avatar } from "@mui/material";
+import { stringAvatar } from "utils/helpers/string";
 
 const ProfilePic = ({ src, alt, autor, ...props }) => {
   const noPicAvatar = {
+    ...props,
     ...stringAvatar(autor),
     sx: {
       ...stringAvatar(autor).sx,
       ...props?.sx,
     },
-  }
+  };
   return (
     <>
       {src ? (
@@ -17,7 +18,7 @@ const ProfilePic = ({ src, alt, autor, ...props }) => {
         <Avatar {...noPicAvatar} />
       )}
     </>
-  )
-}
+  );
+};
 
-export default ProfilePic
+export default ProfilePic;

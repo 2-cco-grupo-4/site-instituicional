@@ -15,7 +15,7 @@ const LogoPicme = ({ height, dash, ...props }) => {
   return (
     <img
       src={dash ? logoDash : logo}
-      onClick={() => handleNavigation(ROUTES.HOME)}
+      onClick={() => handleNavigation(ROUTES.FEED)}
       className={classes.logo}
       alt="logo"
       height={height ?? 30}
