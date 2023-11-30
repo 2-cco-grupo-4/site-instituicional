@@ -76,7 +76,7 @@ const CaixaKpi = ({ valorKpi, textoKpi, porcentagem, direita }) => {
                 color: porcentagem >= 0 ? "#007816" : "#8A0C25",
               }}
             >
-              {porcentagem}%
+              {porcentagem.toFixed(2)}%
             </Typography>
           </Stack>
         </Box>
