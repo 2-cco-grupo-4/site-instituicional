@@ -385,8 +385,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                     name="cep"
                     label="CEP"
                     fullWidth
-                    error={!!errors?.cep || genericError}
-                    helperText={errors?.cep?.message}
+                    // error={!!errors?.cep || genericError}
+                    // helperText={errors?.cep?.message}
                   />
                 )}
               </InputMask>
@@ -398,8 +398,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 label="Estado"
                 fullWidth
                 {...register("estado")}
-                error={!!errors?.estado || genericError}
-                helperText={errors?.estado?.message}
+                // error={!!errors?.estado || genericError}
+                // helperText={errors?.estado?.message}
                 value={FormData.estado || ""}
                 SelectProps={{
                   MenuProps: {
@@ -425,8 +425,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 fullWidth
                 {...register("cidade")}
                 value={FormData.cidade || ""}
-                error={!!errors?.cidade || genericError}
-                helperText={errors?.cidade?.message}
+                // error={!!errors?.cidade || genericError}
+                // helperText={errors?.cidade?.message}
               />
             </Grid>
             <Grid item xs={3}>
@@ -435,8 +435,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 label="Bairro"
                 fullWidth
                 {...register("bairro")}
-                error={!!errors?.bairro || genericError}
-                helperText={errors?.bairro?.message}
+                // error={!!errors?.bairro || genericError}
+                // helperText={errors?.bairro?.message}
                 value={FormData.bairro || ""}
               />
             </Grid>
@@ -446,8 +446,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 label="Rua"
                 fullWidth
                 {...register("rua")}
-                error={!!errors?.rua || genericError}
-                helperText={errors?.rua?.message}
+                // error={!!errors?.rua || genericError}
+                // helperText={errors?.rua?.message}
                 value={FormData.endereco || ""}
               />
             </Grid>
@@ -458,8 +458,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 label="Nº"
                 fullWidth
                 {...register("numero")}
-                error={!!errors?.numero || genericError}
-                helperText={errors?.numero?.message}
+                // error={!!errors?.numero || genericError}
+                // helperText={errors?.numero?.message}
               />
             </Grid>
             <Grid item xs={2}>
@@ -468,8 +468,8 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 label="Complemento"
                 fullWidth
                 {...register("complemento")}
-                error={!!errors?.complemento || genericError}
-                helperText={errors?.complemento?.message}
+                // error={!!errors?.complemento || genericError}
+                // helperText={errors?.complemento?.message}
               />
             </Grid>
           </Grid>
