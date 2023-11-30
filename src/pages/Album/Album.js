@@ -230,6 +230,7 @@ function Album() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            width: "auto",
           }}
         >
           {imagensRenderizadas}
@@ -290,7 +291,7 @@ function Album() {
             </Typography>
             <Typography>{tema ? tema.nome : "Padrão"}</Typography>
           </Stack>
-          <Stack spacing={1}>
+          {/* <Stack spacing={1}>
             <Typography variant="paragraph-large-bold">Tags</Typography>
             <div>
               {tags.map((tag, index) => (
@@ -306,7 +307,7 @@ function Album() {
                 />
               ))}
             </div>
-          </Stack>
+          </Stack> */}
           <Stack spacing={1}>
             <Typography variant="paragraph-large-bold">Avaliação</Typography>
             {avaliacoes.length == 0 ? (
@@ -318,7 +319,7 @@ function Album() {
                 Não há avaliações para este fotógrafo.
               </Typography>
             ) : null}
-            {avaliacoes.map((avaliacao, indice) => (
+            {avaliacoes.slice(0, 2).map((avaliacao, indice) => (
               <AvaliacaoBox>
                 <div
                   style={{

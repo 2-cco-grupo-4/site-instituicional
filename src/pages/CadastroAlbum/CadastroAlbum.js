@@ -11,7 +11,7 @@ import {
   Autocomplete,
 } from "@mui/material";
 import Container from "atoms/Container";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FOTOGRAFO } from "service/user";
@@ -134,6 +134,13 @@ const CadastroAlbum = () => {
         });
       }
       console.log(response.data.id);
+
+      setBtnLoading(false);
+      reset({ titulo: "", descricao: "", idTema: "" });
+      setListImagensSelecionadas([]);
+      setOrigemVisible(true);
+      setImagensVisible(false);
+      setOrigem(null);
     });
   };
 

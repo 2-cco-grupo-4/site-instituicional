@@ -17,6 +17,7 @@ import IconSend from "@mui/icons-material/Send";
 import IconChat from "@mui/icons-material/ChatRounded";
 import IconEdit from "@mui/icons-material/ModeEdit";
 import IconArrowBack from "@mui/icons-material/ArrowBackRounded";
+import ContratoEditar from "molecules/ContratoEditar/ContratoEditar";
 
 import {
   collection,
@@ -38,6 +39,9 @@ import { ROUTES } from "utils/constants";
 import CustomButton from "atoms/CustomButton";
 
 const Chat = () => {
+  const { autenticado } = useUserContext();
+  const [openContrato, setOpenContrato] = useState(false);
+  const [isContractModalOpen, setContractModalOpen] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const [userChats, setUserChats] = useState([]);
@@ -46,6 +50,14 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [userChatName, setUserChatName] = useState("");
+
+  const [idSessao, setIdSessao] = useState(null);
+
+  const handleContract = () => {
+    if (autenticado) {
+      setOpenContrato(true);
+    }
+  };
 
   const inputRef = useRef(null);
   const messagesRef = useRef(null);
@@ -184,9 +196,10 @@ const Chat = () => {
     }
   };
 
-  const handleChatClick = (chatId, userName) => {
+  const handleChatClick = (chatId, userName, idSessao) => {
     setSelectedChat(chatId);
     setUserChatName(userName);
+    setIdSessao(idSessao);
     loadMessages(chatId);
   };
 
@@ -302,7 +315,9 @@ const Chat = () => {
                   flexDirection="row"
                   alignItems="center"
                   className={classes.chatItem}
-                  onClick={() => handleChatClick(chat.id, nameChatUser)}
+                  onClick={() =>
+                    handleChatClick(chat.id, nameChatUser, chat.id_sessao)
+                  }
                 >
                   <ProfilePic
                     autor={nameChatUser}
@@ -396,13 +411,7 @@ const Chat = () => {
                     size="small"
                     variant="outlined"
                     color="secondary"
-                  >
-                    Perfil
-                  </CustomButton>
-                  <CustomButton
-                    size="small"
-                    variant="outlined"
-                    color="secondary"
+                    onClick={handleContract}
                   >
                     Contrato
                   </CustomButton>
@@ -542,6 +551,11 @@ const Chat = () => {
             </Stack>
           )}
         </Grid>
+        <ContratoEditar
+          open={openContrato}
+          setOpen={setOpenContrato}
+          id_sessao={idSessao}
+        />
       </Grid>
     </Stack>
   );

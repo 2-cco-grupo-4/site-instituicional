@@ -79,26 +79,26 @@ const Contract = ({ open, setOpen, fotografo }) => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(contractSchema) });
 
-  const handleCepChange = async (e) => {
-    const cep = e.target.value;
+  // const handleCepChange = async (e) => {
+  //   const cep = e.target.value;
 
-    if (cep.length === 9 && !cep.includes("_")) {
-      setFormData((prevFormData) => ({ ...prevFormData, cep }));
+  //   if (cep.length === 9 && !cep.includes("_")) {
+  //     setFormData((prevFormData) => ({ ...prevFormData, cep }));
 
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await response.json();
+  //     const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+  //     const data = await response.json();
 
-      if (!data.erro) {
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          endereco: data.logradouro,
-          bairro: data.bairro,
-          cidade: data.localidade,
-          estado: data.uf,
-        }));
-      }
-    }
-  };
+  //     if (!data.erro) {
+  //       setFormData((prevFormData) => ({
+  //         ...prevFormData,
+  //         endereco: data.logradouro,
+  //         bairro: data.bairro,
+  //         cidade: data.localidade,
+  //         estado: data.uf,
+  //       }));
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     const fetchTemas = async () => {
@@ -158,7 +158,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
     console.log("Iniciando cadastro do pagamento...");
     const pagamentoPayload = {
       forma: contract.formaPagamento,
-      valor: contract.valor,
+      valor: parseFloat(contract.valor),
       parcelas: contract.parcelas,
       idSessao,
     };
@@ -376,8 +376,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
               <InputMask
                 mask="99999-999"
                 {...register("cep")}
-                value={FormData.cep}
-                onChange={handleCepChange}
+                // value={FormData.cep}
               >
                 {(inputProps) => (
                   <TextField
@@ -400,7 +399,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 {...register("estado")}
                 error={!!errors?.estado || genericError}
                 helperText={errors?.estado?.message}
-                value={FormData.estado || ""}
+                // value={FormData.estado || ""}
                 SelectProps={{
                   MenuProps: {
                     PaperProps: {
@@ -424,7 +423,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 label="Cidade"
                 fullWidth
                 {...register("cidade")}
-                value={FormData.cidade || ""}
+                // value={FormData.cidade || ""}
                 error={!!errors?.cidade || genericError}
                 helperText={errors?.cidade?.message}
               />
@@ -437,7 +436,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 {...register("bairro")}
                 error={!!errors?.bairro || genericError}
                 helperText={errors?.bairro?.message}
-                value={FormData.bairro || ""}
+                // value={FormData.bairro || ""}
               />
             </Grid>
             <Grid item xs={5}>
@@ -448,7 +447,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 {...register("rua")}
                 error={!!errors?.rua || genericError}
                 helperText={errors?.rua?.message}
-                value={FormData.endereco || ""}
+                // value={FormData.endereco || ""}
               />
             </Grid>
             <Grid item xs={2}>
