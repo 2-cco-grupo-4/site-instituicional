@@ -51,7 +51,7 @@ pipeline {
     stage('Run image on FrontEnd 01') {
       steps {
         script {
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RUN'"
+          sh "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RUN'"
         }
       }
     }
