@@ -22,8 +22,9 @@ export const Tag = styled("p")``;
 
 export const Sidebar = styled(Stack)`
   width: 39.65277%;
-  max-height: calc(100vh - 64px);
-  // overflow-y: auto;
+  min-height: calc(100vh - 64px);
+  height: fit-content
+  overflow-y: auto;
   padding: 24px;
 `;
 
@@ -33,7 +34,7 @@ export const AvaliacaoBox = styled("div")`
   flex-direction: column;
   margin-top: 10px;
   padding: 20px 0;
-  border-top: 0.5px solid rgba(0,0,0,0.3) ;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.3);
 `;
 
 export const StarIcon = styled("span")`
