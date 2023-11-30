@@ -135,7 +135,7 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
         statusSessao: "Agendada",
       };
       console.log("Sessão editada:", sessaoEditadaAceita);
-      await CONTRATO.EDITAR_SESSAO(4, sessaoEditadaAceita);
+      await CONTRATO.EDITAR_SESSAO(id_sessao, sessaoEditadaAceita);
       console.log("Contrato Aceito!");
       setOpen(false);
 
@@ -151,7 +151,7 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
         statusSessao: "Cancelada",
       };
       console.log("Sessão editada:", sessaoEditadaRejeita);
-      await CONTRATO.EDITAR_SESSAO(4, sessaoEditadaRejeita);
+      await CONTRATO.EDITAR_SESSAO(id_sessao, sessaoEditadaRejeita);
       console.log("Contrato Rejeitado!");
       setOpen(false);
     } catch (error) {
@@ -189,9 +189,9 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
 
       console.log("Data editada:", sessaoEditadaInfo);
 
-      await CONTRATO.EDITAR_SESSAO(4, sessaoEditadaInfo);
-      await CONTRATO.EDITAR_PAGAMENTO(3, pagamentoEditado);
-      await CONTRATO.EDITAR_ENDERECO(4, enderecoEditado);
+      await CONTRATO.EDITAR_SESSAO(id_sessao, sessaoEditadaInfo);
+      await CONTRATO.EDITAR_PAGAMENTO(id_sessao, pagamentoEditado);
+      await CONTRATO.EDITAR_ENDERECO(id_sessao, enderecoEditado);
 
       setPagamentoCopias({ ...pagamentoEditado });
       setEnderecoCopias({ ...enderecoEditado });

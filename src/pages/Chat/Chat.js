@@ -396,13 +396,6 @@ const Chat = () => {
                     size="small"
                     variant="outlined"
                     color="secondary"
-                  >
-                    Perfil
-                  </CustomButton>
-                  <CustomButton
-                    size="small"
-                    variant="outlined"
-                    color="secondary"
                     onClick={handleContract}
                   >
                     Contrato
@@ -458,26 +451,26 @@ const Chat = () => {
                           sx={
                             id == content.id_usuario
                               ? {
-                                  width: "fit-content",
-                                  maxWidth: "60%",
-                                  color: theme.palette.white.main,
-                                  bgcolor: theme.palette.primary.main,
-                                  borderRadius: theme.shape.borderRadius,
-                                  borderBottomRightRadius: 1,
-                                  padding: theme.spacing(1, 2),
-                                  marginRight:
-                                    isNextMessageFromUser && theme.spacing(5),
-                                }
+                                width: "fit-content",
+                                maxWidth: "60%",
+                                color: theme.palette.white.main,
+                                bgcolor: theme.palette.primary.main,
+                                borderRadius: theme.shape.borderRadius,
+                                borderBottomRightRadius: 1,
+                                padding: theme.spacing(1, 2),
+                                marginRight:
+                                  isNextMessageFromUser && theme.spacing(5),
+                              }
                               : {
-                                  width: "fit-content",
-                                  maxWidth: "60%",
-                                  bgcolor: theme.palette.whiteSoft.main,
-                                  borderRadius: theme.shape.borderRadius,
-                                  borderBottomLeftRadius: 1,
-                                  padding: theme.spacing(1, 2),
-                                  marginLeft:
-                                    isNextMessageFromUser && theme.spacing(5),
-                                }
+                                width: "fit-content",
+                                maxWidth: "60%",
+                                bgcolor: theme.palette.whiteSoft.main,
+                                borderRadius: theme.shape.borderRadius,
+                                borderBottomLeftRadius: 1,
+                                padding: theme.spacing(1, 2),
+                                marginLeft:
+                                  isNextMessageFromUser && theme.spacing(5),
+                              }
                           }
                         >
                           {content.mensagem}
