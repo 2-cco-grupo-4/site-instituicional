@@ -17,6 +17,7 @@ import IconSend from "@mui/icons-material/Send";
 import IconChat from "@mui/icons-material/ChatRounded";
 import IconEdit from "@mui/icons-material/ModeEdit";
 import IconArrowBack from "@mui/icons-material/ArrowBackRounded";
+import ContratoEditar from "molecules/ContratoEditar/ContratoEditar";
 
 import {
   collection,
@@ -38,6 +39,9 @@ import { ROUTES } from "utils/constants";
 import CustomButton from "atoms/CustomButton";
 
 const Chat = () => {
+  const { autenticado } = useUserContext();
+  const [openContrato, setOpenContrato] = useState(false);
+  const [isContractModalOpen, setContractModalOpen] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const [userChats, setUserChats] = useState([]);
@@ -46,6 +50,12 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [userChatName, setUserChatName] = useState("");
+
+  const handleContract = () => {
+    if (autenticado) {
+      setOpenContrato(true);
+    }
+  };
 
   const inputRef = useRef(null);
   const messagesRef = useRef(null);
@@ -396,13 +406,7 @@ const Chat = () => {
                     size="small"
                     variant="outlined"
                     color="secondary"
-                  >
-                    Perfil
-                  </CustomButton>
-                  <CustomButton
-                    size="small"
-                    variant="outlined"
-                    color="secondary"
+                    onClick={handleContract}
                   >
                     Contrato
                   </CustomButton>
@@ -542,6 +546,7 @@ const Chat = () => {
             </Stack>
           )}
         </Grid>
+        <ContratoEditar open={openContrato} setOpen={setOpenContrato} />
       </Grid>
     </Stack>
   );
