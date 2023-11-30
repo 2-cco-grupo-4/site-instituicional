@@ -33,8 +33,7 @@ import { ALBUM } from "service/album";
 import { AVALIACAO } from "service/avaliacao";
 import { set } from "react-hook-form";
 import { IMAGEM } from "service/imagem";
-import PictureAlbum from "atoms/PictureAlbum";
-import Container from "atoms/Container";
+import ProfilePic from "atoms/ProfilePic";
 
 const images = [
   {
@@ -188,10 +187,10 @@ function Album() {
               // Retornar o elemento JSX diretamente
               return (
                 <ImageContainer key={imagem.id} className="image">
-                  <PictureAlbum
+                  <ImageElement
                     src={url}
                     alt={imagem.descricao}
-                    style={{ maxWidth: "100%" }}
+                    style={{ width: "auto", height: "auto", maxWidth: "100%" }}
                   />
                 </ImageContainer>
               );
@@ -202,13 +201,13 @@ function Album() {
           } else {
             // Se a origem não é S3, retornar o componente FeedAlbum padrão
             return (
-              <Container key={imagem.id} className="image" py={0.5}>
-                <PictureAlbum
+              <ImageContainer key={imagem.id} className="image">
+                <ImageElement
                   src={imagem.path}
                   alt={imagem.descricao}
-                  width="100%"
+                  style={{ width: "auto", height: "auto" }}
                 />
-              </Container>
+              </ImageContainer>
             );
           }
         })
@@ -256,14 +255,18 @@ function Album() {
               </Link>
             </Breadcrumbs>
             <Stack direction="row" alignItems="center" spacing={2}>
-              <Avatar
-                style={{ width: theme.spacing(8), height: theme.spacing(8) }}
+              <ProfilePic
+                autor={fotografo.nome}
+                sx={{
+                  width: theme.spacing(8),
+                  height: theme.spacing(8),
+                  fontSize: 24,
+                  cursor: "pointer",
+                }}
                 onClick={() => {
                   navigate(ROUTES.PERFIL(fotografo.id));
                 }}
-              >
-                <PersonIcon style={{ fontSize: 24 }} />
-              </Avatar>
+              />
 
               <Stack spacing={0.5}>
                 <Typography variant="paragraph-medium-bold">
@@ -322,21 +325,26 @@ function Album() {
                   style={{
                     display: "flex",
                     flexDirection: "row",
-                    alignItems: "center",
+                    alignItems: "flex-start",
                     justifyContent: "flex-start",
                     flex: 1,
                     height: "100%",
                     width: "100%",
                   }}
                 >
-                  <Avatar
-                    style={{
+                  <ProfilePic
+                    autor={
+                      typeof clientes === "object" &&
+                      clientes[indice] &&
+                      clientes[indice].nome !== undefined &&
+                      clientes[indice].nome
+                    }
+                    sx={{
                       width: theme.spacing(8),
                       height: theme.spacing(8),
+                      fontSize: 24,
                     }}
-                  >
-                    <PersonIcon style={{ fontSize: 24 }} />
-                  </Avatar>
+                  />
                   <div
                     style={{
                       display: "flex",
@@ -366,20 +374,10 @@ function Album() {
                         ? clientes[indice].nome
                         : "Padrão"}
                     </Typography>
+                    <Typography mt={2}>
+                      {typeof avaliacao == "object" ? avaliacao.descricao : ""}
+                    </Typography>
                   </div>
-                </div>
-                <div
-                  style={{
-                    flex: 3,
-                    display: "flex",
-                    flexDirection: "column",
-                    marginLeft: "10px",
-                    height: "100%",
-                  }}
-                >
-                  <Typography style={{ marginTop: "16px" }}>
-                    {typeof avaliacao == "object" ? avaliacao.descricao : ""}
-                  </Typography>
                 </div>
               </AvaliacaoBox>
             ))}
