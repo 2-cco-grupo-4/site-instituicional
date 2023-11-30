@@ -51,6 +51,8 @@ const Chat = () => {
   const [messageInput, setMessageInput] = useState("");
   const [userChatName, setUserChatName] = useState("");
 
+  const [idSessao, setIdSessao] = useState(null);
+
   const handleContract = () => {
     if (autenticado) {
       setOpenContrato(true);
@@ -194,9 +196,10 @@ const Chat = () => {
     }
   };
 
-  const handleChatClick = (chatId, userName) => {
+  const handleChatClick = (chatId, userName, idSessao) => {
     setSelectedChat(chatId);
     setUserChatName(userName);
+    setIdSessao(idSessao);
     loadMessages(chatId);
   };
 
@@ -312,7 +315,9 @@ const Chat = () => {
                   flexDirection="row"
                   alignItems="center"
                   className={classes.chatItem}
-                  onClick={() => handleChatClick(chat.id, nameChatUser)}
+                  onClick={() =>
+                    handleChatClick(chat.id, nameChatUser, chat.id_sessao)
+                  }
                 >
                   <ProfilePic
                     autor={nameChatUser}
@@ -546,7 +551,11 @@ const Chat = () => {
             </Stack>
           )}
         </Grid>
-        <ContratoEditar open={openContrato} setOpen={setOpenContrato} />
+        <ContratoEditar
+          open={openContrato}
+          setOpen={setOpenContrato}
+          id_sessao={idSessao}
+        />
       </Grid>
     </Stack>
   );

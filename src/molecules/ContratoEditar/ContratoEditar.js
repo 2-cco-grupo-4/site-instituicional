@@ -52,7 +52,12 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
     "TO",
   ];
 
-  const formasPagamento = ["Pix", "Cartão de Crédito", "Transferência Bancária", "Boleto Bancário"];
+  const formasPagamento = [
+    "Pix",
+    "Cartão de Crédito",
+    "Transferência Bancária",
+    "Boleto Bancário",
+  ];
 
   const renderSelectEstado = () => {
     return (
@@ -112,6 +117,9 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const [idEndereco, setIdEndereco] = useState();
+  const [idPagamento, setIdPagamento] = useState();
+
   const handleEdit = () => {
     setIsEditing(true);
 
@@ -138,7 +146,6 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
       await CONTRATO.EDITAR_SESSAO(id_sessao, sessaoEditadaAceita);
       console.log("Contrato Aceito!");
       setOpen(false);
-
     } catch (error) {
       console.error("Erro ao aceitar contrato:", error);
     }
@@ -159,7 +166,6 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
     }
   };
 
-
   const [enderecoEditado, setEnderecoEditado] = useState({
     estado: "",
     cidade: "",
@@ -176,7 +182,6 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
     parcelas: "",
   });
 
-
   const handleSave = async () => {
     try {
       console.log("Pagamento editado:", pagamentoEditado);
@@ -189,9 +194,18 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
 
       console.log("Data editada:", sessaoEditadaInfo);
 
+      const retornoPagamento = await CONTRATO.GET_PAGAMENTO(id_sessao, token);
+      const retornoEndereco = await CONTRATO.GET_ENDERECO(id_sessao, token);
+
+      setIdPagamento(retornoPagamento.data.id);
+      setIdEndereco(retornoEndereco.data.id);
+
+      console.log("ID Pagamento:", idPagamento);
+      console.log("ID Endereço:", idEndereco);
+
       await CONTRATO.EDITAR_SESSAO(id_sessao, sessaoEditadaInfo);
-      await CONTRATO.EDITAR_PAGAMENTO(id_sessao, pagamentoEditado);
-      await CONTRATO.EDITAR_ENDERECO(id_sessao, enderecoEditado);
+      await CONTRATO.EDITAR_PAGAMENTO(idPagamento, pagamentoEditado);
+      await CONTRATO.EDITAR_ENDERECO(idEndereco, enderecoEditado);
 
       setPagamentoCopias({ ...pagamentoEditado });
       setEnderecoCopias({ ...enderecoEditado });
@@ -209,15 +223,19 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
     endereco: {},
   });
 
-  const [pagamentoCopias, setPagamentoCopias] = useState({ ...messageData.pagamento });
-  const [enderecoCopias, setEnderecoCopias] = useState({ ...messageData.endereco });
+  const [pagamentoCopias, setPagamentoCopias] = useState({
+    ...messageData.pagamento,
+  });
+  const [enderecoCopias, setEnderecoCopias] = useState({
+    ...messageData.endereco,
+  });
 
   useEffect(() => {
     // ...
 
     const fetchContrato = async () => {
       try {
-        const contrato = await CONTRATO.EXIBIR_CONTRATO(4, token);
+        const contrato = await CONTRATO.EXIBIR_CONTRATO(id_sessao, token);
         setMessageData(contrato.data);
 
         // Atualiza os estados copiados quando os dados do contrato são carregados
@@ -230,16 +248,20 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
     };
 
     fetchContrato();
-  }, [4, token]);
-
-
+  }, [id_sessao, token]);
 
   const renderContent = () => {
     if (isEditing) {
       return (
         <>
           {/* Seção de Informações de Pagamento */}
-          <Grid container spacing={2} mt={4} borderBottom="1px solid #333" pb={2}>
+          <Grid
+            container
+            spacing={2}
+            mt={4}
+            borderBottom="1px solid #333"
+            pb={2}
+          >
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
                 <strong>Informações de pagamento:</strong>
@@ -448,10 +470,18 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
           <Stack direction="row" justifyContent="space-between" mt={4}>
             {!isEditing ? (
               <>
-                <Button variant="contained" color="primary" onClick={handleAccept}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAccept}
+                >
                   Aceitar
                 </Button>
-                <Button variant="outlined" color="secondary" onClick={handleReject}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleReject}
+                >
                   Rejeitar
                 </Button>
               </>
@@ -462,10 +492,18 @@ const ContratoEditar = ({ open, setOpen, id_sessao }) => {
               </Button>
             ) : (
               <>
-                <Button variant="outlined" color="secondary" onClick={handleCancelEdit}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleCancelEdit}
+                >
                   Cancelar
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleSave}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSave}
+                >
                   Salvar
                 </Button>
               </>
