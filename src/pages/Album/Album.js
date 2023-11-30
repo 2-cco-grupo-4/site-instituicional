@@ -34,6 +34,7 @@ import { AVALIACAO } from "service/avaliacao";
 import { set } from "react-hook-form";
 import { IMAGEM } from "service/imagem";
 import ProfilePic from "atoms/ProfilePic";
+import PictureAlbum from "atoms/PictureAlbum";
 
 const images = [
   {
@@ -187,10 +188,10 @@ function Album() {
               // Retornar o elemento JSX diretamente
               return (
                 <ImageContainer key={imagem.id} className="image">
-                  <ImageElement
+                  <PictureAlbum
                     src={url}
                     alt={imagem.descricao}
-                    style={{ width: "auto", height: "auto", maxWidth: "100%" }}
+                    width="100%"
                   />
                 </ImageContainer>
               );
@@ -202,10 +203,10 @@ function Album() {
             // Se a origem não é S3, retornar o componente FeedAlbum padrão
             return (
               <ImageContainer key={imagem.id} className="image">
-                <ImageElement
+                <PictureAlbum
                   src={imagem.path}
                   alt={imagem.descricao}
-                  style={{ width: "auto", height: "auto" }}
+                  width="100%"
                 />
               </ImageContainer>
             );
@@ -359,7 +360,7 @@ function Album() {
                       sx={{ fontSize: theme.spacing(4) }}
                       readOnly
                       value={typeof avaliacao == "object" ? avaliacao.nota : 2}
-                      // value={3.5}
+                    // value={3.5}
                     />
                     <Typography
                       variant="body1"
@@ -369,8 +370,8 @@ function Album() {
                       }}
                     >
                       {typeof clientes === "object" &&
-                      clientes[indice] &&
-                      clientes[indice].nome !== undefined
+                        clientes[indice] &&
+                        clientes[indice].nome !== undefined
                         ? clientes[indice].nome
                         : "Padrão"}
                     </Typography>
