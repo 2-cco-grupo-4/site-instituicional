@@ -22,48 +22,48 @@ pipeline {
       }
     }
 
-    stage('Build and Push Docker Image') {
-      steps {
-        script {
-          sh "docker build -t $REGISTRY ."
-          sh "docker push $REGISTRY"
-        }
-      }
-    }
+    // stage('Build and Push Docker Image') {
+    //   steps {
+    //     script {
+    //       sh "docker build -t $REGISTRY ."
+    //       sh "docker push $REGISTRY"
+    //     }
+    //   }
+    // }
 
-    stage('Remove images before push') {
-      steps {
-        script {
-          sh "$DOCKER_RM_IMAGES"
-        }
-      }
-    }
+    // stage('Remove images before push') {
+    //   steps {
+    //     script {
+    //       sh "$DOCKER_RM_IMAGES"
+    //     }
+    //   }
+    // }
 
-    stage('Remove Docker on EC2 FrontEnd 01') {
-      steps {
-        script {
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RM_CONTAINERS'"
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RM_IMAGES'"   
-        }
-      }
-    }
+    // stage('Remove Docker on EC2 FrontEnd 01') {
+    //   steps {
+    //     script {
+    //       sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RM_CONTAINERS'"
+    //       sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RM_IMAGES'"   
+    //     }
+    //   }
+    // }
 
     stage('Run image on FrontEnd 01') {
       steps {
         script {
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RUN'"
+          sh "ssh -o StrictHostKeyChecking=no -i  /home/ec2-user/key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT1 '$DOCKER_RUN'"
         }
       }
     }
 
-    stage('Remove Docker on EC2 FrontEnd 02') {
-      steps {
-        script {
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_CONTAINERS'"
-          sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_IMAGES'"   
-        }
-      }
-    }
+    // stage('Remove Docker on EC2 FrontEnd 02') {
+    //   steps {
+    //     script {
+    //       sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_CONTAINERS'"
+    //       sh "ssh -o StrictHostKeyChecking=no -i key-picme-project.pem ubuntu@$EC2_INSTANCE_IP_FRONT2 '$DOCKER_RM_IMAGES'"   
+    //     }
+    //   }
+    // }
 
     stage('Run image on FrontEnd 02') {
       steps {

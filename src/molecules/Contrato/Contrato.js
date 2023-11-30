@@ -40,6 +40,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
   const [genericError, setGenericError] = useState(false);
   const [contract, setContract] = useState({});
   const [loading, setLoading] = useState(false);
+  const [FormData, setFormData] = useState({});
 
   const estadosBrasil = [
     "AC",
@@ -77,6 +78,27 @@ const Contract = ({ open, setOpen, fotografo }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(contractSchema) });
+
+  const handleCepChange = async (e) => {
+    const cep = e.target.value;
+
+    if (cep.length === 9 && !cep.includes("_")) {
+      setFormData((prevFormData) => ({ ...prevFormData, cep }));
+
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (!data.erro) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          endereco: data.logradouro,
+          bairro: data.bairro,
+          cidade: data.localidade,
+          estado: data.uf,
+        }));
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchTemas = async () => {
@@ -351,9 +373,15 @@ const Contract = ({ open, setOpen, fotografo }) => {
         <Stack sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid item xs={2}>
-              <InputMask mask="99999-999" {...register("cep")}>
-                {() => (
+              <InputMask
+                mask="99999-999"
+                {...register("cep")}
+                value={FormData.cep}
+                onChange={handleCepChange}
+              >
+                {(inputProps) => (
                   <TextField
+                    {...inputProps}
                     name="cep"
                     label="CEP"
                     fullWidth
@@ -372,6 +400,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 {...register("estado")}
                 error={!!errors?.estado || genericError}
                 helperText={errors?.estado?.message}
+                value={FormData.estado || ""}
                 SelectProps={{
                   MenuProps: {
                     PaperProps: {
@@ -395,6 +424,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 label="Cidade"
                 fullWidth
                 {...register("cidade")}
+                value={FormData.cidade || ""}
                 error={!!errors?.cidade || genericError}
                 helperText={errors?.cidade?.message}
               />
@@ -407,6 +437,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 {...register("bairro")}
                 error={!!errors?.bairro || genericError}
                 helperText={errors?.bairro?.message}
+                value={FormData.bairro || ""}
               />
             </Grid>
             <Grid item xs={5}>
@@ -417,6 +448,7 @@ const Contract = ({ open, setOpen, fotografo }) => {
                 {...register("rua")}
                 error={!!errors?.rua || genericError}
                 helperText={errors?.rua?.message}
+                value={FormData.endereco || ""}
               />
             </Grid>
             <Grid item xs={2}>
