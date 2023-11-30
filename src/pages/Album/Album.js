@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   Typography,
@@ -8,9 +8,9 @@ import {
   useTheme,
   Breadcrumbs,
   Link,
-} from "@mui/material"
-import Header from "molecules/Header"
-import Footer from "molecules/Footer"
+} from "@mui/material";
+import Header from "molecules/Header";
+import Footer from "molecules/Footer";
 import {
   ImageStack,
   ImageContainer,
@@ -18,23 +18,23 @@ import {
   Sidebar,
   UserArea,
   AvaliacaoBox,
-} from "./Album.styles"
-import imagemNoiva1 from "assets/img/noiva-feliz1.png"
-import imagemNoiva2 from "assets/img/noiva-feliz2.png"
-import imagemNoiva3 from "assets/img/noiva-feliz3.png"
-import PersonIcon from "@mui/icons-material/Person"
-import CustomButton from "atoms/CustomButton/CustomButton"
-import { ROUTES } from "utils/constants"
-import { useNavigate, useParams } from "react-router-dom"
-import { useUserContext } from "contexts"
-import ModalLogin from "molecules/CustomLogin/CustomLogin"
-import Contrato from "molecules/Contrato/Contrato"
-import { ALBUM } from "service/album"
-import { AVALIACAO } from "service/avaliacao"
-import { set } from "react-hook-form"
-import { IMAGEM } from "service/imagem"
-import PictureAlbum from "atoms/PictureAlbum"
-import Container from "atoms/Container"
+} from "./Album.styles";
+import imagemNoiva1 from "assets/img/noiva-feliz1.png";
+import imagemNoiva2 from "assets/img/noiva-feliz2.png";
+import imagemNoiva3 from "assets/img/noiva-feliz3.png";
+import PersonIcon from "@mui/icons-material/Person";
+import CustomButton from "atoms/CustomButton/CustomButton";
+import { ROUTES } from "utils/constants";
+import { useNavigate, useParams } from "react-router-dom";
+import { useUserContext } from "contexts";
+import ModalLogin from "molecules/CustomLogin/CustomLogin";
+import Contrato from "molecules/Contrato/Contrato";
+import { ALBUM } from "service/album";
+import { AVALIACAO } from "service/avaliacao";
+import { set } from "react-hook-form";
+import { IMAGEM } from "service/imagem";
+import PictureAlbum from "atoms/PictureAlbum";
+import Container from "atoms/Container";
 
 const images = [
   {
@@ -56,133 +56,134 @@ const images = [
     tags: "Família",
   },
   // Adicione mais objetos de imagem aqui, se necessário
-]
+];
 
 function Album() {
-  const theme = useTheme()
-  const navigate = useNavigate()
-  const { autenticado } = useUserContext()
-  const [openContrato, setOpenContrato] = useState(false)
-  const [openLoginModal, setOpenLoginModal] = useState(false)
-  const [tags, setTags] = useState([])
-  const { token } = useUserContext()
-  const [album, setAlbum] = useState([])
-  const [fotografo, setFotografo] = useState([])
-  const [imagens, setImagens] = useState([])
-  const [tema, setTemas] = useState([])
-  const [avaliacoes, setAvaliacoes] = useState([])
-  const { idAlbum } = useParams()
-  const [imagensRenderizadas, setImagensRenderizadas] = useState([])
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { autenticado } = useUserContext();
+  const [openContrato, setOpenContrato] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [tags, setTags] = useState([]);
+  const { token } = useUserContext();
+  const [album, setAlbum] = useState([]);
+  const [fotografo, setFotografo] = useState([]);
+  const [imagens, setImagens] = useState([]);
+  const [tema, setTemas] = useState([]);
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const { idAlbum } = useParams();
+  const [imagensRenderizadas, setImagensRenderizadas] = useState([]);
 
-  const [clientes, setClientes] = useState([])
-  const [sessoes, setSessoes] = useState([])
+  const [clientes, setClientes] = useState([]);
+  const [sessoes, setSessoes] = useState([]);
 
-  let chamadas = 0
+  let chamadas = 0;
 
-  let ready = false
+  let ready = false;
 
   useEffect(() => {
-    let v = []
-    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)))
+    let v = [];
+    images.forEach((obj) => obj.tags.split(", ").forEach((tag) => v.push(tag)));
 
-    setTags(v)
-  }, [])
+    setTags(v);
+  }, []);
 
   const handleContract = () => {
     if (autenticado) {
-      setOpenContrato(true)
+      setOpenContrato(true);
     } else {
-      setOpenLoginModal(true)
+      setOpenLoginModal(true);
     }
-  }
+  };
 
   const buscarAlbum = async () => {
     if (token != undefined) {
-      console.log(`VALIDANDO TOKEN: ${token}`)
+      console.log(`VALIDANDO TOKEN: ${token}`);
       try {
-        const jsonAlbuns = await ALBUM.BUSCAR_ALBUM(idAlbum, token)
-        setAlbum(jsonAlbuns.data)
-        setFotografo(jsonAlbuns.data.fotografo)
-        setImagens(jsonAlbuns.data.imagems)
-        setTemas(jsonAlbuns.data.tema)
+        const jsonAlbuns = await ALBUM.BUSCAR_ALBUM(idAlbum, token);
+        setAlbum(jsonAlbuns.data);
+        setFotografo(jsonAlbuns.data.fotografo);
+        setImagens(jsonAlbuns.data.imagems);
+        setTemas(jsonAlbuns.data.tema);
 
-        console.log(`TESTE FOTOGRAFO ID: ${fotografo.id}`)
+        console.log(`TESTE FOTOGRAFO ID: ${fotografo.id}`);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-  }
+  };
 
   const buscarSessoes = async () => {
-    let listEventos = []
+    let listEventos = [];
     avaliacoes.forEach((avaliacao) => {
-      listEventos.push(avaliacao.evento)
-    })
-    setSessoes(listEventos)
-    console.log(`TESTE LISTA EVENTOS: ${JSON.stringify(sessoes)}`)
-  }
+      listEventos.push(avaliacao.evento);
+    });
+    setSessoes(listEventos);
+    console.log(`TESTE LISTA EVENTOS: ${JSON.stringify(sessoes)}`);
+  };
 
   const buscarClientes = async () => {
-    const listClientes = []
+    const listClientes = [];
 
     sessoes.forEach((sessao) => {
-      listClientes.push(sessao.cliente)
-    })
+      listClientes.push(sessao.cliente);
+    });
 
-    setClientes(listClientes)
+    setClientes(listClientes);
 
-    console.log(`TESTE LISTA CLIENTES: ${JSON.stringify(clientes)}`)
-  }
+    console.log(`TESTE LISTA CLIENTES: ${JSON.stringify(clientes)}`);
+  };
 
   const buscarAvaliacoes = async () => {
     const jsonAvaliacoes = await AVALIACAO.BUSCAR_AVALIACOES_FOTOGRAFO(
       fotografo.id,
       token
-    )
+    );
 
-    setAvaliacoes(jsonAvaliacoes.data)
-  }
+    setAvaliacoes(jsonAvaliacoes.data);
+  };
 
   useEffect(() => {
     if (token !== undefined) {
-      buscarAlbum()
-      chamadas++
+      buscarAlbum();
+      chamadas++;
     }
-  }, [token])
+  }, [token]);
 
   useEffect(() => {
     if (fotografo !== undefined) {
-      buscarAvaliacoes()
+      buscarAvaliacoes();
     }
-  }, [fotografo])
+  }, [fotografo]);
 
   useEffect(() => {
     if (avaliacoes !== undefined) {
-      buscarSessoes()
+      buscarSessoes();
     }
-  }, [avaliacoes])
+  }, [avaliacoes]);
 
   useEffect(() => {
     if (sessoes !== undefined) {
-      buscarClientes()
+      buscarClientes();
     }
-  }, [sessoes])
+  }, [sessoes]);
 
   useEffect(() => {
     const fetchImagens = async () => {
       const imagensRenderizadas = await Promise.all(
         imagens.map(async (imagem) => {
-          console.log(`TESTE IMAGEM: ${JSON.stringify(imagem)}`)
+          console.log(`TESTE IMAGEM: ${JSON.stringify(imagem)}`);
           if (imagem.origemImagem === "s3") {
             try {
-              const response = await IMAGEM.GET_OBJECT(imagem.id)
-              const tipoImagem = response.headers["content-type"] || "image/png"
+              const response = await IMAGEM.GET_OBJECT(imagem.id);
+              const tipoImagem =
+                response.headers["content-type"] || "image/png";
 
               const blob = new Blob([response.data], {
                 type: tipoImagem,
-              })
+              });
 
-              const url = URL.createObjectURL(blob)
+              const url = URL.createObjectURL(blob);
 
               // Retornar o elemento JSX diretamente
               return (
@@ -193,28 +194,32 @@ function Album() {
                     style={{ maxWidth: "100%" }}
                   />
                 </ImageContainer>
-              )
+              );
             } catch (error) {
-              console.error("Erro na chamada API:", error)
-              return null
+              console.error("Erro na chamada API:", error);
+              return null;
             }
           } else {
             // Se a origem não é S3, retornar o componente FeedAlbum padrão
             return (
               <Container key={imagem.id} className="image" py={0.5}>
-                <PictureAlbum src={imagem.path} alt={imagem.descricao} />
+                <PictureAlbum
+                  src={imagem.path}
+                  alt={imagem.descricao}
+                  width="100%"
+                />
               </Container>
-            )
+            );
           }
         })
-      )
+      );
 
       // Atualizar o componente renderizando os elementos JSX diretamente
-      setImagensRenderizadas(imagensRenderizadas)
-    }
+      setImagensRenderizadas(imagensRenderizadas);
+    };
 
-    fetchImagens()
-  }, [imagens, token])
+    fetchImagens();
+  }, [imagens, token]);
 
   return (
     <>
@@ -226,6 +231,7 @@ function Album() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            width: "auto",
           }}
         >
           {imagensRenderizadas}
@@ -253,7 +259,7 @@ function Album() {
               <Avatar
                 style={{ width: theme.spacing(8), height: theme.spacing(8) }}
                 onClick={() => {
-                  navigate(ROUTES.PERFIL(fotografo.id))
+                  navigate(ROUTES.PERFIL(fotografo.id));
                 }}
               >
                 <PersonIcon style={{ fontSize: 24 }} />
@@ -282,7 +288,7 @@ function Album() {
             </Typography>
             <Typography>{tema ? tema.nome : "Padrão"}</Typography>
           </Stack>
-          <Stack spacing={1}>
+          {/* <Stack spacing={1}>
             <Typography variant="paragraph-large-bold">Tags</Typography>
             <div>
               {tags.map((tag, index) => (
@@ -298,7 +304,7 @@ function Album() {
                 />
               ))}
             </div>
-          </Stack>
+          </Stack> */}
           <Stack spacing={1}>
             <Typography variant="paragraph-large-bold">Avaliação</Typography>
             {avaliacoes.length == 0 ? (
@@ -310,7 +316,7 @@ function Album() {
                 Não há avaliações para este fotógrafo.
               </Typography>
             ) : null}
-            {avaliacoes.map((avaliacao, indice) => (
+            {avaliacoes.slice(0, 2).map((avaliacao, indice) => (
               <AvaliacaoBox>
                 <div
                   style={{
@@ -391,7 +397,7 @@ function Album() {
         <ModalLogin open={openLoginModal} setOpen={setOpenLoginModal} />
       )}
     </>
-  )
+  );
 }
 
-export default Album
+export default Album;
